@@ -53,12 +53,28 @@ This post records the basic web development knowledge I have learned in practice
 #+end_src
 
 * Tags
-- ~<a>~: contain links; have following attributes:
-  - ~target="_blank"~: open the link in a new tab.
-  - ~title="Go to the link"~: the tooltip message, i.e., the floating message when a user hovers over.
-- ~<span>~: don't add line breaks before or after it.
-- ~<hr>~: horizontal rule.
+- src_html[:exports code]{<a>}: contain links; have following attributes:
+  - src_html[:exports code]{target="_blank"}: open the link in a new tab.
+  - src_html[:exports code]{title="Go to the link"}: the tooltip message, i.e., the floating message when a user hovers over.
+- src_html[:exports code]{<span>}: don't add line breaks before or after it.
+- src_html[:exports code]{<hr>}: horizontal rule.
 
 * Attributes
-- ~id="home"~:
-  - allow specific styling of the element, e.g., ~#home ul {...}~ only styles the ~ul~ in the block with the same id.
+- src_html[:exports code]{id="home"}:
+  - allow specific styling of the element, e.g., src_html[:exports code]{#home ul {...}} only styles the src_html[:exports code]{ul} in the block with the same id.
+
+* Javascript
+** Fetch from an HTML URL
+1. src_js[:exports code]{await fetch(url)}: returns a src_js[:exports code]{Response} object.
+   - src_js[:exports code]{await} waits for the method to complete.
+2. src_js[:exports code]{await response.text()}: returns the src_js[:exports code]{html} string.
+3. src_js[:exports code]{DOMParser().parseFromString(postHtml, "text/html")}: returns a src_js[:exports code]{Document} object, which is a complete DOM tree from the HTML string; src_js[:exports code]{DOMParser} is a built-in browser API.
+4. src_js[:exports code]{postDoc.getElementById("content")}: returns an src_js[:exports code]{Element} with the src_js[:exports code]{content} id name.
+5. src_js[:exports code]{content.querySelector(".post-title a")}: fetches the first src_js[:exports code]{Element} with the src_js[:exports code]{post-title} class name, and returns the first src_js[:exports code]{Element} the first src_js[:exports code]{<a>} (anchor) tag.
+   - src_js[:exports code]{.} for classes, src_js[:exports code]{#} for IDs (IDs should be unique within a page)
+
+** Modify a DOM
+- src_js[:exports code]{content.querySelector(".taglist").remove()}: removes the element from the DOM, i.e., it modifies src_js[:exports code]{content}.
+
+** Syntax
+- src_js[:exports code]{const escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}: add a backslash to any special character in the query; ~$&~ is a special pattern used in Javascript's src_js[:exports code]{replacement} method.

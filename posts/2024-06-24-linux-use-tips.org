@@ -17,6 +17,9 @@
 ** Prefix argument
 - When the function includes ~(interactive "P")~, it means one can add a prefix argument ~C-u 1~ (or any integer) to trigger some effect.
 
+** Help functions
+- ~Ctrl-h K~ get the function name given a shortcut
+
 * Vim
 ** Delete a word backwards
 - ~diw~ or ~daw~

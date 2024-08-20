@@ -58,9 +58,17 @@
         <h2>Table of Contents</h2>
         <div id="text-table-of-contents" role="doc-toc">
           <ul>
-            <li><a href="#orgfb90eae">1. Basic html structure</a></li>
-            <li><a href="#orga8398b6">2. Tags</a></li>
-            <li><a href="#org8082ea8">3. Attributes</a></li>
+            <li><a href="#org1272e7f">1. Basic html structure</a></li>
+            <li><a href="#orgd7fac30">2. Tags</a></li>
+            <li><a href="#orge1e78b5">3. Attributes</a></li>
+            <li>
+              <a href="#org19d5f2d">4. Javascript</a>
+              <ul>
+                <li><a href="#org4180381">4.1. Fetch from an HTML URL</a></li>
+                <li><a href="#orgafe4366">4.2. Modify a DOM</a></li>
+                <li><a href="#org26c7c34">4.3. Syntax</a></li>
+              </ul>
+            </li>
           </ul>
         </div>
       </nav>
@@ -68,8 +76,8 @@
         This post records the basic web development knowledge I have learned in
         practice.
       </p>
-      <div id="outline-container-orgfb90eae" class="outline-2">
-        <h2 id="orgfb90eae">
+      <div id="outline-container-org1272e7f" class="outline-2">
+        <h2 id="org1272e7f">
           <span class="section-number-2">1.</span> Basic html structure
         </h2>
         <div class="outline-text-2" id="text-1">
@@ -123,47 +131,169 @@
           </div>
         </div>
       </div>
-      <div id="outline-container-orga8398b6" class="outline-2">
-        <h2 id="orga8398b6"><span class="section-number-2">2.</span> Tags</h2>
+      <div id="outline-container-orgd7fac30" class="outline-2">
+        <h2 id="orgd7fac30"><span class="section-number-2">2.</span> Tags</h2>
         <div class="outline-text-2" id="text-2">
           <ul class="org-ul">
             <li>
-              <code>&lt;a&gt;</code>: contain links; have following attributes:
+              <code class="src src-html"
+                >&lt;<span style="color: #c678dd">a</span>&gt;</code
+              >: contain links; have following attributes:
               <ul class="org-ul">
                 <li>
-                  <code>target="_blank"</code>: open the link in a new tab.
+                  <code class="src src-html"
+                    ><span style="color: #dcaeea">target</span>="_blank"</code
+                  >: open the link in a new tab.
                 </li>
                 <li>
-                  <code>title="Go to the link"</code>: the tooltip message,
-                  i.e., the floating message when a user hovers over.
+                  <code class="src src-html"
+                    ><span style="color: #dcaeea">title</span>="Go to the
+                    link"</code
+                  >: the tooltip message, i.e., the floating message when a user
+                  hovers over.
                 </li>
               </ul>
             </li>
             <li>
-              <code>&lt;span&gt;</code>: don&rsquo;t add line breaks before or
-              after it.
+              <code class="src src-html"
+                >&lt;<span style="color: #c678dd">span</span>&gt;</code
+              >: don&rsquo;t add line breaks before or after it.
             </li>
-            <li><code>&lt;hr&gt;</code>: horizontal rule.</li>
+            <li>
+              <code class="src src-html"
+                >&lt;<span style="color: #c678dd">hr</span>&gt;</code
+              >: horizontal rule.
+            </li>
           </ul>
         </div>
       </div>
-      <div id="outline-container-org8082ea8" class="outline-2">
-        <h2 id="org8082ea8">
+      <div id="outline-container-orge1e78b5" class="outline-2">
+        <h2 id="orge1e78b5">
           <span class="section-number-2">3.</span> Attributes
         </h2>
         <div class="outline-text-2" id="text-3">
           <ul class="org-ul">
             <li>
-              <code>id="home"</code>:
+              <code class="src src-html"
+                ><span style="color: #dcaeea">id</span>="home"</code
+              >:
               <ul class="org-ul">
                 <li>
                   allow specific styling of the element, e.g.,
-                  <code>#home ul {...}</code> only styles the <code>ul</code> in
-                  the block with the same id.
+                  <code class="src src-html">#home ul {...}</code> only styles
+                  the <code class="src src-html">ul</code> in the block with the
+                  same id.
                 </li>
               </ul>
             </li>
           </ul>
+        </div>
+      </div>
+      <div id="outline-container-org19d5f2d" class="outline-2">
+        <h2 id="org19d5f2d">
+          <span class="section-number-2">4.</span> Javascript
+        </h2>
+        <div class="outline-text-2" id="text-4"></div>
+        <div id="outline-container-org4180381" class="outline-3">
+          <h3 id="org4180381">
+            <span class="section-number-3">4.1.</span> Fetch from an HTML URL
+          </h3>
+          <div class="outline-text-3" id="text-4-1">
+            <ol class="org-ol">
+              <li>
+                <code class="src src-js"
+                  ><span style="color: #51afef">await</span> fetch(url)</code
+                >: returns a <code class="src src-js">Response</code> object.
+                <ul class="org-ul">
+                  <li>
+                    <code class="src src-js"
+                      ><span style="color: #51afef">await</span></code
+                    >
+                    waits for the method to complete.
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <code class="src src-js"
+                  ><span style="color: #51afef">await</span>
+                  response.text()</code
+                >: returns the <code class="src src-js">html</code> string.
+              </li>
+              <li>
+                <code class="src src-js"
+                  >DOMParser().parseFromString(postHtml,
+                  <span style="color: #98be65">"text/html"</span>)</code
+                >: returns a <code class="src src-js">Document</code> object,
+                which is a complete DOM tree from the HTML string;
+                <code class="src src-js">DOMParser</code> is a built-in browser
+                API.
+              </li>
+              <li>
+                <code class="src src-js"
+                  >postDoc.getElementById(<span style="color: #98be65"
+                    >"content"</span
+                  >)</code
+                >: returns an <code class="src src-js">Element</code> with the
+                <code class="src src-js">content</code> id name.
+              </li>
+              <li>
+                <code class="src src-js"
+                  >content.querySelector(<span style="color: #98be65"
+                    >".post-title a"</span
+                  >)</code
+                >: fetches the first
+                <code class="src src-js">Element</code> with the
+                <code class="src src-js">post-title</code> class name, and
+                returns the first <code class="src src-js">Element</code> the
+                first <code class="src src-js">&lt;a&gt;</code> (anchor) tag.
+                <ul class="org-ul">
+                  <li>
+                    <code class="src src-js">.</code> for classes,
+                    <code class="src src-js">#</code> for IDs (IDs should be
+                    unique within a page)
+                  </li>
+                </ul>
+              </li>
+            </ol>
+          </div>
+        </div>
+        <div id="outline-container-orgafe4366" class="outline-3">
+          <h3 id="orgafe4366">
+            <span class="section-number-3">4.2.</span> Modify a DOM
+          </h3>
+          <div class="outline-text-3" id="text-4-2">
+            <ul class="org-ul">
+              <li>
+                <code class="src src-js"
+                  >content.querySelector(<span style="color: #98be65"
+                    >".taglist"</span
+                  >).remove()</code
+                >: removes the element from the DOM, i.e., it modifies
+                <code class="src src-js">content</code>.
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div id="outline-container-org26c7c34" class="outline-3">
+          <h3 id="org26c7c34">
+            <span class="section-number-3">4.3.</span> Syntax
+          </h3>
+          <div class="outline-text-3" id="text-4-3">
+            <ul class="org-ul">
+              <li>
+                <code class="src src-js"
+                  ><span style="color: #51afef">const</span>
+                  <span style="color: #dcaeea">escapedQuery</span> =
+                  query.replace(<span style="color: #98be65"
+                    >/[.*+?^${}()|[\]\\]/</span
+                  >g, <span style="color: #98be65">"\\$&amp;"</span>)</code
+                >: add a backslash to any special character in the query;
+                <code>$&amp;</code> is a special pattern used in
+                Javascript&rsquo;s
+                <code class="src src-js">replacement</code> method.
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
       <div class="taglist">

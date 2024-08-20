@@ -1,9 +1,13 @@
+/* A client-side global search function for all blog posts. */
+
+// Ensure the code only runs after the DOM is fully loaded
 document.addEventListener("DOMContentLoaded", function () {
   const searchInput = document.getElementById("search-input");
   const searchResults = document.getElementById("search-results");
-  const content = document.getElementById("content");
-  let allPosts = [];
+  const content = document.getElementById("content"); // the main post content
+  let allPosts = []; // array to store all trimmed posts
 
+  // Wait for all posts to be loaded.
   fetchAllPosts()
     .then((posts) => {
       allPosts = posts;
@@ -12,10 +16,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
   searchInput.addEventListener("input", function () {
     const query = this.value;
+    // Ignore too short query
     if (query.length < 2) {
       showOriginalContent();
       return;
     }
+
+    // First filter posts that contain the query.
     const results = allPosts.filter(
       (post) =>
         postContainsQuery(post.title, query) ||
@@ -25,12 +32,19 @@ document.addEventListener("DOMContentLoaded", function () {
     displayResults(results, query);
   });
 
+  // Immediately return true if the text contains the query.
   function postContainsQuery(text, query) {
+    // Add backslash to all special characters in the query
     const escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
     const regex = new RegExp(escapedQuery, "i"); // case-insensitive
     return regex.test(text);
   }
 
+  /**
+   * Display the search results.
+   * @param {Array} results - The filtered posts that contain the query.
+   * @param {string} query - The search query.
+   */
   function displayResults(results, query) {
     searchResults.innerHTML = "";
     if (results.length === 0) {
@@ -41,7 +55,7 @@ document.addEventListener("DOMContentLoaded", function () {
         resultItem.classList.add("search-result");
 
         const title = document.createElement("a");
-        title.href = result.url;
+        title.href = result.url; // link to the post
         title.innerHTML = highlightText(result.title, query);
         resultItem.appendChild(title);
 
@@ -54,6 +68,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const snippetUrl = snippet.anchor
               ? `${result.url}#${snippet.anchor}`
               : result.url;
+
             snippetDiv.innerHTML = `<a href="${snippetUrl}" class="snippet-link">${snippet.text}</a>`;
 
             resultItem.appendChild(snippetDiv);
@@ -69,15 +84,20 @@ document.addEventListener("DOMContentLoaded", function () {
         link.addEventListener("click", function (e) {
           e.preventDefault();
           const url = this.getAttribute("href");
-          // console.log("Navigating to:", url); // Debug log
           navigateToPost(url);
         });
       });
     }
-    content.style.display = "none";
+    content.style.display = "none"; // hide the original content
     searchResults.style.display = "block";
   }
 
+  /**
+   * Highlight the text that contains the query.
+   * @param {string} text - The text to highlight.
+   * @param {string} query - The search query.
+   * @returns {string} The highlighted text.
+   */
   function highlightText(text, query) {
     const escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
     const regex = new RegExp(escapedQuery, "gi");
@@ -89,11 +109,21 @@ document.addEventListener("DOMContentLoaded", function () {
     searchResults.style.display = "none";
   }
 
+  /**
+   * Get all snippets of the content that contain the query.
+   * @param {string} content - The content to search in.
+   * @param {string} query - The search query.
+   * @param {Array} headers - The headers of the content.
+   * @returns {Array} The snippets of the content that contain the query,
+   *   each with the following properties:
+   *   - text: the highlighted snippet
+   *   - anchor: the id of the nearest header
+   */
   function getAllSnippets(content, query, headers) {
     const snippets = [];
     const escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
     const regex = new RegExp(escapedQuery, "gi");
-    const contextSize = 30;
+    const contextSize = 30; // context size in each side of the query
 
     let match;
     while ((match = regex.exec(content)) !== null) {
@@ -101,10 +131,17 @@ document.addEventListener("DOMContentLoaded", function () {
       let start = Math.max(0, index - contextSize);
       let end = Math.min(content.length, index + query.length + contextSize);
 
+      // Ensure the snippet starts and ends with complete words
       while (start > 0 && /\S/.test(content[start])) start--;
       while (end < content.length && /\S/.test(content[end])) end++;
 
       let snippet = content.slice(start, end).replace(/\s+/g, " ").trim();
+
+      // Sanitize the snippet to avoid HTML injection in some code blocks
+      snippet = snippet.replace(/[<>]/g, "") 
+      .replace(/[*_~`]/g, '') 
+      .replace(/\s+/g, ' ') 
+      .trim();
 
       const highlightedSnippet = snippet.replace(
         new RegExp(escapedQuery, "gi"),
@@ -122,12 +159,23 @@ document.addEventListener("DOMContentLoaded", function () {
           anchor: nearestHeader ? nearestHeader.id : "",
         });
       }
-      regex.lastIndex = index + query.length;
+      
+      // Move the regex to the end of the snippet to avoid duplicate matches
+      regex.lastIndex = end;
     }
 
     return snippets;
   }
 
+  /**
+   * Find the nearest header to the query.
+   * @param {number} queryIndex - The index of the query in the trimmed content.
+   * @param {Array} headers - The headers array.
+   * @returns {Object} The nearest header with the following properties:
+   *   - id: the header id
+   *   - index: the index of the header in the trimmed content
+   *   - text: the text of the header
+   */
   function findNearestHeader(queryIndex, headers) {
     return headers.reduce((nearest, current) => {
       if (
@@ -140,6 +188,10 @@ document.addEventListener("DOMContentLoaded", function () {
     }, null);
   }
 
+  /**
+   * Navigate to the post.
+   * @param {string} url - The URL of the post.
+   */
   function navigateToPost(url) {
     const [baseUrl, anchor] = url.split("#");
 
@@ -170,10 +222,25 @@ document.addEventListener("DOMContentLoaded", function () {
       .catch((error) => console.error("Error:", error));
   }
 
+  /**
+   * Fetches and trims all posts from the post-list.json file.
+   * @returns {Promise<Array>} An array of posts, each with the following properties:
+   *   - url: the URL of the post
+   *   - title: the title of the post
+   *   - content: the trimmed content of the post
+   *   - headers: an array of headers with their positions
+   *     - id: the id of the header
+   *     - index: the index of the header in the trimmed content
+   *     - text: the text of the header
+   */
   async function fetchAllPosts() {
     try {
-      // Fetch the post-list.json file
+      // Fetch a list of all blog posts urls
       const response = await fetch("assets/post-list.json");
+      // for local testing
+      // const response = await fetch(
+      //   "https://chenyo-17.github.io/org-static-blog/assets/post-list.json",
+      // );
       const postUrls = await response.json();
 
       // Fetch content for each blog post
@@ -185,30 +252,30 @@ document.addEventListener("DOMContentLoaded", function () {
           const postDoc = parser.parseFromString(postHtml, "text/html");
           const content = postDoc.getElementById("content");
 
-          // Extract the title before modifying the content
+          // Fetch and trim the title
           const title =
             content.querySelector(".post-title a")?.textContent.trim() || "";
 
-          // Remove the table of contents
+          // Remove title, toc, postamble, and taglist from the content
+          const postDate = content.querySelector(".post-date");
+          if (postDate) postDate.remove();
+          const postTitle = content.querySelector(".post-title");
+          if (postTitle) postTitle.remove();
           const toc = content.querySelector("#table-of-contents");
           if (toc) toc.remove();
-
-          // Remove content with class "taglist"
           const taglist = content.querySelector(".taglist");
           if (taglist) taglist.remove();
-
-          // Remove postamble
           const postamble = content.querySelector("#postamble");
           if (postamble) postamble.remove();
 
-          // Clean up the text content after removing unwanted elements
+          // Trim the content before extracting headers
           const cleanContent = content.textContent.replace(/\s+/g, " ").trim();
 
           // Extract headers with their positions
+          // Cannot directly query the cleanContent as they are strings!
           const headers = Array.from(
             content.querySelectorAll("h1, h2, h3, h4, h5, h6"),
           ).map((header, index) => {
-            // Normalize header text: replace newlines with spaces and trim
             const headerText = header.textContent.replace(/\s+/g, " ").trim();
             let headerIndex = cleanContent.indexOf(headerText);
 
@@ -217,7 +284,8 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             return {
-              id: header.id || `generated-id-${index}`,
+              // h1 does not have an id attribute
+              id: header.id,  // h1 does not have an id
               index: headerIndex,
               text: headerText,
             };
