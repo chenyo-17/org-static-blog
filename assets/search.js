@@ -193,33 +193,35 @@ document.addEventListener("DOMContentLoaded", function () {
    * @param {string} url - The URL of the post.
    */
   function navigateToPost(url) {
-    const [baseUrl, anchor] = url.split("#");
+    // const [baseUrl, anchor] = url.split("#");
 
-    fetch(baseUrl)
-      .then((response) => response.text())
-      .then((html) => {
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(html, "text/html");
-        const newContent = doc.getElementById("content");
+    // fetch(baseUrl)
+    //   .then((response) => response.text())
+    //   .then((html) => {
+    //     const parser = new DOMParser();
+    //     const doc = parser.parseFromString(html, "text/html");
+    //     const newContent = doc.getElementById("content");
 
-        if (newContent) {
-          document.getElementById("content").innerHTML = newContent.innerHTML;
-          history.pushState(null, "", url);
+    //     if (newContent) {
+    //       document.getElementById("content").innerHTML = newContent.innerHTML;
+    //       history.pushState(null, "", url);
 
-          setTimeout(() => {
-            if (anchor) {
-              const element = document.getElementById(anchor);
-              if (element) {
-                element.scrollIntoView({ behavior: "smooth" });
-              }
-            }
-          }, 100);
+    //       setTimeout(() => {
+    //         if (anchor) {
+    //           const element = document.getElementById(anchor);
+    //           if (element) {
+    //             element.scrollIntoView({ behavior: "smooth" });
+    //           }
+    //         }
+    //       }, 100);
 
-          document.getElementById("content").style.display = "block";
-          document.getElementById("search-results").style.display = "none";
-        }
-      })
-      .catch((error) => console.error("Error:", error));
+    //       document.getElementById("content").style.display = "block";
+    //       document.getElementById("search-results").style.display = "none";
+    //     }
+    //   })
+    //   .catch((error) => console.error("Error:", error));
+    window.open(url, '_blank');  // open in new tab
+    return;
   }
 
   /**
