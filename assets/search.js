@@ -57,6 +57,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const title = document.createElement("a");
         title.href = result.url; // link to the post
         title.innerHTML = highlightText(result.title, query);
+        title.target = "_blank"; // Open in new tab
         resultItem.appendChild(title);
 
         const snippets = getAllSnippets(result.content, query, result.headers);
@@ -80,13 +81,14 @@ document.addEventListener("DOMContentLoaded", function () {
         searchResults.appendChild(resultItem);
       });
 
-      document.querySelectorAll(".snippet-link").forEach((link) => {
-        link.addEventListener("click", function (e) {
-          e.preventDefault();
-          const url = this.getAttribute("href");
-          navigateToPost(url);
+      document
+        .querySelectorAll(".search-result a, .snippet-link")
+        .forEach((link) => {
+          link.addEventListener("click", function (e) {
+            e.preventDefault();
+            window.open(this.href, "_blank");
+          });
         });
-      });
     }
     content.style.display = "none"; // hide the original content
     searchResults.style.display = "block";
@@ -138,10 +140,11 @@ document.addEventListener("DOMContentLoaded", function () {
       let snippet = content.slice(start, end).replace(/\s+/g, " ").trim();
 
       // Sanitize the snippet to avoid HTML injection in some code blocks
-      snippet = snippet.replace(/[<>]/g, "") 
-      .replace(/[*_~`]/g, '') 
-      .replace(/\s+/g, ' ') 
-      .trim();
+      snippet = snippet
+        .replace(/[<>]/g, "")
+        .replace(/[*_~`]/g, "")
+        .replace(/\s+/g, " ")
+        .trim();
 
       const highlightedSnippet = snippet.replace(
         new RegExp(escapedQuery, "gi"),
@@ -159,7 +162,7 @@ document.addEventListener("DOMContentLoaded", function () {
           anchor: nearestHeader ? nearestHeader.id : "",
         });
       }
-      
+
       // Move the regex to the end of the snippet to avoid duplicate matches
       regex.lastIndex = end;
     }
@@ -189,42 +192,6 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   /**
-   * Navigate to the post.
-   * @param {string} url - The URL of the post.
-   */
-  function navigateToPost(url) {
-    // const [baseUrl, anchor] = url.split("#");
-
-    // fetch(baseUrl)
-    //   .then((response) => response.text())
-    //   .then((html) => {
-    //     const parser = new DOMParser();
-    //     const doc = parser.parseFromString(html, "text/html");
-    //     const newContent = doc.getElementById("content");
-
-    //     if (newContent) {
-    //       document.getElementById("content").innerHTML = newContent.innerHTML;
-    //       history.pushState(null, "", url);
-
-    //       setTimeout(() => {
-    //         if (anchor) {
-    //           const element = document.getElementById(anchor);
-    //           if (element) {
-    //             element.scrollIntoView({ behavior: "smooth" });
-    //           }
-    //         }
-    //       }, 100);
-
-    //       document.getElementById("content").style.display = "block";
-    //       document.getElementById("search-results").style.display = "none";
-    //     }
-    //   })
-    //   .catch((error) => console.error("Error:", error));
-    window.open(url, '_blank');  // open in new tab
-    return;
-  }
-
-  /**
    * Fetches and trims all posts from the post-list.json file.
    * @returns {Promise<Array>} An array of posts, each with the following properties:
    *   - url: the URL of the post
@@ -241,7 +208,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const response = await fetch("assets/post-list.json");
       // for local testing
       // const response = await fetch(
-      //   "https://chenyo-17.github.io/org-static-blog/assets/post-list.json",
+      // "https://chenyo-17.github.io/org-static-blog/assets/post-list.json",
       // );
       const postUrls = await response.json();
 
@@ -287,7 +254,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             return {
               // h1 does not have an id attribute
-              id: header.id,  // h1 does not have an id
+              id: header.id, // h1 does not have an id
               index: headerIndex,
               text: headerText,
             };
