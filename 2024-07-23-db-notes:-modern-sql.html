@@ -1,144 +1,92 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta
-      name="description"
-      content="This is a personal note for the [[https://15445.courses.cs.cmu.edu/fall2022/notes/02-modernsql.pdf][CMU 15-445 L2 notes]]"
-    />
-    <link
-      rel="alternate"
+<head>
+<meta charset="UTF-8">
+<meta name="description" content="This is a personal note for the [[https://15445.courses.cs.cmu.edu/fall2022/notes/02-modernsql.pdf][CMU 15-445 L2 notes]]">
+<link rel="alternate"
       type="application/rss+xml"
-      href="https://chenyo-17.github.io/org-static-blog/rss.xml"
-      title="RSS feed for https://chenyo-17.github.io/org-static-blog"
-    />
-    <title>CMU 15-445 notes: Modern SQL</title>
-    <script
-      type="text/javascript"
-      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
-    ></script>
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'],['\\(','\\)']]}});
-    </script>
-    <meta name="author" content="chenyo" />
-    <meta name="referrer" content="no-referrer" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="assets/style.css" type="text/css" />
-    <link rel="favicon" type="image/x-icon" href="favicon.ico" />
-    <script src="assets/search.js"></script>
-  </head>
-  <body>
-    <div id="preamble" class="status">
+      href="https://chenyo.me/rss.xml"
+      title="RSS feed for https://chenyo.me">
+<title>CMU 15-445 notes: Modern SQL</title>
+<script type="text/javascript"
+             src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+       </script>
+       <script type="text/x-mathjax-config">
+             MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'],['\\(','\\)']]}});
+       </script>
+       <meta name="author" content="chenyo">
+      <meta name="referrer" content="no-referrer">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="stylesheet" href="assets/style.css" type="text/css"/>
+      <link rel="favicon" type="image/x-icon" href="favicon.ico">
+      <script src="assets/search.js"></script></head>
+<body>
+<div id="preamble" class="status">
       <header>
-        <h1>
-          <a href="https://chenyo-17.github.io/org-static-blog"
-            >Chenyo's org-static-blog</a
-          >
-        </h1>
-        <nav>
-          <a href="https://chenyo-17.github.io/org-static-blog">Home</a>
-          <a href="archive.html">Archive</a>
-          <a href="tags.html">Tags</a>
-          <div id="search-container">
-            <input
-              type="text"
-              id="search-input"
-              placeholder="Search anywhere..."
-            />
-          </div>
-        </nav>
-      </header>
-    </div>
-    <div id="content">
-      <div class="post-date">23 Jul 2024</div>
-      <h1 class="post-title">
-        <a
-          href="https://chenyo-17.github.io/org-static-blog/2024-07-23-db-notes:-modern-sql.html"
-          >CMU 15-445 notes: Modern SQL</a
-        >
-      </h1>
-      <nav id="table-of-contents" role="doc-toc">
-        <h2>Table of Contents</h2>
-        <div id="text-table-of-contents" role="doc-toc">
-          <ul>
-            <li>
-              <a href="#orga15a5e4">1. Terminology</a>
-              <ul>
-                <li>
-                  <a href="#orgc7db75d">1.1. SQL and relational algebra</a>
-                </li>
-                <li><a href="#org29a3476">1.2. SQL commands</a></li>
-              </ul>
-            </li>
-            <li>
-              <a href="#orged4f663">2. SQL syntax</a>
-              <ul>
-                <li><a href="#org47f0617">2.1. Join</a></li>
-                <li><a href="#orgdbfdadd">2.2. Aggregation function</a></li>
-                <li><a href="#org4babc13">2.3. String operation</a></li>
-                <li><a href="#org5414dba">2.4. Date and time</a></li>
-                <li><a href="#org3ace6c7">2.5. Output redirection</a></li>
-                <li><a href="#org9ef47d9">2.6. Output control</a></li>
-                <li><a href="#org3f04ad7">2.7. Nested queries</a></li>
-                <li><a href="#org2f631b0">2.8. Window functions</a></li>
-                <li>
-                  <a href="#orgdfa8f5f">2.9. Common Table Expressions (CTE)</a>
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </div>
+      <h1><a href="https://chenyo.me">Chenyo's org-static-blog</a></h1>
+      <nav>
+      <a href="https://chenyo.me">Home</a>
+      <a href="archive.html">Archive</a>
+      <a href="tags.html">Tags</a>
+      <div id="search-container">
+      <input type="text" id="search-input" placeholder="Search anywhere...">
+      </div>
       </nav>
-      <p>
-        This is a personal note for the
-        <a
-          href="https://15445.courses.cs.cmu.edu/fall2022/notes/02-modernsql.pdf"
-          >CMU 15-445 L2 notes</a
-        >, along with some SQL command explained by
-        <a href="https://claude.ai/chat/a2f07962-eb31-4f76-9a31-5e408722894b"
-          >Claude.ai</a
-        >.
-      </p>
-      <div id="outline-container-orga15a5e4" class="outline-2">
-        <h2 id="orga15a5e4">
-          <span class="section-number-2">1.</span> Terminology
-        </h2>
-        <div class="outline-text-2" id="text-1"></div>
-        <div id="outline-container-orgc7db75d" class="outline-3">
-          <h3 id="orgc7db75d">
-            <span class="section-number-3">1.1.</span> SQL and relational
-            algebra
-          </h3>
-          <div class="outline-text-3" id="text-1-1">
-            <ul class="org-ul">
-              <li>
-                Relational algebra is based on sets (unordered, no duplicates);
-                SQL is based on bags (unordered, allows duplicates).
-              </li>
-              <li>
-                SQL is a declarative query language; users use SQL to specify
-                the desired result, each DBMS determines the most efficient
-                strategy to produce the answer.
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-org29a3476" class="outline-3">
-          <h3 id="org29a3476">
-            <span class="section-number-3">1.2.</span> SQL commands
-          </h3>
-          <div class="outline-text-3" id="text-1-2">
-            <ul class="org-ul">
-              <li>
-                Data manipulation language (DML): <code>SELECT</code>,
-                <code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code>.
-              </li>
-              <li>
-                <p>Data definition language (DDL): <code>CREATE</code>.</p>
-                <div class="org-src-container">
-                  <pre
-                    class="src src-sql"
-                  ><span style="color: #51afef;">CREATE</span> TABLR student (
+      </header></div>
+<div id="content">
+<div class="post-date">23 Jul 2024</div><h1 class="post-title"><a href="https://chenyo.me/2024-07-23-db-notes:-modern-sql.html">CMU 15-445 notes: Modern SQL</a></h1>
+<nav id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#org78be032">1. Terminology</a>
+<ul>
+<li><a href="#orga263b12">1.1. SQL and relational algebra</a></li>
+<li><a href="#orgfa577a3">1.2. SQL commands</a></li>
+</ul>
+</li>
+<li><a href="#orgbc0df71">2. SQL syntax</a>
+<ul>
+<li><a href="#orgc646cd1">2.1. Join</a></li>
+<li><a href="#org53de845">2.2. Aggregation function</a></li>
+<li><a href="#orgb4018be">2.3. String operation</a></li>
+<li><a href="#org39b4b63">2.4. Date and time</a></li>
+<li><a href="#orgafb1e45">2.5. Output redirection</a></li>
+<li><a href="#org6f59558">2.6. Output control</a></li>
+<li><a href="#orgdc1b5d8">2.7. Nested queries</a></li>
+<li><a href="#org6090c29">2.8. Window functions</a></li>
+<li><a href="#org9fe7a3d">2.9. Common Table Expressions (CTE)</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</nav>
+<p>
+This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall2022/notes/02-modernsql.pdf">CMU 15-445 L2 notes</a>, along with some SQL command explained by <a href="https://claude.ai/chat/a2f07962-eb31-4f76-9a31-5e408722894b">Claude.ai</a>.
+</p>
+<div id="outline-container-org78be032" class="outline-2">
+<h2 id="org78be032"><span class="section-number-2">1.</span> Terminology</h2>
+<div class="outline-text-2" id="text-1">
+</div>
+<div id="outline-container-orga263b12" class="outline-3">
+<h3 id="orga263b12"><span class="section-number-3">1.1.</span> SQL and relational algebra</h3>
+<div class="outline-text-3" id="text-1-1">
+<ul class="org-ul">
+<li>Relational algebra is based on sets (unordered, no duplicates); SQL is based on bags (unordered, allows duplicates).</li>
+<li>SQL is a declarative query language; users use SQL to specify the desired result, each DBMS determines the most efficient strategy to produce the answer.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgfa577a3" class="outline-3">
+<h3 id="orgfa577a3"><span class="section-number-3">1.2.</span> SQL commands</h3>
+<div class="outline-text-3" id="text-1-2">
+<ul class="org-ul">
+<li>Data manipulation language (DML): <code>SELECT</code>, <code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code>.</li>
+<li><p>
+Data definition language (DDL): <code>CREATE</code>.
+</p>
+<div class="org-src-container">
+<pre class="src src-sql"><span style="color: #51afef;">CREATE</span> TABLR student (
     sid <span style="color: #ECBE7B;">INT</span> <span style="color: #51afef;">PRIMARY</span> <span style="color: #51afef;">KEY</span>,
     <span style="color: #51afef;">name</span> <span style="color: #ECBE7B;">VARCHAR</span>(<span style="color: #da8548; font-weight: bold;">16</span>),
     login <span style="color: #ECBE7B;">VARCHAR</span>(<span style="color: #da8548; font-weight: bold;">32</span>) <span style="color: #51afef;">UNIQUE</span>,
@@ -146,206 +94,144 @@
     gpa <span style="color: #ECBE7B;">FLOAT</span>
 );
 </pre>
-                </div>
-              </li>
-              <li>Data control language (DCL): security, access control.</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div id="outline-container-orged4f663" class="outline-2">
-        <h2 id="orged4f663">
-          <span class="section-number-2">2.</span> SQL syntax
-        </h2>
-        <div class="outline-text-2" id="text-2"></div>
-        <div id="outline-container-org47f0617" class="outline-3">
-          <h3 id="org47f0617">
-            <span class="section-number-3">2.1.</span> Join
-          </h3>
-          <div class="outline-text-3" id="text-2-1">
-            <ul class="org-ul">
-              <li>
-                <p>
-                  Combine columns from one or more tables and produces a new
-                  table.
-                </p>
-                <div class="org-src-container">
-                  <pre
-                    class="src src-sql"
-                  ><span style="color: #5B6268;">-- </span><span style="color: #5B6268;">All students that get an A in 15-721</span>
+</div></li>
+<li>Data control language (DCL): security, access control.</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-orgbc0df71" class="outline-2">
+<h2 id="orgbc0df71"><span class="section-number-2">2.</span> SQL syntax</h2>
+<div class="outline-text-2" id="text-2">
+</div>
+<div id="outline-container-orgc646cd1" class="outline-3">
+<h3 id="orgc646cd1"><span class="section-number-3">2.1.</span> Join</h3>
+<div class="outline-text-3" id="text-2-1">
+<ul class="org-ul">
+<li><p>
+Combine columns from one or more tables and produces a new table.
+</p>
+<div class="org-src-container">
+<pre class="src src-sql"><span style="color: #5B6268;">-- </span><span style="color: #5B6268;">All students that get an A in 15-721</span>
 <span style="color: #51afef;">SELECT</span> s.<span style="color: #51afef;">name</span>
     <span style="color: #51afef;">FROM</span> enrolled <span style="color: #51afef;">AS</span> e, student <span style="color: #51afef;">AS</span> s
 <span style="color: #51afef;">WHERE</span> e.grade = <span style="color: #98be65;">'A'</span> <span style="color: #51afef;">AND</span> e.cid = <span style="color: #98be65;">'15-721'</span>
     <span style="color: #51afef;">AND</span> e.sid = s.sid
 </pre>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-orgdbfdadd" class="outline-3">
-          <h3 id="orgdbfdadd">
-            <span class="section-number-3">2.2.</span> Aggregation function
-          </h3>
-          <div class="outline-text-3" id="text-2-2">
-            <ul class="org-ul">
-              <li>
-                <code>AVG(COL)</code>, <code>MIN(COL)</code>,
-                <code>MAX(COL)</code>, <code>COUNT(COL)</code>.
-              </li>
-              <li>
-                <p>
-                  Take as input a bag of tuples and produce a single scalar
-                  value.
-                </p>
-                <div class="org-src-container">
-                  <pre
-                    class="src src-sql"
-                  ><span style="color: #5B6268;">-- </span><span style="color: #5B6268;">Get number of students and their average GPA with a '@cs' login</span>
+</div></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org53de845" class="outline-3">
+<h3 id="org53de845"><span class="section-number-3">2.2.</span> Aggregation function</h3>
+<div class="outline-text-3" id="text-2-2">
+<ul class="org-ul">
+<li><code>AVG(COL)</code>, <code>MIN(COL)</code>, <code>MAX(COL)</code>, <code>COUNT(COL)</code>.</li>
+<li><p>
+Take as input a bag of tuples and produce a single scalar value.
+</p>
+<div class="org-src-container">
+<pre class="src src-sql"><span style="color: #5B6268;">-- </span><span style="color: #5B6268;">Get number of students and their average GPA with a '@cs' login</span>
 <span style="color: #51afef;">SELECT</span> <span style="color: #c678dd;">AVG</span>(gpa), <span style="color: #c678dd;">COUNT</span>(sid) <span style="color: #51afef;">FROM</span> student <span style="color: #51afef;">WHERE</span> login <span style="color: #51afef;">LIKE</span> <span style="color: #98be65;">'@cs'</span>;
 <span style="color: #5B6268;">-- </span><span style="color: #5B6268;">Get the unique students</span>
 <span style="color: #51afef;">SELECT</span> <span style="color: #c678dd;">COUNT</span>(<span style="color: #51afef;">DISTINCT</span> login) <span style="color: #51afef;">FROM</span> student <span style="color: #51afef;">WHERE</span> login <span style="color: #51afef;">LIKE</span> <span style="color: #98be65;">'@cs'</span>;
 </pre>
-                </div>
-              </li>
-              <li>
-                <p>
-                  Non-aggregated values in <code>SELECT</code> output must
-                  appear in <code>GROUP BY</code>.
-                </p>
-                <div class="org-src-container">
-                  <pre
-                    class="src src-sql"
-                  ><span style="color: #5B6268;">-- </span><span style="color: #5B6268;">Get the average GPA in each course</span>
+</div></li>
+<li><p>
+Non-aggregated values in <code>SELECT</code> output must appear in <code>GROUP BY</code>.
+</p>
+<div class="org-src-container">
+<pre class="src src-sql"><span style="color: #5B6268;">-- </span><span style="color: #5B6268;">Get the average GPA in each course</span>
 <span style="color: #51afef;">SELECT</span> <span style="color: #c678dd;">AVG</span>(s.gpa), e.cid
     <span style="color: #51afef;">FROM</span> enrolled <span style="color: #51afef;">AS</span> e, student <span style="color: #51afef;">AS</span> s
 <span style="color: #51afef;">WHERE</span> e.sid = s.sid
 <span style="color: #51afef;">GROUP</span> <span style="color: #51afef;">BY</span> e.cid;
 </pre>
-                </div>
-              </li>
-              <li>
-                <p>
-                  <code>HAVING</code>: filter output results based on
-                  aggregation computation.
-                </p>
-                <div class="org-src-container">
-                  <pre
-                    class="src src-sql"
-                  ><span style="color: #51afef;">SELECT</span> <span style="color: #c678dd;">AVG</span>(s.gpa), e.cid
+</div></li>
+<li><p>
+<code>HAVING</code>: filter output results based on aggregation computation.
+</p>
+<div class="org-src-container">
+<pre class="src src-sql"><span style="color: #51afef;">SELECT</span> <span style="color: #c678dd;">AVG</span>(s.gpa), e.cid
     <span style="color: #51afef;">FROM</span> enrolled <span style="color: #51afef;">AS</span> e, student <span style="color: #51afef;">AS</span> s
 <span style="color: #51afef;">WHERE</span> e.sid = s.sid
 <span style="color: #51afef;">GROUP</span> <span style="color: #51afef;">BY</span> e.cid
 <span style="color: #51afef;">HAVING</span> <span style="color: #c678dd;">AVG</span>(s.gpa) &gt; <span style="color: #da8548; font-weight: bold;">3.9</span>;
 </pre>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-org4babc13" class="outline-3">
-          <h3 id="org4babc13">
-            <span class="section-number-3">2.3.</span> String operation
-          </h3>
-          <div class="outline-text-3" id="text-2-3">
-            <ul class="org-ul">
-              <li>
-                Strings are case sensitive and single-quotes only in the SQL
-                standard.
-              </li>
-              <li>
-                Use <code>LIKE</code> for string pattern matching:
-                <ul class="org-ul">
-                  <li><code>%</code> matches any sub-string,</li>
-                  <li><code>_</code> matches any one character</li>
-                </ul>
-              </li>
-              <li>
-                Standard string functions: <code>UPPER(S)</code>,
-                <code>SUBSTRING(S, B, E)</code>.
-              </li>
-              <li><code>||</code>: string concatenation.</li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-org5414dba" class="outline-3">
-          <h3 id="org5414dba">
-            <span class="section-number-3">2.4.</span> Date and time
-          </h3>
-          <div class="outline-text-3" id="text-2-4">
-            <ul class="org-ul">
-              <li>Attributes: <code>DATE</code>, <code>TIME</code>.</li>
-              <li>Different DBMS have different date/time operations.</li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-org3ace6c7" class="outline-3">
-          <h3 id="org3ace6c7">
-            <span class="section-number-3">2.5.</span> Output redirection
-          </h3>
-          <div class="outline-text-3" id="text-2-5">
-            <ul class="org-ul">
-              <li>
-                <p>One can store the results into another table</p>
-                <div class="org-src-container">
-                  <pre
-                    class="src src-sql"
-                  ><span style="color: #5B6268;">-- </span><span style="color: #5B6268;">output to a non-existing table</span>
+</div></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgb4018be" class="outline-3">
+<h3 id="orgb4018be"><span class="section-number-3">2.3.</span> String operation</h3>
+<div class="outline-text-3" id="text-2-3">
+<ul class="org-ul">
+<li>Strings are case sensitive and single-quotes only in the SQL standard.</li>
+<li>Use <code>LIKE</code> for string pattern matching:
+<ul class="org-ul">
+<li><code>%</code> matches any sub-string,</li>
+<li><code>_</code> matches any one character</li>
+</ul></li>
+<li>Standard string functions: <code>UPPER(S)</code>, <code>SUBSTRING(S, B, E)</code>.</li>
+<li><code>||</code>: string concatenation.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org39b4b63" class="outline-3">
+<h3 id="org39b4b63"><span class="section-number-3">2.4.</span> Date and time</h3>
+<div class="outline-text-3" id="text-2-4">
+<ul class="org-ul">
+<li>Attributes: <code>DATE</code>, <code>TIME</code>.</li>
+<li>Different DBMS have different date/time operations.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgafb1e45" class="outline-3">
+<h3 id="orgafb1e45"><span class="section-number-3">2.5.</span> Output redirection</h3>
+<div class="outline-text-3" id="text-2-5">
+<ul class="org-ul">
+<li><p>
+One can store the results into another table
+</p>
+<div class="org-src-container">
+<pre class="src src-sql"><span style="color: #5B6268;">-- </span><span style="color: #5B6268;">output to a non-existing table</span>
 <span style="color: #51afef;">SELECT</span> <span style="color: #51afef;">DISTINCT</span> cis <span style="color: #51afef;">INTO</span> CourseIds <span style="color: #51afef;">FROM</span> enrolled;
 <span style="color: #5B6268;">-- </span><span style="color: #5B6268;">output to an existing table with the same number of columns and column type</span>
 <span style="color: #5B6268;">-- </span><span style="color: #5B6268;">but the names do not matter</span>
 <span style="color: #51afef;">INSERT</span> <span style="color: #51afef;">INTO</span> CourseIds (<span style="color: #51afef;">SELECT</span> <span style="color: #51afef;">DISTINCT</span> cid <span style="color: #51afef;">FROM</span> enrolled);
 </pre>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-org9ef47d9" class="outline-3">
-          <h3 id="org9ef47d9">
-            <span class="section-number-3">2.6.</span> Output control
-          </h3>
-          <div class="outline-text-3" id="text-2-6">
-            <ul class="org-ul">
-              <li>
-                Use <code>ORDER</code>, <code>ASC</code> and
-                <code>DESC</code> to sort the output tuples; otherwise the
-                output could have different order every time.
-              </li>
-              <li>
-                <p>
-                  Use <code>LIMIT</code>, <code>OFFSET</code> to restrict the
-                  output number.
-                </p>
-                <div class="org-src-container">
-                  <pre
-                    class="src src-sql"
-                  ><span style="color: #51afef;">SELECT</span> sid <span style="color: #51afef;">FROM</span> enrolled <span style="color: #51afef;">WHERE</span> cid = <span style="color: #98be65;">'15-721'</span>
+</div></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org6f59558" class="outline-3">
+<h3 id="org6f59558"><span class="section-number-3">2.6.</span> Output control</h3>
+<div class="outline-text-3" id="text-2-6">
+<ul class="org-ul">
+<li>Use <code>ORDER</code>, <code>ASC</code> and <code>DESC</code> to sort the output tuples; otherwise the output could have different order every time.</li>
+<li><p>
+Use <code>LIMIT</code>, <code>OFFSET</code> to restrict the output number.
+</p>
+<div class="org-src-container">
+<pre class="src src-sql"><span style="color: #51afef;">SELECT</span> sid <span style="color: #51afef;">FROM</span> enrolled <span style="color: #51afef;">WHERE</span> cid = <span style="color: #98be65;">'15-721'</span>
 <span style="color: #51afef;">ORDER</span> <span style="color: #51afef;">BY</span> <span style="color: #c678dd;">UPPER</span>(grade) <span style="color: #51afef;">DESC</span>, sid + <span style="color: #da8548; font-weight: bold;">1</span> <span style="color: #51afef;">ASC</span>;
     <span style="color: #51afef;">LIMIT</span> <span style="color: #da8548; font-weight: bold;">10</span> OFFSET <span style="color: #da8548; font-weight: bold;">10</span>;  <span style="color: #5B6268;">-- </span><span style="color: #5B6268;">output 10 tuples, starting from the 11th tuple</span>
 </pre>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-org3f04ad7" class="outline-3">
-          <h3 id="org3f04ad7">
-            <span class="section-number-3">2.7.</span> Nested queries
-          </h3>
-          <div class="outline-text-3" id="text-2-7">
-            <ul class="org-ul">
-              <li>Nested queries are often difficult to optimize.</li>
-              <li>
-                The inner query can access attributes defined in the outer
-                query.
-              </li>
-              <li>
-                <p>Inner queries can appear anywhere.</p>
-                <div class="org-src-container">
-                  <pre
-                    class="src src-sql"
-                  ><span style="color: #5B6268;">-- </span><span style="color: #5B6268;">Output a column 'one' with 1s, the number of 1s</span>
+</div></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgdc1b5d8" class="outline-3">
+<h3 id="orgdc1b5d8"><span class="section-number-3">2.7.</span> Nested queries</h3>
+<div class="outline-text-3" id="text-2-7">
+<ul class="org-ul">
+<li>Nested queries are often difficult to optimize.</li>
+<li>The inner query can access attributes defined in the outer query.</li>
+<li><p>
+Inner queries can appear anywhere.
+</p>
+<div class="org-src-container">
+<pre class="src src-sql"><span style="color: #5B6268;">-- </span><span style="color: #5B6268;">Output a column 'one' with 1s, the number of 1s</span>
 <span style="color: #5B6268;">-- </span><span style="color: #5B6268;">equals to the number of rows in 'student'</span>
 <span style="color: #51afef;">SELECT</span> (<span style="color: #51afef;">SELECT</span> <span style="color: #da8548; font-weight: bold;">1</span>) <span style="color: #51afef;">AS</span> one <span style="color: #51afef;">FROM</span> student;
 
@@ -370,26 +256,17 @@
 <span style="color: #51afef;">FROM</span> student <span style="color: #51afef;">AS</span> s, (<span style="color: #51afef;">SELECT</span> <span style="color: #c678dd;">MAX</span>(sid) <span style="color: #51afef;">AS</span> sid <span style="color: #51afef;">FROM</span> enrolled) <span style="color: #51afef;">AS</span> max_e
 <span style="color: #51afef;">WHERE</span> s.sid = max_e.sid;
 </pre>
-                </div>
-              </li>
+</div></li>
 
-              <li>
-                Nested query results expression:
-                <ul class="org-ul">
-                  <li>
-                    <code>ALL</code>: must satisfy expression for all
-                    <b><b>rows</b></b> in sub-query.
-                  </li>
-                  <li>
-                    <code>ANY</code>, <code>IN</code>: must satisfy expression
-                    for at least one row in sub-query.
-                  </li>
-                  <li>
-                    <p><code>EXISTS</code>: at least one row is returned.</p>
-                    <div class="org-src-container">
-                      <pre
-                        class="src src-sql"
-                      ><span style="color: #5B6268;">-- </span><span style="color: #5B6268;">Get all courses with no students enrolled in</span>
+<li>Nested query results expression:
+<ul class="org-ul">
+<li><code>ALL</code>: must satisfy expression for all <b><b>rows</b></b> in sub-query.</li>
+<li><code>ANY</code>, <code>IN</code>: must satisfy expression for at least one row in sub-query.</li>
+<li><p>
+<code>EXISTS</code>: at least one row is returned.
+</p>
+<div class="org-src-container">
+<pre class="src src-sql"><span style="color: #5B6268;">-- </span><span style="color: #5B6268;">Get all courses with no students enrolled in</span>
 <span style="color: #51afef;">SELECT</span> * <span style="color: #51afef;">FROM</span> course
     <span style="color: #51afef;">WHERE</span> <span style="color: #51afef;">NOT</span> <span style="color: #51afef;">EXISTS</span>(
         <span style="color: #51afef;">SELECT</span> * <span style="color: #51afef;">FROM</span> enrolled
@@ -409,98 +286,50 @@
     <span style="color: #51afef;">WHERE</span> <span style="color: #51afef;">level</span> &gt; <span style="color: #da8548; font-weight: bold;">3</span>
 );
 </pre>
-                    </div>
-                  </li>
-                </ul>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-org2f631b0" class="outline-3">
-          <h3 id="org2f631b0">
-            <span class="section-number-3">2.8.</span> Window functions
-          </h3>
-          <div class="outline-text-3" id="text-2-8">
-            <ul class="org-ul">
-              <li>Perform sliding calculation across a set of tuples.</li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-orgdfa8f5f" class="outline-3">
-          <h3 id="orgdfa8f5f">
-            <span class="section-number-3">2.9.</span> Common Table Expressions
-            (CTE)
-          </h3>
-          <div class="outline-text-3" id="text-2-9">
-            <ul class="org-ul">
-              <li>
-                An alternative to windows or nested queries when writing more
-                complex queries.
-              </li>
-              <li>
-                <p>
-                  CTEs use <code>WITH</code> to bind the output of an inner
-                  query to a temporary table.
-                </p>
-                <div class="org-src-container">
-                  <pre
-                    class="src src-sql"
-                  ><span style="color: #51afef;">WITH</span> cteName (col1, col2) <span style="color: #51afef;">AS</span> (
+</div></li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org6090c29" class="outline-3">
+<h3 id="org6090c29"><span class="section-number-3">2.8.</span> Window functions</h3>
+<div class="outline-text-3" id="text-2-8">
+<ul class="org-ul">
+<li>Perform sliding calculation across a set of tuples.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org9fe7a3d" class="outline-3">
+<h3 id="org9fe7a3d"><span class="section-number-3">2.9.</span> Common Table Expressions (CTE)</h3>
+<div class="outline-text-3" id="text-2-9">
+<ul class="org-ul">
+<li>An alternative to windows or nested queries when writing more complex queries.</li>
+<li><p>
+CTEs use <code>WITH</code> to bind the output of an inner query to a temporary table.
+</p>
+<div class="org-src-container">
+<pre class="src src-sql"><span style="color: #51afef;">WITH</span> cteName (col1, col2) <span style="color: #51afef;">AS</span> (
     <span style="color: #51afef;">SELECT</span> <span style="color: #da8548; font-weight: bold;">1</span>, <span style="color: #da8548; font-weight: bold;">2</span>
 )
 <span style="color: #51afef;">SELECT</span> col1 + col2 <span style="color: #51afef;">FROM</span> cteName;
 </pre>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div class="taglist">
-        <a href="https://chenyo-17.github.io/org-static-blog/tags.html">Tags</a
-        >:
-        <a href="https://chenyo-17.github.io/org-static-blog/tag-study.html"
-          >study</a
-        >
-        <a href="https://chenyo-17.github.io/org-static-blog/tag-database.html"
-          >database</a
-        >
-        <a href="https://chenyo-17.github.io/org-static-blog/tag-cmu.html"
-          >cmu</a
-        >
-      </div>
-    </div>
-    <div id="postamble" class="status">
-      <div id="search-results"></div>
+</div></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="taglist"><a href="https://chenyo.me/tags.html">Tags</a>: <a href="https://chenyo.me/tag-study.html">study</a> <a href="https://chenyo.me/tag-database.html">database</a> <a href="https://chenyo.me/tag-cmu.html">cmu</a> </div></div>
+<div id="postamble" class="status"><div id="search-results"></div>
       <footer>
         <p>© 2024 chenyo. Some rights reserved.</p>
         <div class="social-links">
-          <a
-            href="https://t.me/feihuadawangjiushiwo"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <img
-              src="assets/telegram-icon.svg"
-              alt="Telegram"
-              width="24"
-              height="24"
-            />
+          <a href="https://t.me/feihuadawangjiushiwo" target="_blank" rel="noopener noreferrer">
+            <img src="assets/telegram-icon.svg" alt="Telegram" width="24" height="24">
           </a>
-          <a
-            href="https://github.com/chenyo-17"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <img
-              src="assets/github-icon.svg"
-              alt="GitHub"
-              width="24"
-              height="24"
-            />
-          </a>
-        </div>
-      </footer>
-    </div>
-  </body>
+          <a href="https://github.com/chenyo-17" target="_blank" rel="noopener noreferrer">
+            <img src="assets/github-icon.svg" alt="GitHub" width="24" height="24">
+      </a>
+      </div>
+      </footer></div>
+</body>
 </html>

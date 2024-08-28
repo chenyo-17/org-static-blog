@@ -1,4 +1,4 @@
-This blog uses the [org-static-mode](https://github.com/bastibe/org-static-blog) to generate static HTML pages from Org files.
+This blog uses the [org-static-blog](https://github.com/bastibe/org-static-blog) to generate static HTML pages from Org files.
 
 This blog also contains a customized styling, a [MathJax rendering](https://github.com/bastibe/org-static-blog/issues/72#issuecomment-1304825110) and a global search feature.
 
@@ -7,7 +7,7 @@ Here is the Doom Emacs configuration this blog uses, one should at least change 
 ``` emacs-lisp
 ;; org-static-blog config
 (setq org-static-blog-publish-title "Chenyo's Blog")
-(setq org-static-blog-publish-url "https://chenyo-17.github.io/org-static-blog")
+(setq org-static-blog-publish-url "https://chenyo.me")
 (setq org-static-blog-publish-directory "~/org-static-blog/")
 (setq org-static-blog-posts-directory "~/org-static-blog/posts/")
 (setq org-static-blog-drafts-directory "~/org-static-blog/drafts/")

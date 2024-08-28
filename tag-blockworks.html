@@ -1,375 +1,183 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link
-      rel="alternate"
+<head>
+<meta charset="UTF-8">
+<link rel="alternate"
       type="application/rss+xml"
-      href="https://chenyo-17.github.io/org-static-blog/rss.xml"
-      title="RSS feed for https://chenyo-17.github.io/org-static-blog"
-    />
-    <title>Chenyo's Blog</title>
-    <script
-      type="text/javascript"
-      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
-    ></script>
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'],['\\(','\\)']]}});
-    </script>
-    <meta name="author" content="chenyo" />
-    <meta name="referrer" content="no-referrer" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="assets/style.css" type="text/css" />
-    <link rel="favicon" type="image/x-icon" href="favicon.ico" />
-    <script src="assets/search.js"></script>
-  </head>
-  <body>
-    <div id="preamble" class="status">
+      href="https://chenyo.me/rss.xml"
+      title="RSS feed for https://chenyo.me">
+<title>Chenyo's Blog</title>
+<script type="text/javascript"
+             src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+       </script>
+       <script type="text/x-mathjax-config">
+             MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'],['\\(','\\)']]}});
+       </script>
+       <meta name="author" content="chenyo">
+      <meta name="referrer" content="no-referrer">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="stylesheet" href="assets/style.css" type="text/css"/>
+      <link rel="favicon" type="image/x-icon" href="favicon.ico">
+      <script src="assets/search.js"></script></head>
+<body>
+<div id="preamble" class="status">
       <header>
-        <h1>
-          <a href="https://chenyo-17.github.io/org-static-blog"
-            >Chenyo's org-static-blog</a
-          >
-        </h1>
-        <nav>
-          <a href="https://chenyo-17.github.io/org-static-blog">Home</a>
-          <a href="archive.html">Archive</a>
-          <a href="tags.html">Tags</a>
-          <div id="search-container">
-            <input
-              type="text"
-              id="search-input"
-              placeholder="Search anywhere..."
-            />
-          </div>
-        </nav>
-      </header>
-    </div>
-    <div id="content">
-      <h1 class="title">Posts tagged "blockworks":</h1>
-      <div class="post-date">08 Aug 2024</div>
-      <h1 class="post-title">
-        <a
-          href="https://chenyo-17.github.io/org-static-blog/2024-08-08-parallel-evm:-blockworks-bigger-picture.html"
-          >Parallel EVM: Blockworks news (Sei, Monad, Solana)</a
-        >
-      </h1>
-      <nav id="table-of-contents" role="doc-toc">
-        <h2>Table of Contents</h2>
-        <div id="text-table-of-contents" role="doc-toc">
-          <ul>
-            <li>
-              <a href="#org161c4b4">1. Terminology</a>
-              <ul>
-                <li><a href="#orge1b745c">1.1. Ethereum sharding</a></li>
-                <li><a href="#orgb41d9ce">1.2. Blob</a></li>
-                <li><a href="#org8b97c5a">1.3. Erasure coding</a></li>
-                <li>
-                  <a href="#org364e538"
-                    >1.4. Data availability sampling (DAS)</a
-                  >
-                </li>
-                <li>
-                  <a href="#org1d947e5">1.5. Danksharding (L2 optimization)</a>
-                </li>
-                <li>
-                  <a href="#org18bc9f8"
-                    >1.6. Relations between L1 and L2 scaling</a
-                  >
-                </li>
-                <li>
-                  <a href="#orge81a576">1.7. Double spending prevention</a>
-                </li>
-                <li><a href="#org3ce6f46">1.8. Sealevel (Solana)</a></li>
-              </ul>
-            </li>
-            <li>
-              <a href="#org7f8c2f4">2. Ways to achieve parallel processing</a>
-            </li>
-            <li>
-              <a href="#org0a34a73"
-                >3. Production-ready parallelized EVM projects (Jan 2024)</a
-              >
-            </li>
-          </ul>
-        </div>
+      <h1><a href="https://chenyo.me">Chenyo's org-static-blog</a></h1>
+      <nav>
+      <a href="https://chenyo.me">Home</a>
+      <a href="archive.html">Archive</a>
+      <a href="tags.html">Tags</a>
+      <div id="search-container">
+      <input type="text" id="search-input" placeholder="Search anywhere...">
+      </div>
       </nav>
-      <p>
-        This is a personal note for
-        <a
-          href="https://blockworks.co/news/parallelized-evms-gaining-popularity"
-          >Blockworks news (12.01.2024)</a
-        >
-        as well as some terminology explained online, e.g.,
-        <a
-          href="https://www.coindesk.com/learn/what-is-ethereum-sharding-a-beginners-guide/"
-          >Coindesk</a
-        >
-        and
-        <a href="https://chatgpt.com/c/824f05c9-dc75-4eb6-aeda-59d057baf83a"
-          >GPT-4o</a
-        >.
-      </p>
-      <div id="outline-container-org161c4b4" class="outline-2">
-        <h2 id="org161c4b4">
-          <span class="section-number-2">1.</span> Terminology
-        </h2>
-        <div class="outline-text-2" id="text-1"></div>
-        <div id="outline-container-orge1b745c" class="outline-3">
-          <h3 id="orge1b745c">
-            <span class="section-number-3">1.1.</span> Ethereum sharding
-          </h3>
-          <div class="outline-text-3" id="text-1-1">
-            <ul class="org-ul">
-              <li>
-                The Ethereum mainnet is divided into smaller interconnected
-                networks called shards.
-              </li>
-              <li>
-                Each shard processes and validates its own transactions parallel
-                to others.
-              </li>
-              <li>
-                Pros: increase scalability and <b><b>participation</b></b
-                >.
-              </li>
-              <li>
-                Cons: a single unit can be compromised; lead to centralization.
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-orgb41d9ce" class="outline-3">
-          <h3 id="orgb41d9ce">
-            <span class="section-number-3">1.2.</span> Blob
-          </h3>
-          <div class="outline-text-3" id="text-1-2">
-            <ul class="org-ul">
-              <li>
-                Rather than storing each transaction data directly in the
-                blockchain, the data is aggregated into a blob (binary object).
-              </li>
-              <li>
-                Each blob performs erasure coding to dive the blob into multiple
-                smaller pieces with redundancy.
-              </li>
-              <li>
-                Encoded pieces are stored separately, the block header contain
-                pointers to the piece locations without storing actual data.
-              </li>
-              <li>
-                Transactions in a block may be distributed across multiple
-                blobs.
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-org8b97c5a" class="outline-3">
-          <h3 id="org8b97c5a">
-            <span class="section-number-3">1.3.</span> Erasure coding
-          </h3>
-          <div class="outline-text-3" id="text-1-3">
-            <ul class="org-ul">
-              <li>
-                Allows one to encode blobs such that if at least half of the
-                data in the blob is published, anyone in the network can
-                reconstruct and re-publish the rest of the data.
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-org364e538" class="outline-3">
-          <h3 id="org364e538">
-            <span class="section-number-3">1.4.</span> Data availability
-            sampling (DAS)
-          </h3>
-          <div class="outline-text-3" id="text-1-4">
-            <ul class="org-ul">
-              <li>
-                Validators randomly sample blob pieces to confirm the data can
-                be reconstructed.g
-              </li>
-              <li>
-                If a client cannot get enough pieces to verify the blob
-                availability, or the blob fails the integrity check, or
-                transactions within the blob are invalid or inconsistent with
-                the blockchain state, the blob is rejected.
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-org1d947e5" class="outline-3">
-          <h3 id="org1d947e5">
-            <span class="section-number-3">1.5.</span> Danksharding (L2
-            optimization)
-          </h3>
-          <div class="outline-text-3" id="text-1-5">
-            <ul class="org-ul">
-              <li>A specific sharding implementation proposal.</li>
-              <li>
-                Require data availability sampling and
-                <a
-                  href="https://chenyo-17.github.io/org-static-blog/tag-evm.html#orgf2db0ef"
-                  >proposer-builder separation</a
-                >.
-              </li>
-              <li>Can support hundreds of individual rollups.</li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-org18bc9f8" class="outline-3">
-          <h3 id="org18bc9f8">
-            <span class="section-number-3">1.6.</span> Relations between L1 and
-            L2 scaling
-          </h3>
-          <div class="outline-text-3" id="text-1-6">
-            <ul class="org-ul">
-              <li>
-                L1 scaling: optimizations directly to the Ethereum mainnet and
-                core infrastructure, e.g., parallel EVM.
-              </li>
-              <li>
-                L2 scaling: building secondary rollup layers, e.g., optimistic
-                rollups and ZK rollups, to offload mainnet computation and
-                storage.
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-orge81a576" class="outline-3">
-          <h3 id="orge81a576">
-            <span class="section-number-3">1.7.</span> Double spending
-            prevention
-          </h3>
-          <div class="outline-text-3" id="text-1-7">
-            <ul class="org-ul">
-              <li>
-                Bitcoin: uses UTXOs to track which inputs have been spent (no
-                need to go through the entire chain).
-              </li>
-              <li>
-                Ethereum: uses a nounce to track the number of transactions sent
-                from an account, the nounce is included in the transaction and
-                is incremented by 1 for every new transaction, and all
-                transactions must be executed in order.
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-org3ce6f46" class="outline-3">
-          <h3 id="org3ce6f46">
-            <span class="section-number-3">1.8.</span> Sealevel (Solana)
-          </h3>
-          <div class="outline-text-3" id="text-1-8">
-            <ul class="org-ul">
-              <li>
-                Solana&rsquo;s parallel smart contract runtime to process
-                thousands of contracts in parallel.
-              </li>
-              <li>
-                Solana transactions describe all states a transaction accesses
-                to efficiently recognize transaction dependency and to schedule
-                parallel execution without accessing full blockchain state.
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div id="outline-container-org7f8c2f4" class="outline-2">
-        <h2 id="org7f8c2f4">
-          <span class="section-number-2">2.</span> Ways to achieve parallel
-          processing
-        </h2>
-        <div class="outline-text-2" id="text-2">
-          <ul class="org-ul">
-            <li>Process independent transactions in parallel.</li>
-            <li>Sharding.</li>
-          </ul>
-        </div>
-      </div>
-      <div id="outline-container-org0a34a73" class="outline-2">
-        <h2 id="org0a34a73">
-          <span class="section-number-2">3.</span> Production-ready parallelized
-          EVM projects (Jan 2024)
-        </h2>
-        <div class="outline-text-2" id="text-3">
-          <ul class="org-ul">
-            <li>Sei: optimistic parallel execution.</li>
-            <li>
-              Monad: custom EVM implementation, optimistic parallel execution,
-              <b><b>custom state database</b></b
-              >.
-              <ul class="org-ul">
-                <li>
-                  Commodity databases are not optimized for Merkle tree data
-                  read/write with SSD.
-                </li>
-              </ul>
-            </li>
-            <li>Neon (Solana): transactions pre-specify dependencies.</li>
-            <li>
-              See
-              <a
-                href="https://chenyo-17.github.io/org-static-blog/tag-evm.html#orgcb5510d"
-                >BNB chain post</a
-              >
-              for more solutions.
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div class="taglist">
-        <a href="https://chenyo-17.github.io/org-static-blog/tags.html">Tags</a
-        >:
-        <a href="https://chenyo-17.github.io/org-static-blog/tag-evm.html"
-          >evm</a
-        >
-        <a
-          href="https://chenyo-17.github.io/org-static-blog/tag-parallel-evm.html"
-          >parallel-evm</a
-        >
-        <a
-          href="https://chenyo-17.github.io/org-static-blog/tag-blockworks.html"
-          >blockworks</a
-        >
-      </div>
-      <div id="archive">
-        <a href="https://chenyo-17.github.io/org-static-blog/archive.html"
-          >Other posts</a
-        >
-      </div>
-    </div>
-    <div id="postamble" class="status">
-      <div id="search-results"></div>
+      </header></div>
+<div id="content">
+<h1 class="title">Posts tagged "blockworks":</h1>
+<div class="post-date">08 Aug 2024</div><h1 class="post-title"><a href="https://chenyo.me/2024-08-08-parallel-evm:-blockworks-bigger-picture.html">Parallel EVM: Blockworks news (Sei, Monad, Solana)</a></h1>
+<nav id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#org926f6a1">1. Terminology</a>
+<ul>
+<li><a href="#org088305b">1.1. Ethereum sharding</a></li>
+<li><a href="#org188fbae">1.2. Blob</a></li>
+<li><a href="#org3855c8a">1.3. Erasure coding</a></li>
+<li><a href="#org023f727">1.4. Data availability sampling (DAS)</a></li>
+<li><a href="#orgc557703">1.5. Danksharding (L2 optimization)</a></li>
+<li><a href="#org9fd5e44">1.6. Relations between L1 and L2 scaling</a></li>
+<li><a href="#orgd286eec">1.7. Double spending prevention</a></li>
+<li><a href="#orgf194f85">1.8. Sealevel (Solana)</a></li>
+</ul>
+</li>
+<li><a href="#orgc5451b4">2. Ways to achieve parallel processing</a></li>
+<li><a href="#org63ff833">3. Production-ready parallelized EVM projects (Jan 2024)</a></li>
+</ul>
+</div>
+</nav>
+<p>
+This is a personal note for <a href="https://blockworks.co/news/parallelized-evms-gaining-popularity">Blockworks news (12.01.2024)</a> as well as some terminology explained online, e.g., <a href="https://www.coindesk.com/learn/what-is-ethereum-sharding-a-beginners-guide/">Coindesk</a> and <a href="https://chatgpt.com/c/824f05c9-dc75-4eb6-aeda-59d057baf83a">GPT-4o</a>.
+</p>
+<div id="outline-container-org926f6a1" class="outline-2">
+<h2 id="org926f6a1"><span class="section-number-2">1.</span> Terminology</h2>
+<div class="outline-text-2" id="text-1">
+</div>
+<div id="outline-container-org088305b" class="outline-3">
+<h3 id="org088305b"><span class="section-number-3">1.1.</span> Ethereum sharding</h3>
+<div class="outline-text-3" id="text-1-1">
+<ul class="org-ul">
+<li>The Ethereum mainnet is divided into smaller interconnected networks called shards.</li>
+<li>Each shard processes and validates its own transactions parallel to others.</li>
+<li>Pros: increase scalability and <b><b>participation</b></b>.</li>
+<li>Cons: a single unit can be compromised; lead to centralization.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org188fbae" class="outline-3">
+<h3 id="org188fbae"><span class="section-number-3">1.2.</span> Blob</h3>
+<div class="outline-text-3" id="text-1-2">
+<ul class="org-ul">
+<li>Rather than storing each transaction data directly in the blockchain, the data is aggregated into a blob (binary object).</li>
+<li>Each blob performs erasure coding to dive the blob into multiple smaller pieces with redundancy.</li>
+<li>Encoded pieces are stored separately, the block header contain pointers to the piece locations without storing actual data.</li>
+<li>Transactions in a block may be distributed across multiple blobs.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org3855c8a" class="outline-3">
+<h3 id="org3855c8a"><span class="section-number-3">1.3.</span> Erasure coding</h3>
+<div class="outline-text-3" id="text-1-3">
+<ul class="org-ul">
+<li>Allows one to encode blobs such that if at least half of the data in the blob is published, anyone in the network can reconstruct and re-publish the rest of the data.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org023f727" class="outline-3">
+<h3 id="org023f727"><span class="section-number-3">1.4.</span> Data availability sampling (DAS)</h3>
+<div class="outline-text-3" id="text-1-4">
+<ul class="org-ul">
+<li>Validators randomly sample blob pieces to confirm the data can be reconstructed.g</li>
+<li>If a client cannot get enough pieces to verify the blob availability, or the blob fails the integrity check, or transactions within the blob are invalid or inconsistent with the blockchain state, the blob is rejected.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgc557703" class="outline-3">
+<h3 id="orgc557703"><span class="section-number-3">1.5.</span> Danksharding (L2 optimization)</h3>
+<div class="outline-text-3" id="text-1-5">
+<ul class="org-ul">
+<li>A specific sharding implementation proposal.</li>
+<li>Require data availability sampling and <a href="https://chenyo-17.github.io/org-static-blog/tag-evm.html#orgf2db0ef">proposer-builder separation</a>.</li>
+<li>Can support hundreds of individual rollups.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org9fd5e44" class="outline-3">
+<h3 id="org9fd5e44"><span class="section-number-3">1.6.</span> Relations between L1 and L2 scaling</h3>
+<div class="outline-text-3" id="text-1-6">
+<ul class="org-ul">
+<li>L1 scaling: optimizations directly to the Ethereum mainnet and core infrastructure, e.g., parallel EVM.</li>
+<li>L2 scaling: building secondary rollup layers, e.g., optimistic rollups and ZK rollups, to offload mainnet computation and storage.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgd286eec" class="outline-3">
+<h3 id="orgd286eec"><span class="section-number-3">1.7.</span> Double spending prevention</h3>
+<div class="outline-text-3" id="text-1-7">
+<ul class="org-ul">
+<li>Bitcoin: uses UTXOs to track which inputs have been spent (no need to go through the entire chain).</li>
+<li>Ethereum: uses a nounce to track the number of transactions sent from an account, the nounce is included in the transaction and is incremented by 1 for every new transaction, and all transactions must be executed in order.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgf194f85" class="outline-3">
+<h3 id="orgf194f85"><span class="section-number-3">1.8.</span> Sealevel (Solana)</h3>
+<div class="outline-text-3" id="text-1-8">
+<ul class="org-ul">
+<li>Solana&rsquo;s parallel smart contract runtime to process thousands of contracts in parallel.</li>
+<li>Solana transactions describe all states a transaction accesses to efficiently recognize transaction dependency and to schedule parallel execution without accessing full blockchain state.</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-orgc5451b4" class="outline-2">
+<h2 id="orgc5451b4"><span class="section-number-2">2.</span> Ways to achieve parallel processing</h2>
+<div class="outline-text-2" id="text-2">
+<ul class="org-ul">
+<li>Process independent transactions in parallel.</li>
+<li>Sharding.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org63ff833" class="outline-2">
+<h2 id="org63ff833"><span class="section-number-2">3.</span> Production-ready parallelized EVM projects (Jan 2024)</h2>
+<div class="outline-text-2" id="text-3">
+<ul class="org-ul">
+<li>Sei: optimistic parallel execution.</li>
+<li>Monad: custom EVM implementation, optimistic parallel execution, <b><b>custom state database</b></b>.
+<ul class="org-ul">
+<li>Commodity databases are not optimized for Merkle tree data read/write with SSD.</li>
+</ul></li>
+<li>Neon (Solana): transactions pre-specify dependencies.</li>
+<li>See <a href="https://chenyo-17.github.io/org-static-blog/tag-evm.html#orgcb5510d">BNB chain post</a> for more solutions.</li>
+</ul>
+</div>
+</div>
+<div class="taglist"><a href="https://chenyo.me/tags.html">Tags</a>: <a href="https://chenyo.me/tag-evm.html">evm</a> <a href="https://chenyo.me/tag-parallel-evm.html">parallel-evm</a> <a href="https://chenyo.me/tag-blockworks.html">blockworks</a> </div><div id="archive">
+<a href="https://chenyo.me/archive.html">Other posts</a>
+</div>
+</div>
+<div id="postamble" class="status"><div id="search-results"></div>
       <footer>
         <p>© 2024 chenyo. Some rights reserved.</p>
         <div class="social-links">
-          <a
-            href="https://t.me/feihuadawangjiushiwo"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <img
-              src="assets/telegram-icon.svg"
-              alt="Telegram"
-              width="24"
-              height="24"
-            />
+          <a href="https://t.me/feihuadawangjiushiwo" target="_blank" rel="noopener noreferrer">
+            <img src="assets/telegram-icon.svg" alt="Telegram" width="24" height="24">
           </a>
-          <a
-            href="https://github.com/chenyo-17"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <img
-              src="assets/github-icon.svg"
-              alt="GitHub"
-              width="24"
-              height="24"
-            />
-          </a>
-        </div>
-      </footer>
-    </div>
-  </body>
+          <a href="https://github.com/chenyo-17" target="_blank" rel="noopener noreferrer">
+            <img src="assets/github-icon.svg" alt="GitHub" width="24" height="24">
+      </a>
+      </div>
+      </footer></div>
+</body>
 </html>

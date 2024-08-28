@@ -1,708 +1,341 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta
-      name="description"
-      content="This is a personal note for [[https://megaeth.systems/research][MegaETH-blog]]"
-    />
-    <link
-      rel="alternate"
+<head>
+<meta charset="UTF-8">
+<meta name="description" content="This is a personal note for [[https://megaeth.systems/research][MegaETH-blog]]">
+<link rel="alternate"
       type="application/rss+xml"
-      href="https://chenyo-17.github.io/org-static-blog/rss.xml"
-      title="RSS feed for https://chenyo-17.github.io/org-static-blog"
-    />
-    <title>Parallel EVM: MegaETH</title>
-    <script
-      type="text/javascript"
-      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
-    ></script>
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'],['\\(','\\)']]}});
-    </script>
-    <meta name="author" content="chenyo" />
-    <meta name="referrer" content="no-referrer" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="assets/style.css" type="text/css" />
-    <link rel="favicon" type="image/x-icon" href="favicon.ico" />
-    <script src="assets/search.js"></script>
-  </head>
-  <body>
-    <div id="preamble" class="status">
+      href="https://chenyo.me/rss.xml"
+      title="RSS feed for https://chenyo.me">
+<title>Parallel EVM: MegaETH</title>
+<script type="text/javascript"
+             src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+       </script>
+       <script type="text/x-mathjax-config">
+             MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'],['\\(','\\)']]}});
+       </script>
+       <meta name="author" content="chenyo">
+      <meta name="referrer" content="no-referrer">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="stylesheet" href="assets/style.css" type="text/css"/>
+      <link rel="favicon" type="image/x-icon" href="favicon.ico">
+      <script src="assets/search.js"></script></head>
+<body>
+<div id="preamble" class="status">
       <header>
-        <h1>
-          <a href="https://chenyo-17.github.io/org-static-blog"
-            >Chenyo's org-static-blog</a
-          >
-        </h1>
-        <nav>
-          <a href="https://chenyo-17.github.io/org-static-blog">Home</a>
-          <a href="archive.html">Archive</a>
-          <a href="tags.html">Tags</a>
-          <div id="search-container">
-            <input
-              type="text"
-              id="search-input"
-              placeholder="Search anywhere..."
-            />
-          </div>
-        </nav>
-      </header>
-    </div>
-    <div id="content">
-      <div class="post-date">04 Jul 2024</div>
-      <h1 class="post-title">
-        <a
-          href="https://chenyo-17.github.io/org-static-blog/2024-07-04-parallel-evm:-megaeth.html"
-          >Parallel EVM: MegaETH</a
-        >
-      </h1>
-      <nav id="table-of-contents" role="doc-toc">
-        <h2>Table of Contents</h2>
-        <div id="text-table-of-contents" role="doc-toc">
-          <ul>
-            <li>
-              <a href="#org648eaa7">1. Blockchain fundamentals</a>
-              <ul>
-                <li><a href="#orgadb6a8e">1.1. Conduit chain</a></li>
-                <li><a href="#orge580790">1.2. Gas per second</a></li>
-                <li><a href="#org64e302f">1.3. Target gas per block</a></li>
-                <li>
-                  <a href="#org1a30483">1.4. Current blockchain scalability</a>
-                </li>
-                <li>
-                  <a href="#org20522bf"
-                    >1.5. Blockchain node hardware requirements</a
-                  >
-                </li>
-                <li><a href="#org736957c">1.6. L1 and L2 nodes</a></li>
-                <li><a href="#org91ca2d5">1.7. Verifying a block</a></li>
-                <li>
-                  <a href="#org39c2ff5">1.8. Maximum extractable value (MEV)</a>
-                </li>
-                <li>
-                  <a href="#org343cc93"
-                    >1.9. Proposer-builder separation (PBS)</a
-                  >
-                </li>
-                <li>
-                  <a href="#org1430883">1.10. Live and historical sync</a>
-                </li>
-                <li><a href="#org558e6e4">1.11. Portal Network</a></li>
-                <li><a href="#org9d95f55">1.12. Verkle tree</a></li>
-                <li>
-                  <a href="#org25cd9d0">1.13. Node storage</a>
-                  <ul>
-                    <li><a href="#orge914a0d">1.13.1. History expiry</a></li>
-                    <li><a href="#orgb777eb9">1.13.2. State expiry</a></li>
-                    <li><a href="#orgb8e69ea">1.13.3. Statelessness</a></li>
-                  </ul>
-                </li>
-                <li>
-                  <a href="#orgdf78c3a"
-                    >1.14. Software transactional memory (STM)</a
-                  >
-                </li>
-                <li><a href="#org8ab5369">1.15. Block-STM</a></li>
-              </ul>
-            </li>
-            <li>
-              <a href="#org16c4476">2. What is MagaETH</a>
-              <ul>
-                <li><a href="#orgc451eaa">2.1. Node specialization</a></li>
-                <li><a href="#org71585d3">2.2. Design philosophy</a></li>
-              </ul>
-            </li>
-            <li><a href="#org2dc8c33">3. MegaETH challenges</a></li>
-          </ul>
-        </div>
+      <h1><a href="https://chenyo.me">Chenyo's org-static-blog</a></h1>
+      <nav>
+      <a href="https://chenyo.me">Home</a>
+      <a href="archive.html">Archive</a>
+      <a href="tags.html">Tags</a>
+      <div id="search-container">
+      <input type="text" id="search-input" placeholder="Search anywhere...">
+      </div>
       </nav>
-      <p>
-        This is a personal note for
-        <a href="https://megaeth.systems/research">MegaETH-blog</a> as well as
-        some terminology explained online, e.g.,
-        <a href="https://ethereum.org/en/roadmap/">ethereum.org</a>.
-      </p>
+      </header></div>
+<div id="content">
+<div class="post-date">04 Jul 2024</div><h1 class="post-title"><a href="https://chenyo.me/2024-07-04-parallel-evm:-megaeth.html">Parallel EVM: MegaETH</a></h1>
+<nav id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#org8cd2356">1. Blockchain fundamentals</a>
+<ul>
+<li><a href="#org7287239">1.1. Conduit chain</a></li>
+<li><a href="#org30ae29b">1.2. Gas per second</a></li>
+<li><a href="#org534714c">1.3. Target gas per block</a></li>
+<li><a href="#org3626925">1.4. Current blockchain scalability</a></li>
+<li><a href="#orgfd60e1c">1.5. Blockchain node hardware requirements</a></li>
+<li><a href="#org7c2c68a">1.6. L1 and L2 nodes</a></li>
+<li><a href="#orgd4f46ac">1.7. Verifying a block</a></li>
+<li><a href="#org380980e">1.8. Maximum extractable value (MEV)</a></li>
+<li><a href="#org30e7741">1.9. Proposer-builder separation (PBS)</a></li>
+<li><a href="#orgab6780e">1.10. Live and historical sync</a></li>
+<li><a href="#org0befbdb">1.11. Portal Network</a></li>
+<li><a href="#org68b5b9d">1.12. Verkle tree</a></li>
+<li><a href="#org45692a0">1.13. Node storage</a>
+<ul>
+<li><a href="#org9590b1f">1.13.1. History expiry</a></li>
+<li><a href="#orgc1ab1a5">1.13.2. State expiry</a></li>
+<li><a href="#orgbe5f94a">1.13.3. Statelessness</a></li>
+</ul>
+</li>
+<li><a href="#orgf57fcba">1.14. Software transactional memory (STM)</a></li>
+<li><a href="#orgd984ca4">1.15. Block-STM</a></li>
+</ul>
+</li>
+<li><a href="#org397ce44">2. What is MagaETH</a>
+<ul>
+<li><a href="#org126ad0f">2.1. Node specialization</a></li>
+<li><a href="#org5b5cb74">2.2. Design philosophy</a></li>
+</ul>
+</li>
+<li><a href="#org27b711f">3. MegaETH challenges</a></li>
+</ul>
+</div>
+</nav>
+<p>
+This is a personal note for <a href="https://megaeth.systems/research">MegaETH-blog</a> as well as some terminology explained online, e.g.,  <a href="https://ethereum.org/en/roadmap/">ethereum.org</a>.
+</p>
 
-      <p>
-        In summary, this blog proposes many challenges when designing a
-        high-performance EVM chain, but does not include any design details of
-        MegaETH itself.
-      </p>
-      <div id="outline-container-org648eaa7" class="outline-2">
-        <h2 id="org648eaa7">
-          <span class="section-number-2">1.</span> Blockchain fundamentals
-        </h2>
-        <div class="outline-text-2" id="text-1"></div>
-        <div id="outline-container-orgadb6a8e" class="outline-3">
-          <h3 id="orgadb6a8e">
-            <span class="section-number-3">1.1.</span>
-            <a href="https://docs.conduit.xyz/">Conduit chain</a>
-          </h3>
-          <div class="outline-text-3" id="text-1-1">
-            <ul class="org-ul">
-              <li>
-                Allows one to deploy a rollup through its Rollups-as-a-service
-                platform within in minutes.
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-orge580790" class="outline-3">
-          <h3 id="orge580790">
-            <span class="section-number-3">1.2.</span> Gas per second
-          </h3>
-          <div class="outline-text-3" id="text-1-2">
-            <ul class="org-ul">
-              <li>
-                Reflects the amount of computation the blockchain can handle per
-                second.
-              </li>
-              <li>
-                Different EVM operation costs different gas, e.g.,
-                <code>ADD</code> costs 3 gas.
-              </li>
-              <li>
-                Block gas limit: ensures that any node can reliably keep up with
-                the rest of the network.
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-org64e302f" class="outline-3">
-          <h3 id="org64e302f">
-            <span class="section-number-3">1.3.</span> Target gas per block
-          </h3>
-          <div class="outline-text-3" id="text-1-3">
-            <ul class="org-ul">
-              <li>
-                Dynamically regulate the amount of computation a block can
-                include.
-              </li>
-              <li>
-                <code>Gas per second = Target Gas per block / Block time</code>.
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-org1a30483" class="outline-3">
-          <h3 id="org1a30483">
-            <span class="section-number-3">1.4.</span> Current blockchain
-            scalability
-          </h3>
-          <div class="outline-text-3" id="text-1-4">
-            <figure id="orga29e5fb">
-              <img
-                src="https://hackmd.io/_uploads/rkHVB0iHR.png"
-                alt="rkHVB0iHR.png"
-                align="center"
-                width="500px"
-              />
+<p>
+In summary, this blog proposes many challenges when designing a high-performance EVM chain, but does not include any design details of MegaETH itself.
+</p>
+<div id="outline-container-org8cd2356" class="outline-2">
+<h2 id="org8cd2356"><span class="section-number-2">1.</span> Blockchain fundamentals</h2>
+<div class="outline-text-2" id="text-1">
+</div>
+<div id="outline-container-org7287239" class="outline-3">
+<h3 id="org7287239"><span class="section-number-3">1.1.</span> <a href="https://docs.conduit.xyz/">Conduit chain</a></h3>
+<div class="outline-text-3" id="text-1-1">
+<ul class="org-ul">
+<li>Allows one to deploy a rollup through its Rollups-as-a-service platform within in minutes.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org30ae29b" class="outline-3">
+<h3 id="org30ae29b"><span class="section-number-3">1.2.</span> Gas per second</h3>
+<div class="outline-text-3" id="text-1-2">
+<ul class="org-ul">
+<li>Reflects the amount of computation the blockchain can handle per second.</li>
+<li>Different EVM operation costs different gas, e.g., <code>ADD</code> costs 3 gas.</li>
+<li>Block gas limit: ensures that any node can reliably keep up with the rest of the network.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org534714c" class="outline-3">
+<h3 id="org534714c"><span class="section-number-3">1.3.</span> Target gas per block</h3>
+<div class="outline-text-3" id="text-1-3">
+<ul class="org-ul">
+<li>Dynamically regulate the amount of computation a block can include.</li>
+<li><code>Gas per second = Target Gas per block / Block time</code>.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org3626925" class="outline-3">
+<h3 id="org3626925"><span class="section-number-3">1.4.</span> Current blockchain scalability</h3>
+<div class="outline-text-3" id="text-1-4">
 
-              <figcaption>
-                <span class="figure-number">Figure 1: </span>2024 blockchain
-                scalability comparison
-              </figcaption>
-            </figure>
+<figure id="orgece9dc1">
+<img src="https://hackmd.io/_uploads/rkHVB0iHR.png" alt="rkHVB0iHR.png" align="center" width="500px">
 
-            <ul class="org-ul">
-              <li>
-                Throughput: 100MGas/s (\(\approx\) 3700 ERC-20 transfer) cannot
-                compares to Web2 database with &gt;1M transactions per second.
-              </li>
-              <li>
-                Capacity: Complex applications cannot be on-chain, e.g., compute
-                large Fibonacci (e.g., \(10^8\)) number would take 55 seconds on
-                opBNB, while in C just 30 milliseconds in a single core.
-              </li>
-              <li>
-                Delay: Applications that require fast feedback loop, e.g.,
-                high-frequency trading are not feasible with long block times,
-                e.g., 1s.
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-org20522bf" class="outline-3">
-          <h3 id="org20522bf">
-            <span class="section-number-3">1.5.</span> Blockchain node hardware
-            requirements
-          </h3>
-          <div class="outline-text-3" id="text-1-5">
-            <ul class="org-ul">
-              <li>
-                Lower hardware requirements for full nodes increase
-                decentralization.
-              </li>
-              <li>Higher requirements increase performance and security.</li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-org736957c" class="outline-3">
-          <h3 id="org736957c">
-            <span class="section-number-3">1.6.</span> L1 and L2 nodes
-          </h3>
-          <div class="outline-text-3" id="text-1-6">
-            <ul class="org-ul">
-              <li>
-                L1 nodes are homogeneous; each node performs identical tasks,
-                i.e., transaction consensus and execution without
-                specialization.
-              </li>
-              <li>
-                L2 nodes are heterogeneous; different nodes perform specific
-                tasks, e.g., sequencer node determines the transaction order,
-                prover nodes rely on accelerators to enhance proof generation.
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-org91ca2d5" class="outline-3">
-          <h3 id="org91ca2d5">
-            <span class="section-number-3">1.7.</span> Verifying a block
-          </h3>
-          <div class="outline-text-3" id="text-1-7">
-            <ul class="org-ul">
-              <li>Re-execute the transactions in the block.</li>
-              <li>Applying the changes to Ethereum state trie.</li>
-              <li>
-                Calculate the new root hash and compare it with the root hash
-                provided by the block.
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-org39c2ff5" class="outline-3">
-          <h3 id="org39c2ff5">
-            <span class="section-number-3">1.8.</span> Maximum extractable value
-            (MEV)
-          </h3>
-          <div class="outline-text-3" id="text-1-8">
-            <ul class="org-ul">
-              <li>
-                Validators maximize their profitability by favorably ordering
-                transactions.
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-org343cc93" class="outline-3">
-          <h3 id="org343cc93">
-            <span class="section-number-3">1.9.</span> Proposer-builder
-            separation (PBS)
-          </h3>
-          <div class="outline-text-3" id="text-1-9">
-            <ul class="org-ul">
-              <li>
-                Block builders are responsible for creating blocks and offering
-                them to the block proposer in each slot.
-              </li>
-              <li>
-                Block proposers cannot see the contents, but simply choose the
-                most profitable one and pay a fee to the block builder before
-                broadcasting the block.
-              </li>
-              <li>
-                PBS makes it harder for block builders to censor transactions,
-                and to outperform individuals at MEV extraction.
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-org1430883" class="outline-3">
-          <h3 id="org1430883">
-            <span class="section-number-3">1.10.</span> Live and historical sync
-          </h3>
-          <div class="outline-text-3" id="text-1-10">
-            <ul class="org-ul">
-              <li>
-                Live (online): continuously update a node with the latest data.
-              </li>
-              <li>
-                Historical (offline): synchronize a node by downloading the
-                processing data up to a certain point.
-              </li>
-              <li>
-                Historical sync has much higher TPS than live sync, e.g., 10x,
-                since historical sync can perform batch processing and does not
-                have network latency.
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-org558e6e4" class="outline-3">
-          <h3 id="org558e6e4">
-            <span class="section-number-3">1.11.</span>
-            <a
-              href="https://ethereum.org/en/developers/docs/networking-layer/portal-network/"
-              >Portal Network</a
-            >
-          </h3>
-          <div class="outline-text-3" id="text-1-11">
-            <ul class="org-ul">
-              <li>
-                An in-development p2p network for serving historical data where
-                each node stores a small piece of Ethereum&rsquo;s history.
-              </li>
-              <li>Light nodes do not need to trust on full nodes.</li>
-              <li>The entire history exists distributed across the network.</li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-org9d95f55" class="outline-3">
-          <h3 id="org9d95f55">
-            <span class="section-number-3">1.12.</span>
-            <a href="https://ethereum.org/en/roadmap/verkle-trees/"
-              >Verkle tree</a
-            >
-          </h3>
-          <div class="outline-text-3" id="text-1-12">
-            <ul class="org-ul">
-              <li>
-                Stateless clients rely on a witness that arrives with the block
-                for PoI rather on maintaining own local trie.
-              </li>
-              <li>
-                <b><b>Witness</b></b
-                >: the minimal set of data that prove the values of the state
-                that are being changed by the transactions in a block.
-              </li>
-            </ul>
+<figcaption><span class="figure-number">Figure 1: </span>2024 blockchain scalability comparison</figcaption>
+</figure>
 
-            <ul class="org-ul">
-              <li>
-                Merkle tree is too large to be broadcast between peers; the
-                witness is a path connecting the data from leaved to the root,
-                and to verify the data the hash of all sibling nodes are also
-                required (to compute the parent hash).
-              </li>
-              <li>
-                Verkle trees reduce the witness size by shortening the distance
-                between leaves and eliminating the need to provide sibling
-                nodes; Using a polynomial commitment scheme (see
-                <a
-                  href="https://chenyo-17.github.io/org-static-blog/2024-07-28-ethereum-merkle-patricia-trie.html"
-                  >Ethereum MPT post</a
-                >
-                for explanation) allows the witness to have a fixed size.
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-org25cd9d0" class="outline-3">
-          <h3 id="org25cd9d0">
-            <span class="section-number-3">1.13.</span> Node storage
-          </h3>
-          <div class="outline-text-3" id="text-1-13">
-            <ul class="org-ul">
-              <li>
-                High disk space is the main barrier to a full node access, due
-                to the need to store large chunks of Ethereum state data to
-                process new transactions.
-              </li>
-              <li>
-                Using cheap hard drivers to store old data cannot keep up with
-                new blocks.
-              </li>
-              <li>
-                Clients should find new ways to verify transactions without
-                relying on looking up local databases.
-              </li>
-            </ul>
-          </div>
-          <div id="outline-container-orge914a0d" class="outline-4">
-            <h4 id="orge914a0d">
-              <span class="section-number-4">1.13.1.</span> History expiry
-            </h4>
-            <div class="outline-text-4" id="text-1-13-1">
-              <ul class="org-ul">
-                <li>
-                  Nodes discard state data older than X blocks with weak
-                  subjectivity checkpoints, i.e., a genesis block close to the
-                  present.
-                </li>
-                <li>
-                  Nodes can request historical data from peers with Portal
-                  Network, e.g., altruistic nodes that are willing to maintain
-                  and serve historical achieves, e.g., DAO.
-                </li>
-                <li>
-                  Does not fundamentally change how Ethereum node handles data.
-                </li>
-                <li>
-                  Controversial due to it could introduce new censorship risks
-                  if centralized organizations are providing historical data.
-                </li>
-                <li>
-                  EIP-4444 is under active discussion regarding community
-                  management.
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div id="outline-container-orgb777eb9" class="outline-4">
-            <h4 id="orgb777eb9">
-              <span class="section-number-4">1.13.2.</span> State expiry
-            </h4>
-            <div class="outline-text-4" id="text-1-13-2">
-              <ul class="org-ul">
-                <li>
-                  Remove state from individual nodes if it has not been accessed
-                  recently.
-                </li>
-                <li>
-                  The inactive accounts is not deleted, but stored separately
-                  from the active state and can be resurrected.
-                </li>
-                <li>
-                  A leading approach requires to add timestamps to the account
-                  address.
-                </li>
-                <li>
-                  The responsibility of storing old data may also be moved to
-                  centralized providers.
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div id="outline-container-orgb8e69ea" class="outline-4">
-            <h4 id="orgb8e69ea">
-              <span class="section-number-4">1.13.3.</span> Statelessness
-            </h4>
-            <div class="outline-text-4" id="text-1-13-3">
-              <ul class="org-ul">
-                <li>
-                  weak statelessness: only block producers need access to full
-                  state data.
-                </li>
-                <li>
-                  Weak statelessness require Verkle trees and proposer-builder
-                  separation.
-                </li>
-                <li>
-                  strong statelessness: no nodes need access to the full state
-                  data.
-                </li>
-                <li>
-                  In strong statelessness, witnesses are generated by users to
-                  declare accounts related to the transaction; not a part of
-                  Ethereum&rsquo;s roadmap.
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div id="outline-container-orgdf78c3a" class="outline-3">
-          <h3 id="orgdf78c3a">
-            <span class="section-number-3">1.14.</span> Software transactional
-            memory (STM)
-          </h3>
-          <div class="outline-text-3" id="text-1-14">
-            <ul class="org-ul">
-              <li>
-                A concurrency control mechanism to control access to shares
-                memory in software.
-              </li>
-              <li>
-                A transaction refers to a piece of code executing a series of
-                reads and writes to the shared memory.
-              </li>
-              <li>
-                Transactions are isolated; changes made by one transaction are
-                not visible to others until the transaction commits.
-              </li>
-              <li>
-                When a conflict is detected, e.g., two transactions try to
-                modify the same memory, one transaction is rolled back.
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-org8ab5369" class="outline-3">
-          <h3 id="org8ab5369">
-            <span class="section-number-3">1.15.</span> Block-STM
-          </h3>
-          <div class="outline-text-3" id="text-1-15">
-            <ul class="org-ul">
-              <li>
-                A parallel execution engine to schedule smart contract
-                transactions based on STM.
-              </li>
-              <li>
-                Transactions are grouped in blocks, every execution of the block
-                must yield the deterministic and consistent outcome.
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div id="outline-container-org16c4476" class="outline-2">
-        <h2 id="org16c4476">
-          <span class="section-number-2">2.</span> What is MagaETH
-        </h2>
-        <div class="outline-text-2" id="text-2">
-          <ul class="org-ul">
-            <li>
-              An EVM-compatible L2 blockchain with Web2-level real-time
-              processing and publishing, i.e., millisecond-level response times
-              under heavy load.
-            </li>
-            <li>
-              Main idea: delegate security and censorship resistance to base
-              layers, e.g., Ethereum to make room for L2 optimization.
-            </li>
-          </ul>
-        </div>
-        <div id="outline-container-orgc451eaa" class="outline-3">
-          <h3 id="orgc451eaa">
-            <span class="section-number-3">2.1.</span> Node specialization
-          </h3>
-          <div class="outline-text-3" id="text-2-1">
-            <ul class="org-ul">
-              <li>
-                sequencer: only one active sequencer at any time to
-                <b><b>eliminate the consensus overhead</b></b
-                >.
-              </li>
-              <li>
-                full node: receive state diff from the sequencer via a p2p
-                network and apply the diffs to update local states; don&rsquo;t
-                re-execute transactions, only validates the block indirectly
-                using proofs provided by the provers.
-              </li>
-              <li>
-                provers: validate the block asynchronously using the stateless
-                validation scheme.
-              </li>
-              <li>
-                <a
-                  href="https://vitalik.eth.limo/general/2021/12/06/endgame.html"
-                  >Endgame, Vitalik 2021</a
-                >: Node specialization ensures trustless and high decentralized
-                block validation (more provers), even though block production
-                becomes more centralized (one sequencer).
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-org71585d3" class="outline-3">
-          <h3 id="org71585d3">
-            <span class="section-number-3">2.2.</span> Design philosophy
-          </h3>
-          <div class="outline-text-3" id="text-2-2">
-            <ul class="org-ul">
-              <li>
-                Reth (Rust implementation of the Ethereum protocol) is
-                bottlenecked by the MPT update in a live sync setup, even with a
-                powerful sequencer.
-              </li>
-              <li>
-                <a
-                  href="https://www.usenix.org/conference/atc19/presentation/keynote"
-                  >Measure, then build</a
-                >: first get insights from real problems, then design techniques
-                to address all problems simultaneously.
-              </li>
-              <li>
-                Prefer clean-slate, as addressing any bottleneck in isolation
-                rarely results in significant end-to-end performance
-                improvement.
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div id="outline-container-org2dc8c33" class="outline-2">
-        <h2 id="org2dc8c33">
-          <span class="section-number-2">3.</span> MegaETH challenges
-        </h2>
-        <div class="outline-text-2" id="text-3">
-          <figure id="orgda3a150">
-            <img
-              src="https://hackmd.io/_uploads/BJW2EG4L0.png"
-              alt="BJW2EG4L0.png"
-              align="center"
-              width="600px"
-            />
+<ul class="org-ul">
+<li>Throughput: 100MGas/s (\(\approx\) 3700 ERC-20 transfer) cannot compares to Web2 database with &gt;1M transactions per second.</li>
+<li>Capacity: Complex applications cannot be on-chain, e.g., compute large Fibonacci (e.g., \(10^8\)) number would take 55 seconds on opBNB, while in C just 30 milliseconds in a single core.</li>
+<li>Delay: Applications that require fast feedback loop, e.g., high-frequency trading are not feasible with long block times, e.g., 1s.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgfd60e1c" class="outline-3">
+<h3 id="orgfd60e1c"><span class="section-number-3">1.5.</span> Blockchain node hardware requirements</h3>
+<div class="outline-text-3" id="text-1-5">
+<ul class="org-ul">
+<li>Lower hardware requirements for full nodes increase decentralization.</li>
+<li>Higher requirements increase performance and security.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org7c2c68a" class="outline-3">
+<h3 id="org7c2c68a"><span class="section-number-3">1.6.</span> L1 and L2 nodes</h3>
+<div class="outline-text-3" id="text-1-6">
+<ul class="org-ul">
+<li>L1 nodes are homogeneous; each node performs identical tasks, i.e., transaction consensus and execution without specialization.</li>
+<li>L2 nodes are heterogeneous; different nodes perform specific tasks, e.g., sequencer node determines the transaction order, prover nodes rely on accelerators to enhance proof generation.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgd4f46ac" class="outline-3">
+<h3 id="orgd4f46ac"><span class="section-number-3">1.7.</span> Verifying a block</h3>
+<div class="outline-text-3" id="text-1-7">
+<ul class="org-ul">
+<li>Re-execute the transactions in the block.</li>
+<li>Applying the changes to Ethereum state trie.</li>
+<li>Calculate the new root hash and compare it with the root hash provided by the block.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org380980e" class="outline-3">
+<h3 id="org380980e"><span class="section-number-3">1.8.</span> Maximum extractable value (MEV)</h3>
+<div class="outline-text-3" id="text-1-8">
+<ul class="org-ul">
+<li>Validators maximize their profitability by favorably ordering transactions.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org30e7741" class="outline-3">
+<h3 id="org30e7741"><span class="section-number-3">1.9.</span> Proposer-builder separation (PBS)</h3>
+<div class="outline-text-3" id="text-1-9">
+<ul class="org-ul">
+<li>Block builders are responsible for creating blocks and offering them to the block proposer in each slot.</li>
+<li>Block proposers cannot see the contents, but simply choose the most profitable one and pay a fee to the block builder before broadcasting the block.</li>
+<li>PBS makes it harder for block builders to censor transactions, and to outperform individuals at MEV extraction.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgab6780e" class="outline-3">
+<h3 id="orgab6780e"><span class="section-number-3">1.10.</span> Live and historical sync</h3>
+<div class="outline-text-3" id="text-1-10">
+<ul class="org-ul">
+<li>Live (online): continuously update a node with the latest data.</li>
+<li>Historical (offline): synchronize a node by downloading the processing data up to a certain point.</li>
+<li>Historical sync has much higher TPS than live sync, e.g., 10x, since historical sync can perform batch processing and does not have network latency.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org0befbdb" class="outline-3">
+<h3 id="org0befbdb"><span class="section-number-3">1.11.</span> <a href="https://ethereum.org/en/developers/docs/networking-layer/portal-network/">Portal Network</a></h3>
+<div class="outline-text-3" id="text-1-11">
+<ul class="org-ul">
+<li>An in-development p2p network for serving historical data where each node stores a small piece of Ethereum&rsquo;s history.</li>
+<li>Light nodes do not need to trust on full nodes.</li>
+<li>The entire history exists distributed across the network.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org68b5b9d" class="outline-3">
+<h3 id="org68b5b9d"><span class="section-number-3">1.12.</span> <a href="https://ethereum.org/en/roadmap/verkle-trees/">Verkle tree</a></h3>
+<div class="outline-text-3" id="text-1-12">
+<ul class="org-ul">
+<li>Stateless clients rely on a witness that arrives with the block for PoI rather on maintaining own local trie.</li>
+<li><b><b>Witness</b></b>: the minimal set of data that prove the values of the state that are being changed by the transactions in a block.</li>
+</ul>
 
-            <figcaption>
-              <span class="figure-number">Figure 2: </span>A transaction
-              life-cycle.
-            </figcaption>
-          </figure>
+<ul class="org-ul">
+<li>Merkle tree is too large to be broadcast between peers; the witness is a path connecting the data from leaved to the root, and to verify the data the hash of all sibling nodes are also required (to compute the parent hash).</li>
+<li>Verkle trees reduce the witness size by shortening the distance between leaves and eliminating the need to provide sibling nodes; Using a polynomial commitment scheme (see <a href="https://chenyo-17.github.io/org-static-blog/2024-07-28-ethereum-merkle-patricia-trie.html">Ethereum MPT post</a> for explanation) allows the witness to have a fixed size.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org45692a0" class="outline-3">
+<h3 id="org45692a0"><span class="section-number-3">1.13.</span> Node storage</h3>
+<div class="outline-text-3" id="text-1-13">
+<ul class="org-ul">
+<li>High disk space is the main barrier to a full node access, due to the need to store large chunks of Ethereum state data to process new transactions.</li>
+<li>Using cheap hard drivers to store old data cannot keep up with new blocks.</li>
+<li>Clients should find new ways to verify transactions without relying on looking up local databases.</li>
+</ul>
+</div>
+<div id="outline-container-org9590b1f" class="outline-4">
+<h4 id="org9590b1f"><span class="section-number-4">1.13.1.</span> History expiry</h4>
+<div class="outline-text-4" id="text-1-13-1">
+<ul class="org-ul">
+<li>Nodes discard state data older than X blocks with weak subjectivity checkpoints, i.e., a genesis block close to the present.</li>
+<li>Nodes can request historical data from peers with Portal Network, e.g., altruistic nodes that are willing to maintain and serve historical achieves, e.g., DAO.</li>
+<li>Does not fundamentally change how Ethereum node handles data.</li>
+<li>Controversial due to it could introduce new censorship risks if centralized organizations are providing historical data.</li>
+<li>EIP-4444 is under active discussion regarding community management.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgc1ab1a5" class="outline-4">
+<h4 id="orgc1ab1a5"><span class="section-number-4">1.13.2.</span> State expiry</h4>
+<div class="outline-text-4" id="text-1-13-2">
+<ul class="org-ul">
+<li>Remove state from individual nodes if it has not been accessed recently.</li>
+<li>The inactive accounts is not deleted, but stored separately from the active state and can be resurrected.</li>
+<li>A leading approach requires to add timestamps to the account address.</li>
+<li>The responsibility of storing old data may also be moved to centralized providers.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgbe5f94a" class="outline-4">
+<h4 id="orgbe5f94a"><span class="section-number-4">1.13.3.</span> Statelessness</h4>
+<div class="outline-text-4" id="text-1-13-3">
+<ul class="org-ul">
+<li>weak statelessness: only block producers need access to full state data.</li>
+<li>Weak statelessness require Verkle trees and proposer-builder separation.</li>
+<li>strong statelessness: no nodes need access to the full state data.</li>
+<li>In strong statelessness, witnesses are generated by users to declare accounts related to the transaction; not a part of Ethereum&rsquo;s roadmap.</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-orgf57fcba" class="outline-3">
+<h3 id="orgf57fcba"><span class="section-number-3">1.14.</span> Software transactional memory (STM)</h3>
+<div class="outline-text-3" id="text-1-14">
+<ul class="org-ul">
+<li>A concurrency control mechanism to control access to shares memory in software.</li>
+<li>A transaction refers to a piece of code executing a series of reads and writes to the shared memory.</li>
+<li>Transactions are isolated; changes made by one transaction are not visible to others until the transaction commits.</li>
+<li>When a conflict is detected, e.g., two transactions try to modify the same memory, one transaction is rolled back.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgd984ca4" class="outline-3">
+<h3 id="orgd984ca4"><span class="section-number-3">1.15.</span> Block-STM</h3>
+<div class="outline-text-3" id="text-1-15">
+<ul class="org-ul">
+<li>A parallel execution engine to schedule smart contract transactions based on STM.</li>
+<li>Transactions are grouped in blocks, every execution of the block must yield the deterministic and consistent outcome.</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-org397ce44" class="outline-2">
+<h2 id="org397ce44"><span class="section-number-2">2.</span> What is MagaETH</h2>
+<div class="outline-text-2" id="text-2">
+<ul class="org-ul">
+<li>An EVM-compatible L2 blockchain with Web2-level real-time processing and publishing, i.e., millisecond-level response times under heavy load.</li>
+<li>Main idea: delegate security and censorship resistance to base layers, e.g., Ethereum to make room for L2 optimization.</li>
+</ul>
+</div>
+<div id="outline-container-org126ad0f" class="outline-3">
+<h3 id="org126ad0f"><span class="section-number-3">2.1.</span> Node specialization</h3>
+<div class="outline-text-3" id="text-2-1">
+<ul class="org-ul">
+<li>sequencer: only one active sequencer at any time to <b><b>eliminate the consensus overhead</b></b>.</li>
+<li>full node: receive state diff from the sequencer via a p2p network and apply the diffs to update local states; don&rsquo;t re-execute transactions, only validates the block indirectly using proofs provided by the provers.</li>
+<li>provers: validate the block asynchronously using the stateless validation scheme.</li>
+<li><a href="https://vitalik.eth.limo/general/2021/12/06/endgame.html">Endgame, Vitalik 2021</a>: Node specialization ensures trustless and high decentralized block validation (more provers), even though block production becomes more centralized (one sequencer).</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org5b5cb74" class="outline-3">
+<h3 id="org5b5cb74"><span class="section-number-3">2.2.</span> Design philosophy</h3>
+<div class="outline-text-3" id="text-2-2">
+<ul class="org-ul">
+<li>Reth (Rust implementation of the Ethereum protocol) is bottlenecked by the MPT update in a live sync setup, even with a powerful sequencer.</li>
+<li><a href="https://www.usenix.org/conference/atc19/presentation/keynote">Measure, then build</a>: first get insights from real problems, then design techniques to address all problems simultaneously.</li>
+<li>Prefer clean-slate, as addressing any bottleneck in isolation rarely results in significant end-to-end performance improvement.</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-org27b711f" class="outline-2">
+<h2 id="org27b711f"><span class="section-number-2">3.</span> MegaETH challenges</h2>
+<div class="outline-text-2" id="text-3">
 
-          <ul class="org-ul">
-            <li>
-              State synchronization requires high data compression given limited
-              network bandwidth.
-            </li>
-            <li>
-              Updating the hash root requires intensive disk I/O operation,
-              which cannot be well speedup with optimized smart-contract
-              compilers.
-            </li>
-            <li>
-              Cannot easily raise block gas limit without properly repricing
-              opcodes that do not benefit from optimized compilation.
-            </li>
-            <li>Parallelism is low for long dependency chains.</li>
-            <li>
-              The actual user experience highly depend on the infrastructure,
-              e.g., RPC nodes, indexers.
-            </li>
-            <li>
-              Support transaction priorities, e.g., critical transactions should
-              be processed without queuing delays.
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div class="taglist">
-        <a href="https://chenyo-17.github.io/org-static-blog/tags.html">Tags</a
-        >:
-        <a href="https://chenyo-17.github.io/org-static-blog/tag-evm.html"
-          >evm</a
-        >
-        <a
-          href="https://chenyo-17.github.io/org-static-blog/tag-parallel-evm.html"
-          >parallel-evm</a
-        >
-        <a href="https://chenyo-17.github.io/org-static-blog/tag-megaeth.html"
-          >megaeth</a
-        >
-      </div>
-    </div>
-    <div id="postamble" class="status">
-      <div id="search-results"></div>
+<figure id="org0321a4a">
+<img src="https://hackmd.io/_uploads/BJW2EG4L0.png" alt="BJW2EG4L0.png" align="center" width="600px">
+
+<figcaption><span class="figure-number">Figure 2: </span>A transaction life-cycle.</figcaption>
+</figure>
+
+<ul class="org-ul">
+<li>State synchronization requires high data compression given limited network bandwidth.</li>
+<li>Updating the hash root requires intensive disk I/O operation, which cannot be well speedup with optimized smart-contract compilers.</li>
+<li>Cannot easily raise block gas limit without properly repricing opcodes that do not benefit from optimized compilation.</li>
+<li>Parallelism is low for long dependency chains.</li>
+<li>The actual user experience highly depend on the infrastructure, e.g., RPC nodes, indexers.</li>
+<li>Support transaction priorities, e.g., critical transactions should be processed without queuing delays.</li>
+</ul>
+</div>
+</div>
+<div class="taglist"><a href="https://chenyo.me/tags.html">Tags</a>: <a href="https://chenyo.me/tag-evm.html">evm</a> <a href="https://chenyo.me/tag-parallel-evm.html">parallel-evm</a> <a href="https://chenyo.me/tag-megaeth.html">megaeth</a> </div></div>
+<div id="postamble" class="status"><div id="search-results"></div>
       <footer>
         <p>© 2024 chenyo. Some rights reserved.</p>
         <div class="social-links">
-          <a
-            href="https://t.me/feihuadawangjiushiwo"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <img
-              src="assets/telegram-icon.svg"
-              alt="Telegram"
-              width="24"
-              height="24"
-            />
+          <a href="https://t.me/feihuadawangjiushiwo" target="_blank" rel="noopener noreferrer">
+            <img src="assets/telegram-icon.svg" alt="Telegram" width="24" height="24">
           </a>
-          <a
-            href="https://github.com/chenyo-17"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <img
-              src="assets/github-icon.svg"
-              alt="GitHub"
-              width="24"
-              height="24"
-            />
-          </a>
-        </div>
-      </footer>
-    </div>
-  </body>
+          <a href="https://github.com/chenyo-17" target="_blank" rel="noopener noreferrer">
+            <img src="assets/github-icon.svg" alt="GitHub" width="24" height="24">
+      </a>
+      </div>
+      </footer></div>
+</body>
 </html>

@@ -1,457 +1,255 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta
-      name="description"
-      content="This is a personal note for the [[https://www.youtube.com/watch?v=uikbtpVZS2s&list=PLSE8ODhjZXjaKScG3l0nuOiDTTqpfnWFf&index=2][CMU 15-445 L1 video]] and [[https://15445.courses.cs.cmu.edu/fall2022/notes/01-introduction.pdf][CMU 15-445 L1 notes]]"
-    />
-    <link
-      rel="alternate"
+<head>
+<meta charset="UTF-8">
+<meta name="description" content="This is a personal note for the [[https://www.youtube.com/watch?v=uikbtpVZS2s&list=PLSE8ODhjZXjaKScG3l0nuOiDTTqpfnWFf&index=2][CMU 15-445 L1 video]] and [[https://15445.courses.cs.cmu.edu/fall2022/notes/01-introduction.pdf][CMU 15-445 L1 notes]]">
+<link rel="alternate"
       type="application/rss+xml"
-      href="https://chenyo-17.github.io/org-static-blog/rss.xml"
-      title="RSS feed for https://chenyo-17.github.io/org-static-blog"
-    />
-    <title>CMU 15-445 notes: Relational Model & Algebra</title>
-    <script
-      type="text/javascript"
-      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
-    ></script>
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'],['\\(','\\)']]}});
-    </script>
-    <meta name="author" content="chenyo" />
-    <meta name="referrer" content="no-referrer" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="assets/style.css" type="text/css" />
-    <link rel="favicon" type="image/x-icon" href="favicon.ico" />
-    <script src="assets/search.js"></script>
-  </head>
-  <body>
-    <div id="preamble" class="status">
+      href="https://chenyo.me/rss.xml"
+      title="RSS feed for https://chenyo.me">
+<title>CMU 15-445 notes: Relational Model & Algebra</title>
+<script type="text/javascript"
+             src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+       </script>
+       <script type="text/x-mathjax-config">
+             MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'],['\\(','\\)']]}});
+       </script>
+       <meta name="author" content="chenyo">
+      <meta name="referrer" content="no-referrer">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="stylesheet" href="assets/style.css" type="text/css"/>
+      <link rel="favicon" type="image/x-icon" href="favicon.ico">
+      <script src="assets/search.js"></script></head>
+<body>
+<div id="preamble" class="status">
       <header>
-        <h1>
-          <a href="https://chenyo-17.github.io/org-static-blog"
-            >Chenyo's org-static-blog</a
-          >
-        </h1>
-        <nav>
-          <a href="https://chenyo-17.github.io/org-static-blog">Home</a>
-          <a href="archive.html">Archive</a>
-          <a href="tags.html">Tags</a>
-          <div id="search-container">
-            <input
-              type="text"
-              id="search-input"
-              placeholder="Search anywhere..."
-            />
-          </div>
-        </nav>
-      </header>
-    </div>
-    <div id="content">
-      <div class="post-date">17 Jul 2024</div>
-      <h1 class="post-title">
-        <a
-          href="https://chenyo-17.github.io/org-static-blog/2024-07-17-db-notes:-relational-model.html"
-          >CMU 15-445 notes: Relational Model & Algebra</a
-        >
-      </h1>
-      <nav id="table-of-contents" role="doc-toc">
-        <h2>Table of Contents</h2>
-        <div id="text-table-of-contents" role="doc-toc">
-          <ul>
-            <li>
-              <a href="#orgb6a8e81">1. Terminology</a>
-              <ul>
-                <li><a href="#org0acaa06">1.1. Database</a></li>
-                <li>
-                  <a href="#org152b671">1.2. Database design consideration</a>
-                </li>
-                <li>
-                  <a href="#org6c95566"
-                    >1.3. Database management system (DBMS)</a
-                  >
-                </li>
-                <li><a href="#orgb6ada63">1.4. Data model</a></li>
-                <li><a href="#orge8ccc43">1.5. Schema</a></li>
-                <li><a href="#org3ae10ea">1.6. Entities and Tables</a></li>
-                <li><a href="#org970a998">1.7. Attributes and Fields</a></li>
-                <li><a href="#orgaf2013f">1.8. Logical layer</a></li>
-                <li><a href="#org6362ec1">1.9. Physical layer</a></li>
-                <li>
-                  <a href="#orgdb2b748"
-                    >1.10. Data manipulation languages (DMLs)</a
-                  >
-                </li>
-                <li>
-                  <a href="#org6d695b3"
-                    >1.11. SQL (Structured Query Language) and relational
-                    model</a
-                  >
-                </li>
-              </ul>
-            </li>
-            <li>
-              <a href="#orgaab00eb">2. Relational model</a>
-              <ul>
-                <li><a href="#orgacf68d2">2.1. A relation</a></li>
-                <li><a href="#org0e83b4e">2.2. A domain</a></li>
-                <li><a href="#org0de17fc">2.3. A tuple</a></li>
-                <li><a href="#orgfa45a68">2.4. Keys</a></li>
-              </ul>
-            </li>
-            <li><a href="#org07cd937">3. Relational Algebra</a></li>
-          </ul>
-        </div>
+      <h1><a href="https://chenyo.me">Chenyo's org-static-blog</a></h1>
+      <nav>
+      <a href="https://chenyo.me">Home</a>
+      <a href="archive.html">Archive</a>
+      <a href="tags.html">Tags</a>
+      <div id="search-container">
+      <input type="text" id="search-input" placeholder="Search anywhere...">
+      </div>
       </nav>
-      <p>
-        This is a personal note for the
-        <a
-          href="https://www.youtube.com/watch?v=uikbtpVZS2s&amp;list=PLSE8ODhjZXjaKScG3l0nuOiDTTqpfnWFf&amp;index=2"
-          >CMU 15-445 L1 video</a
-        >
-        and
-        <a
-          href="https://15445.courses.cs.cmu.edu/fall2022/notes/01-introduction.pdf"
-          >CMU 15-445 L1 notes</a
-        >, along with some terminology explained by
-        <a href="https://claude.ai/chat/14f3c4ec-0ca8-495e-ac70-dd13f9eab5ea"
-          >Claude.ai</a
-        >.
-      </p>
-      <div id="outline-container-orgb6a8e81" class="outline-2">
-        <h2 id="orgb6a8e81">
-          <span class="section-number-2">1.</span> Terminology
-        </h2>
-        <div class="outline-text-2" id="text-1"></div>
-        <div id="outline-container-org0acaa06" class="outline-3">
-          <h3 id="org0acaa06">
-            <span class="section-number-3">1.1.</span> Database
-          </h3>
-          <div class="outline-text-3" id="text-1-1">
-            <ul class="org-ul">
-              <li>
-                An organized collection of inter-related data that models some
-                aspect of the real-world.
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-org152b671" class="outline-3">
-          <h3 id="org152b671">
-            <span class="section-number-3">1.2.</span> Database design
-            consideration
-          </h3>
-          <div class="outline-text-3" id="text-1-2">
-            <ul class="org-ul">
-              <li>Data integrity: protect invalid writing.</li>
-              <li>Implementation: query complexity, concurrent query.</li>
-              <li>Durability: replication, fault tolerance.</li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-org6c95566" class="outline-3">
-          <h3 id="org6c95566">
-            <span class="section-number-3">1.3.</span> Database management
-            system (DBMS)
-          </h3>
-          <div class="outline-text-3" id="text-1-3">
-            <ul class="org-ul">
-              <li>A software that manages a database.</li>
-              <li>
-                Allow the definition, creation, query, update and administration
-                of databases.
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-orgb6ada63" class="outline-3">
-          <h3 id="orgb6ada63">
-            <span class="section-number-3">1.4.</span> Data model
-          </h3>
-          <div class="outline-text-3" id="text-1-4">
-            <ul class="org-ul">
-              <li>
-                A conceptual, high-level representation of how data is
-                structured
-              </li>
-              <li>
-                Defines entities, attributes, relationships between entities and
-                constraints.
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-orge8ccc43" class="outline-3">
-          <h3 id="orge8ccc43">
-            <span class="section-number-3">1.5.</span> Schema
-          </h3>
-          <div class="outline-text-3" id="text-1-5">
-            <ul class="org-ul">
-              <li>A concrete implementation of a data model.</li>
-              <li>Defines tables, fields, data types, keys and rules.</li>
-              <li>Typically represented by a specific database language.</li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-org3ae10ea" class="outline-3">
-          <h3 id="org3ae10ea">
-            <span class="section-number-3">1.6.</span> Entities and Tables
-          </h3>
-          <div class="outline-text-3" id="text-1-6">
-            <ul class="org-ul">
-              <li>
-                Entities: conceptual representations of objects in the logical
-                data model.
-              </li>
-              <li>
-                Tables: physical storage structures in the physical data model.
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-org970a998" class="outline-3">
-          <h3 id="org970a998">
-            <span class="section-number-3">1.7.</span> Attributes and Fields
-          </h3>
-          <div class="outline-text-3" id="text-1-7">
-            <ul class="org-ul">
-              <li>Attributes: properties of an entity.</li>
-              <li>Fields: columns in a database table.</li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-orgaf2013f" class="outline-3">
-          <h3 id="orgaf2013f">
-            <span class="section-number-3">1.8.</span> Logical layer
-          </h3>
-          <div class="outline-text-3" id="text-1-8">
-            <ul class="org-ul">
-              <li>The entities and attributes the database has.</li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-org6362ec1" class="outline-3">
-          <h3 id="org6362ec1">
-            <span class="section-number-3">1.9.</span> Physical layer
-          </h3>
-          <div class="outline-text-3" id="text-1-9">
-            <ul class="org-ul">
-              <li>How are entities and attributes stored in the database.</li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-orgdb2b748" class="outline-3">
-          <h3 id="orgdb2b748">
-            <span class="section-number-3">1.10.</span> Data manipulation
-            languages (DMLs)
-          </h3>
-          <div class="outline-text-3" id="text-1-10">
-            <ul class="org-ul">
-              <li>
-                Methods to store and retrieve information from a database.
-              </li>
-              <li>
-                Procedural: the query specifies the (high-level) strategy the
-                DBMS should use to get the results, e.g., with relational
-                algebra.
-              </li>
-              <li>
-                Declarative: the query specifies only what data is desired but
-                not how to get it, e.g., with relational calculus (a formal
-                language).
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-org6d695b3" class="outline-3">
-          <h3 id="org6d695b3">
-            <span class="section-number-3">1.11.</span> SQL (Structured Query
-            Language) and relational model
-          </h3>
-          <div class="outline-text-3" id="text-1-11">
-            <ul class="org-ul">
-              <li>
-                SQL <b><b>implements</b></b> the relational model in DBMS and
-                provides a standard way to create, manipulate and query
-                relational databases.
-              </li>
-              <li>
-                Different SQL implementation may vary and do not strictly adhere
-                to the relational model, e.g., allow duplicate rows.
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div id="outline-container-orgaab00eb" class="outline-2">
-        <h2 id="orgaab00eb">
-          <span class="section-number-2">2.</span> Relational model
-        </h2>
-        <div class="outline-text-2" id="text-2">
-          <ul class="org-ul">
-            <li>
-              A <b><b>data model</b></b> that defines a database
-              <b><b>abstraction</b></b> to avoid maintenance overhead when
-              changing the physical layer.
-            </li>
-            <li>Data is stored as relations/tables.</li>
-            <li>
-              Physical layer implementation and execution strategy depends on
-              DBMS implementation.
-            </li>
-          </ul>
+      </header></div>
+<div id="content">
+<div class="post-date">17 Jul 2024</div><h1 class="post-title"><a href="https://chenyo.me/2024-07-17-db-notes:-relational-model.html">CMU 15-445 notes: Relational Model & Algebra</a></h1>
+<nav id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#orge3dce4b">1. Terminology</a>
+<ul>
+<li><a href="#org91526cd">1.1. Database</a></li>
+<li><a href="#org60162c5">1.2. Database design consideration</a></li>
+<li><a href="#org780fb27">1.3. Database management system (DBMS)</a></li>
+<li><a href="#org27bd03f">1.4. Data model</a></li>
+<li><a href="#orgc7dd819">1.5. Schema</a></li>
+<li><a href="#orgdabb28e">1.6. Entities and Tables</a></li>
+<li><a href="#org51b96af">1.7. Attributes and Fields</a></li>
+<li><a href="#orgd94a082">1.8. Logical layer</a></li>
+<li><a href="#org6599319">1.9. Physical layer</a></li>
+<li><a href="#org24c9c75">1.10. Data manipulation languages (DMLs)</a></li>
+<li><a href="#org3d2dfb2">1.11. SQL (Structured Query Language) and relational model</a></li>
+</ul>
+</li>
+<li><a href="#org87fe3b6">2. Relational model</a>
+<ul>
+<li><a href="#org84b2019">2.1. A relation</a></li>
+<li><a href="#orgb8d08ca">2.2. A domain</a></li>
+<li><a href="#orgd895dbb">2.3. A tuple</a></li>
+<li><a href="#org0136833">2.4. Keys</a></li>
+</ul>
+</li>
+<li><a href="#orge89e14a">3. Relational Algebra</a></li>
+</ul>
+</div>
+</nav>
+<p>
+This is a personal note for the <a href="https://www.youtube.com/watch?v=uikbtpVZS2s&amp;list=PLSE8ODhjZXjaKScG3l0nuOiDTTqpfnWFf&amp;index=2">CMU 15-445 L1 video</a> and <a href="https://15445.courses.cs.cmu.edu/fall2022/notes/01-introduction.pdf">CMU 15-445 L1 notes</a>, along with some terminology explained by <a href="https://claude.ai/chat/14f3c4ec-0ca8-495e-ac70-dd13f9eab5ea">Claude.ai</a>.
+</p>
+<div id="outline-container-orge3dce4b" class="outline-2">
+<h2 id="orge3dce4b"><span class="section-number-2">1.</span> Terminology</h2>
+<div class="outline-text-2" id="text-1">
+</div>
+<div id="outline-container-org91526cd" class="outline-3">
+<h3 id="org91526cd"><span class="section-number-3">1.1.</span> Database</h3>
+<div class="outline-text-3" id="text-1-1">
+<ul class="org-ul">
+<li>An organized collection of inter-related data that models some aspect of the real-world.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org60162c5" class="outline-3">
+<h3 id="org60162c5"><span class="section-number-3">1.2.</span> Database design consideration</h3>
+<div class="outline-text-3" id="text-1-2">
+<ul class="org-ul">
+<li>Data integrity: protect invalid writing.</li>
+<li>Implementation: query complexity, concurrent query.</li>
+<li>Durability: replication, fault tolerance.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org780fb27" class="outline-3">
+<h3 id="org780fb27"><span class="section-number-3">1.3.</span> Database management system (DBMS)</h3>
+<div class="outline-text-3" id="text-1-3">
+<ul class="org-ul">
+<li>A software that manages a database.</li>
+<li>Allow the definition, creation, query, update and administration of databases.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org27bd03f" class="outline-3">
+<h3 id="org27bd03f"><span class="section-number-3">1.4.</span> Data model</h3>
+<div class="outline-text-3" id="text-1-4">
+<ul class="org-ul">
+<li>A conceptual, high-level representation of how data is structured</li>
+<li>Defines entities, attributes, relationships between entities and constraints.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgc7dd819" class="outline-3">
+<h3 id="orgc7dd819"><span class="section-number-3">1.5.</span> Schema</h3>
+<div class="outline-text-3" id="text-1-5">
+<ul class="org-ul">
+<li>A concrete implementation of a data model.</li>
+<li>Defines tables, fields, data types, keys and rules.</li>
+<li>Typically represented by a specific database language.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgdabb28e" class="outline-3">
+<h3 id="orgdabb28e"><span class="section-number-3">1.6.</span> Entities and Tables</h3>
+<div class="outline-text-3" id="text-1-6">
+<ul class="org-ul">
+<li>Entities: conceptual representations of objects in the logical data model.</li>
+<li>Tables: physical storage structures in the physical data model.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org51b96af" class="outline-3">
+<h3 id="org51b96af"><span class="section-number-3">1.7.</span> Attributes and Fields</h3>
+<div class="outline-text-3" id="text-1-7">
+<ul class="org-ul">
+<li>Attributes: properties of an entity.</li>
+<li>Fields: columns in a database table.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgd94a082" class="outline-3">
+<h3 id="orgd94a082"><span class="section-number-3">1.8.</span> Logical layer</h3>
+<div class="outline-text-3" id="text-1-8">
+<ul class="org-ul">
+<li>The entities and attributes the database has.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org6599319" class="outline-3">
+<h3 id="org6599319"><span class="section-number-3">1.9.</span> Physical layer</h3>
+<div class="outline-text-3" id="text-1-9">
+<ul class="org-ul">
+<li>How are entities and attributes stored in the database.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org24c9c75" class="outline-3">
+<h3 id="org24c9c75"><span class="section-number-3">1.10.</span> Data manipulation languages (DMLs)</h3>
+<div class="outline-text-3" id="text-1-10">
+<ul class="org-ul">
+<li>Methods to store and retrieve information from a database.</li>
+<li>Procedural: the query specifies the (high-level) strategy the DBMS should use to get the results, e.g., with relational algebra.</li>
+<li>Declarative: the query specifies only what data is desired but not how to get it, e.g., with relational calculus (a formal language).</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org3d2dfb2" class="outline-3">
+<h3 id="org3d2dfb2"><span class="section-number-3">1.11.</span> SQL (Structured Query Language) and relational model</h3>
+<div class="outline-text-3" id="text-1-11">
+<ul class="org-ul">
+<li>SQL <b><b>implements</b></b> the relational model in DBMS and provides a standard way to create, manipulate and query relational databases.</li>
+<li>Different SQL implementation may vary and do not strictly adhere to the relational model, e.g., allow duplicate rows.</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-org87fe3b6" class="outline-2">
+<h2 id="org87fe3b6"><span class="section-number-2">2.</span> Relational model</h2>
+<div class="outline-text-2" id="text-2">
+<ul class="org-ul">
+<li>A <b><b>data model</b></b> that defines a database <b><b>abstraction</b></b> to avoid maintenance overhead when changing the physical layer.</li>
+<li>Data is stored as relations/tables.</li>
+<li>Physical layer implementation and execution strategy depends on DBMS implementation.</li>
+</ul>
 
-          <figure id="org4e993b4">
-            <img
-              src="https://www.guru99.com/images/1/091318_0803_RelationalD1.png"
-              alt="091318_0803_RelationalD1.png"
-              align="center"
-              width="500px"
-            />
 
-            <figcaption>
-              <span class="figure-number">Figure 1: </span>Relational model
-              concepts (<a
-                href="https://www.guru99.com/images/1/091318_0803_RelationalD1.png"
-                >Source</a
-              >)
-            </figcaption>
-          </figure>
-        </div>
-        <div id="outline-container-orgacf68d2" class="outline-3">
-          <h3 id="orgacf68d2">
-            <span class="section-number-3">2.1.</span> A relation
-          </h3>
-          <div class="outline-text-3" id="text-2-1">
-            <ul class="org-ul">
-              <li>
-                An unordered set that contains the relationship of attributes
-                that represent entities.
-              </li>
-              <li>Relationships are unordered in the relation.</li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-org0e83b4e" class="outline-3">
-          <h3 id="org0e83b4e">
-            <span class="section-number-3">2.2.</span> A domain
-          </h3>
-          <div class="outline-text-3" id="text-2-2">
-            <ul class="org-ul">
-              <li>A named set of allowable values for a specific attribute.</li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-org0de17fc" class="outline-3">
-          <h3 id="org0de17fc">
-            <span class="section-number-3">2.3.</span> A tuple
-          </h3>
-          <div class="outline-text-3" id="text-2-3">
-            <ul class="org-ul">
-              <li>A set of attribute values in the relation.</li>
-              <li>Values can also be lists or nested data structures.</li>
-              <li>
-                <code>Null</code>: a special value in any attribute which means
-                the attribute in a tuple is undefined.
-              </li>
-              <li>\(n-ary\): a relation with \(n\) attributes.</li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-orgfa45a68" class="outline-3">
-          <h3 id="orgfa45a68">
-            <span class="section-number-3">2.4.</span> Keys
-          </h3>
-          <div class="outline-text-3" id="text-2-4">
-            <ul class="org-ul">
-              <li>Primary key: uniquely identifies a single tuple.</li>
-              <li>
-                Foreign key: specifies that an attribute (e.g.,
-                <code>CustomerID</code>) in one relation (e.g.,
-                <code>OrderTable</code>) has to map to a tuple (e.g., the tuple
-                with the same <code>CustomerID</code>) in another relation
-                (e.g., <code>CustomerTable</code>).
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div id="outline-container-org07cd937" class="outline-2">
-        <h2 id="org07cd937">
-          <span class="section-number-2">3.</span> Relational Algebra
-        </h2>
-        <div class="outline-text-2" id="text-3">
-          <ul class="org-ul">
-            <li>
-              A set of fundamental operations to retrieve and manipulate tuples
-              in a relation.
-            </li>
-            <li>
-              Each operator takes in one or more relations as inputs, and
-              outputs a new relation; operators can be chained.
-            </li>
-            <li>
-              Is a <b><b>procedure language</b></b
-              >, meaning the execution always follow the query, even there
-              exists more efficient way to get the same result; A better way is
-              to be more declarative, e.g., SQL&rsquo;s
-              <code>where</code> syntax.
-            </li>
-            <li>
-              <a href="https://i.sstatic.net/AHjRg.png"
-                >Common relational algebra</a
-              >.
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div class="taglist">
-        <a href="https://chenyo-17.github.io/org-static-blog/tags.html">Tags</a
-        >:
-        <a href="https://chenyo-17.github.io/org-static-blog/tag-study.html"
-          >study</a
-        >
-        <a href="https://chenyo-17.github.io/org-static-blog/tag-database.html"
-          >database</a
-        >
-        <a href="https://chenyo-17.github.io/org-static-blog/tag-cmu.html"
-          >cmu</a
-        >
-      </div>
-    </div>
-    <div id="postamble" class="status">
-      <div id="search-results"></div>
+<figure id="org85ead7f">
+<img src="https://www.guru99.com/images/1/091318_0803_RelationalD1.png" alt="091318_0803_RelationalD1.png" align="center" width="500px">
+
+<figcaption><span class="figure-number">Figure 1: </span>Relational model concepts (<a href="https://www.guru99.com/images/1/091318_0803_RelationalD1.png">Source</a>)</figcaption>
+</figure>
+</div>
+<div id="outline-container-org84b2019" class="outline-3">
+<h3 id="org84b2019"><span class="section-number-3">2.1.</span> A relation</h3>
+<div class="outline-text-3" id="text-2-1">
+<ul class="org-ul">
+<li>An unordered set that contains the relationship of attributes that represent entities.</li>
+<li>Relationships are unordered in the relation.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgb8d08ca" class="outline-3">
+<h3 id="orgb8d08ca"><span class="section-number-3">2.2.</span> A domain</h3>
+<div class="outline-text-3" id="text-2-2">
+<ul class="org-ul">
+<li>A named set of allowable values for a specific attribute.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgd895dbb" class="outline-3">
+<h3 id="orgd895dbb"><span class="section-number-3">2.3.</span> A tuple</h3>
+<div class="outline-text-3" id="text-2-3">
+<ul class="org-ul">
+<li>A set of attribute values in the relation.</li>
+<li>Values can also be lists or nested data structures.</li>
+<li><code>Null</code>: a special value in any attribute which means the attribute in a tuple is undefined.</li>
+<li>\(n-ary\): a relation with \(n\) attributes.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org0136833" class="outline-3">
+<h3 id="org0136833"><span class="section-number-3">2.4.</span> Keys</h3>
+<div class="outline-text-3" id="text-2-4">
+<ul class="org-ul">
+<li>Primary key: uniquely identifies a single tuple.</li>
+<li>Foreign key: specifies that an attribute (e.g., <code>CustomerID</code>) in one relation (e.g., <code>OrderTable</code>) has to map to a tuple (e.g., the tuple with the same <code>CustomerID</code>) in another relation (e.g., <code>CustomerTable</code>).</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-orge89e14a" class="outline-2">
+<h2 id="orge89e14a"><span class="section-number-2">3.</span> Relational Algebra</h2>
+<div class="outline-text-2" id="text-3">
+<ul class="org-ul">
+<li>A set of fundamental operations to retrieve and manipulate tuples in a relation.</li>
+<li>Each operator takes in one or more relations as inputs, and outputs a new relation; operators can be chained.</li>
+<li>Is a <b><b>procedure language</b></b>, meaning the execution always follow the query, even there exists more efficient way to get the same result; A better way is to be more declarative, e.g., SQL&rsquo;s <code>where</code> syntax.</li>
+<li><a href="https://i.sstatic.net/AHjRg.png">Common relational algebra</a>.</li>
+</ul>
+</div>
+</div>
+<div class="taglist"><a href="https://chenyo.me/tags.html">Tags</a>: <a href="https://chenyo.me/tag-study.html">study</a> <a href="https://chenyo.me/tag-database.html">database</a> <a href="https://chenyo.me/tag-cmu.html">cmu</a> </div></div>
+<div id="postamble" class="status"><div id="search-results"></div>
       <footer>
         <p>© 2024 chenyo. Some rights reserved.</p>
         <div class="social-links">
-          <a
-            href="https://t.me/feihuadawangjiushiwo"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <img
-              src="assets/telegram-icon.svg"
-              alt="Telegram"
-              width="24"
-              height="24"
-            />
+          <a href="https://t.me/feihuadawangjiushiwo" target="_blank" rel="noopener noreferrer">
+            <img src="assets/telegram-icon.svg" alt="Telegram" width="24" height="24">
           </a>
-          <a
-            href="https://github.com/chenyo-17"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <img
-              src="assets/github-icon.svg"
-              alt="GitHub"
-              width="24"
-              height="24"
-            />
-          </a>
-        </div>
-      </footer>
-    </div>
-  </body>
+          <a href="https://github.com/chenyo-17" target="_blank" rel="noopener noreferrer">
+            <img src="assets/github-icon.svg" alt="GitHub" width="24" height="24">
+      </a>
+      </div>
+      </footer></div>
+</body>
 </html>

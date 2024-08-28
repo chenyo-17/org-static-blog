@@ -1,99 +1,67 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta
-      name="description"
-      content="This is a personal note for the [[https://docs.google.com/presentation/d/1hrTjcB8GU4hWPHzS5lI17WALogP4biZ1UAtyxXfafkI/edit#slide=id.p][web.lab lectures]]."
-    />
-    <link
-      rel="alternate"
+<head>
+<meta charset="UTF-8">
+<meta name="description" content="This is a personal note for the [[https://docs.google.com/presentation/d/1hrTjcB8GU4hWPHzS5lI17WALogP4biZ1UAtyxXfafkI/edit#slide=id.p][web.lab lectures]].">
+<link rel="alternate"
       type="application/rss+xml"
-      href="https://chenyo-17.github.io/org-static-blog/rss.xml"
-      title="RSS feed for https://chenyo-17.github.io/org-static-blog"
-    />
-    <title>Weblab notes: React route</title>
-    <script
-      type="text/javascript"
-      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
-    ></script>
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'],['\\(','\\)']]}});
-    </script>
-    <meta name="author" content="chenyo" />
-    <meta name="referrer" content="no-referrer" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="assets/style.css" type="text/css" />
-    <link rel="favicon" type="image/x-icon" href="favicon.ico" />
-    <script src="assets/search.js"></script>
-  </head>
-  <body>
-    <div id="preamble" class="status">
+      href="https://chenyo.me/rss.xml"
+      title="RSS feed for https://chenyo.me">
+<title>Weblab notes: React route</title>
+<script type="text/javascript"
+             src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+       </script>
+       <script type="text/x-mathjax-config">
+             MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'],['\\(','\\)']]}});
+       </script>
+       <meta name="author" content="chenyo">
+      <meta name="referrer" content="no-referrer">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="stylesheet" href="assets/style.css" type="text/css"/>
+      <link rel="favicon" type="image/x-icon" href="favicon.ico">
+      <script src="assets/search.js"></script></head>
+<body>
+<div id="preamble" class="status">
       <header>
-        <h1>
-          <a href="https://chenyo-17.github.io/org-static-blog"
-            >Chenyo's org-static-blog</a
-          >
-        </h1>
-        <nav>
-          <a href="https://chenyo-17.github.io/org-static-blog">Home</a>
-          <a href="archive.html">Archive</a>
-          <a href="tags.html">Tags</a>
-          <div id="search-container">
-            <input
-              type="text"
-              id="search-input"
-              placeholder="Search anywhere..."
-            />
-          </div>
-        </nav>
-      </header>
-    </div>
-    <div id="content">
-      <div class="post-date">23 Jun 2024</div>
-      <h1 class="post-title">
-        <a
-          href="https://chenyo-17.github.io/org-static-blog/2024-06-23-weblab-notes:-react-route.html"
-          >Weblab notes: React route</a
-        >
-      </h1>
-      <nav id="table-of-contents" role="doc-toc">
-        <h2>Table of Contents</h2>
-        <div id="text-table-of-contents" role="doc-toc">
-          <ul>
-            <li><a href="#orgfc9b9bc">1. Router</a></li>
-            <li><a href="#org319151b">2. Link</a></li>
-            <li>
-              <a href="#org74b49fb">3. Workshop 3</a>
-              <ul>
-                <li><a href="#org0b797a9">3.1. Structure</a></li>
-                <li><a href="#org61bc93f">3.2. States</a></li>
-                <li><a href="#orgc8fda96">3.3. Props</a></li>
-                <li>
-                  <a href="#orgf21a6ff"
-                    >3.4. Why passing down the update function in props 1, 4,
-                    6?</a
-                  >
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </div>
+      <h1><a href="https://chenyo.me">Chenyo's org-static-blog</a></h1>
+      <nav>
+      <a href="https://chenyo.me">Home</a>
+      <a href="archive.html">Archive</a>
+      <a href="tags.html">Tags</a>
+      <div id="search-container">
+      <input type="text" id="search-input" placeholder="Search anywhere...">
+      </div>
       </nav>
-      <div id="outline-container-orgfc9b9bc" class="outline-2">
-        <h2 id="orgfc9b9bc"><span class="section-number-2">1.</span> Router</h2>
-        <div class="outline-text-2" id="text-1">
-          <ul class="org-ul">
-            <li>
-              use the Reach
-              <a href="https://reach.tech/router/">Reach Router</a> library
-            </li>
-            <li>
-              <p>URL -&gt; Router -&gt; render different components</p>
-              <div class="org-src-container">
-                <pre
-                  class="src src-js"
-                ><span class="linenr">1: </span>&lt;App&gt;
+      </header></div>
+<div id="content">
+<div class="post-date">23 Jun 2024</div><h1 class="post-title"><a href="https://chenyo.me/2024-06-23-weblab-notes:-react-route.html">Weblab notes: React route</a></h1>
+<nav id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#org0654743">1. Router</a></li>
+<li><a href="#orgf32c2e8">2. Link</a></li>
+<li><a href="#org60b3ea7">3. Workshop 3</a>
+<ul>
+<li><a href="#org9ed52e3">3.1. Structure</a></li>
+<li><a href="#orga66fd36">3.2. States</a></li>
+<li><a href="#orgc78d778">3.3. Props</a></li>
+<li><a href="#org340df4b">3.4. Why passing down the update function in props 1, 4, 6?</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</nav>
+<div id="outline-container-org0654743" class="outline-2">
+<h2 id="org0654743"><span class="section-number-2">1.</span> Router</h2>
+<div class="outline-text-2" id="text-1">
+<ul class="org-ul">
+<li>use the Reach <a href="https://reach.tech/router/">Reach Router</a> library</li>
+<li><p>
+URL -&gt; Router -&gt; render different components
+</p>
+<div class="org-src-container">
+<pre class="src src-js"><span class="linenr">1: </span>&lt;App&gt;
 <span class="linenr">2: </span>  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">conditional rendering based on curren url</span>
 <span class="linenr">3: </span>  &lt;Router&gt;
 <span class="linenr">4: </span>    &lt;Home path=<span style="color: #98be65;">"/"</span> /&gt; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">root path</span>
@@ -103,221 +71,141 @@
 <span class="linenr">8: </span>  &lt;/Router&gt;
 <span class="linenr">9: </span>&lt;/App&gt;;
 </pre>
-              </div>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div id="outline-container-org319151b" class="outline-2">
-        <h2 id="org319151b"><span class="section-number-2">2.</span> Link</h2>
-        <div class="outline-text-2" id="text-2">
-          <ul class="org-ul">
-            <li>
-              relative:
-              <code class="src src-js"
-                >&lt;Link to=<span style="color: #98be65">"newpage"</span
-                >&gt;Click me&lt;/Link&gt;</code
-              >
-            </li>
-            <li>
-              absolute:
-              <code class="src src-js"
-                >&lt;Link to=<span style="color: #98be65">"/newpage"</span
-                >&gt;Click me&lt;/Link&gt;</code
-              >
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div id="outline-container-org74b49fb" class="outline-2">
-        <h2 id="org74b49fb">
-          <span class="section-number-2">3.</span> Workshop 3
-        </h2>
-        <div class="outline-text-2" id="text-3"></div>
-        <div id="outline-container-org0b797a9" class="outline-3">
-          <h3 id="org0b797a9">
-            <span class="section-number-3">3.1.</span> Structure
-          </h3>
-          <div class="outline-text-3" id="text-3-1">
-            <figure id="orga66dc32">
-              <img
-                src="./static/workshop-3-structure.png"
-                alt="workshop-3-structure.png"
-                align="center"
-                width="600px"
-              />
+</div></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgf32c2e8" class="outline-2">
+<h2 id="orgf32c2e8"><span class="section-number-2">2.</span> Link</h2>
+<div class="outline-text-2" id="text-2">
+<ul class="org-ul">
+<li>relative: <code class="src src-js">&lt;Link to=<span style="color: #98be65;">"newpage"</span>&gt;Click me&lt;/Link&gt;</code></li>
+<li>absolute: <code class="src src-js">&lt;Link to=<span style="color: #98be65;">"/newpage"</span>&gt;Click me&lt;/Link&gt;</code></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org60b3ea7" class="outline-2">
+<h2 id="org60b3ea7"><span class="section-number-2">3.</span> Workshop 3</h2>
+<div class="outline-text-2" id="text-3">
+</div>
+<div id="outline-container-org9ed52e3" class="outline-3">
+<h3 id="org9ed52e3"><span class="section-number-3">3.1.</span> Structure</h3>
+<div class="outline-text-3" id="text-3-1">
 
-              <figcaption>
-                <span class="figure-number">Figure 1: </span>The Catbook
-                structure in workshop 3
-              </figcaption>
-            </figure>
-          </div>
-        </div>
-        <div id="outline-container-org61bc93f" class="outline-3">
-          <h3 id="org61bc93f">
-            <span class="section-number-3">3.2.</span> States
-          </h3>
-          <div class="outline-text-3" id="text-3-2">
-            <table>
-              <colgroup>
-                <col class="org-center" />
-              </colgroup>
+<figure id="org1abbae9">
+<img src="./static/workshop-3-structure.png" alt="workshop-3-structure.png" align="center" width="600px">
 
-              <colgroup>
-                <col class="org-left" />
-              </colgroup>
-              <thead>
-                <tr>
-                  <th scope="col" class="org-center">name</th>
-                  <th scope="col" class="org-left">states</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td class="org-center">Feed</td>
-                  <td class="org-left">
-                    <code>stories</code>: a list of stories
-                  </td>
-                </tr>
+<figcaption><span class="figure-number">Figure 1: </span>The Catbook structure in workshop 3</figcaption>
+</figure>
+</div>
+</div>
+<div id="outline-container-orga66fd36" class="outline-3">
+<h3 id="orga66fd36"><span class="section-number-3">3.2.</span> States</h3>
+<div class="outline-text-3" id="text-3-2">
+<table>
 
-                <tr>
-                  <td class="org-center">Card</td>
-                  <td class="org-left">
-                    <code>comments</code>: a list of comments for a story id
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <div id="outline-container-orgc8fda96" class="outline-3">
-          <h3 id="orgc8fda96">
-            <span class="section-number-3">3.3.</span> Props
-          </h3>
-          <div class="outline-text-3" id="text-3-3">
-            <table>
-              <colgroup>
-                <col class="org-center" />
-              </colgroup>
 
-              <colgroup>
-                <col class="org-left" />
-              </colgroup>
-              <thead>
-                <tr>
-                  <th scope="col" class="org-center">index</th>
-                  <th scope="col" class="org-left">props</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td class="org-center">1</td>
-                  <td class="org-left">
-                    a function to update <code>stories</code>
-                  </td>
-                </tr>
+<colgroup>
+<col  class="org-center">
+</colgroup>
 
-                <tr>
-                  <td class="org-center">2</td>
-                  <td class="org-left">all attributes in a story</td>
-                </tr>
+<colgroup>
+<col  class="org-left">
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-center">name</th>
+<th scope="col" class="org-left">states</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-center">Feed</td>
+<td class="org-left"><code>stories</code>: a list of stories</td>
+</tr>
 
-                <tr>
-                  <td class="org-center">3</td>
-                  <td class="org-left">
-                    the attributes used to display a story
-                  </td>
-                </tr>
+<tr>
+<td class="org-center">Card</td>
+<td class="org-left"><code>comments</code>: a list of comments for a story id</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="outline-container-orgc78d778" class="outline-3">
+<h3 id="orgc78d778"><span class="section-number-3">3.3.</span> Props</h3>
+<div class="outline-text-3" id="text-3-3">
+<table>
 
-                <tr>
-                  <td class="org-center">4</td>
-                  <td class="org-left">
-                    a story id; a list of comments under the story; a function
-                    to update <code>comments</code>
-                  </td>
-                </tr>
 
-                <tr>
-                  <td class="org-center">5</td>
-                  <td class="org-left">all attributes in a comment</td>
-                </tr>
+<colgroup>
+<col  class="org-center">
+</colgroup>
 
-                <tr>
-                  <td class="org-center">6</td>
-                  <td class="org-left">
-                    a comment id; the function to update <code>comments</code>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <div id="outline-container-orgf21a6ff" class="outline-3">
-          <h3 id="orgf21a6ff">
-            <span class="section-number-3">3.4.</span> Why passing down the
-            update function in props 1, 4, 6?
-          </h3>
-          <div class="outline-text-3" id="text-3-4">
-            <ul class="org-ul">
-              <li>
-                To share the parent states, i.e., <code>stories</code> and
-                <code>comments</code> to child component. Since the post action
-                happens in the child component, we need a way to automatically
-                update the states to see new contents immediately.
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div class="taglist">
-        <a href="https://chenyo-17.github.io/org-static-blog/tags.html">Tags</a
-        >:
-        <a href="https://chenyo-17.github.io/org-static-blog/tag-study.html"
-          >study</a
-        >
-        <a href="https://chenyo-17.github.io/org-static-blog/tag-web.html"
-          >web</a
-        >
-        <a href="https://chenyo-17.github.io/org-static-blog/tag-react.html"
-          >react</a
-        >
-        <a href="https://chenyo-17.github.io/org-static-blog/tag-mit.html"
-          >mit</a
-        >
-      </div>
-    </div>
-    <div id="postamble" class="status">
-      <div id="search-results"></div>
+<colgroup>
+<col  class="org-left">
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-center">index</th>
+<th scope="col" class="org-left">props</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-center">1</td>
+<td class="org-left">a function to update <code>stories</code></td>
+</tr>
+
+<tr>
+<td class="org-center">2</td>
+<td class="org-left">all attributes in a story</td>
+</tr>
+
+<tr>
+<td class="org-center">3</td>
+<td class="org-left">the attributes used to display a story</td>
+</tr>
+
+<tr>
+<td class="org-center">4</td>
+<td class="org-left">a story id; a list of comments under the story; a function to update <code>comments</code></td>
+</tr>
+
+<tr>
+<td class="org-center">5</td>
+<td class="org-left">all attributes in a comment</td>
+</tr>
+
+<tr>
+<td class="org-center">6</td>
+<td class="org-left">a comment id; the function to update <code>comments</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="outline-container-org340df4b" class="outline-3">
+<h3 id="org340df4b"><span class="section-number-3">3.4.</span> Why passing down the update function in props 1, 4, 6?</h3>
+<div class="outline-text-3" id="text-3-4">
+<ul class="org-ul">
+<li>To share the parent states, i.e., <code>stories</code> and <code>comments</code> to child component. Since the post action happens in the child component, we need a way to automatically update the states to see new contents immediately.</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="taglist"><a href="https://chenyo.me/tags.html">Tags</a>: <a href="https://chenyo.me/tag-study.html">study</a> <a href="https://chenyo.me/tag-web.html">web</a> <a href="https://chenyo.me/tag-react.html">react</a> <a href="https://chenyo.me/tag-mit.html">mit</a> </div></div>
+<div id="postamble" class="status"><div id="search-results"></div>
       <footer>
         <p>© 2024 chenyo. Some rights reserved.</p>
         <div class="social-links">
-          <a
-            href="https://t.me/feihuadawangjiushiwo"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <img
-              src="assets/telegram-icon.svg"
-              alt="Telegram"
-              width="24"
-              height="24"
-            />
+          <a href="https://t.me/feihuadawangjiushiwo" target="_blank" rel="noopener noreferrer">
+            <img src="assets/telegram-icon.svg" alt="Telegram" width="24" height="24">
           </a>
-          <a
-            href="https://github.com/chenyo-17"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <img
-              src="assets/github-icon.svg"
-              alt="GitHub"
-              width="24"
-              height="24"
-            />
-          </a>
-        </div>
-      </footer>
-    </div>
-  </body>
+          <a href="https://github.com/chenyo-17" target="_blank" rel="noopener noreferrer">
+            <img src="assets/github-icon.svg" alt="GitHub" width="24" height="24">
+      </a>
+      </div>
+      </footer></div>
+</body>
 </html>

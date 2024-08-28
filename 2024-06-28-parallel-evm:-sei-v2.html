@@ -9,8 +9,8 @@
     <link
       rel="alternate"
       type="application/rss+xml"
-      href="https://chenyo-17.github.io/org-static-blog/rss.xml"
-      title="RSS feed for https://chenyo-17.github.io/org-static-blog"
+      href="https://chenyo.me/rss.xml"
+      title="RSS feed for https://chenyo.me"
     />
     <title>Parallel EVM: Sei-v2</title>
     <script
@@ -30,13 +30,9 @@
   <body>
     <div id="preamble" class="status">
       <header>
-        <h1>
-          <a href="https://chenyo-17.github.io/org-static-blog"
-            >Chenyo's org-static-blog</a
-          >
-        </h1>
+        <h1><a href="https://chenyo.me">Chenyo's org-static-blog</a></h1>
         <nav>
-          <a href="https://chenyo-17.github.io/org-static-blog">Home</a>
+          <a href="https://chenyo.me">Home</a>
           <a href="archive.html">Archive</a>
           <a href="tags.html">Tags</a>
           <div id="search-container">
@@ -52,8 +48,7 @@
     <div id="content">
       <div class="post-date">28 Jun 2024</div>
       <h1 class="post-title">
-        <a
-          href="https://chenyo-17.github.io/org-static-blog/2024-06-28-parallel-evm:-sei-v2.html"
+        <a href="https://chenyo.me/2024-06-28-parallel-evm:-sei-v2.html"
           >Parallel EVM: Sei-v2</a
         >
       </h1>
@@ -62,48 +57,48 @@
         <div id="text-table-of-contents" role="doc-toc">
           <ul>
             <li>
-              <a href="#orge837c88">1. Blockchain fundamentals</a>
+              <a href="#org3000ecf">1. Blockchain fundamentals</a>
               <ul>
-                <li><a href="#orgebe30be">1.1. Mainnet and Testnet</a></li>
-                <li><a href="#orgb2045f0">1.2. Mainnet Alpha and Beta</a></li>
-                <li><a href="#orgf5e2667">1.3. Layer 1 and Layer 2</a></li>
-                <li><a href="#org9012466">1.4. Rollups</a></li>
-                <li><a href="#orge29e06d">1.5. State channels</a></li>
-                <li><a href="#org880e649">1.6. Sidechains</a></li>
-                <li><a href="#org5e6b0b3">1.7. Ethereum and EVM</a></li>
-                <li><a href="#orgfa8a4ae">1.8. IAVL tree</a></li>
-                <li><a href="#org8a4d95c">1.9. CosmWasm contract</a></li>
-                <li><a href="#org1e9cd18">1.10. Cosmos Ecosystem</a></li>
-                <li><a href="#org6e2d922">1.11. Blockchain layers</a></li>
+                <li><a href="#org8ec48a4">1.1. Mainnet and Testnet</a></li>
+                <li><a href="#org36efce5">1.2. Mainnet Alpha and Beta</a></li>
+                <li><a href="#org5a854c0">1.3. Layer 1 and Layer 2</a></li>
+                <li><a href="#orgab524b7">1.4. Rollups</a></li>
+                <li><a href="#org5c8e33b">1.5. State channels</a></li>
+                <li><a href="#orgb65d31e">1.6. Sidechains</a></li>
+                <li><a href="#org8dbd0d9">1.7. Ethereum and EVM</a></li>
+                <li><a href="#orgfef2ad1">1.8. IAVL tree</a></li>
+                <li><a href="#org5f05343">1.9. CosmWasm contract</a></li>
+                <li><a href="#org89d360f">1.10. Cosmos Ecosystem</a></li>
+                <li><a href="#org3ca8714">1.11. Blockchain layers</a></li>
                 <li>
-                  <a href="#org8e21d5e">1.12. Optimistic parallelization</a>
+                  <a href="#org4fd4a6a">1.12. Optimistic parallelization</a>
                 </li>
                 <li>
-                  <a href="#org02e9f5b"
+                  <a href="#org768fa5d"
                     >1.13. Integrated and Modular blockchain</a
                   >
                 </li>
                 <li>
-                  <a href="#orgd6556c6"
+                  <a href="#orgd599131"
                     >1.14. EVM Execution and storage layer</a
                   >
                 </li>
                 <li>
-                  <a href="#org94a2a0d">1.15. Block time and finalize time</a>
+                  <a href="#org3a38d00">1.15. Block time and finalize time</a>
                 </li>
-                <li><a href="#org7bc0c5d">1.16. Blockchain audit</a></li>
+                <li><a href="#org9c9e03d">1.16. Blockchain audit</a></li>
               </ul>
             </li>
-            <li><a href="#org550dd6f">2. What is Sei</a></li>
+            <li><a href="#org7b83477">2. What is Sei</a></li>
             <li>
-              <a href="#org3ca8977">3. What is Sei v2</a>
+              <a href="#org180c00b">3. What is Sei v2</a>
               <ul>
-                <li><a href="#orgb12ed0f">3.1. Backwards compatibility</a></li>
+                <li><a href="#org09487ef">3.1. Backwards compatibility</a></li>
                 <li>
-                  <a href="#orgc6659e5">3.2. Optimistic parallelization</a>
+                  <a href="#org675d552">3.2. Optimistic parallelization</a>
                 </li>
-                <li><a href="#orgaf3faa2">3.3. SeiDB</a></li>
-                <li><a href="#org3c46006">3.4. Interoperability</a></li>
+                <li><a href="#org7b474fb">3.3. SeiDB</a></li>
+                <li><a href="#org02ffccf">3.4. Interoperability</a></li>
               </ul>
             </li>
           </ul>
@@ -117,13 +112,13 @@
         as well as some terminology explained by
         <a href="https://chatgpt.com/g/g-TJq7kBEsX-evm-gpt">EVM GPT</a>.
       </p>
-      <div id="outline-container-orge837c88" class="outline-2">
-        <h2 id="orge837c88">
+      <div id="outline-container-org3000ecf" class="outline-2">
+        <h2 id="org3000ecf">
           <span class="section-number-2">1.</span> Blockchain fundamentals
         </h2>
         <div class="outline-text-2" id="text-1"></div>
-        <div id="outline-container-orgebe30be" class="outline-3">
-          <h3 id="orgebe30be">
+        <div id="outline-container-org8ec48a4" class="outline-3">
+          <h3 id="org8ec48a4">
             <span class="section-number-3">1.1.</span> Mainnet and Testnet
           </h3>
           <div class="outline-text-3" id="text-1-1">
@@ -139,8 +134,8 @@
             </ul>
           </div>
         </div>
-        <div id="outline-container-orgb2045f0" class="outline-3">
-          <h3 id="orgb2045f0">
+        <div id="outline-container-org36efce5" class="outline-3">
+          <h3 id="org36efce5">
             <span class="section-number-3">1.2.</span> Mainnet Alpha and Beta
           </h3>
           <div class="outline-text-3" id="text-1-2">
@@ -156,8 +151,8 @@
             </ul>
           </div>
         </div>
-        <div id="outline-container-orgf5e2667" class="outline-3">
-          <h3 id="orgf5e2667">
+        <div id="outline-container-org5a854c0" class="outline-3">
+          <h3 id="org5a854c0">
             <span class="section-number-3">1.3.</span> Layer 1 and Layer 2
           </h3>
           <div class="outline-text-3" id="text-1-3">
@@ -173,8 +168,8 @@
             </ul>
           </div>
         </div>
-        <div id="outline-container-org9012466" class="outline-3">
-          <h3 id="org9012466">
+        <div id="outline-container-orgab524b7" class="outline-3">
+          <h3 id="orgab524b7">
             <span class="section-number-3">1.4.</span> Rollups
           </h3>
           <div class="outline-text-3" id="text-1-4">
@@ -199,8 +194,8 @@
             </ul>
           </div>
         </div>
-        <div id="outline-container-orge29e06d" class="outline-3">
-          <h3 id="orge29e06d">
+        <div id="outline-container-org5c8e33b" class="outline-3">
+          <h3 id="org5c8e33b">
             <span class="section-number-3">1.5.</span> State channels
           </h3>
           <div class="outline-text-3" id="text-1-5">
@@ -213,8 +208,8 @@
             </ul>
           </div>
         </div>
-        <div id="outline-container-org880e649" class="outline-3">
-          <h3 id="org880e649">
+        <div id="outline-container-orgb65d31e" class="outline-3">
+          <h3 id="orgb65d31e">
             <span class="section-number-3">1.6.</span> Sidechains
           </h3>
           <div class="outline-text-3" id="text-1-6">
@@ -227,8 +222,8 @@
             </ul>
           </div>
         </div>
-        <div id="outline-container-org5e6b0b3" class="outline-3">
-          <h3 id="org5e6b0b3">
+        <div id="outline-container-org8dbd0d9" class="outline-3">
+          <h3 id="org8dbd0d9">
             <span class="section-number-3">1.7.</span> Ethereum and EVM
           </h3>
           <div class="outline-text-3" id="text-1-7">
@@ -244,8 +239,8 @@
             </ul>
           </div>
         </div>
-        <div id="outline-container-orgfa8a4ae" class="outline-3">
-          <h3 id="orgfa8a4ae">
+        <div id="outline-container-orgfef2ad1" class="outline-3">
+          <h3 id="orgfef2ad1">
             <span class="section-number-3">1.8.</span> IAVL tree
           </h3>
           <div class="outline-text-3" id="text-1-8">
@@ -262,8 +257,8 @@
             </ul>
           </div>
         </div>
-        <div id="outline-container-org8a4d95c" class="outline-3">
-          <h3 id="org8a4d95c">
+        <div id="outline-container-org5f05343" class="outline-3">
+          <h3 id="org5f05343">
             <span class="section-number-3">1.9.</span> CosmWasm contract
           </h3>
           <div class="outline-text-3" id="text-1-9">
@@ -280,8 +275,8 @@
             </ul>
           </div>
         </div>
-        <div id="outline-container-org1e9cd18" class="outline-3">
-          <h3 id="org1e9cd18">
+        <div id="outline-container-org89d360f" class="outline-3">
+          <h3 id="org89d360f">
             <span class="section-number-3">1.10.</span> Cosmos Ecosystem
           </h3>
           <div class="outline-text-3" id="text-1-10">
@@ -305,8 +300,8 @@
             </ul>
           </div>
         </div>
-        <div id="outline-container-org6e2d922" class="outline-3">
-          <h3 id="org6e2d922">
+        <div id="outline-container-org3ca8714" class="outline-3">
+          <h3 id="org3ca8714">
             <span class="section-number-3">1.11.</span> Blockchain layers
           </h3>
           <div class="outline-text-3" id="text-1-11">
@@ -341,8 +336,8 @@
             </ul>
           </div>
         </div>
-        <div id="outline-container-org8e21d5e" class="outline-3">
-          <h3 id="org8e21d5e">
+        <div id="outline-container-org4fd4a6a" class="outline-3">
+          <h3 id="org4fd4a6a">
             <span class="section-number-3">1.12.</span> Optimistic
             parallelization
           </h3>
@@ -357,8 +352,8 @@
             </ul>
           </div>
         </div>
-        <div id="outline-container-org02e9f5b" class="outline-3">
-          <h3 id="org02e9f5b">
+        <div id="outline-container-org768fa5d" class="outline-3">
+          <h3 id="org768fa5d">
             <span class="section-number-3">1.13.</span> Integrated and Modular
             blockchain
           </h3>
@@ -376,8 +371,8 @@
             </ul>
           </div>
         </div>
-        <div id="outline-container-orgd6556c6" class="outline-3">
-          <h3 id="orgd6556c6">
+        <div id="outline-container-orgd599131" class="outline-3">
+          <h3 id="orgd599131">
             <span class="section-number-3">1.14.</span> EVM Execution and
             storage layer
           </h3>
@@ -394,8 +389,8 @@
             </ul>
           </div>
         </div>
-        <div id="outline-container-org94a2a0d" class="outline-3">
-          <h3 id="org94a2a0d">
+        <div id="outline-container-org3a38d00" class="outline-3">
+          <h3 id="org3a38d00">
             <span class="section-number-3">1.15.</span> Block time and finalize
             time
           </h3>
@@ -413,8 +408,8 @@
             </ul>
           </div>
         </div>
-        <div id="outline-container-org7bc0c5d" class="outline-3">
-          <h3 id="org7bc0c5d">
+        <div id="outline-container-org9c9e03d" class="outline-3">
+          <h3 id="org9c9e03d">
             <span class="section-number-3">1.16.</span> Blockchain audit
           </h3>
           <div class="outline-text-3" id="text-1-16">
@@ -427,8 +422,8 @@
           </div>
         </div>
       </div>
-      <div id="outline-container-org550dd6f" class="outline-2">
-        <h2 id="org550dd6f">
+      <div id="outline-container-org7b83477" class="outline-2">
+        <h2 id="org7b83477">
           <span class="section-number-2">2.</span> What is Sei
         </h2>
         <div class="outline-text-2" id="text-2">
@@ -450,8 +445,8 @@
           </ul>
         </div>
       </div>
-      <div id="outline-container-org3ca8977" class="outline-2">
-        <h2 id="org3ca8977">
+      <div id="outline-container-org180c00b" class="outline-2">
+        <h2 id="org180c00b">
           <span class="section-number-2">3.</span> What is Sei v2
         </h2>
         <div class="outline-text-2" id="text-3">
@@ -479,8 +474,8 @@
             </li>
           </ul>
         </div>
-        <div id="outline-container-orgb12ed0f" class="outline-3">
-          <h3 id="orgb12ed0f">
+        <div id="outline-container-org09487ef" class="outline-3">
+          <h3 id="org09487ef">
             <span class="section-number-3">3.1.</span> Backwards compatibility
           </h3>
           <div class="outline-text-3" id="text-3-1">
@@ -500,8 +495,8 @@
             </ul>
           </div>
         </div>
-        <div id="outline-container-orgc6659e5" class="outline-3">
-          <h3 id="orgc6659e5">
+        <div id="outline-container-org675d552" class="outline-3">
+          <h3 id="org675d552">
             <span class="section-number-3">3.2.</span> Optimistic
             parallelization
           </h3>
@@ -529,8 +524,8 @@
             </ul>
           </div>
         </div>
-        <div id="outline-container-orgaf3faa2" class="outline-3">
-          <h3 id="orgaf3faa2">
+        <div id="outline-container-org7b474fb" class="outline-3">
+          <h3 id="org7b474fb">
             <span class="section-number-3">3.3.</span> SeiDB
           </h3>
           <div class="outline-text-3" id="text-3-3">
@@ -561,8 +556,8 @@
             </ul>
           </div>
         </div>
-        <div id="outline-container-org3c46006" class="outline-3">
-          <h3 id="org3c46006">
+        <div id="outline-container-org02ffccf" class="outline-3">
+          <h3 id="org02ffccf">
             <span class="section-number-3">3.4.</span> Interoperability
           </h3>
           <div class="outline-text-3" id="text-3-4">
@@ -577,18 +572,10 @@
         </div>
       </div>
       <div class="taglist">
-        <a href="https://chenyo-17.github.io/org-static-blog/tags.html">Tags</a
-        >:
-        <a href="https://chenyo-17.github.io/org-static-blog/tag-evm.html"
-          >evm</a
-        >
-        <a
-          href="https://chenyo-17.github.io/org-static-blog/tag-parallel-evm.html"
-          >parallel-evm</a
-        >
-        <a href="https://chenyo-17.github.io/org-static-blog/tag-sei.html"
-          >sei</a
-        >
+        <a href="https://chenyo.me/tags.html">Tags</a>:
+        <a href="https://chenyo.me/tag-evm.html">evm</a>
+        <a href="https://chenyo.me/tag-parallel-evm.html">parallel-evm</a>
+        <a href="https://chenyo.me/tag-sei.html">sei</a>
       </div>
     </div>
     <div id="postamble" class="status">

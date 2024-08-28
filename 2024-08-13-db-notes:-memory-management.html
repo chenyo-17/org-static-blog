@@ -1,595 +1,329 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta
-      name="description"
-      content="This is a personal note for the [[https://15445.courses.cs.cmu.edu/fall2023/notes/06-bufferpool.pdf][CMU 15-445 L6 notes]]"
-    />
-    <link
-      rel="alternate"
+<head>
+<meta charset="UTF-8">
+<meta name="description" content="This is a personal note for the [[https://15445.courses.cs.cmu.edu/fall2023/notes/06-bufferpool.pdf][CMU 15-445 L6 notes]]">
+<link rel="alternate"
       type="application/rss+xml"
-      href="https://chenyo-17.github.io/org-static-blog/rss.xml"
-      title="RSS feed for https://chenyo-17.github.io/org-static-blog"
-    />
-    <title>CMU 15-445 notes: Memory Management</title>
-    <script
-      type="text/javascript"
-      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
-    ></script>
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'],['\\(','\\)']]}});
-    </script>
-    <meta name="author" content="chenyo" />
-    <meta name="referrer" content="no-referrer" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="assets/style.css" type="text/css" />
-    <link rel="favicon" type="image/x-icon" href="favicon.ico" />
-    <script src="assets/search.js"></script>
-  </head>
-  <body>
-    <div id="preamble" class="status">
+      href="https://chenyo.me/rss.xml"
+      title="RSS feed for https://chenyo.me">
+<title>CMU 15-445 notes: Memory Management</title>
+<script type="text/javascript"
+             src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+       </script>
+       <script type="text/x-mathjax-config">
+             MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'],['\\(','\\)']]}});
+       </script>
+       <meta name="author" content="chenyo">
+      <meta name="referrer" content="no-referrer">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="stylesheet" href="assets/style.css" type="text/css"/>
+      <link rel="favicon" type="image/x-icon" href="favicon.ico">
+      <script src="assets/search.js"></script></head>
+<body>
+<div id="preamble" class="status">
       <header>
-        <h1>
-          <a href="https://chenyo-17.github.io/org-static-blog"
-            >Chenyo's org-static-blog</a
-          >
-        </h1>
-        <nav>
-          <a href="https://chenyo-17.github.io/org-static-blog">Home</a>
-          <a href="archive.html">Archive</a>
-          <a href="tags.html">Tags</a>
-          <div id="search-container">
-            <input
-              type="text"
-              id="search-input"
-              placeholder="Search anywhere..."
-            />
-          </div>
-        </nav>
-      </header>
-    </div>
-    <div id="content">
-      <div class="post-date">13 Aug 2024</div>
-      <h1 class="post-title">
-        <a
-          href="https://chenyo-17.github.io/org-static-blog/2024-08-13-db-notes:-memory-management.html"
-          >CMU 15-445 notes: Memory Management</a
-        >
-      </h1>
-      <nav id="table-of-contents" role="doc-toc">
-        <h2>Table of Contents</h2>
-        <div id="text-table-of-contents" role="doc-toc">
-          <ul>
-            <li><a href="#org991118a">1. Goals</a></li>
-            <li>
-              <a href="#org54c0080">2. Locks &amp; Latches</a>
-              <ul>
-                <li><a href="#org7563405">2.1. Locks</a></li>
-                <li><a href="#orgbbb576e">2.2. Latches</a></li>
-              </ul>
-            </li>
-            <li>
-              <a href="#org44fc9a5">3. Buffer pool</a>
-              <ul>
-                <li><a href="#orga068ea0">3.1. Metadata</a></li>
-                <li>
-                  <a href="#org97e52f7">3.2. Memory allocation policies</a>
-                </li>
-              </ul>
-            </li>
-            <li>
-              <a href="#org305387c">4. Buffer pool optimizations</a>
-              <ul>
-                <li><a href="#org4de54c6">4.1. Multiple buffer pools</a></li>
-                <li><a href="#org82997ef">4.2. Pre-fetching</a></li>
-                <li><a href="#orgc1a09a0">4.3. Scan sharing</a></li>
-                <li><a href="#orgad2852f">4.4. Buffer pool bypass</a></li>
-              </ul>
-            </li>
-            <li>
-              <a href="#org0bee83d">5. Buffer replacement policies</a>
-              <ul>
-                <li>
-                  <a href="#orgdc344f6">5.1. Least recently used (LRU)</a>
-                </li>
-                <li><a href="#orgbecc603">5.2. Clock</a></li>
-                <li>
-                  <a href="#org466d3f5">5.3. LRU-K</a>
-                  <ul>
-                    <li>
-                      <a href="#orga891945">5.3.1. MySQL approximate LRU-K</a>
-                    </li>
-                  </ul>
-                </li>
-                <li><a href="#org9f326e3">5.4. Localization</a></li>
-                <li><a href="#org2bfd426">5.5. Priority hint</a></li>
-                <li><a href="#orgcc2c38f">5.6. Dirty pages</a></li>
-              </ul>
-            </li>
-            <li><a href="#org1309ed9">6. Other memory pools</a></li>
-            <li><a href="#orgf3a9542">7. OS cache bypass</a></li>
-            <li><a href="#orgbbb5d1e">8. I/O scheduling</a></li>
-          </ul>
-        </div>
+      <h1><a href="https://chenyo.me">Chenyo's org-static-blog</a></h1>
+      <nav>
+      <a href="https://chenyo.me">Home</a>
+      <a href="archive.html">Archive</a>
+      <a href="tags.html">Tags</a>
+      <div id="search-container">
+      <input type="text" id="search-input" placeholder="Search anywhere...">
+      </div>
       </nav>
-      <p>
-        This is a personal note for the
-        <a
-          href="https://15445.courses.cs.cmu.edu/fall2023/notes/06-bufferpool.pdf"
-          >CMU 15-445 L6 notes</a
-        >
-        as well as some explanation from Claude.ai.
-      </p>
-      <div id="outline-container-org991118a" class="outline-2">
-        <h2 id="org991118a"><span class="section-number-2">1.</span> Goals</h2>
-        <div class="outline-text-2" id="text-1">
-          <ul class="org-ul">
-            <li>
-              Manage DBMS memory and move data between the memory and the disk,
-              such that the execution engine does no worry about the data
-              fetching.
-            </li>
-            <li>
-              Spatial control: keep relevant pages physically together on disk.
-            </li>
-            <li>
-              Temporal control: minimize the number of stalls to read data from
-              the disk.
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div id="outline-container-org54c0080" class="outline-2">
-        <h2 id="org54c0080">
-          <span class="section-number-2">2.</span> Locks &amp; Latches
-        </h2>
-        <div class="outline-text-2" id="text-2">
-          <ul class="org-ul">
-            <li>Both used to protect internal elements.</li>
-          </ul>
-        </div>
-        <div id="outline-container-org7563405" class="outline-3">
-          <h3 id="org7563405">
-            <span class="section-number-3">2.1.</span> Locks
-          </h3>
-          <div class="outline-text-3" id="text-2-1">
-            <ul class="org-ul">
-              <li>
-                A high-level logical primitive to allow for transaction
-                atomicity.
-              </li>
-              <li>Exposed to users when queries are run.</li>
-              <li>Need to be able to rollback changes.</li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-orgbbb576e" class="outline-3">
-          <h3 id="orgbbb576e">
-            <span class="section-number-3">2.2.</span> Latches
-          </h3>
-          <div class="outline-text-3" id="text-2-2">
-            <ul class="org-ul">
-              <li>
-                A low-level protection primitive a DBMS uses in its internal
-                data structures, e.g., hash tables.
-              </li>
-              <li>Only held when the operation is being made, like a mutex.</li>
-              <li>
-                Do not need to expose to users or used to rollback changes.
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div id="outline-container-org44fc9a5" class="outline-2">
-        <h2 id="org44fc9a5">
-          <span class="section-number-2">3.</span> Buffer pool
-        </h2>
-        <div class="outline-text-2" id="text-3">
-          <ul class="org-ul">
-            <li>An in-memory cache of pages read from the disk.</li>
-            <li>
-              The buffer pool&rsquo;s region of memory is organized as an array
-              of fixed size pages; each array entry is called a frame.
-            </li>
-            <li>
-              When the DBMS requests a page, the buffer pool first searches its
-              cache, if not found, it copies he page from the disk into one of
-              its frame.
-            </li>
-            <li>
-              Dirty pages (i.e., modified pages) are buffered rather than
-              writing back immediately.
-            </li>
-          </ul>
-        </div>
-        <div id="outline-container-orga068ea0" class="outline-3">
-          <h3 id="orga068ea0">
-            <span class="section-number-3">3.1.</span> Metadata
-          </h3>
-          <div class="outline-text-3" id="text-3-1">
-            <ul class="org-ul">
-              <li>
-                Page table: An in-memory hash mapping page ids to frame
-                locations in the buffer pool.
-              </li>
-              <li>
-                Dirty flag: set by a thread whenever it modifies a page to
-                indicate the pages must be written back to disk.
-              </li>
-              <li>
-                Pin/Reference counter: tracks the number of threads that are
-                currently accessing the page; the storage manager is not allowed
-                to evict a page if its pin count is greater than 0.
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-org97e52f7" class="outline-3">
-          <h3 id="org97e52f7">
-            <span class="section-number-3">3.2.</span> Memory allocation
-            policies
-          </h3>
-          <div class="outline-text-3" id="text-3-2">
-            <ul class="org-ul">
-              <li>
-                The buffer pool decides when to allocate a frame for a page.
-              </li>
-              <li>
-                Global policies: decisions based on the overall workload, e.g.,
-                least recently used (LRU) or clock algorithm.
-              </li>
-              <li>
-                Local policies: decisions applying to specific query, e.g.,
-                priority-based page replacement.
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div id="outline-container-org305387c" class="outline-2">
-        <h2 id="org305387c">
-          <span class="section-number-2">4.</span> Buffer pool optimizations
-        </h2>
-        <div class="outline-text-2" id="text-4"></div>
-        <div id="outline-container-org4de54c6" class="outline-3">
-          <h3 id="org4de54c6">
-            <span class="section-number-3">4.1.</span> Multiple buffer pools
-          </h3>
-          <div class="outline-text-3" id="text-4-1">
-            <ul class="org-ul">
-              <li>
-                Each database or page can have its own buffer pool and adopts
-                local policies to reduce latch contention.
-              </li>
-              <li>
-                To map a page to a buffer pool, the DBMS can use object IDs or
-                page IDs as the key.
-                <ul class="org-ul">
-                  <li>
-                    Record ID: a unique identifier for a row in a table (cf.
-                    <a
-                      href="https://chenyo-17.github.io/org-static-blog/tag-database.html#org2317270"
-                      >Tuple layout post</a
-                    >).
-                  </li>
-                  <li>
-                    Object ID: a unique identifier for an object, used to
-                    reference a user-defined type.
-                  </li>
-                </ul>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-org82997ef" class="outline-3">
-          <h3 id="org82997ef">
-            <span class="section-number-3">4.2.</span> Pre-fetching
-          </h3>
-          <div class="outline-text-3" id="text-4-2">
-            <ul class="org-ul">
-              <li>
-                While the first set of pages is being processed, the DBMS can
-                pre-fetch the second set into the buffer pool based on the
-                dependency between pages.
-                <ul class="org-ul">
-                  <li>
-                    E.g., If pages are index-organized, the sibling pages can be
-                    pre-fetched.
-                  </li>
-                </ul>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-orgc1a09a0" class="outline-3">
-          <h3 id="orgc1a09a0">
-            <span class="section-number-3">4.3.</span> Scan sharing
-          </h3>
-          <div class="outline-text-3" id="text-4-3">
-            <ul class="org-ul">
-              <li>Query cursors can reuse retrieved data.</li>
-              <li>
-                When a query comes while a previous query is being processed by
-                scanning the table, the new query can attach its scanning cursor
-                to the first query&rsquo;s cursor.
-              </li>
-              <li>
-                The DBMS keeps track of where the second query joined to make
-                sure it also completes the scan.
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-orgad2852f" class="outline-3">
-          <h3 id="orgad2852f">
-            <span class="section-number-3">4.4.</span> Buffer pool bypass
-          </h3>
-          <div class="outline-text-3" id="text-4-4">
-            <ul class="org-ul">
-              <li>
-                Scanned pages do not have to be stored in the buffer pool to
-                avoid the overhead.
-              </li>
-              <li>
-                Use cases: a query needs to read a large sequence of contiguous
-                pages; temporary pages like sorting or joins.
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div id="outline-container-org0bee83d" class="outline-2">
-        <h2 id="org0bee83d">
-          <span class="section-number-2">5.</span> Buffer replacement policies
-        </h2>
-        <div class="outline-text-2" id="text-5">
-          <ul class="org-ul">
-            <li>
-              The DBMS decides which page to evict from the buffer pool to free
-              up a frame.
-            </li>
-          </ul>
-        </div>
-        <div id="outline-container-orgdc344f6" class="outline-3">
-          <h3 id="orgdc344f6">
-            <span class="section-number-3">5.1.</span> Least recently used (LRU)
-          </h3>
-          <div class="outline-text-3" id="text-5-1">
-            <ul class="org-ul">
-              <li>
-                LRU maintains a timestamp of when each page was last accessed,
-                and evicts the page with the oldest timestamp.
-                <ul class="org-ul">
-                  <li>
-                    The timestamp can be stored in a queue for efficient
-                    sorting.
-                  </li>
-                </ul>
-              </li>
-              <li>
-                Susceptible to sequential flooding, where the buffer pool is
-                corrupted due to a sequential scan.
-                <ul class="org-ul">
-                  <li>
-                    With the LRU policy the oldest pages are evicted, but they
-                    are more likely to be scanned soon.
-                  </li>
-                </ul>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-orgbecc603" class="outline-3">
-          <h3 id="orgbecc603">
-            <span class="section-number-3">5.2.</span> Clock
-          </h3>
-          <div class="outline-text-3" id="text-5-2">
-            <ul class="org-ul">
-              <li>
-                An approximation of LRU but replace the timestamp with a
-                reference bit which is set to 1 when a page is accessed.
-              </li>
-              <li>
-                Regularly sweeping all pages, if a bit is set to 1, reset to 0;
-                if a bit is 0, evict the page.
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-org466d3f5" class="outline-3">
-          <h3 id="org466d3f5">
-            <span class="section-number-3">5.3.</span> LRU-K
-          </h3>
-          <div class="outline-text-3" id="text-5-3">
-            <ul class="org-ul">
-              <li>
-                Tracks the last K accessed timestamps to predict the next
-                accessed time, hence avoid the sequential flooding issue.
-              </li>
-            </ul>
-          </div>
-          <div id="outline-container-orga891945" class="outline-4">
-            <h4 id="orga891945">
-              <span class="section-number-4">5.3.1.</span> MySQL approximate
-              LRU-K
-            </h4>
-            <div class="outline-text-4" id="text-5-3-1">
-              <ul class="org-ul">
-                <li>
-                  Use a linked list with two entry points: &ldquo;old&rdquo; and
-                  &ldquo;young&rdquo;.
-                </li>
-                <li>
-                  The new pages are always inserted to the head of
-                  &ldquo;old&rdquo;.
-                </li>
-                <li>
-                  If a page in the &ldquo;old&rdquo; is accessed again, it is
-                  then inserted to the head of &ldquo;young&rdquo;.
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div id="outline-container-org9f326e3" class="outline-3">
-          <h3 id="org9f326e3">
-            <span class="section-number-3">5.4.</span> Localization
-          </h3>
-          <div class="outline-text-3" id="text-5-4">
-            <ul class="org-ul">
-              <li>
-                Instead of using a global replacement policy, the DBMS make
-                eviction decisions based on each query.
-              </li>
-              <li>
-                Pages brought in by one query are less likely to evict pages
-                that are important for other ongoing queries.
-              </li>
-              <li>
-                The DBMS can <b><b>predicts</b></b> more accurately which pages
-                should stay or be evicted once the query is complete, so that
-                the buffer pool is less polluted with less useful pages.
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-org2bfd426" class="outline-3">
-          <h3 id="org2bfd426">
-            <span class="section-number-3">5.5.</span> Priority hint
-          </h3>
-          <div class="outline-text-3" id="text-5-5">
-            <ul class="org-ul">
-              <li>
-                Transactions tell the buffer pool where pages are important
-                based on the <b><b>context</b></b> of each page.
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-orgcc2c38f" class="outline-3">
-          <h3 id="orgcc2c38f">
-            <span class="section-number-3">5.6.</span> Dirty pages
-          </h3>
-          <div class="outline-text-3" id="text-5-6">
-            <ul class="org-ul">
-              <li>
-                Two ways to handle dirty pages in the buffer pool:
-                <ul class="org-ul">
-                  <li>Fast: only drop clean pages.</li>
-                  <li>
-                    Slow: write back dirty pages to ensure persistent change,
-                    and then evict them (if they will not be read again.).
-                  </li>
-                </ul>
-              </li>
-              <li>
-                Can periodically walk through the page table and write back
-                dirty pages in the background.
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div id="outline-container-org1309ed9" class="outline-2">
-        <h2 id="org1309ed9">
-          <span class="section-number-2">6.</span> Other memory pools
-        </h2>
-        <div class="outline-text-2" id="text-6">
-          <ul class="org-ul">
-            <li>
-              A DBMS also maintains other pools to store:
-              <ul class="org-ul">
-                <li>query caches,</li>
-                <li>logs,</li>
-                <li>temporary tables, e.g., sorting, join,</li>
-                <li>dictionary caches.</li>
-              </ul>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div id="outline-container-orgf3a9542" class="outline-2">
-        <h2 id="orgf3a9542">
-          <span class="section-number-2">7.</span> OS cache bypass
-        </h2>
-        <div class="outline-text-2" id="text-7">
-          <ul class="org-ul">
-            <li>
-              Most DBMS use direct I/O (e.g., with <code>fsync</code> instead of
-              <code>fwrite</code>) to bypass the OS cache to avoid redundant
-              page copy and to manage eviction policies more intelligently (cf.
-              <a
-                href="https://chenyo-17.github.io/org-static-blog/tag-database.html#org611ff38"
-                >Why not OS post</a
-              >).
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div id="outline-container-orgbbb5d1e" class="outline-2">
-        <h2 id="orgbbb5d1e">
-          <span class="section-number-2">8.</span> I/O scheduling
-        </h2>
-        <div class="outline-text-2" id="text-8">
-          <ul class="org-ul">
-            <li>
-              The DBMS maintains internal <b><b>queue</b></b> to track page
-              read/write.
-            </li>
-            <li>
-              The priority are determined by multi-facets, e.g., critical path
-              task, SLAs.
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div class="taglist">
-        <a href="https://chenyo-17.github.io/org-static-blog/tags.html">Tags</a
-        >:
-        <a href="https://chenyo-17.github.io/org-static-blog/tag-study.html"
-          >study</a
-        >
-        <a href="https://chenyo-17.github.io/org-static-blog/tag-database.html"
-          >database</a
-        >
-        <a href="https://chenyo-17.github.io/org-static-blog/tag-cmu.html"
-          >cmu</a
-        >
-      </div>
-    </div>
-    <div id="postamble" class="status">
-      <div id="search-results"></div>
+      </header></div>
+<div id="content">
+<div class="post-date">13 Aug 2024</div><h1 class="post-title"><a href="https://chenyo.me/2024-08-13-db-notes:-memory-management.html">CMU 15-445 notes: Memory Management</a></h1>
+<nav id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#orgc800d68">1. Goals</a></li>
+<li><a href="#orgc34681e">2. Locks &amp; Latches</a>
+<ul>
+<li><a href="#orgfcb6462">2.1. Locks</a></li>
+<li><a href="#org57f3c38">2.2. Latches</a></li>
+</ul>
+</li>
+<li><a href="#org50cea72">3. Buffer pool</a>
+<ul>
+<li><a href="#orgff0de2d">3.1. Metadata</a></li>
+<li><a href="#org201ce35">3.2. Memory allocation policies</a></li>
+</ul>
+</li>
+<li><a href="#orge7ca933">4. Buffer pool optimizations</a>
+<ul>
+<li><a href="#org6207174">4.1. Multiple buffer pools</a></li>
+<li><a href="#org20fb358">4.2. Pre-fetching</a></li>
+<li><a href="#orgb6fc3cd">4.3. Scan sharing</a></li>
+<li><a href="#orgc56e03f">4.4. Buffer pool bypass</a></li>
+</ul>
+</li>
+<li><a href="#org29902d9">5. Buffer replacement policies</a>
+<ul>
+<li><a href="#org7bee9b5">5.1. Least recently used (LRU)</a></li>
+<li><a href="#org5477cd0">5.2. Clock</a></li>
+<li><a href="#org3875dd6">5.3. LRU-K</a>
+<ul>
+<li><a href="#org3d504ea">5.3.1. MySQL approximate LRU-K</a></li>
+</ul>
+</li>
+<li><a href="#org50e7c24">5.4. Localization</a></li>
+<li><a href="#org113608b">5.5. Priority hint</a></li>
+<li><a href="#org4ba562e">5.6. Dirty pages</a></li>
+</ul>
+</li>
+<li><a href="#orgd9f04c5">6. Other memory pools</a></li>
+<li><a href="#orgebf7372">7. OS cache bypass</a></li>
+<li><a href="#org0d6a22f">8. I/O scheduling</a></li>
+</ul>
+</div>
+</nav>
+<p>
+This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall2023/notes/06-bufferpool.pdf">CMU 15-445 L6 notes</a> as well as some explanation from Claude.ai.
+</p>
+<div id="outline-container-orgc800d68" class="outline-2">
+<h2 id="orgc800d68"><span class="section-number-2">1.</span> Goals</h2>
+<div class="outline-text-2" id="text-1">
+<ul class="org-ul">
+<li>Manage DBMS memory and move data between the memory and the disk, such that the execution engine does no worry about the data fetching.</li>
+<li>Spatial control: keep relevant pages physically together on disk.</li>
+<li>Temporal control: minimize the number of stalls to read data from the disk.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgc34681e" class="outline-2">
+<h2 id="orgc34681e"><span class="section-number-2">2.</span> Locks &amp; Latches</h2>
+<div class="outline-text-2" id="text-2">
+<ul class="org-ul">
+<li>Both used to protect internal elements.</li>
+</ul>
+</div>
+<div id="outline-container-orgfcb6462" class="outline-3">
+<h3 id="orgfcb6462"><span class="section-number-3">2.1.</span> Locks</h3>
+<div class="outline-text-3" id="text-2-1">
+<ul class="org-ul">
+<li>A high-level logical primitive to allow for transaction atomicity.</li>
+<li>Exposed to users when queries are run.</li>
+<li>Need to be able to rollback changes.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org57f3c38" class="outline-3">
+<h3 id="org57f3c38"><span class="section-number-3">2.2.</span> Latches</h3>
+<div class="outline-text-3" id="text-2-2">
+<ul class="org-ul">
+<li>A low-level protection primitive a DBMS uses in its internal data structures, e.g., hash tables.</li>
+<li>Only held when the operation is being made, like a mutex.</li>
+<li>Do not need to expose to users or used to rollback changes.</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-org50cea72" class="outline-2">
+<h2 id="org50cea72"><span class="section-number-2">3.</span> Buffer pool</h2>
+<div class="outline-text-2" id="text-3">
+<ul class="org-ul">
+<li>An in-memory cache of pages read from the disk.</li>
+<li>The buffer pool&rsquo;s region of memory is organized as an array of fixed size pages; each array entry is called a frame.</li>
+<li>When the DBMS requests a page, the buffer pool first searches its cache, if not found, it copies he page from the disk into one of its frame.</li>
+<li>Dirty pages (i.e., modified pages) are buffered rather than writing back immediately.</li>
+</ul>
+</div>
+<div id="outline-container-orgff0de2d" class="outline-3">
+<h3 id="orgff0de2d"><span class="section-number-3">3.1.</span> Metadata</h3>
+<div class="outline-text-3" id="text-3-1">
+<ul class="org-ul">
+<li>Page table: An in-memory hash mapping page ids to frame locations in the buffer pool.</li>
+<li>Dirty flag: set by a thread whenever it modifies a page to indicate the pages must be written back to disk.</li>
+<li>Pin/Reference counter: tracks the number of threads that are currently accessing the page; the storage manager is not allowed to evict a page if its pin count is greater than 0.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org201ce35" class="outline-3">
+<h3 id="org201ce35"><span class="section-number-3">3.2.</span> Memory allocation policies</h3>
+<div class="outline-text-3" id="text-3-2">
+<ul class="org-ul">
+<li>The buffer pool decides when to allocate a frame for a page.</li>
+<li>Global policies: decisions based on the overall workload, e.g., least recently used (LRU) or clock algorithm.</li>
+<li>Local policies: decisions applying to specific query, e.g., priority-based page replacement.</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-orge7ca933" class="outline-2">
+<h2 id="orge7ca933"><span class="section-number-2">4.</span> Buffer pool optimizations</h2>
+<div class="outline-text-2" id="text-4">
+</div>
+<div id="outline-container-org6207174" class="outline-3">
+<h3 id="org6207174"><span class="section-number-3">4.1.</span> Multiple buffer pools</h3>
+<div class="outline-text-3" id="text-4-1">
+<ul class="org-ul">
+<li>Each database or page can have its own buffer pool and adopts local policies to reduce latch contention.</li>
+<li>To map a page to a buffer pool, the DBMS can use object IDs or page IDs as the key.
+<ul class="org-ul">
+<li>Record ID: a unique identifier for a row in a table (cf. <a href="https://chenyo-17.github.io/org-static-blog/tag-database.html#org2317270">Tuple layout post</a>).</li>
+<li>Object ID: a unique identifier for an object, used to reference a user-defined type.</li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org20fb358" class="outline-3">
+<h3 id="org20fb358"><span class="section-number-3">4.2.</span> Pre-fetching</h3>
+<div class="outline-text-3" id="text-4-2">
+<ul class="org-ul">
+<li>While the first set of pages is being processed, the DBMS can pre-fetch the second set into the buffer pool based on the dependency between pages.
+<ul class="org-ul">
+<li>E.g., If pages are index-organized, the sibling pages can be pre-fetched.</li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgb6fc3cd" class="outline-3">
+<h3 id="orgb6fc3cd"><span class="section-number-3">4.3.</span> Scan sharing</h3>
+<div class="outline-text-3" id="text-4-3">
+<ul class="org-ul">
+<li>Query cursors can reuse retrieved data.</li>
+<li>When a query comes while a previous query is being processed by scanning the table, the new query can attach its scanning cursor to the first query&rsquo;s cursor.</li>
+<li>The DBMS keeps track of where the second query joined to make sure it also completes the scan.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgc56e03f" class="outline-3">
+<h3 id="orgc56e03f"><span class="section-number-3">4.4.</span> Buffer pool bypass</h3>
+<div class="outline-text-3" id="text-4-4">
+<ul class="org-ul">
+<li>Scanned pages do not have to be stored in the buffer pool to avoid the overhead.</li>
+<li>Use cases: a query needs to read a large sequence of contiguous pages; temporary pages like sorting or joins.</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-org29902d9" class="outline-2">
+<h2 id="org29902d9"><span class="section-number-2">5.</span> Buffer replacement policies</h2>
+<div class="outline-text-2" id="text-5">
+<ul class="org-ul">
+<li>The DBMS decides which page to evict from the buffer pool to free up a frame.</li>
+</ul>
+</div>
+<div id="outline-container-org7bee9b5" class="outline-3">
+<h3 id="org7bee9b5"><span class="section-number-3">5.1.</span> Least recently used (LRU)</h3>
+<div class="outline-text-3" id="text-5-1">
+<ul class="org-ul">
+<li>LRU maintains a timestamp of when each page was last accessed, and evicts the page with the oldest timestamp.
+<ul class="org-ul">
+<li>The timestamp can be stored in a queue for efficient sorting.</li>
+</ul></li>
+<li>Susceptible to sequential flooding, where the buffer pool is corrupted due to a sequential scan.
+<ul class="org-ul">
+<li>With the LRU policy the oldest pages are evicted, but they are more likely to be scanned soon.</li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org5477cd0" class="outline-3">
+<h3 id="org5477cd0"><span class="section-number-3">5.2.</span> Clock</h3>
+<div class="outline-text-3" id="text-5-2">
+<ul class="org-ul">
+<li>An approximation of LRU but replace the timestamp with a reference bit which is set to 1 when a page is accessed.</li>
+<li>Regularly sweeping all pages, if a bit is set to 1, reset to 0; if a bit is 0, evict the page.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org3875dd6" class="outline-3">
+<h3 id="org3875dd6"><span class="section-number-3">5.3.</span> LRU-K</h3>
+<div class="outline-text-3" id="text-5-3">
+<ul class="org-ul">
+<li>Tracks the last K accessed timestamps to predict the next accessed time, hence avoid the sequential flooding issue.</li>
+</ul>
+</div>
+<div id="outline-container-org3d504ea" class="outline-4">
+<h4 id="org3d504ea"><span class="section-number-4">5.3.1.</span> MySQL approximate LRU-K</h4>
+<div class="outline-text-4" id="text-5-3-1">
+<ul class="org-ul">
+<li>Use a linked list with two entry points: &ldquo;old&rdquo; and &ldquo;young&rdquo;.</li>
+<li>The new pages are always inserted to the head of &ldquo;old&rdquo;.</li>
+<li>If a page in the &ldquo;old&rdquo; is accessed again, it is then inserted to the head of &ldquo;young&rdquo;.</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-org50e7c24" class="outline-3">
+<h3 id="org50e7c24"><span class="section-number-3">5.4.</span> Localization</h3>
+<div class="outline-text-3" id="text-5-4">
+<ul class="org-ul">
+<li>Instead of using a global replacement policy, the DBMS make eviction decisions based on each query.</li>
+<li>Pages brought in by one query are less likely to evict pages that are important for other ongoing queries.</li>
+<li>The DBMS can <b><b>predicts</b></b> more accurately which pages should stay or be evicted once the query is complete, so that the buffer pool is less polluted with less useful pages.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org113608b" class="outline-3">
+<h3 id="org113608b"><span class="section-number-3">5.5.</span> Priority hint</h3>
+<div class="outline-text-3" id="text-5-5">
+<ul class="org-ul">
+<li>Transactions tell the buffer pool where pages are important based on the <b><b>context</b></b> of each page.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org4ba562e" class="outline-3">
+<h3 id="org4ba562e"><span class="section-number-3">5.6.</span> Dirty pages</h3>
+<div class="outline-text-3" id="text-5-6">
+<ul class="org-ul">
+<li>Two ways to handle dirty pages in the buffer pool:
+<ul class="org-ul">
+<li>Fast: only drop clean pages.</li>
+<li>Slow: write back dirty pages to ensure persistent change, and then evict them (if they will not be read again.).</li>
+</ul></li>
+<li>Can periodically walk through the page table and write back dirty pages in the background.</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-orgd9f04c5" class="outline-2">
+<h2 id="orgd9f04c5"><span class="section-number-2">6.</span> Other memory pools</h2>
+<div class="outline-text-2" id="text-6">
+<ul class="org-ul">
+<li>A DBMS also maintains other pools to store:
+<ul class="org-ul">
+<li>query caches,</li>
+<li>logs,</li>
+<li>temporary tables, e.g., sorting, join,</li>
+<li>dictionary caches.</li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgebf7372" class="outline-2">
+<h2 id="orgebf7372"><span class="section-number-2">7.</span> OS cache bypass</h2>
+<div class="outline-text-2" id="text-7">
+<ul class="org-ul">
+<li>Most DBMS use direct I/O (e.g., with <code>fsync</code> instead of <code>fwrite</code>) to bypass the OS cache to avoid redundant page copy and to manage eviction policies more intelligently (cf. <a href="https://chenyo-17.github.io/org-static-blog/tag-database.html#org611ff38">Why not OS post</a>).</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org0d6a22f" class="outline-2">
+<h2 id="org0d6a22f"><span class="section-number-2">8.</span> I/O scheduling</h2>
+<div class="outline-text-2" id="text-8">
+<ul class="org-ul">
+<li>The DBMS maintains internal <b><b>queue</b></b> to track page read/write.</li>
+<li>The priority are determined by multi-facets, e.g., critical path task, SLAs.</li>
+</ul>
+</div>
+</div>
+<div class="taglist"><a href="https://chenyo.me/tags.html">Tags</a>: <a href="https://chenyo.me/tag-study.html">study</a> <a href="https://chenyo.me/tag-database.html">database</a> <a href="https://chenyo.me/tag-cmu.html">cmu</a> </div></div>
+<div id="postamble" class="status"><div id="search-results"></div>
       <footer>
         <p>© 2024 chenyo. Some rights reserved.</p>
         <div class="social-links">
-          <a
-            href="https://t.me/feihuadawangjiushiwo"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <img
-              src="assets/telegram-icon.svg"
-              alt="Telegram"
-              width="24"
-              height="24"
-            />
+          <a href="https://t.me/feihuadawangjiushiwo" target="_blank" rel="noopener noreferrer">
+            <img src="assets/telegram-icon.svg" alt="Telegram" width="24" height="24">
           </a>
-          <a
-            href="https://github.com/chenyo-17"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <img
-              src="assets/github-icon.svg"
-              alt="GitHub"
-              width="24"
-              height="24"
-            />
-          </a>
-        </div>
-      </footer>
-    </div>
-  </body>
+          <a href="https://github.com/chenyo-17" target="_blank" rel="noopener noreferrer">
+            <img src="assets/github-icon.svg" alt="GitHub" width="24" height="24">
+      </a>
+      </div>
+      </footer></div>
+</body>
 </html>

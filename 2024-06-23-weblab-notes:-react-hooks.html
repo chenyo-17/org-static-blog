@@ -1,117 +1,75 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta
-      name="description"
-      content="This is a personal note for the [[https://docs.google.com/presentation/d/1n5RlpgBtXQ1OHvutx9TRLotWizyg2BPKv_780DD4-90/edit#slide=id.gb2bbafee77_1_66][web.lab lectures]]."
-    />
-    <link
-      rel="alternate"
+<head>
+<meta charset="UTF-8">
+<meta name="description" content="This is a personal note for the [[https://docs.google.com/presentation/d/1n5RlpgBtXQ1OHvutx9TRLotWizyg2BPKv_780DD4-90/edit#slide=id.gb2bbafee77_1_66][web.lab lectures]].">
+<link rel="alternate"
       type="application/rss+xml"
-      href="https://chenyo-17.github.io/org-static-blog/rss.xml"
-      title="RSS feed for https://chenyo-17.github.io/org-static-blog"
-    />
-    <title>Weblab notes: React hooks</title>
-    <script
-      type="text/javascript"
-      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
-    ></script>
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'],['\\(','\\)']]}});
-    </script>
-    <meta name="author" content="chenyo" />
-    <meta name="referrer" content="no-referrer" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="assets/style.css" type="text/css" />
-    <link rel="favicon" type="image/x-icon" href="favicon.ico" />
-    <script src="assets/search.js"></script>
-  </head>
-  <body>
-    <div id="preamble" class="status">
+      href="https://chenyo.me/rss.xml"
+      title="RSS feed for https://chenyo.me">
+<title>Weblab notes: React hooks</title>
+<script type="text/javascript"
+             src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+       </script>
+       <script type="text/x-mathjax-config">
+             MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'],['\\(','\\)']]}});
+       </script>
+       <meta name="author" content="chenyo">
+      <meta name="referrer" content="no-referrer">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="stylesheet" href="assets/style.css" type="text/css"/>
+      <link rel="favicon" type="image/x-icon" href="favicon.ico">
+      <script src="assets/search.js"></script></head>
+<body>
+<div id="preamble" class="status">
       <header>
-        <h1>
-          <a href="https://chenyo-17.github.io/org-static-blog"
-            >Chenyo's org-static-blog</a
-          >
-        </h1>
-        <nav>
-          <a href="https://chenyo-17.github.io/org-static-blog">Home</a>
-          <a href="archive.html">Archive</a>
-          <a href="tags.html">Tags</a>
-          <div id="search-container">
-            <input
-              type="text"
-              id="search-input"
-              placeholder="Search anywhere..."
-            />
-          </div>
-        </nav>
-      </header>
-    </div>
-    <div id="content">
-      <div class="post-date">23 Jun 2024</div>
-      <h1 class="post-title">
-        <a
-          href="https://chenyo-17.github.io/org-static-blog/2024-06-23-weblab-notes:-react-hooks.html"
-          >Weblab notes: React hooks</a
-        >
-      </h1>
-      <nav id="table-of-contents" role="doc-toc">
-        <h2>Table of Contents</h2>
-        <div id="text-table-of-contents" role="doc-toc">
-          <ul>
-            <li>
-              <a href="#org464b9a3">1. What is a React hook</a>
-              <ul>
-                <li>
-                  <a href="#org5ca9868"
-                    >1.1. <code>useState</code> is not enough</a
-                  >
-                </li>
-                <li>
-                  <a href="#orgff6d7f3"
-                    >1.2. <code>useEffect</code> runs after specific variable
-                    change</a
-                  >
-                </li>
-              </ul>
-            </li>
-            <li>
-              <a href="#org321f1fe">2. React hook patterns</a>
-              <ul>
-                <li><a href="#orgbbbe62f">2.1. Fetch and send data</a></li>
-                <li><a href="#orgbbe66ca">2.2. Conditional rendering</a></li>
-                <li><a href="#org3ea7d68">2.3. Render an array of Data</a></li>
-              </ul>
-            </li>
-            <li><a href="#org6a03687">3. Example: Stopwatch</a></li>
-            <li><a href="#orgfb6abe1">4. DOM and component mounting</a></li>
-          </ul>
-        </div>
+      <h1><a href="https://chenyo.me">Chenyo's org-static-blog</a></h1>
+      <nav>
+      <a href="https://chenyo.me">Home</a>
+      <a href="archive.html">Archive</a>
+      <a href="tags.html">Tags</a>
+      <div id="search-container">
+      <input type="text" id="search-input" placeholder="Search anywhere...">
+      </div>
       </nav>
-      <div id="outline-container-org464b9a3" class="outline-2">
-        <h2 id="org464b9a3">
-          <span class="section-number-2">1.</span> What is a React hook
-        </h2>
-        <div class="outline-text-2" id="text-1">
-          <ul class="org-ul">
-            <li>
-              Special functions to access parts of the component lifestyle.
-            </li>
-            <li>e.g., <code>useState</code></li>
-          </ul>
-        </div>
-        <div id="outline-container-org5ca9868" class="outline-3">
-          <h3 id="org5ca9868">
-            <span class="section-number-3">1.1.</span> <code>useState</code> is
-            not enough
-          </h3>
-          <div class="outline-text-3" id="text-1-1">
-            <div class="org-src-container">
-              <pre
-                class="src src-js"
-              ><span class="linenr">1: </span><span style="color: #51afef;">const</span> [<span style="color: #dcaeea;">persons</span>, <span style="color: #dcaeea;">setPersons</span>] = useState([]);
+      </header></div>
+<div id="content">
+<div class="post-date">23 Jun 2024</div><h1 class="post-title"><a href="https://chenyo.me/2024-06-23-weblab-notes:-react-hooks.html">Weblab notes: React hooks</a></h1>
+<nav id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#org9385fcc">1. What is a React hook</a>
+<ul>
+<li><a href="#orgc1c1292">1.1. <code>useState</code> is not enough</a></li>
+<li><a href="#orge44f57f">1.2. <code>useEffect</code> runs after specific variable change</a></li>
+</ul>
+</li>
+<li><a href="#org845da78">2. React hook patterns</a>
+<ul>
+<li><a href="#org1dfacd1">2.1. Fetch and send data</a></li>
+<li><a href="#org697282d">2.2. Conditional rendering</a></li>
+<li><a href="#org10f7c85">2.3. Render an array of Data</a></li>
+</ul>
+</li>
+<li><a href="#org08dab9a">3. Example: Stopwatch</a></li>
+<li><a href="#orge4f1cec">4. DOM and component mounting</a></li>
+</ul>
+</div>
+</nav>
+<div id="outline-container-org9385fcc" class="outline-2">
+<h2 id="org9385fcc"><span class="section-number-2">1.</span> What is a React hook</h2>
+<div class="outline-text-2" id="text-1">
+<ul class="org-ul">
+<li>Special functions to access parts of the component lifestyle.</li>
+<li>e.g., <code>useState</code></li>
+</ul>
+</div>
+<div id="outline-container-orgc1c1292" class="outline-3">
+<h3 id="orgc1c1292"><span class="section-number-3">1.1.</span> <code>useState</code> is not enough</h3>
+<div class="outline-text-3" id="text-1-1">
+<div class="org-src-container">
+<pre class="src src-js"><span class="linenr">1: </span><span style="color: #51afef;">const</span> [<span style="color: #dcaeea;">persons</span>, <span style="color: #dcaeea;">setPersons</span>] = useState([]);
 <span class="linenr">2: </span>
 <span class="linenr">3: </span>testingStuff = () =&gt; {
 <span class="linenr">4: </span>    <span style="color: #5B6268;">/* </span><span style="color: #5B6268;">assume persons is empty before</span><span style="color: #5B6268;"> */</span>
@@ -119,41 +77,26 @@
 <span class="linenr">6: </span>}
 <span class="linenr">7: </span>console.log(persons);
 </pre>
-            </div>
+</div>
 
-            <ul class="org-ul">
-              <li>
-                The output of <code class="src src-js">console.log</code> is
-                <code>[]</code> instead of <code>["me"]</code> because setting a
-                state is <b><b>async</b></b
-                >!
-              </li>
-              <li>
-                To do something immediately after a state is changed, use
-                <code>useEffect</code> hook!
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-orgff6d7f3" class="outline-3">
-          <h3 id="orgff6d7f3">
-            <span class="section-number-3">1.2.</span>
-            <code>useEffect</code> runs after specific variable change
-          </h3>
-          <div class="outline-text-3" id="text-1-2">
-            <div class="org-src-container">
-              <pre
-                class="src src-js"
-              ><span class="linenr">1: </span>useEffect(() =&gt; {
+<ul class="org-ul">
+<li>The output of <code class="src src-js">console.log</code> is <code>[]</code> instead of <code>["me"]</code> because setting a state is <b><b>async</b></b>!</li>
+<li>To do something immediately after a state is changed, use <code>useEffect</code> hook!</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orge44f57f" class="outline-3">
+<h3 id="orge44f57f"><span class="section-number-3">1.2.</span> <code>useEffect</code> runs after specific variable change</h3>
+<div class="outline-text-3" id="text-1-2">
+<div class="org-src-container">
+<pre class="src src-js"><span class="linenr">1: </span>useEffect(() =&gt; {
 <span class="linenr">2: </span>    console.log(persons);
 <span class="linenr">3: </span>}, [persons]);
 </pre>
-            </div>
+</div>
 
-            <div class="org-src-container">
-              <pre
-                class="src src-js"
-              ><span class="linenr">1: </span>useEffect(() =&gt; {
+<div class="org-src-container">
+<pre class="src src-js"><span class="linenr">1: </span>useEffect(() =&gt; {
 <span class="linenr">2: </span><span style="color: #5B6268;">/* </span><span style="color: #5B6268;">do something, e.g., interact with an external service</span><span style="color: #5B6268;"> */</span>
 <span class="linenr">3: </span>
 <span class="linenr">4: </span><span style="color: #51afef;">return</span> () =&gt; {
@@ -161,55 +104,35 @@
 <span class="linenr">6: </span>}
 <span class="linenr">7: </span>}, [<span style="color: #5B6268;">/*</span><span style="color: #5B6268;">dependencies</span><span style="color: #5B6268;"> */</span>])
 </pre>
-            </div>
+</div>
 
-            <ul class="org-ul">
-              <li>
-                <code class="src src-js"
-                  >useEffect(myFunction, [var1, var2])</code
-                >
-                calls <code>myFunction</code> everytime when
-                <code>var1</code> or <code>var2</code> changes
-              </li>
-              <li>
-                <code class="src src-js">useEffect(myFunction, []])</code> calls
-                only once when the component is rendered for the first time (on
-                mount)
-              </li>
-              <li>
-                <code class="src src-js">useEffect(myFunction)</code> calls at
-                every render
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div id="outline-container-org321f1fe" class="outline-2">
-        <h2 id="org321f1fe">
-          <span class="section-number-2">2.</span> React hook patterns
-        </h2>
-        <div class="outline-text-2" id="text-2"></div>
-        <div id="outline-container-orgbbbe62f" class="outline-3">
-          <h3 id="orgbbbe62f">
-            <span class="section-number-3">2.1.</span> Fetch and send data
-          </h3>
-          <div class="outline-text-3" id="text-2-1">
-            <div class="org-src-container">
-              <pre
-                class="src src-js"
-              ><span class="linenr">1: </span><span style="color: #5B6268;">/* </span><span style="color: #5B6268;">fetch data on mount</span><span style="color: #5B6268;"> */</span>
+<ul class="org-ul">
+<li><code class="src src-js">useEffect(myFunction, [var1, var2])</code> calls <code>myFunction</code> everytime when <code>var1</code> or <code>var2</code> changes</li>
+<li><code class="src src-js">useEffect(myFunction, []])</code> calls only once when the component is rendered for the first time (on mount)</li>
+<li><code class="src src-js">useEffect(myFunction)</code> calls at every render</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-org845da78" class="outline-2">
+<h2 id="org845da78"><span class="section-number-2">2.</span> React hook patterns</h2>
+<div class="outline-text-2" id="text-2">
+</div>
+<div id="outline-container-org1dfacd1" class="outline-3">
+<h3 id="org1dfacd1"><span class="section-number-3">2.1.</span> Fetch and send data</h3>
+<div class="outline-text-3" id="text-2-1">
+<div class="org-src-container">
+<pre class="src src-js"><span class="linenr">1: </span><span style="color: #5B6268;">/* </span><span style="color: #5B6268;">fetch data on mount</span><span style="color: #5B6268;"> */</span>
 <span class="linenr">2: </span>useEffect(() =&gt; {
 <span class="linenr">3: </span>    get(<span style="color: #98be65;">"/api/packages"</span>).then((packageList) =&gt; {
 <span class="linenr">4: </span>        setPackages(packageList);
 <span class="linenr">5: </span>    });
 <span class="linenr">6: </span>}, []);
 </pre>
-            </div>
+</div>
 
-            <div class="org-src-container">
-              <pre
-                class="src src-js"
-              ><span class="linenr">1: </span><span style="color: #5B6268;">/* </span><span style="color: #5B6268;">send data then toggle admin state</span><span style="color: #5B6268;"> */</span>
+<div class="org-src-container">
+<pre class="src src-js"><span class="linenr">1: </span><span style="color: #5B6268;">/* </span><span style="color: #5B6268;">send data then toggle admin state</span><span style="color: #5B6268;"> */</span>
 <span class="linenr">2: </span><span style="color: #51afef;">const</span> <span style="color: #dcaeea;">handleToggleAdmin</span> = () =&gt; {
 <span class="linenr">3: </span>    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">.then(), do something once the promise is fulfilled</span>
 <span class="linenr">4: </span>    post(<span style="color: #98be65;">"/api/user/admin"</span>, { admin: !admin }).then(() =&gt; {
@@ -218,18 +141,14 @@
 <span class="linenr">7: </span>};
 <span class="linenr">8: </span><span style="color: #5B6268;">/* </span><span style="color: #5B6268;">&lt;Button onClick={handleToggleAdmin}</span><span style="color: #5B6268;"> */</span>
 </pre>
-            </div>
-          </div>
-        </div>
-        <div id="outline-container-orgbbe66ca" class="outline-3">
-          <h3 id="orgbbe66ca">
-            <span class="section-number-3">2.2.</span> Conditional rendering
-          </h3>
-          <div class="outline-text-3" id="text-2-2">
-            <div class="org-src-container">
-              <pre
-                class="src src-js"
-              ><span class="linenr">1: </span><span style="color: #5B6268;">// </span><span style="color: #5B6268;">JSX is a way of writing HTML in js</span>
+</div>
+</div>
+</div>
+<div id="outline-container-org697282d" class="outline-3">
+<h3 id="org697282d"><span class="section-number-3">2.2.</span> Conditional rendering</h3>
+<div class="outline-text-3" id="text-2-2">
+<div class="org-src-container">
+<pre class="src src-js"><span class="linenr">1: </span><span style="color: #5B6268;">// </span><span style="color: #5B6268;">JSX is a way of writing HTML in js</span>
 <span class="linenr">2: </span><span style="color: #51afef;">let</span> <span style="color: #dcaeea;">content</span> = loading ? &lt;p&gt;Loading...&lt;/p&gt; : &lt;p&gt;Loaded&lt;/p&gt;;
 <span class="linenr">3: </span><span style="color: #51afef;">return</span> (
 <span class="linenr">4: </span>    &lt;div&gt;
@@ -238,18 +157,14 @@
 <span class="linenr">7: </span>    &lt;/div&gt;
 <span class="linenr">8: </span>);
 </pre>
-            </div>
-          </div>
-        </div>
-        <div id="outline-container-org3ea7d68" class="outline-3">
-          <h3 id="org3ea7d68">
-            <span class="section-number-3">2.3.</span> Render an array of Data
-          </h3>
-          <div class="outline-text-3" id="text-2-3">
-            <div class="org-src-container">
-              <pre
-                class="src src-js"
-              ><span class="linenr">1: </span><span style="color: #51afef;">const</span> <span style="color: #dcaeea;">data</span> = [
+</div>
+</div>
+</div>
+<div id="outline-container-org10f7c85" class="outline-3">
+<h3 id="org10f7c85"><span class="section-number-3">2.3.</span> Render an array of Data</h3>
+<div class="outline-text-3" id="text-2-3">
+<div class="org-src-container">
+<pre class="src src-js"><span class="linenr">1: </span><span style="color: #51afef;">const</span> <span style="color: #dcaeea;">data</span> = [
 <span class="linenr">2: </span>    { id: <span style="color: #da8548; font-weight: bold;">0</span>, text: <span style="color: #98be65;">"Text 1"</span> },
 <span class="linenr">3: </span>    { id: <span style="color: #da8548; font-weight: bold;">1</span>, text: <span style="color: #98be65;">"Text 2"</span> },
 <span class="linenr">4: </span>];
@@ -258,25 +173,18 @@
 <span class="linenr">7: </span>    &lt;ItemComponent key={item.id}&gt;{item.text}&lt;/ItemComponent&gt;
 <span class="linenr">8: </span>));
 </pre>
-            </div>
-            <ul class="org-ul">
-              <li>
-                <code>key</code> is a special prop in React; it is used identify
-                which item has changed efficiently
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div id="outline-container-org6a03687" class="outline-2">
-        <h2 id="org6a03687">
-          <span class="section-number-2">3.</span> Example: Stopwatch
-        </h2>
-        <div class="outline-text-2" id="text-3">
-          <div class="org-src-container">
-            <pre
-              class="src src-js"
-            ><span class="linenr"> 1: </span><span style="color: #51afef;">const</span> <span style="color: #dcaeea;">Stopwatch</span> = () =&gt; {
+</div>
+<ul class="org-ul">
+<li><code>key</code> is a special prop in React; it is used identify which item has changed efficiently</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-org08dab9a" class="outline-2">
+<h2 id="org08dab9a"><span class="section-number-2">3.</span> Example: Stopwatch</h2>
+<div class="outline-text-2" id="text-3">
+<div class="org-src-container">
+<pre class="src src-js"><span class="linenr"> 1: </span><span style="color: #51afef;">const</span> <span style="color: #dcaeea;">Stopwatch</span> = () =&gt; {
 <span class="linenr"> 2: </span>    <span style="color: #51afef;">const</span> [<span style="color: #dcaeea;">time</span>, <span style="color: #dcaeea;">setTimer</span>] = useState(<span style="color: #da8548; font-weight: bold;">0</span>);
 <span class="linenr"> 3: </span>
 <span class="linenr"> 4: </span>    useEffect(() =&gt; {
@@ -291,83 +199,38 @@
 <span class="linenr">13: </span>    <span style="color: #51afef;">return</span> &lt;&gt;TIme: {time}&lt;/&gt;;
 <span class="linenr">14: </span>};
 </pre>
-          </div>
-        </div>
-      </div>
-      <div id="outline-container-orgfb6abe1" class="outline-2">
-        <h2 id="orgfb6abe1">
-          <span class="section-number-2">4.</span> DOM and component mounting
-        </h2>
-        <div class="outline-text-2" id="text-4">
-          <ul class="org-ul">
-            <li>
-              DOM (Document Object Model): a programming interface for web
-              documents; represents the structure of a document, e.g., HTML, as
-              a tree of objects, where each object corresponds to a part of the
-              document; it dynamically updates the document contents
-              <ul class="org-ul">
-                <li>React is a framework that manipulates DOM</li>
-              </ul>
-            </li>
-            <li>
-              A React component is unmounted when:
-              <ul class="org-ul">
-                <li>conditional rendering</li>
-                <li>routing; navigating from one route to another</li>
-                <li>its parent component is unmounted</li>
-              </ul>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div class="taglist">
-        <a href="https://chenyo-17.github.io/org-static-blog/tags.html">Tags</a
-        >:
-        <a href="https://chenyo-17.github.io/org-static-blog/tag-study.html"
-          >study</a
-        >
-        <a href="https://chenyo-17.github.io/org-static-blog/tag-web.html"
-          >web</a
-        >
-        <a href="https://chenyo-17.github.io/org-static-blog/tag-react.html"
-          >react</a
-        >
-        <a href="https://chenyo-17.github.io/org-static-blog/tag-mit.html"
-          >mit</a
-        >
-      </div>
-    </div>
-    <div id="postamble" class="status">
-      <div id="search-results"></div>
+</div>
+</div>
+</div>
+<div id="outline-container-orge4f1cec" class="outline-2">
+<h2 id="orge4f1cec"><span class="section-number-2">4.</span> DOM and component mounting</h2>
+<div class="outline-text-2" id="text-4">
+<ul class="org-ul">
+<li>DOM (Document Object Model): a programming interface for web documents; represents the structure of a document, e.g., HTML, as a tree of objects, where each object corresponds to a part of the document; it dynamically updates the document contents
+<ul class="org-ul">
+<li>React is a framework that manipulates DOM</li>
+</ul></li>
+<li>A React component is unmounted when:
+<ul class="org-ul">
+<li>conditional rendering</li>
+<li>routing; navigating from one route to another</li>
+<li>its parent component is unmounted</li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div class="taglist"><a href="https://chenyo.me/tags.html">Tags</a>: <a href="https://chenyo.me/tag-study.html">study</a> <a href="https://chenyo.me/tag-web.html">web</a> <a href="https://chenyo.me/tag-react.html">react</a> <a href="https://chenyo.me/tag-mit.html">mit</a> </div></div>
+<div id="postamble" class="status"><div id="search-results"></div>
       <footer>
         <p>© 2024 chenyo. Some rights reserved.</p>
         <div class="social-links">
-          <a
-            href="https://t.me/feihuadawangjiushiwo"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <img
-              src="assets/telegram-icon.svg"
-              alt="Telegram"
-              width="24"
-              height="24"
-            />
+          <a href="https://t.me/feihuadawangjiushiwo" target="_blank" rel="noopener noreferrer">
+            <img src="assets/telegram-icon.svg" alt="Telegram" width="24" height="24">
           </a>
-          <a
-            href="https://github.com/chenyo-17"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <img
-              src="assets/github-icon.svg"
-              alt="GitHub"
-              width="24"
-              height="24"
-            />
-          </a>
-        </div>
-      </footer>
-    </div>
-  </body>
+          <a href="https://github.com/chenyo-17" target="_blank" rel="noopener noreferrer">
+            <img src="assets/github-icon.svg" alt="GitHub" width="24" height="24">
+      </a>
+      </div>
+      </footer></div>
+</body>
 </html>

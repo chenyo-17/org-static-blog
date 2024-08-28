@@ -1,136 +1,88 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta
-      name="description"
-      content="This a personal note for the [[https://www.youtube.com/watch?v=IdCbMO0Ey9I][Go lecture]]."
-    />
-    <link
-      rel="alternate"
+<head>
+<meta charset="UTF-8">
+<meta name="description" content="This a personal note for the [[https://www.youtube.com/watch?v=IdCbMO0Ey9I][Go lecture]].">
+<link rel="alternate"
       type="application/rss+xml"
-      href="https://chenyo-17.github.io/org-static-blog/rss.xml"
-      title="RSS feed for https://chenyo-17.github.io/org-static-blog"
-    />
-    <title>Go patterns</title>
-    <script
-      type="text/javascript"
-      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
-    ></script>
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'],['\\(','\\)']]}});
-    </script>
-    <meta name="author" content="chenyo" />
-    <meta name="referrer" content="no-referrer" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="assets/style.css" type="text/css" />
-    <link rel="favicon" type="image/x-icon" href="favicon.ico" />
-    <script src="assets/search.js"></script>
-  </head>
-  <body>
-    <div id="preamble" class="status">
+      href="https://chenyo.me/rss.xml"
+      title="RSS feed for https://chenyo.me">
+<title>Go patterns</title>
+<script type="text/javascript"
+             src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+       </script>
+       <script type="text/x-mathjax-config">
+             MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'],['\\(','\\)']]}});
+       </script>
+       <meta name="author" content="chenyo">
+      <meta name="referrer" content="no-referrer">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="stylesheet" href="assets/style.css" type="text/css"/>
+      <link rel="favicon" type="image/x-icon" href="favicon.ico">
+      <script src="assets/search.js"></script></head>
+<body>
+<div id="preamble" class="status">
       <header>
-        <h1>
-          <a href="https://chenyo-17.github.io/org-static-blog"
-            >Chenyo's org-static-blog</a
-          >
-        </h1>
-        <nav>
-          <a href="https://chenyo-17.github.io/org-static-blog">Home</a>
-          <a href="archive.html">Archive</a>
-          <a href="tags.html">Tags</a>
-          <div id="search-container">
-            <input
-              type="text"
-              id="search-input"
-              placeholder="Search anywhere..."
-            />
-          </div>
-        </nav>
-      </header>
-    </div>
-    <div id="content">
-      <div class="post-date">25 Jun 2024</div>
-      <h1 class="post-title">
-        <a
-          href="https://chenyo-17.github.io/org-static-blog/2024-06-25-go-patterns.html"
-          >Go patterns</a
-        >
-      </h1>
-      <nav id="table-of-contents" role="doc-toc">
-        <h2>Table of Contents</h2>
-        <div id="text-table-of-contents" role="doc-toc">
-          <ul>
-            <li><a href="#org2c9ba19">1. Concurrency vs Parallelism</a></li>
-            <li>
-              <a href="#org6038ce2">2. Use goroutines for states</a>
-              <ul>
-                <li><a href="#org89c10dd">2.1. Matching a regex</a></li>
-                <li>
-                  <a href="#org8e963f1"
-                    >2.2. When the state variable cannot be avoided</a
-                  >
-                </li>
-              </ul>
-            </li>
-            <li>
-              <a href="#orgeb9fe29">3. Pattern 1: publish/subscribe server</a>
-              <ul>
-                <li>
-                  <a href="#orgda530d4">3.1. Options for slow goroutines</a>
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </div>
-      </nav>
-      <p>
-        This a personal note for the
-        <a href="https://www.youtube.com/watch?v=IdCbMO0Ey9I"
-          >Russ Cox guest lecture</a
-        >.
-      </p>
-      <div id="outline-container-org2c9ba19" class="outline-2">
-        <h2 id="org2c9ba19">
-          <span class="section-number-2">1.</span> Concurrency vs Parallelism
-        </h2>
-        <div class="outline-text-2" id="text-1">
-          <ul class="org-ul">
-            <li>
-              Concurrency: write a program to handle lot of things at once
-              <ul class="org-ul">
-                <li>not necessarily faster</li>
-              </ul>
-            </li>
-            <li>
-              Parallelism: the program itself can do a lot of computations at
-              once
-            </li>
-          </ul>
-        </div>
+      <h1><a href="https://chenyo.me">Chenyo's org-static-blog</a></h1>
+      <nav>
+      <a href="https://chenyo.me">Home</a>
+      <a href="archive.html">Archive</a>
+      <a href="tags.html">Tags</a>
+      <div id="search-container">
+      <input type="text" id="search-input" placeholder="Search anywhere...">
       </div>
-      <div id="outline-container-org6038ce2" class="outline-2">
-        <h2 id="org6038ce2">
-          <span class="section-number-2">2.</span> Use goroutines for states
-        </h2>
-        <div class="outline-text-2" id="text-2"></div>
-        <div id="outline-container-org89c10dd" class="outline-3">
-          <h3 id="org89c10dd">
-            <span class="section-number-3">2.1.</span> Matching a regex
-          </h3>
-          <div class="outline-text-3" id="text-2-1">
-            <ul class="org-ul">
-              <li>
-                return if a given string matches a regex: start with
-                <code>"</code>, contains arbitrary escape sequence and ends with
-                <code>*</code>
-              </li>
-              <li>
-                <p>unclear logic: store states in the data</p>
-                <div class="org-src-container">
-                  <pre
-                    class="src src-go"
-                  ><span class="linenr"> 1: </span><span style="color: #dcaeea;">state</span> := <span style="color: #da8548; font-weight: bold;">0</span>
+      </nav>
+      </header></div>
+<div id="content">
+<div class="post-date">25 Jun 2024</div><h1 class="post-title"><a href="https://chenyo.me/2024-06-25-go-patterns.html">Go patterns</a></h1>
+<nav id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#org7618fb2">1. Concurrency vs Parallelism</a></li>
+<li><a href="#orge9edd64">2. Use goroutines for states</a>
+<ul>
+<li><a href="#orgee99fd9">2.1. Matching a regex</a></li>
+<li><a href="#org0b5d52c">2.2. When the state variable cannot be avoided</a></li>
+</ul>
+</li>
+<li><a href="#org91a911b">3. Pattern 1: publish/subscribe server</a>
+<ul>
+<li><a href="#org86b4dbd">3.1. Options for slow goroutines</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</nav>
+<p>
+This a personal note for the <a href="https://www.youtube.com/watch?v=IdCbMO0Ey9I">Russ Cox guest lecture</a>.
+</p>
+<div id="outline-container-org7618fb2" class="outline-2">
+<h2 id="org7618fb2"><span class="section-number-2">1.</span> Concurrency vs Parallelism</h2>
+<div class="outline-text-2" id="text-1">
+<ul class="org-ul">
+<li>Concurrency: write a program to handle lot of things at once
+<ul class="org-ul">
+<li>not necessarily faster</li>
+</ul></li>
+<li>Parallelism: the program itself can do a lot of computations at once</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orge9edd64" class="outline-2">
+<h2 id="orge9edd64"><span class="section-number-2">2.</span> Use goroutines for states</h2>
+<div class="outline-text-2" id="text-2">
+</div>
+<div id="outline-container-orgee99fd9" class="outline-3">
+<h3 id="orgee99fd9"><span class="section-number-3">2.1.</span> Matching a regex</h3>
+<div class="outline-text-3" id="text-2-1">
+<ul class="org-ul">
+<li>return if a given string matches a regex: start with <code>"</code>, contains arbitrary escape sequence and ends with <code>*</code></li>
+<li><p>
+unclear logic: store states in the data
+</p>
+<div class="org-src-container">
+<pre class="src src-go"><span class="linenr"> 1: </span><span style="color: #dcaeea;">state</span> := <span style="color: #da8548; font-weight: bold;">0</span>
 <span class="linenr"> 2: </span><span style="color: #51afef;">for</span> {
 <span class="linenr"> 3: </span>    <span style="color: #dcaeea;">c</span> := <span style="color: #c678dd;">read</span>()
 <span class="linenr"> 4: </span>    <span style="color: #51afef;">switch</span> state {
@@ -157,14 +109,12 @@
 <span class="linenr">25: </span>    }
 <span class="linenr">26: </span>}
 </pre>
-                </div>
-              </li>
-              <li>
-                <p>clear logic: store states in the code</p>
-                <div class="org-src-container">
-                  <pre
-                    class="src src-go"
-                  ><span class="linenr"> 1: </span><span style="color: #5B6268;">// </span><span style="color: #5B6268;">no variable to store state</span>
+</div></li>
+<li><p>
+clear logic: store states in the code
+</p>
+<div class="org-src-container">
+<pre class="src src-go"><span class="linenr"> 1: </span><span style="color: #5B6268;">// </span><span style="color: #5B6268;">no variable to store state</span>
 <span class="linenr"> 2: </span><span style="color: #51afef;">if</span> <span style="color: #c678dd;">read</span>() != <span style="color: #98be65;">'"'</span> {
 <span class="linenr"> 3: </span>    <span style="color: #51afef;">return</span> <span style="color: #a9a1e1;">false</span>
 <span class="linenr"> 4: </span>}
@@ -177,24 +127,19 @@
 <span class="linenr">11: </span>}
 <span class="linenr">12: </span><span style="color: #51afef;">return</span> <span style="color: #a9a1e1;">true</span>
 </pre>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-org8e963f1" class="outline-3">
-          <h3 id="org8e963f1">
-            <span class="section-number-3">2.2.</span> When the state variable
-            cannot be avoided
-          </h3>
-          <div class="outline-text-3" id="text-2-2">
-            <ul class="org-ul">
-              <li>
-                <p>the function needs to return the state</p>
-                <div class="org-src-container">
-                  <pre
-                    class="src src-go"
-                  ><span class="linenr"> 1: </span><span style="color: #51afef;">type</span> <span style="color: #ECBE7B;">quoter</span> <span style="color: #51afef;">struct</span> {
+</div></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org0b5d52c" class="outline-3">
+<h3 id="org0b5d52c"><span class="section-number-3">2.2.</span> When the state variable cannot be avoided</h3>
+<div class="outline-text-3" id="text-2-2">
+<ul class="org-ul">
+<li><p>
+the function needs to return the state
+</p>
+<div class="org-src-container">
+<pre class="src src-go"><span class="linenr"> 1: </span><span style="color: #51afef;">type</span> <span style="color: #ECBE7B;">quoter</span> <span style="color: #51afef;">struct</span> {
 <span class="linenr"> 2: </span>    state <span style="color: #ECBE7B;">int</span>
 <span class="linenr"> 3: </span>}
 <span class="linenr"> 4: </span>
@@ -224,14 +169,12 @@
 <span class="linenr">28: </span>    <span style="color: #51afef;">return</span> NeedMoreInput
 <span class="linenr">29: </span>}
 </pre>
-                </div>
-              </li>
-              <li>
-                <p>use additional goroutines to hold states</p>
-                <div class="org-src-container">
-                  <pre
-                    class="src src-go"
-                  ><span class="linenr"> 1: </span><span style="color: #51afef;">type</span> <span style="color: #ECBE7B;">quoter</span> <span style="color: #51afef;">struct</span> {
+</div></li>
+<li><p>
+use additional goroutines to hold states
+</p>
+<div class="org-src-container">
+<pre class="src src-go"><span class="linenr"> 1: </span><span style="color: #51afef;">type</span> <span style="color: #ECBE7B;">quoter</span> <span style="color: #51afef;">struct</span> {
 <span class="linenr"> 2: </span>    char <span style="color: #51afef;">chan</span> <span style="color: #ECBE7B;">rune</span>
 <span class="linenr"> 3: </span>    status <span style="color: #51afef;">chan</span> <span style="color: #ECBE7B;">Status</span>
 <span class="linenr"> 4: </span>}
@@ -281,38 +224,27 @@
 <span class="linenr">48: </span>    }
 <span class="linenr">49: </span>}
 </pre>
-                </div>
-              </li>
-              <li>
-                check goroutine blockage
-                <ul class="org-ul">
-                  <li><code>Ctrl-\</code> sends <code>SIGQUIT</code></li>
-                  <li>
-                    use the HTTP server&rsquo;s
-                    <code>/debug/pprof/goroutine</code> if importing
-                    <code>net/http</code>
-                  </li>
-                </ul>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div id="outline-container-orgeb9fe29" class="outline-2">
-        <h2 id="orgeb9fe29">
-          <span class="section-number-2">3.</span> Pattern 1: publish/subscribe
-          server
-        </h2>
-        <div class="outline-text-2" id="text-3">
-          <ul class="org-ul">
-            <li>the information goes one way: server -&gt; client</li>
-            <li>close a channel to signal no new values will be sent</li>
-            <li>
-              <p>prefer <code>defer</code> when unlocking the mutex</p>
-              <div class="org-src-container">
-                <pre
-                  class="src src-go"
-                ><span class="linenr"> 1: </span><span style="color: #51afef;">type</span> <span style="color: #ECBE7B;">Server</span> <span style="color: #51afef;">struct</span> {
+</div></li>
+<li>check goroutine blockage
+<ul class="org-ul">
+<li><code>Ctrl-\</code> sends <code>SIGQUIT</code></li>
+<li>use the HTTP server&rsquo;s <code>/debug/pprof/goroutine</code> if importing <code>net/http</code></li>
+</ul></li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-org91a911b" class="outline-2">
+<h2 id="org91a911b"><span class="section-number-2">3.</span> Pattern 1: publish/subscribe server</h2>
+<div class="outline-text-2" id="text-3">
+<ul class="org-ul">
+<li>the information goes one way: server -&gt; client</li>
+<li>close a channel to signal no new values will be sent</li>
+<li><p>
+prefer <code>defer</code> when unlocking the mutex
+</p>
+<div class="org-src-container">
+<pre class="src src-go"><span class="linenr"> 1: </span><span style="color: #51afef;">type</span> <span style="color: #ECBE7B;">Server</span> <span style="color: #51afef;">struct</span> {
 <span class="linenr"> 2: </span>    mu  <span style="color: #ECBE7B;">sync.Mutex</span> <span style="color: #5B6268;">// </span><span style="color: #5B6268;">protect sub</span>
 <span class="linenr"> 3: </span>    sub <span style="color: #51afef;">map</span>[<span style="color: #51afef;">chan</span>&lt;- <span style="color: #ECBE7B;">Event</span>]<span style="color: #ECBE7B;">bool</span>  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">whether a channel should be closed</span>
 <span class="linenr"> 4: </span>}
@@ -350,31 +282,20 @@
 <span class="linenr">36: </span>    <span style="color: #c678dd;">delete</span>(s.sub, c)
 <span class="linenr">37: </span>}
 </pre>
-              </div>
-            </li>
-          </ul>
-        </div>
-        <div id="outline-container-orgda530d4" class="outline-3">
-          <h3 id="orgda530d4">
-            <span class="section-number-3">3.1.</span> Options for slow
-            goroutines
-          </h3>
-          <div class="outline-text-3" id="text-3-1">
-            <ul class="org-ul">
-              <li>slow down event generation</li>
-              <li>
-                drop events if it cannot be sent, e.g., <code>os/signal</code>,
-                <code>runtime/pprof</code>
-              </li>
-              <li>
-                <p>
-                  queue events, e.g., add a <code>helper</code> between the
-                  server and each client, which also separates the concerns
-                </p>
-                <div class="org-src-container">
-                  <pre
-                    class="src src-go"
-                  ><span class="linenr"> 1: </span><span style="color: #51afef;">func</span> <span style="color: #c678dd;">helper</span>(<span style="color: #dcaeea;">in</span> &lt;-<span style="color: #51afef;">chan</span> <span style="color: #ECBE7B;">Event</span>, <span style="color: #dcaeea;">out</span> <span style="color: #51afef;">chan</span>&lt;- <span style="color: #ECBE7B;">Event</span>) {
+</div></li>
+</ul>
+</div>
+<div id="outline-container-org86b4dbd" class="outline-3">
+<h3 id="org86b4dbd"><span class="section-number-3">3.1.</span> Options for slow goroutines</h3>
+<div class="outline-text-3" id="text-3-1">
+<ul class="org-ul">
+<li>slow down event generation</li>
+<li>drop events if it cannot be sent, e.g., <code>os/signal</code>, <code>runtime/pprof</code></li>
+<li><p>
+queue events, e.g., add a <code>helper</code> between the server and each client, which also separates the concerns
+</p>
+<div class="org-src-container">
+<pre class="src src-go"><span class="linenr"> 1: </span><span style="color: #51afef;">func</span> <span style="color: #c678dd;">helper</span>(<span style="color: #dcaeea;">in</span> &lt;-<span style="color: #51afef;">chan</span> <span style="color: #ECBE7B;">Event</span>, <span style="color: #dcaeea;">out</span> <span style="color: #51afef;">chan</span>&lt;- <span style="color: #ECBE7B;">Event</span>) {
 <span class="linenr"> 2: </span>    <span style="color: #51afef;">var</span> <span style="color: #dcaeea;">q</span> []<span style="color: #ECBE7B;">Event</span>
 <span class="linenr"> 3: </span>    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">if the in is closed, flash out the pending events in q</span>
 <span class="linenr"> 4: </span>    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">and close out</span>
@@ -401,17 +322,12 @@
 <span class="linenr">25: </span>    <span style="color: #c678dd;">close</span>(out)
 <span class="linenr">26: </span>}
 </pre>
-                </div>
-              </li>
-              <li>
-                <p>
-                  convert mutexes into goroutines, not suitable for Raft where
-                  state transition is complex
-                </p>
-                <div class="org-src-container">
-                  <pre
-                    class="src src-go"
-                  ><span class="linenr"> 1: </span><span style="color: #51afef;">type</span> <span style="color: #ECBE7B;">Server</span> <span style="color: #51afef;">struct</span> {
+</div></li>
+<li><p>
+convert mutexes into goroutines, not suitable for Raft where state transition is complex
+</p>
+<div class="org-src-container">
+<pre class="src src-go"><span class="linenr"> 1: </span><span style="color: #51afef;">type</span> <span style="color: #ECBE7B;">Server</span> <span style="color: #51afef;">struct</span> {
 <span class="linenr"> 2: </span>    publish   <span style="color: #51afef;">chan</span> <span style="color: #ECBE7B;">Event</span>
 <span class="linenr"> 3: </span>    subscribe <span style="color: #51afef;">chan</span> <span style="color: #ECBE7B;">subReq</span>
 <span class="linenr"> 4: </span>    cancel    <span style="color: #51afef;">chan</span> <span style="color: #ECBE7B;">subReq</span>
@@ -479,56 +395,23 @@
 <span class="linenr">66: </span>    }
 <span class="linenr">67: </span>}
 </pre>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div class="taglist">
-        <a href="https://chenyo-17.github.io/org-static-blog/tags.html">Tags</a
-        >:
-        <a href="https://chenyo-17.github.io/org-static-blog/tag-go.html">go</a>
-        <a
-          href="https://chenyo-17.github.io/org-static-blog/tag-design-pattern.html"
-          >design-pattern</a
-        >
-        <a href="https://chenyo-17.github.io/org-static-blog/tag-study.html"
-          >study</a
-        >
-      </div>
-    </div>
-    <div id="postamble" class="status">
-      <div id="search-results"></div>
+</div></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="taglist"><a href="https://chenyo.me/tags.html">Tags</a>: <a href="https://chenyo.me/tag-go.html">go</a> <a href="https://chenyo.me/tag-design-pattern.html">design-pattern</a> <a href="https://chenyo.me/tag-study.html">study</a> </div></div>
+<div id="postamble" class="status"><div id="search-results"></div>
       <footer>
         <p>© 2024 chenyo. Some rights reserved.</p>
         <div class="social-links">
-          <a
-            href="https://t.me/feihuadawangjiushiwo"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <img
-              src="assets/telegram-icon.svg"
-              alt="Telegram"
-              width="24"
-              height="24"
-            />
+          <a href="https://t.me/feihuadawangjiushiwo" target="_blank" rel="noopener noreferrer">
+            <img src="assets/telegram-icon.svg" alt="Telegram" width="24" height="24">
           </a>
-          <a
-            href="https://github.com/chenyo-17"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <img
-              src="assets/github-icon.svg"
-              alt="GitHub"
-              width="24"
-              height="24"
-            />
-          </a>
-        </div>
-      </footer>
-    </div>
-  </body>
+          <a href="https://github.com/chenyo-17" target="_blank" rel="noopener noreferrer">
+            <img src="assets/github-icon.svg" alt="GitHub" width="24" height="24">
+      </a>
+      </div>
+      </footer></div>
+</body>
 </html>

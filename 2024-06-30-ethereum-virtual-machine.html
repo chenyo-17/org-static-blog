@@ -1,355 +1,174 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta
-      name="description"
-      content="This is a personal note for learning EVM"
-    />
-    <link
-      rel="alternate"
+<head>
+<meta charset="UTF-8">
+<meta name="description" content="This is a personal note for learning EVM">
+<link rel="alternate"
       type="application/rss+xml"
-      href="https://chenyo-17.github.io/org-static-blog/rss.xml"
-      title="RSS feed for https://chenyo-17.github.io/org-static-blog"
-    />
-    <title>Ethereum Virtual Machine</title>
-    <script
-      type="text/javascript"
-      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
-    ></script>
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'],['\\(','\\)']]}});
-    </script>
-    <meta name="author" content="chenyo" />
-    <meta name="referrer" content="no-referrer" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="assets/style.css" type="text/css" />
-    <link rel="favicon" type="image/x-icon" href="favicon.ico" />
-    <script src="assets/search.js"></script>
-  </head>
-  <body>
-    <div id="preamble" class="status">
+      href="https://chenyo.me/rss.xml"
+      title="RSS feed for https://chenyo.me">
+<title>Ethereum Virtual Machine</title>
+<script type="text/javascript"
+             src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+       </script>
+       <script type="text/x-mathjax-config">
+             MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'],['\\(','\\)']]}});
+       </script>
+       <meta name="author" content="chenyo">
+      <meta name="referrer" content="no-referrer">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="stylesheet" href="assets/style.css" type="text/css"/>
+      <link rel="favicon" type="image/x-icon" href="favicon.ico">
+      <script src="assets/search.js"></script></head>
+<body>
+<div id="preamble" class="status">
       <header>
-        <h1>
-          <a href="https://chenyo-17.github.io/org-static-blog"
-            >Chenyo's org-static-blog</a
-          >
-        </h1>
-        <nav>
-          <a href="https://chenyo-17.github.io/org-static-blog">Home</a>
-          <a href="archive.html">Archive</a>
-          <a href="tags.html">Tags</a>
-          <div id="search-container">
-            <input
-              type="text"
-              id="search-input"
-              placeholder="Search anywhere..."
-            />
-          </div>
-        </nav>
-      </header>
-    </div>
-    <div id="content">
-      <div class="post-date">30 Jun 2024</div>
-      <h1 class="post-title">
-        <a
-          href="https://chenyo-17.github.io/org-static-blog/2024-06-30-ethereum-virtual-machine.html"
-          >Ethereum Virtual Machine</a
-        >
-      </h1>
-      <nav id="table-of-contents" role="doc-toc">
-        <h2>Table of Contents</h2>
-        <div id="text-table-of-contents" role="doc-toc">
-          <ul>
-            <li>
-              <a href="#org1a03c80">1. Terminology</a>
-              <ul>
-                <li><a href="#orgba7170c">1.1. Motivation</a></li>
-                <li><a href="#org159a74c">1.2. Blockchain paradigm</a></li>
-                <li>
-                  <a href="#orgcc0f1f1">1.3. Ethereum Transaction execution</a>
-                </li>
-                <li>
-                  <a href="#org38dc47a">1.4. World state \(\sigma\)</a>
-                  <ul>
-                    <li>
-                      <a href="#org298be3e"
-                        >1.4.1. The account state \(\sigma[a]\)</a
-                      >
-                    </li>
-                  </ul>
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </div>
+      <h1><a href="https://chenyo.me">Chenyo's org-static-blog</a></h1>
+      <nav>
+      <a href="https://chenyo.me">Home</a>
+      <a href="archive.html">Archive</a>
+      <a href="tags.html">Tags</a>
+      <div id="search-container">
+      <input type="text" id="search-input" placeholder="Search anywhere...">
+      </div>
       </nav>
-      <p>This is a personal note of EVM, resources are from:</p>
-      <ul class="org-ul">
-        <li>
-          <a href="https://ethereum.org/en/developers/docs/evm/"
-            >ethereum.org</a
-          >
-        </li>
-        <li><a href="https://chatgpt.com/g/g-TJq7kBEsX-evm-gpt">EVM GPT</a></li>
-        <li>
-          <a href="https://ethereum.github.io/yellowpaper/paper.pdf"
-            >Ethereum yellowpaper: Paris version (26.06.2024)</a
-          >
-        </li>
-      </ul>
-      <div id="outline-container-org1a03c80" class="outline-2">
-        <h2 id="org1a03c80">
-          <span class="section-number-2">1.</span> Terminology
-        </h2>
-        <div class="outline-text-2" id="text-1">
-          <ul class="org-ul">
-            <li>
-              EVM: a decentralized virtual environment that executes code
-              consistently and securely across all Ethereum nodes.
-            </li>
-            <li>
-              Gas: used to measure the computational effort required to execute
-              smart contracts.
-            </li>
-            <li>
-              Ether(ETH): the native cryptocurrency in Ethereum; used to
-              incentivize computation.
-            </li>
-            <li>
-              Wei: the smallest subdenomination of Ether; 1 Ether = \(10^{18}\)
-              Wei.
-            </li>
-            <li>
-              State: A modified Merkle Patricia Trie to keep all accounts linked
-              by hashes and reducible to a single root hash stored on the
-              blockchain.
-            </li>
-            <li>
-              State transition function: <code>Y(S, T)=S'</code>: produces a
-              <b><b>deterministic</b></b> new valid state (<code>S'</code>)
-              given an old valid state (<code>S</code>) new set of valid
-              transactions (<code>T</code>)
-            </li>
-            <li>
-              Transactions: signed instructions from accounts, includes
-              <ul class="org-ul">
-                <li>
-                  a contraction creation to create a new contract account
-                  containing compiled contract bytecode, or
-                </li>
-                <li>a message call to a contract to execute the bytecode.</li>
-              </ul>
-            </li>
-            <li>
-              Proof of work: a spam deterrence mechanism; demonstrate the
-              potential for a basic data channel to carry a strong economic
-              signal without relying on trust.
-            </li>
-            <li>
-              Fork: a disagreement between nodes as to which root-to-leaf path
-              down the block tree is the best blockchain.
-            </li>
-            <li>
-              Chain Id (\(\beta\)): distinguish between diverged blockchains
-              (EIP-155).
-            </li>
-          </ul>
+      </header></div>
+<div id="content">
+<div class="post-date">30 Jun 2024</div><h1 class="post-title"><a href="https://chenyo.me/2024-06-30-ethereum-virtual-machine.html">Ethereum Virtual Machine</a></h1>
+<nav id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#orgb18f00a">1. Terminology</a>
+<ul>
+<li><a href="#org3a45d34">1.1. Motivation</a></li>
+<li><a href="#org683bce0">1.2. Blockchain paradigm</a></li>
+<li><a href="#orgd3d35f2">1.3. Ethereum Transaction execution</a></li>
+<li><a href="#org3a7d6f4">1.4. World state \(\sigma\)</a>
+<ul>
+<li><a href="#orgaa9e584">1.4.1. The account state \(\sigma[a]\)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</nav>
+<p>
+This is a personal note of EVM, resources are from:
+</p>
+<ul class="org-ul">
+<li><a href="https://ethereum.org/en/developers/docs/evm/">ethereum.org</a></li>
+<li><a href="https://chatgpt.com/g/g-TJq7kBEsX-evm-gpt">EVM GPT</a></li>
+<li><a href="https://ethereum.github.io/yellowpaper/paper.pdf">Ethereum yellowpaper: Paris version (26.06.2024)</a></li>
+</ul>
+<div id="outline-container-orgb18f00a" class="outline-2">
+<h2 id="orgb18f00a"><span class="section-number-2">1.</span> Terminology</h2>
+<div class="outline-text-2" id="text-1">
+<ul class="org-ul">
+<li>EVM: a decentralized virtual environment that executes code consistently and securely across all Ethereum nodes.</li>
+<li>Gas: used to measure the computational effort required to execute smart contracts.</li>
+<li>Ether(ETH): the native cryptocurrency in Ethereum; used to incentivize computation.</li>
+<li>Wei: the smallest subdenomination of Ether; 1 Ether = \(10^{18}\) Wei.</li>
+<li>State: A modified Merkle Patricia Trie to keep all accounts linked by hashes and reducible to a single root hash stored on the blockchain.</li>
+<li>State transition function: <code>Y(S, T)=S'</code>: produces a <b><b>deterministic</b></b> new valid state (<code>S'</code>) given an old valid state (<code>S</code>) new set of valid transactions (<code>T</code>)</li>
+<li>Transactions: signed instructions from accounts, includes
+<ul class="org-ul">
+<li>a contraction creation to create a new contract account containing compiled contract bytecode, or</li>
+<li>a message call to a contract to execute the bytecode.</li>
+</ul></li>
+<li>Proof of work: a spam deterrence mechanism; demonstrate the potential for a basic data channel to carry a strong economic signal without relying on trust.</li>
+<li>Fork: a disagreement between nodes as to which root-to-leaf path down the block tree is the best blockchain.</li>
+<li>Chain Id (\(\beta\)): distinguish between diverged blockchains (EIP-155).</li>
+</ul>
 
-          <figure id="org827af6e">
-            <img
-              src="https://ethereum.org/_next/image/?url=%2Fcontent%2Fdevelopers%2Fdocs%2Fevm%2Fevm.png&amp;w=1920&amp;q=75"
-              alt="?url=%2Fcontent%2Fdevelopers%2Fdocs%2Fevm%2Fevm.png&amp;w=1920&amp;q=75"
-              align="center"
-              width="500px"
-            />
 
-            <figcaption>
-              <span class="figure-number">Figure 1: </span>The EVM structure
-            </figcaption>
-          </figure>
-        </div>
-        <div id="outline-container-orgba7170c" class="outline-3">
-          <h3 id="orgba7170c">
-            <span class="section-number-3">1.1.</span> Motivation
-          </h3>
-          <div class="outline-text-3" id="text-1-1">
-            <ul class="org-ul">
-              <li>
-                To facilitate transactions between individuals who would
-                otherwise have no means to trust one another.
-              </li>
-              <li>
-                To enforce a rich and unambiguous agreement autonomously
-                (crypto-lay system).
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-org159a74c" class="outline-3">
-          <h3 id="org159a74c">
-            <span class="section-number-3">1.2.</span> Blockchain paradigm
-          </h3>
-          <div class="outline-text-3" id="text-1-2">
-            <div class="latex" id="org9301869">
-              \begin{aligned} \sigma_{t+1} & \equiv
-              \Pi\left(\boldsymbol{\sigma}_t, B\right) \\ B &
-              \equiv\left(\ldots,\left(T_0, T_1, \ldots\right), \ldots\right) \\
-              \Pi(\boldsymbol{\sigma}, B) & \equiv
-              \Upsilon\left(\Upsilon\left(\boldsymbol{\sigma}, T_0\right),
-              T_1\right) \ldots \end{aligned}
-            </div>
-            <ul class="org-ul">
-              <li>\(\sigma\): a valid state between two transactions.</li>
-              <li>\(B\): a block including a series of transactions.</li>
-              <li>\(\Upsilon\): the Ethereum state transition function.</li>
-              <li>\(\Pi\): the block-level state transition function.</li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-orgcc0f1f1" class="outline-3">
-          <h3 id="orgcc0f1f1">
-            <span class="section-number-3">1.3.</span> Ethereum Transaction
-            execution
-          </h3>
-          <div class="outline-text-3" id="text-1-3">
-            <ol class="org-ol">
-              <li>
-                An user (externally owned accounts, EOA) signs a transaction,
-                including the sender, receiver (the contract address), Ether
-                value, Gas limit and Gas price.
-              </li>
-              <li>The transaction is broadcast to the Ethereum network.</li>
-              <li>
-                Once a validator receives the transaction, it first performs
-                sanity check, e.g., signature validation, balance check.
-              </li>
-              <li>
-                Upon passing the validation, a transaction is included in a
-                block and executed.
-                <ol class="org-ol">
-                  <li>
-                    Initialization: PC set to the start of the contract code;
-                    Gas limit; empty stack, memory; contract state trie loaded
-                    to the storage.
-                  </li>
-                  <li>
-                    Execution: locally executes each bytecode and modifies stack
-                    (<code>PUSH</code>), memory (<code>MSTORE</code>) and
-                    storage (<code>SSTORE</code>); modifies the global state
-                    tree (<code>CALL</code>).
-                  </li>
-                  <li>
-                    Abortion: if the gas is used up, all state changes during
-                    the execution are reverted.
-                  </li>
-                </ol>
-              </li>
-              <li>
-                After the execution is finished, the validator assembles the
-                block and proposes the new block.
-              </li>
-              <li>
-                If a consensus is reached, the block is appended to the
-                blockchain, and other nodes verify the block and update their
-                global states accordingly.
-              </li>
-            </ol>
-          </div>
-        </div>
-        <div id="outline-container-org38dc47a" class="outline-3">
-          <h3 id="org38dc47a">
-            <span class="section-number-3">1.4.</span> World state \(\sigma\)
-          </h3>
-          <div class="outline-text-3" id="text-1-4">
-            <ul class="org-ul">
-              <li>
-                A mapping between 160-bit addresses and account states,
-                maintained in a modified Merkle Patricia tree (MPT), serialized
-                as RLP, stored in a off-chain database backend.
-              </li>
-              <li>
-                MPT benefits: the root node depends on all internal data; allows
-                any previous state with known root hash to be recalled as the
-                tree is immutable.
-              </li>
-              <li>
-                <a
-                  href="https://media.licdn.com/dms/image/D4D12AQG2itcSOHtiKw/article-cover_image-shrink_720_1280/0/1690981109933?e=1725494400&amp;v=beta&amp;t=4e2FSROhKCs2qeGtpyb5STePXe80agLfg3G9nuD4oKc"
-                  >Merkle Patricia Trie representation of state data across
-                  blocks</a
-                >
-              </li>
-            </ul>
-          </div>
-          <div id="outline-container-org298be3e" class="outline-4">
-            <h4 id="org298be3e">
-              <span class="section-number-4">1.4.1.</span> The account state
-              \(\sigma[a]\)
-            </h4>
-            <div class="outline-text-4" id="text-1-4-1">
-              <ul class="org-ul">
-                <li>
-                  <code>nonce</code>: the number of transactions the address has
-                  sent, or the number of contracts the address has made.
-                </li>
-                <li>
-                  <code>balance</code>: the number of Wei owned by the address.
-                </li>
-                <li>
-                  <code>storageRoot</code>: a 256-bit hash of the root node of a
-                  MPT which encodes the account storage, i.e., the contract
-                  storage.
-                </li>
-                <li>
-                  <code>codeHash</code>: the hash of the EVM code, i.e., the
-                  contract bytecode, which is executed if the address receives a
-                  message call.
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="taglist">
-        <a href="https://chenyo-17.github.io/org-static-blog/tags.html">Tags</a
-        >:
-        <a href="https://chenyo-17.github.io/org-static-blog/tag-evm.html"
-          >evm</a
-        >
-      </div>
-    </div>
-    <div id="postamble" class="status">
-      <div id="search-results"></div>
+<figure id="org9a2aa01">
+<img src="https://ethereum.org/_next/image/?url=%2Fcontent%2Fdevelopers%2Fdocs%2Fevm%2Fevm.png&amp;w=1920&amp;q=75" alt="?url=%2Fcontent%2Fdevelopers%2Fdocs%2Fevm%2Fevm.png&amp;w=1920&amp;q=75" align="center" width="500px">
+
+<figcaption><span class="figure-number">Figure 1: </span>The EVM structure</figcaption>
+</figure>
+</div>
+<div id="outline-container-org3a45d34" class="outline-3">
+<h3 id="org3a45d34"><span class="section-number-3">1.1.</span> Motivation</h3>
+<div class="outline-text-3" id="text-1-1">
+<ul class="org-ul">
+<li>To facilitate transactions between individuals who would otherwise have no means to trust one another.</li>
+<li>To enforce a rich and unambiguous agreement autonomously (crypto-lay system).</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org683bce0" class="outline-3">
+<h3 id="org683bce0"><span class="section-number-3">1.2.</span> Blockchain paradigm</h3>
+<div class="outline-text-3" id="text-1-2">
+<div class="latex" id="orga4e5b7b">
+\begin{aligned}
+\sigma_{t+1} & \equiv \Pi\left(\boldsymbol{\sigma}_t, B\right) \\
+B & \equiv\left(\ldots,\left(T_0, T_1, \ldots\right), \ldots\right) \\
+\Pi(\boldsymbol{\sigma}, B) & \equiv \Upsilon\left(\Upsilon\left(\boldsymbol{\sigma}, T_0\right), T_1\right) \ldots
+\end{aligned}
+
+</div>
+<ul class="org-ul">
+<li>\(\sigma\): a valid state between two transactions.</li>
+<li>\(B\): a block including a series of transactions.</li>
+<li>\(\Upsilon\): the Ethereum state transition function.</li>
+<li>\(\Pi\): the block-level state transition function.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgd3d35f2" class="outline-3">
+<h3 id="orgd3d35f2"><span class="section-number-3">1.3.</span> Ethereum Transaction execution</h3>
+<div class="outline-text-3" id="text-1-3">
+<ol class="org-ol">
+<li>An user (externally owned accounts, EOA) signs a transaction, including the sender, receiver (the contract address), Ether value, Gas limit and Gas price.</li>
+<li>The transaction is broadcast to the Ethereum network.</li>
+<li>Once a validator receives the transaction, it first performs sanity check, e.g., signature validation, balance check.</li>
+<li>Upon passing the validation, a transaction is included in a block and executed.
+<ol class="org-ol">
+<li>Initialization: PC set to the start of the contract code; Gas limit; empty stack, memory; contract state trie loaded to the storage.</li>
+<li>Execution: locally executes each bytecode and modifies stack (<code>PUSH</code>), memory (<code>MSTORE</code>) and storage (<code>SSTORE</code>); modifies the global state tree (<code>CALL</code>).</li>
+<li>Abortion: if the gas is used up, all state changes during the execution are reverted.</li>
+</ol></li>
+<li>After the execution is finished, the validator assembles the block and proposes the new block.</li>
+<li>If a consensus is reached, the block is appended to the blockchain, and other nodes verify the block and update their global states accordingly.</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-org3a7d6f4" class="outline-3">
+<h3 id="org3a7d6f4"><span class="section-number-3">1.4.</span> World state \(\sigma\)</h3>
+<div class="outline-text-3" id="text-1-4">
+<ul class="org-ul">
+<li>A mapping between 160-bit addresses and account states, maintained in a modified Merkle Patricia tree (MPT), serialized as RLP, stored in a off-chain database backend.</li>
+<li>MPT benefits: the root node depends on all internal data; allows any previous state with known root hash to be recalled as the tree is immutable.</li>
+<li><a href="https://media.licdn.com/dms/image/D4D12AQG2itcSOHtiKw/article-cover_image-shrink_720_1280/0/1690981109933?e=1725494400&amp;v=beta&amp;t=4e2FSROhKCs2qeGtpyb5STePXe80agLfg3G9nuD4oKc">Merkle Patricia Trie representation of state data across blocks</a></li>
+</ul>
+</div>
+<div id="outline-container-orgaa9e584" class="outline-4">
+<h4 id="orgaa9e584"><span class="section-number-4">1.4.1.</span> The account state \(\sigma[a]\)</h4>
+<div class="outline-text-4" id="text-1-4-1">
+<ul class="org-ul">
+<li><code>nonce</code>: the number of transactions the address has sent, or the number of contracts the address has made.</li>
+<li><code>balance</code>: the number of Wei owned by the address.</li>
+<li><code>storageRoot</code>: a 256-bit hash of the root node of a MPT which encodes the account storage, i.e., the contract storage.</li>
+<li><code>codeHash</code>: the hash of the EVM code, i.e., the contract bytecode, which is executed if the address receives a message call.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="taglist"><a href="https://chenyo.me/tags.html">Tags</a>: <a href="https://chenyo.me/tag-evm.html">evm</a> </div></div>
+<div id="postamble" class="status"><div id="search-results"></div>
       <footer>
         <p>© 2024 chenyo. Some rights reserved.</p>
         <div class="social-links">
-          <a
-            href="https://t.me/feihuadawangjiushiwo"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <img
-              src="assets/telegram-icon.svg"
-              alt="Telegram"
-              width="24"
-              height="24"
-            />
+          <a href="https://t.me/feihuadawangjiushiwo" target="_blank" rel="noopener noreferrer">
+            <img src="assets/telegram-icon.svg" alt="Telegram" width="24" height="24">
           </a>
-          <a
-            href="https://github.com/chenyo-17"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <img
-              src="assets/github-icon.svg"
-              alt="GitHub"
-              width="24"
-              height="24"
-            />
-          </a>
-        </div>
-      </footer>
-    </div>
-  </body>
+          <a href="https://github.com/chenyo-17" target="_blank" rel="noopener noreferrer">
+            <img src="assets/github-icon.svg" alt="GitHub" width="24" height="24">
+      </a>
+      </div>
+      </footer></div>
+</body>
 </html>

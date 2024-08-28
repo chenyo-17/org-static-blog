@@ -1,737 +1,394 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta
-      name="description"
-      content="This is a personal note for the [[https://15445.courses.cs.cmu.edu/fall2023/notes/03-storage1.pdf][CMU 15-445 L3 notes]] and [[https://15445.courses.cs.cmu.edu/fall2023/notes/04-storage2.pdf][CMU 15-445 L4 notes]]"
-    />
-    <link
-      rel="alternate"
+<head>
+<meta charset="UTF-8">
+<meta name="description" content="This is a personal note for the [[https://15445.courses.cs.cmu.edu/fall2023/notes/03-storage1.pdf][CMU 15-445 L3 notes]] and [[https://15445.courses.cs.cmu.edu/fall2023/notes/04-storage2.pdf][CMU 15-445 L4 notes]]">
+<link rel="alternate"
       type="application/rss+xml"
-      href="https://chenyo-17.github.io/org-static-blog/rss.xml"
-      title="RSS feed for https://chenyo-17.github.io/org-static-blog"
-    />
-    <title>CMU 15-445 notes: Database storage</title>
-    <script
-      type="text/javascript"
-      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
-    ></script>
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'],['\\(','\\)']]}});
-    </script>
-    <meta name="author" content="chenyo" />
-    <meta name="referrer" content="no-referrer" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="assets/style.css" type="text/css" />
-    <link rel="favicon" type="image/x-icon" href="favicon.ico" />
-    <script src="assets/search.js"></script>
-  </head>
-  <body>
-    <div id="preamble" class="status">
+      href="https://chenyo.me/rss.xml"
+      title="RSS feed for https://chenyo.me">
+<title>CMU 15-445 notes: Database storage</title>
+<script type="text/javascript"
+             src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+       </script>
+       <script type="text/x-mathjax-config">
+             MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'],['\\(','\\)']]}});
+       </script>
+       <meta name="author" content="chenyo">
+      <meta name="referrer" content="no-referrer">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="stylesheet" href="assets/style.css" type="text/css"/>
+      <link rel="favicon" type="image/x-icon" href="favicon.ico">
+      <script src="assets/search.js"></script></head>
+<body>
+<div id="preamble" class="status">
       <header>
-        <h1>
-          <a href="https://chenyo-17.github.io/org-static-blog"
-            >Chenyo's org-static-blog</a
-          >
-        </h1>
-        <nav>
-          <a href="https://chenyo-17.github.io/org-static-blog">Home</a>
-          <a href="archive.html">Archive</a>
-          <a href="tags.html">Tags</a>
-          <div id="search-container">
-            <input
-              type="text"
-              id="search-input"
-              placeholder="Search anywhere..."
-            />
-          </div>
-        </nav>
-      </header>
-    </div>
-    <div id="content">
-      <div class="post-date">31 Jul 2024</div>
-      <h1 class="post-title">
-        <a
-          href="https://chenyo-17.github.io/org-static-blog/2024-07-31-db-notes:-database-storage.html"
-          >CMU 15-445 notes: Database storage</a
-        >
-      </h1>
-      <nav id="table-of-contents" role="doc-toc">
-        <h2>Table of Contents</h2>
-        <div id="text-table-of-contents" role="doc-toc">
-          <ul>
-            <li>
-              <a href="#org77c6226">1. Data storage</a>
-              <ul>
-                <li><a href="#org478fa4d">1.1. Volatile device</a></li>
-                <li><a href="#orga221de3">1.2. Non-volatile device</a></li>
-                <li><a href="#orgba6a7d4">1.3. Storage hierarchy</a></li>
-                <li><a href="#org5cb88c6">1.4. Persistent memory</a></li>
-                <li>
-                  <a href="#org42b97e9"
-                    >1.5. NVM (non-volatile memory express)</a
-                  >
-                </li>
-              </ul>
-            </li>
-            <li>
-              <a href="#org94ca348">2. DBMS architecture</a>
-              <ul>
-                <li><a href="#orgf7590d8">2.1. Why not OS</a></li>
-              </ul>
-            </li>
-            <li>
-              <a href="#orgee4450c">3. Database pages</a>
-              <ul>
-                <li><a href="#org20d76d3">3.1. Hardware page</a></li>
-              </ul>
-            </li>
-            <li><a href="#org7876084">4. Database heap</a></li>
-            <li>
-              <a href="#orgb2cd866">5. Page layout</a>
-              <ul>
-                <li><a href="#org23c34d0">5.1. Slotted-pages</a></li>
-                <li>
-                  <a href="#orge60990e">5.2. Log-structured</a>
-                  <ul>
-                    <li><a href="#org2a77eab">5.2.1. Log compaction</a></li>
-                  </ul>
-                </li>
-                <li><a href="#orgf5c5357">5.3. Index-organized storage</a></li>
-              </ul>
-            </li>
-            <li>
-              <a href="#org74676f9">6. Tuple layout</a>
-              <ul>
-                <li><a href="#org5983e12">6.1. Denormalized tuple data</a></li>
-              </ul>
-            </li>
-            <li>
-              <a href="#org8029e49">7. Data representation</a>
-              <ul>
-                <li><a href="#org8ef44b2">7.1. Integers</a></li>
-                <li>
-                  <a href="#org11ca377">7.2. Variable precision numbers</a>
-                </li>
-                <li>
-                  <a href="#orgfac71ff">7.3. Fixed-point precision numbers</a>
-                </li>
-                <li><a href="#orgc08041a">7.4. Variable-length data</a></li>
-                <li><a href="#orgbb3ac93">7.5. Dates/Times</a></li>
-                <li><a href="#org0721453">7.6. Null</a></li>
-              </ul>
-            </li>
-            <li><a href="#org202ba75">8. System catalogs</a></li>
-          </ul>
-        </div>
+      <h1><a href="https://chenyo.me">Chenyo's org-static-blog</a></h1>
+      <nav>
+      <a href="https://chenyo.me">Home</a>
+      <a href="archive.html">Archive</a>
+      <a href="tags.html">Tags</a>
+      <div id="search-container">
+      <input type="text" id="search-input" placeholder="Search anywhere...">
+      </div>
       </nav>
-      <p>
-        This is a personal note for the
-        <a
-          href="https://15445.courses.cs.cmu.edu/fall2023/notes/03-storage1.pdf"
-          >CMU 15-445 L3 notes</a
-        >
-        and
-        <a
-          href="https://15445.courses.cs.cmu.edu/fall2023/notes/04-storage2.pdf"
-          >CMU 15-445 L4 notes</a
-        >.
-      </p>
-      <div id="outline-container-org77c6226" class="outline-2">
-        <h2 id="org77c6226">
-          <span class="section-number-2">1.</span> Data storage
-        </h2>
-        <div class="outline-text-2" id="text-1"></div>
-        <div id="outline-container-org478fa4d" class="outline-3">
-          <h3 id="org478fa4d">
-            <span class="section-number-3">1.1.</span> Volatile device
-          </h3>
-          <div class="outline-text-3" id="text-1-1">
-            <ul class="org-ul">
-              <li>The data is lost once the power is off.</li>
-              <li>
-                Support fast random access with byte-addressable locations,
-                i.e., can jump to any byte address and access the data.
-              </li>
-              <li>A.k.a memory, e.g., DRAM.</li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-orga221de3" class="outline-3">
-          <h3 id="orga221de3">
-            <span class="section-number-3">1.2.</span> Non-volatile device
-          </h3>
-          <div class="outline-text-3" id="text-1-2">
-            <ul class="org-ul">
-              <li>The data is retained after the power is off.</li>
-              <li>
-                Block/Page addressable, i.e., in order to read a value at a
-                particular offset, first need to load 4KB page into memory that
-                holds the value.
-              </li>
-              <li>
-                Perform better for sequential access, i.e., contiguous chunks.
-              </li>
-              <li>
-                A.k.a disk, e.g., SSD (solid-state storage) and HDD (spinning
-                hard drives).
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-orgba6a7d4" class="outline-3">
-          <h3 id="orgba6a7d4">
-            <span class="section-number-3">1.3.</span> Storage hierarchy
-          </h3>
-          <div class="outline-text-3" id="text-1-3">
-            <ul class="org-ul">
-              <li>Close to CPU: faster, smaller, more expensive.</li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-org5cb88c6" class="outline-3">
-          <h3 id="org5cb88c6">
-            <span class="section-number-3">1.4.</span> Persistent memory
-          </h3>
-          <div class="outline-text-3" id="text-1-4">
-            <ul class="org-ul">
-              <li>As fast as DRAM, with the persistence of disk.</li>
-              <li>Not in widespread production use.</li>
-              <li>A.k.a, non-volatile memory.</li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-org42b97e9" class="outline-3">
-          <h3 id="org42b97e9">
-            <span class="section-number-3">1.5.</span> NVM (non-volatile memory
-            express)
-          </h3>
-          <div class="outline-text-3" id="text-1-5">
-            <ul class="org-ul">
-              <li>
-                NAND flash drives that connect over an improved hardware
-                interface to allow faster transfer.
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div id="outline-container-org94ca348" class="outline-2">
-        <h2 id="org94ca348">
-          <span class="section-number-2">2.</span> DBMS architecture
-        </h2>
-        <div class="outline-text-2" id="text-2">
-          <ul class="org-ul">
-            <li>Primary storage location of the database is on disks.</li>
-            <li>
-              The DBMS is responsible for data movement between disk and memory
-              with a buffer pool.
-            </li>
-            <li>
-              The data is organized into pages by the storage manager; the first
-              page is the directory page
-            </li>
-            <li>
-              To execute the query, the execution engine asks the buffer pool
-              for a page; the buffer pool brings the page to the memory, gives
-              the execution engine the page pointer, and ensures the page is
-              retained in the memory while being executed.
-            </li>
-          </ul>
-        </div>
-        <div id="outline-container-orgf7590d8" class="outline-3">
-          <h3 id="orgf7590d8">
-            <span class="section-number-3">2.1.</span> Why not OS
-          </h3>
-          <div class="outline-text-3" id="text-2-1">
-            <ul class="org-ul">
-              <li>
-                The architecture is like virtual memory: a large address space
-                and a place for the OS to bring the pages from the disk.
-              </li>
-              <li>
-                The OS way to achieve virtual memory is to use
-                <code>mmap</code> to map the contents of a file in a process
-                address space, and the OS is responsible for the data movement.
-              </li>
-              <li>
-                If <code>mmap</code> hits a page fault, the process is blocked;
-                however a DBMS should be able to still process other queries.
-              </li>
-              <li>
-                A DBMS knows more about the data being processed (the OS cannot
-                decode the file contents) and can do better than OS.
-              </li>
-              <li>
-                Can still use some OS operations:
-                <ul class="org-ul">
-                  <li>
-                    <code>madvise</code>: tell the OS when DBMS is planning on
-                    reading some page.
-                  </li>
-                  <li>
-                    <code>mlock</code>: tell the OS to not swap ranges outs of
-                    disk.
-                  </li>
-                  <li>
-                    <code>msync</code>: tell the OS to flush memory ranges out
-                    to disk, i.e., write.
-                  </li>
-                </ul>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div id="outline-container-orgee4450c" class="outline-2">
-        <h2 id="orgee4450c">
-          <span class="section-number-2">3.</span> Database pages
-        </h2>
-        <div class="outline-text-2" id="text-3">
-          <ul class="org-ul">
-            <li>Usually fixed-sized blocks of data.</li>
-            <li>
-              Can contain different data types, e.g., tuples, indexes; data of
-              different types are usually not mixed within the same page.
-            </li>
-            <li>
-              Some DBMS requires each page is self-contained, i.e., a tuple does
-              not point to another page.
-            </li>
-            <li>
-              Each page is given a unique id, which can be mapped to the file
-              path and offset to find the page.
-            </li>
-          </ul>
-        </div>
-        <div id="outline-container-org20d76d3" class="outline-3">
-          <h3 id="org20d76d3">
-            <span class="section-number-3">3.1.</span> Hardware page
-          </h3>
-          <div class="outline-text-3" id="text-3-1">
-            <ul class="org-ul">
-              <li>
-                The storage that a device guarantees an atomic write, i.e., if
-                the hardware page is 4KB and the DBMS tries to write 4KB to the
-                disk, either all 4KB is written or none is.
-              </li>
-              <li>
-                If the database page is larger than the hardware page, the DBMS
-                requires extra measures to ensure the writing atomicity itself.
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div id="outline-container-org7876084" class="outline-2">
-        <h2 id="org7876084">
-          <span class="section-number-2">4.</span> Database heap
-        </h2>
-        <div class="outline-text-2" id="text-4">
-          <ul class="org-ul">
-            <li>
-              A heap file (e.g., a table) is an unordered collection of pages
-              where tuples are stored in random order.
-            </li>
-            <li>
-              To locate a page in a heap file, a DBMS can use either a linked
-              list or a page directory.
-              <ul class="org-ul">
-                <li>
-                  Linked list: the header page holds a pointer to a list of data
-                  and free pages; require a sequential scan when finding a
-                  specific page.
-                </li>
-                <li>
-                  Page directory: a DBMS uses special pages to track the
-                  location of each data page and the free space in database
-                  files.
-                  <ul class="org-ul">
-                    <li>
-                      All changes to the page directory must be recorded on disk
-                      to allow the DBMS to find on restart.
-                    </li>
-                  </ul>
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div id="outline-container-orgb2cd866" class="outline-2">
-        <h2 id="orgb2cd866">
-          <span class="section-number-2">5.</span> Page layout
-        </h2>
-        <div class="outline-text-2" id="text-5">
-          <ul class="org-ul">
-            <li>
-              Each page includes a header to record the page meta-data, e.g.,
-              page size, checksum, version.
-            </li>
-            <li>
-              Two main approaches to laying out data in pages: slotted-pages and
-              log-structured.
-            </li>
-          </ul>
-        </div>
-        <div id="outline-container-org23c34d0" class="outline-3">
-          <h3 id="org23c34d0">
-            <span class="section-number-3">5.1.</span> Slotted-pages
-          </h3>
-          <div class="outline-text-3" id="text-5-1">
-            <ul class="org-ul">
-              <li>
-                The header keeps track of the number of used slots, the offset
-                of the starting of each slot.
-              </li>
-              <li>
-                When adding a tuple, the slot array grows from the beginning to
-                the end, the tuple data grows from the end to the beginning; the
-                page is full when they meet.
-              </li>
-              <li>
-                Problems associated with this layout are:
-                <ul class="org-ul">
-                  <li>
-                    Fragmentation: tuple deletions leave gaps in the pages.
-                  </li>
-                  <li>
-                    Inefficient disk I/O: need to fetch the entire block to
-                    update a tuple; users could randomly jump to multiple
-                    different pages to update a tuple.
-                  </li>
-                </ul>
-              </li>
-            </ul>
+      </header></div>
+<div id="content">
+<div class="post-date">31 Jul 2024</div><h1 class="post-title"><a href="https://chenyo.me/2024-07-31-db-notes:-database-storage.html">CMU 15-445 notes: Database storage</a></h1>
+<nav id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#orgaa0df0b">1. Data storage</a>
+<ul>
+<li><a href="#orgc6d0ab0">1.1. Volatile device</a></li>
+<li><a href="#orgfc29965">1.2. Non-volatile device</a></li>
+<li><a href="#org90ff892">1.3. Storage hierarchy</a></li>
+<li><a href="#orgee88d66">1.4. Persistent memory</a></li>
+<li><a href="#org0c5b1d4">1.5. NVM (non-volatile memory express)</a></li>
+</ul>
+</li>
+<li><a href="#org9999410">2. DBMS architecture</a>
+<ul>
+<li><a href="#orgf194ff4">2.1. Why not OS</a></li>
+</ul>
+</li>
+<li><a href="#org44b2871">3. Database pages</a>
+<ul>
+<li><a href="#orge4ae386">3.1. Hardware page</a></li>
+</ul>
+</li>
+<li><a href="#orgc91a48d">4. Database heap</a></li>
+<li><a href="#org4b47372">5. Page layout</a>
+<ul>
+<li><a href="#orgf1f48d7">5.1. Slotted-pages</a></li>
+<li><a href="#orge440c62">5.2. Log-structured</a>
+<ul>
+<li><a href="#orga99dc27">5.2.1. Log compaction</a></li>
+</ul>
+</li>
+<li><a href="#org2e4de84">5.3. Index-organized storage</a></li>
+</ul>
+</li>
+<li><a href="#org72aef94">6. Tuple layout</a>
+<ul>
+<li><a href="#org6dca97c">6.1. Denormalized tuple data</a></li>
+</ul>
+</li>
+<li><a href="#orgf07bcb9">7. Data representation</a>
+<ul>
+<li><a href="#orgeef598c">7.1. Integers</a></li>
+<li><a href="#org02676c1">7.2. Variable precision numbers</a></li>
+<li><a href="#orgfe1666d">7.3. Fixed-point precision numbers</a></li>
+<li><a href="#orge002bda">7.4. Variable-length data</a></li>
+<li><a href="#org416e09d">7.5. Dates/Times</a></li>
+<li><a href="#org606b4e2">7.6. Null</a></li>
+</ul>
+</li>
+<li><a href="#orga456f8e">8. System catalogs</a></li>
+</ul>
+</div>
+</nav>
+<p>
+This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall2023/notes/03-storage1.pdf">CMU 15-445 L3 notes</a> and <a href="https://15445.courses.cs.cmu.edu/fall2023/notes/04-storage2.pdf">CMU 15-445 L4 notes</a>.
+</p>
+<div id="outline-container-orgaa0df0b" class="outline-2">
+<h2 id="orgaa0df0b"><span class="section-number-2">1.</span> Data storage</h2>
+<div class="outline-text-2" id="text-1">
+</div>
+<div id="outline-container-orgc6d0ab0" class="outline-3">
+<h3 id="orgc6d0ab0"><span class="section-number-3">1.1.</span> Volatile device</h3>
+<div class="outline-text-3" id="text-1-1">
+<ul class="org-ul">
+<li>The data is lost once the power is off.</li>
+<li>Support fast random access with byte-addressable locations, i.e., can jump to any byte address and access the data.</li>
+<li>A.k.a memory, e.g., DRAM.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgfc29965" class="outline-3">
+<h3 id="orgfc29965"><span class="section-number-3">1.2.</span> Non-volatile device</h3>
+<div class="outline-text-3" id="text-1-2">
+<ul class="org-ul">
+<li>The data is retained after the power is off.</li>
+<li>Block/Page addressable, i.e., in order to read a value at a particular offset, first need to load 4KB page into memory that holds the value.</li>
+<li>Perform better for sequential access, i.e., contiguous chunks.</li>
+<li>A.k.a disk, e.g., SSD (solid-state storage) and HDD (spinning hard drives).</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org90ff892" class="outline-3">
+<h3 id="org90ff892"><span class="section-number-3">1.3.</span> Storage hierarchy</h3>
+<div class="outline-text-3" id="text-1-3">
+<ul class="org-ul">
+<li>Close to CPU: faster, smaller, more expensive.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgee88d66" class="outline-3">
+<h3 id="orgee88d66"><span class="section-number-3">1.4.</span> Persistent memory</h3>
+<div class="outline-text-3" id="text-1-4">
+<ul class="org-ul">
+<li>As fast as DRAM, with the persistence of disk.</li>
+<li>Not in widespread production use.</li>
+<li>A.k.a, non-volatile memory.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org0c5b1d4" class="outline-3">
+<h3 id="org0c5b1d4"><span class="section-number-3">1.5.</span> NVM (non-volatile memory express)</h3>
+<div class="outline-text-3" id="text-1-5">
+<ul class="org-ul">
+<li>NAND flash drives that connect over an improved hardware interface to allow faster transfer.</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-org9999410" class="outline-2">
+<h2 id="org9999410"><span class="section-number-2">2.</span> DBMS architecture</h2>
+<div class="outline-text-2" id="text-2">
+<ul class="org-ul">
+<li>Primary storage location of the database is on disks.</li>
+<li>The DBMS is responsible for data movement between disk and memory with a buffer pool.</li>
+<li>The data is organized into pages by the storage manager; the first page is the directory page</li>
+<li>To execute the query, the execution engine asks the buffer pool for a page; the buffer pool brings the page to the memory, gives the execution engine the page pointer, and ensures the page is retained in the memory while being executed.</li>
+</ul>
+</div>
+<div id="outline-container-orgf194ff4" class="outline-3">
+<h3 id="orgf194ff4"><span class="section-number-3">2.1.</span> Why not OS</h3>
+<div class="outline-text-3" id="text-2-1">
+<ul class="org-ul">
+<li>The architecture is like virtual memory: a large address space and a place for the OS to bring the pages from the disk.</li>
+<li>The OS way to achieve virtual memory is to use <code>mmap</code> to map the contents of a file in a process address space, and the OS is responsible for the data movement.</li>
+<li>If <code>mmap</code> hits a page fault, the process is blocked; however a DBMS should be able to still process other queries.</li>
+<li>A DBMS knows more about the data being processed (the OS cannot decode the file contents) and can do better than OS.</li>
+<li>Can still use some OS operations:
+<ul class="org-ul">
+<li><code>madvise</code>: tell the OS when DBMS is planning on reading some page.</li>
+<li><code>mlock</code>: tell the OS to not swap ranges outs of disk.</li>
+<li><code>msync</code>: tell the OS to flush memory ranges out to disk, i.e., write.</li>
+</ul></li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-org44b2871" class="outline-2">
+<h2 id="org44b2871"><span class="section-number-2">3.</span> Database pages</h2>
+<div class="outline-text-2" id="text-3">
+<ul class="org-ul">
+<li>Usually fixed-sized blocks of data.</li>
+<li>Can contain different data types, e.g., tuples, indexes; data of different types are usually not mixed within the same page.</li>
+<li>Some DBMS requires each page is self-contained, i.e., a tuple does not point to another page.</li>
+<li>Each page is given a unique id, which can be mapped to the file path and offset to find the page.</li>
+</ul>
+</div>
+<div id="outline-container-orge4ae386" class="outline-3">
+<h3 id="orge4ae386"><span class="section-number-3">3.1.</span> Hardware page</h3>
+<div class="outline-text-3" id="text-3-1">
+<ul class="org-ul">
+<li>The storage that a device guarantees an atomic write, i.e., if the hardware page is 4KB and the DBMS tries to write 4KB to the disk, either all 4KB is written or none is.</li>
+<li>If the database page is larger than the hardware page, the DBMS requires extra measures to ensure the writing atomicity itself.</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-orgc91a48d" class="outline-2">
+<h2 id="orgc91a48d"><span class="section-number-2">4.</span> Database heap</h2>
+<div class="outline-text-2" id="text-4">
+<ul class="org-ul">
+<li>A heap file (e.g., a table) is an unordered collection of pages where tuples are stored in random order.</li>
+<li>To locate a page in a heap file, a DBMS can use either a linked list or a page directory.
+<ul class="org-ul">
+<li>Linked list: the header page holds a pointer to a list of data and free pages; require a sequential scan when finding a specific page.</li>
+<li>Page directory: a DBMS uses special pages to track the location of each data page and the free space in database files.
+<ul class="org-ul">
+<li>All changes to the page directory must be recorded on disk to allow the DBMS to find on restart.</li>
+</ul></li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org4b47372" class="outline-2">
+<h2 id="org4b47372"><span class="section-number-2">5.</span> Page layout</h2>
+<div class="outline-text-2" id="text-5">
+<ul class="org-ul">
+<li>Each page includes a header to record the page meta-data, e.g., page size, checksum, version.</li>
+<li>Two main approaches to laying out data in pages: slotted-pages and log-structured.</li>
+</ul>
+</div>
+<div id="outline-container-orgf1f48d7" class="outline-3">
+<h3 id="orgf1f48d7"><span class="section-number-3">5.1.</span> Slotted-pages</h3>
+<div class="outline-text-3" id="text-5-1">
+<ul class="org-ul">
+<li>The header keeps track of the number of used slots, the offset of the starting of each slot.</li>
+<li>When adding a tuple, the slot array grows from the beginning to the end, the tuple data grows from the end to the beginning; the page is full when they meet.</li>
+<li>Problems associated with this layout are:
+<ul class="org-ul">
+<li>Fragmentation: tuple deletions leave gaps in the pages.</li>
+<li>Inefficient disk I/O: need to fetch the entire block to update a tuple; users could randomly jump to multiple different pages to update a tuple.</li>
+</ul></li>
+</ul>
 
-            <figure id="org87accb7">
-              <img
-                src="https://miro.medium.com/v2/resize:fit:935/1*7AuKrdEJQpfRYhavwWzwhg.png"
-                alt="1*7AuKrdEJQpfRYhavwWzwhg.png"
-                align="center"
-                width="400px"
-              />
 
-              <figcaption>
-                <span class="figure-number">Figure 1: </span>Slotted pages (<a
-                  href="https://miro.medium.com/v2/resize:fit:935/1*7AuKrdEJQpfRYhavwWzwhg.png"
-                  >Source</a
-                >)
-              </figcaption>
-            </figure>
-          </div>
-        </div>
-        <div id="outline-container-orge60990e" class="outline-3">
-          <h3 id="orge60990e">
-            <span class="section-number-3">5.2.</span> Log-structured
-          </h3>
-          <div class="outline-text-3" id="text-5-2">
-            <ul class="org-ul">
-              <li>Only allows creations of new pages and no overwrites.</li>
-              <li>
-                Stores the log records of changes to the tuples; the DBMS
-                appends new log entries to an in-memory buffer without checking
-                previous records -&gt; fast writes.
-              </li>
-              <li>
-                Potentially slow reads; can be optimized by bookkeeping the
-                latest write of each tuple.
-              </li>
-            </ul>
-          </div>
-          <div id="outline-container-org2a77eab" class="outline-4">
-            <h4 id="org2a77eab">
-              <span class="section-number-4">5.2.1.</span> Log compaction
-            </h4>
-            <div class="outline-text-4" id="text-5-2-1">
-              <ul class="org-ul">
-                <li>
-                  Take only the most recent change for each tuple across several
-                  pages.
-                </li>
-                <li>
-                  There is only one entry for each tuple after the compaction,
-                  and can be easily sorted by id for faster lookup -&gt; called
-                  Sorted String Table (SSTable).
-                </li>
-                <li>Universal compaction: any log files can be compacted.</li>
-                <li>
-                  Level compaction: level 0 (smallest) files can be compacted to
-                  created a level 1 file.
-                </li>
-                <li>
-                  Write amplification issue: for each logical write, there could
-                  be multiple physical writes.
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div id="outline-container-orgf5c5357" class="outline-3">
-          <h3 id="orgf5c5357">
-            <span class="section-number-3">5.3.</span> Index-organized storage
-          </h3>
-          <div class="outline-text-3" id="text-5-3">
-            <ul class="org-ul">
-              <li>
-                Both page-oriented and log-structured storage rely on additional
-                index to find a tuple since tables are inherently unsorted.
-              </li>
-              <li>
-                In an index-organized storage scheme, the DBMS stores tuples as
-                the value of an index data structure.
-              </li>
-              <li>
-                E.g., In a B-tree indexed DBMS, the index (i.e., primary keys)
-                are stored as the intermediate nodes, and the data is stored in
-                the leaf nodes.
-              </li>
-            </ul>
+<figure id="orgf8a5563">
+<img src="https://miro.medium.com/v2/resize:fit:935/1*7AuKrdEJQpfRYhavwWzwhg.png" alt="1*7AuKrdEJQpfRYhavwWzwhg.png" align="center" width="400px">
 
-            <figure id="org60b210c">
-              <img
-                src="https://docs.oracle.com/en/database/oracle/oracle-database/21/cncpt/img/cncpt272.gif"
-                alt="cncpt272.gif"
-                align="center"
-                width="400px"
-              />
+<figcaption><span class="figure-number">Figure 1: </span>Slotted pages (<a href="https://miro.medium.com/v2/resize:fit:935/1*7AuKrdEJQpfRYhavwWzwhg.png">Source</a>)</figcaption>
+</figure>
+</div>
+</div>
+<div id="outline-container-orge440c62" class="outline-3">
+<h3 id="orge440c62"><span class="section-number-3">5.2.</span> Log-structured</h3>
+<div class="outline-text-3" id="text-5-2">
+<ul class="org-ul">
+<li>Only allows creations of new pages and no overwrites.</li>
+<li>Stores the log records of changes to the tuples; the DBMS appends new log entries to an in-memory buffer without checking previous records -&gt; fast writes.</li>
+<li>Potentially slow reads; can be optimized by bookkeeping the latest write of each tuple.</li>
+</ul>
+</div>
+<div id="outline-container-orga99dc27" class="outline-4">
+<h4 id="orga99dc27"><span class="section-number-4">5.2.1.</span> Log compaction</h4>
+<div class="outline-text-4" id="text-5-2-1">
+<ul class="org-ul">
+<li>Take only the most recent change for each tuple across several pages.</li>
+<li>There is only one entry for each tuple after the compaction, and can be easily sorted by id for faster lookup -&gt; called Sorted String Table (SSTable).</li>
+<li>Universal compaction: any log files can be compacted.</li>
+<li>Level compaction: level 0 (smallest) files can be compacted to created a level 1 file.</li>
+<li>Write amplification issue: for each logical write, there could be multiple physical writes.</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-org2e4de84" class="outline-3">
+<h3 id="org2e4de84"><span class="section-number-3">5.3.</span> Index-organized storage</h3>
+<div class="outline-text-3" id="text-5-3">
+<ul class="org-ul">
+<li>Both page-oriented and log-structured storage rely on additional index to find a tuple since tables are inherently unsorted.</li>
+<li>In an index-organized storage scheme, the DBMS stores tuples as the value of an index data structure.</li>
+<li>E.g., In a B-tree indexed DBMS, the index (i.e., primary keys) are stored as the intermediate nodes, and the data is stored in the leaf nodes.</li>
+</ul>
 
-              <figcaption>
-                <span class="figure-number">Figure 2: </span>Index-organized
-                storage (<a
-                  href="https://docs.oracle.com/en/database/oracle/oracle-database/21/cncpt/img/cncpt272.gif"
-                  >Source</a
-                >)
-              </figcaption>
-            </figure>
-          </div>
-        </div>
-      </div>
-      <div id="outline-container-org74676f9" class="outline-2">
-        <h2 id="org74676f9">
-          <span class="section-number-2">6.</span> Tuple layout
-        </h2>
-        <div class="outline-text-2" id="text-6">
-          <ul class="org-ul">
-            <li>Tuple: a sequence of bytes for a DBMS to decode.</li>
-            <li>
-              Tuple header: contains tuple meta-data, e.g., visibility
-              information (which transactions write the tuple).
-            </li>
-            <li>Tuple data: cannot exceed the size of a page.</li>
-            <li>
-              Unique id: usually page id + offset/slot; an application cannot
-              rely on it to mean anything.
-            </li>
-          </ul>
-        </div>
-        <div id="outline-container-org5983e12" class="outline-3">
-          <h3 id="org5983e12">
-            <span class="section-number-3">6.1.</span> Denormalized tuple data
-          </h3>
-          <div class="outline-text-3" id="text-6-1">
-            <ul class="org-ul">
-              <li>
-                If two tables are related, a DBMS can &ldquo;pre-join&rdquo;
-                them so that the tables are on the same page.
-              </li>
-              <li>
-                The read is faster since only one page is required to load, but
-                the write is more expensive since a tuple needs more space (<b
-                  ><b>not free lunch in DB system!</b></b
-                >).
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div id="outline-container-org8029e49" class="outline-2">
-        <h2 id="org8029e49">
-          <span class="section-number-2">7.</span> Data representation
-        </h2>
-        <div class="outline-text-2" id="text-7">
-          <ul class="org-ul">
-            <li>
-              A data representation scheme specifies how a DBMS stores the bytes
-              of a tuple.
-            </li>
-            <li>
-              Tuples can be word-aligned via padding or attribute reordering to
-              make sure the CPU can access a tuple without unexpected behavior.
-            </li>
-            <li>
-              5 high level data types stored in a tuple: integer,
-              variable-precision numbers, fixed-point precision numbers,
-              variable length values, dates/times.
-            </li>
-          </ul>
-        </div>
-        <div id="outline-container-org8ef44b2" class="outline-3">
-          <h3 id="org8ef44b2">
-            <span class="section-number-3">7.1.</span> Integers
-          </h3>
-          <div class="outline-text-3" id="text-7-1">
-            <ul class="org-ul">
-              <li>
-                Fixed length, usually stored using the DBMS native C/C++ types.
-              </li>
-              <li>E.g., <code>INTEGER</code>.</li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-org11ca377" class="outline-3">
-          <h3 id="org11ca377">
-            <span class="section-number-3">7.2.</span> Variable precision
-            numbers
-          </h3>
-          <div class="outline-text-3" id="text-7-2">
-            <ul class="org-ul">
-              <li>
-                Inexact, variable-precision numeric types; fast than arbitrary
-                precision numbers.
-              </li>
-              <li>Could have rounding errors.</li>
-              <li>E.g., <code>REAL</code>.</li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-orgfac71ff" class="outline-3">
-          <h3 id="orgfac71ff">
-            <span class="section-number-3">7.3.</span> Fixed-point precision
-            numbers
-          </h3>
-          <div class="outline-text-3" id="text-7-3">
-            <ul class="org-ul">
-              <li>
-                Arbitrary precision data type stored in exact, variable-length
-                binary representation (almost like a string) with additional
-                meta-data (e.g., length, decimal position).
-              </li>
-              <li>E.g., <code>DECIMAL</code>.</li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-orgc08041a" class="outline-3">
-          <h3 id="orgc08041a">
-            <span class="section-number-3">7.4.</span> Variable-length data
-          </h3>
-          <div class="outline-text-3" id="text-7-4">
-            <ul class="org-ul">
-              <li>
-                Represent data of arbitrary length, usually stored with a header
-                to keep the track of the length and the checksum.
-              </li>
-              <li>
-                Overflowed data is stored on a special overflow page referenced
-                by the tuple, the overflow page can also contain pointers to
-                next overflow pages.
-              </li>
-              <li>
-                Some DBMS allows to store files (e.g., photos) externally, but
-                the DBMS cannot modify them.
-              </li>
-              <li>E.g., <code>BLOB</code>.</li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-orgbb3ac93" class="outline-3">
-          <h3 id="orgbb3ac93">
-            <span class="section-number-3">7.5.</span> Dates/Times
-          </h3>
-          <div class="outline-text-3" id="text-7-5">
-            <ul class="org-ul">
-              <li>
-                Usually represented as unit time, e.g., micro/milli-seconds.
-              </li>
-              <li>E.g., <code>TIMESTAMP</code>.</li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-org0721453" class="outline-3">
-          <h3 id="org0721453">
-            <span class="section-number-3">7.6.</span> Null
-          </h3>
-          <div class="outline-text-3" id="text-7-6">
-            <ul class="org-ul">
-              <li>
-                3 common approaches to represent nulls:
-                <ul class="org-ul">
-                  <li>
-                    Most common: store a bitmap in a centralized header to
-                    specify which attributes are null.
-                  </li>
-                  <li>Designate a value, e.g., <code>INT32_MIN</code>.</li>
-                  <li>
-                    Not recommended: store a flag per attribute to mark a value
-                    is null; may need more bits to ensure word alignment.
-                  </li>
-                </ul>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div id="outline-container-org202ba75" class="outline-2">
-        <h2 id="org202ba75">
-          <span class="section-number-2">8.</span> System catalogs
-        </h2>
-        <div class="outline-text-2" id="text-8">
-          <ul class="org-ul">
-            <li>
-              A DBMS maintains an internal catalog table for the table
-              meta-data, e.g., tables/columns, user permissions, table
-              statistics.
-            </li>
-            <li>Bootstrapped by special code.</li>
-          </ul>
-        </div>
-      </div>
-      <div class="taglist">
-        <a href="https://chenyo-17.github.io/org-static-blog/tags.html">Tags</a
-        >:
-        <a href="https://chenyo-17.github.io/org-static-blog/tag-study.html"
-          >study</a
-        >
-        <a href="https://chenyo-17.github.io/org-static-blog/tag-database.html"
-          >database</a
-        >
-        <a href="https://chenyo-17.github.io/org-static-blog/tag-cmu.html"
-          >cmu</a
-        >
-      </div>
-    </div>
-    <div id="postamble" class="status">
-      <div id="search-results"></div>
+
+<figure id="org36057b8">
+<img src="https://docs.oracle.com/en/database/oracle/oracle-database/21/cncpt/img/cncpt272.gif" alt="cncpt272.gif" align="center" width="400px">
+
+<figcaption><span class="figure-number">Figure 2: </span>Index-organized storage (<a href="https://docs.oracle.com/en/database/oracle/oracle-database/21/cncpt/img/cncpt272.gif">Source</a>)</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div id="outline-container-org72aef94" class="outline-2">
+<h2 id="org72aef94"><span class="section-number-2">6.</span> Tuple layout</h2>
+<div class="outline-text-2" id="text-6">
+<ul class="org-ul">
+<li>Tuple: a sequence of bytes for a DBMS to decode.</li>
+<li>Tuple header: contains tuple meta-data, e.g., visibility information (which transactions write the tuple).</li>
+<li>Tuple data: cannot exceed the size of a page.</li>
+<li>Unique id: usually page id + offset/slot; an application cannot rely on it to mean anything.</li>
+</ul>
+</div>
+<div id="outline-container-org6dca97c" class="outline-3">
+<h3 id="org6dca97c"><span class="section-number-3">6.1.</span> Denormalized tuple data</h3>
+<div class="outline-text-3" id="text-6-1">
+<ul class="org-ul">
+<li>If two tables are related, a DBMS can &ldquo;pre-join&rdquo; them so that the tables are on the same page.</li>
+<li>The read is faster since only one page is required to load, but the write is more expensive since a tuple needs more space (<b><b>not free lunch in DB system!</b></b>).</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-orgf07bcb9" class="outline-2">
+<h2 id="orgf07bcb9"><span class="section-number-2">7.</span> Data representation</h2>
+<div class="outline-text-2" id="text-7">
+<ul class="org-ul">
+<li>A data representation scheme specifies how a DBMS stores the bytes of a tuple.</li>
+<li>Tuples can be word-aligned via padding or attribute reordering to make sure the CPU can access a tuple without unexpected behavior.</li>
+<li>5 high level data types stored in a tuple: integer, variable-precision numbers, fixed-point precision numbers, variable length values, dates/times.</li>
+</ul>
+</div>
+<div id="outline-container-orgeef598c" class="outline-3">
+<h3 id="orgeef598c"><span class="section-number-3">7.1.</span> Integers</h3>
+<div class="outline-text-3" id="text-7-1">
+<ul class="org-ul">
+<li>Fixed length, usually stored using the DBMS native C/C++ types.</li>
+<li>E.g., <code>INTEGER</code>.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org02676c1" class="outline-3">
+<h3 id="org02676c1"><span class="section-number-3">7.2.</span> Variable precision numbers</h3>
+<div class="outline-text-3" id="text-7-2">
+<ul class="org-ul">
+<li>Inexact, variable-precision numeric types; fast than arbitrary precision numbers.</li>
+<li>Could have rounding errors.</li>
+<li>E.g., <code>REAL</code>.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgfe1666d" class="outline-3">
+<h3 id="orgfe1666d"><span class="section-number-3">7.3.</span> Fixed-point precision numbers</h3>
+<div class="outline-text-3" id="text-7-3">
+<ul class="org-ul">
+<li>Arbitrary precision data type stored in exact, variable-length binary representation (almost like a string) with additional meta-data (e.g., length, decimal position).</li>
+<li>E.g., <code>DECIMAL</code>.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orge002bda" class="outline-3">
+<h3 id="orge002bda"><span class="section-number-3">7.4.</span> Variable-length data</h3>
+<div class="outline-text-3" id="text-7-4">
+<ul class="org-ul">
+<li>Represent data of arbitrary length, usually stored with a header to keep the track of the length and the checksum.</li>
+<li>Overflowed data is stored on a special overflow page referenced by the tuple, the overflow page can also contain pointers to next overflow pages.</li>
+<li>Some DBMS allows to store files (e.g., photos) externally, but the DBMS cannot modify them.</li>
+<li>E.g., <code>BLOB</code>.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org416e09d" class="outline-3">
+<h3 id="org416e09d"><span class="section-number-3">7.5.</span> Dates/Times</h3>
+<div class="outline-text-3" id="text-7-5">
+<ul class="org-ul">
+<li>Usually represented as unit time, e.g., micro/milli-seconds.</li>
+<li>E.g., <code>TIMESTAMP</code>.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org606b4e2" class="outline-3">
+<h3 id="org606b4e2"><span class="section-number-3">7.6.</span> Null</h3>
+<div class="outline-text-3" id="text-7-6">
+<ul class="org-ul">
+<li>3 common approaches to represent nulls:
+<ul class="org-ul">
+<li>Most common: store a bitmap in a centralized header to specify which attributes are null.</li>
+<li>Designate a value, e.g., <code>INT32_MIN</code>.</li>
+<li>Not recommended: store a flag per attribute to mark a value is null; may need more bits to ensure word alignment.</li>
+</ul></li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-orga456f8e" class="outline-2">
+<h2 id="orga456f8e"><span class="section-number-2">8.</span> System catalogs</h2>
+<div class="outline-text-2" id="text-8">
+<ul class="org-ul">
+<li>A DBMS maintains an internal catalog table for the table meta-data, e.g., tables/columns, user permissions, table statistics.</li>
+<li>Bootstrapped by special code.</li>
+</ul>
+</div>
+</div>
+<div class="taglist"><a href="https://chenyo.me/tags.html">Tags</a>: <a href="https://chenyo.me/tag-study.html">study</a> <a href="https://chenyo.me/tag-database.html">database</a> <a href="https://chenyo.me/tag-cmu.html">cmu</a> </div></div>
+<div id="postamble" class="status"><div id="search-results"></div>
       <footer>
         <p>© 2024 chenyo. Some rights reserved.</p>
         <div class="social-links">
-          <a
-            href="https://t.me/feihuadawangjiushiwo"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <img
-              src="assets/telegram-icon.svg"
-              alt="Telegram"
-              width="24"
-              height="24"
-            />
+          <a href="https://t.me/feihuadawangjiushiwo" target="_blank" rel="noopener noreferrer">
+            <img src="assets/telegram-icon.svg" alt="Telegram" width="24" height="24">
           </a>
-          <a
-            href="https://github.com/chenyo-17"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <img
-              src="assets/github-icon.svg"
-              alt="GitHub"
-              width="24"
-              height="24"
-            />
-          </a>
-        </div>
-      </footer>
-    </div>
-  </body>
+          <a href="https://github.com/chenyo-17" target="_blank" rel="noopener noreferrer">
+            <img src="assets/github-icon.svg" alt="GitHub" width="24" height="24">
+      </a>
+      </div>
+      </footer></div>
+</body>
 </html>
