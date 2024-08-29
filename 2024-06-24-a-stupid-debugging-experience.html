@@ -18,6 +18,7 @@
       <meta name="referrer" content="no-referrer">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <link rel="stylesheet" href="assets/style.css" type="text/css"/>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
       <link rel="favicon" type="image/x-icon" href="favicon.ico">
       <script src="assets/search.js"></script></head>
 <body>
@@ -29,7 +30,8 @@
       <a href="archive.html">Archive</a>
       <a href="tags.html">Tags</a>
       <div id="search-container">
-      <input type="text" id="search-input" placeholder="Search anywhere...">
+        <input type="text" id="search-input" placeholder="Search anywhere...">
+        <i class="fas fa-search search-icon"></i>
       </div>
       </nav>
       </header></div>
@@ -39,14 +41,14 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgd1a1ee9">1. What happended</a></li>
-<li><a href="#org288e8b4">2. What did I do</a></li>
-<li><a href="#orgbdd696a">3. Another issue of running RPC in docker</a></li>
+<li><a href="#org7f093b0">1. What happended</a></li>
+<li><a href="#org850dd7f">2. What did I do</a></li>
+<li><a href="#org684414a">3. Another issue of running RPC in docker</a></li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-orgd1a1ee9" class="outline-2">
-<h2 id="orgd1a1ee9"><span class="section-number-2">1.</span> What happended</h2>
+<div id="outline-container-org7f093b0" class="outline-2">
+<h2 id="org7f093b0"><span class="section-number-2">1.</span> What happended</h2>
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
 <li>Servers SA and SB have the same docker installation, and the same running container CA and CB.</li>
@@ -61,8 +63,8 @@ fatal error: newosproc<br>
 </ul>
 </div>
 </div>
-<div id="outline-container-org288e8b4" class="outline-2">
-<h2 id="org288e8b4"><span class="section-number-2">2.</span> What did I do</h2>
+<div id="outline-container-org850dd7f" class="outline-2">
+<h2 id="org850dd7f"><span class="section-number-2">2.</span> What did I do</h2>
 <div class="outline-text-2" id="text-2">
 <ol class="org-ol">
 <li>I compared any related configurations between SA and SB. and between CA and CB, e.g., <code class="src src-bash"><span style="color: #c678dd;">ulimit</span> -a</code>, <code class="src src-bash">/etc/security/limits.conf</code>. They all look the same.</li>
@@ -79,8 +81,8 @@ fatal error: newosproc<br>
 </ol>
 </div>
 </div>
-<div id="outline-container-orgbdd696a" class="outline-2">
-<h2 id="orgbdd696a"><span class="section-number-2">3.</span> Another issue of running RPC in docker</h2>
+<div id="outline-container-org684414a" class="outline-2">
+<h2 id="org684414a"><span class="section-number-2">3.</span> Another issue of running RPC in docker</h2>
 <div class="outline-text-2" id="text-3">
 <ul class="org-ul">
 <li>The other day, I also spent hours debugging a <code>route unreachable</code> error when I want to send a request from CA to SA.</li>
@@ -119,10 +121,10 @@ In the end, I need to append a new rule to make the RPC work.
         <p>© 2024 chenyo. Some rights reserved.</p>
         <div class="social-links">
           <a href="https://t.me/feihuadawangjiushiwo" target="_blank" rel="noopener noreferrer">
-            <img src="assets/telegram-icon.svg" alt="Telegram" width="24" height="24">
+          <i class="fab fa-telegram"></i>
           </a>
           <a href="https://github.com/chenyo-17" target="_blank" rel="noopener noreferrer">
-            <img src="assets/github-icon.svg" alt="GitHub" width="24" height="24">
+            <i class="fab fa-github"></i>
       </a>
       </div>
       </footer></div>

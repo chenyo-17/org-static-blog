@@ -26,6 +26,7 @@ Here is the Doom Emacs configuration this blog uses, one should at least change 
       <meta name=\"referrer\" content=\"no-referrer\">
       <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">
       <link rel=\"stylesheet\" href=\"assets/style.css\" type=\"text/css\"/>
+      <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css\"/>
       <link rel=\"favicon\" type=\"image/x-icon\" href=\"favicon.ico\">
       <script src=\"assets/search.js\"></script>")
 
@@ -36,10 +37,10 @@ Here is the Doom Emacs configuration this blog uses, one should at least change 
         <p>© 2024 chenyo. Some rights reserved.</p>
         <div class=\"social-links\">
           <a href=\"https://t.me/feihuadawangjiushiwo\" target=\"_blank\" rel=\"noopener noreferrer\">
-            <img src=\"assets/telegram-icon.svg\" alt=\"Telegram\" width=\"24\" height=\"24\">
+          <i class=\"fab fa-telegram\"></i>
           </a>
           <a href=\"https://github.com/chenyo-17\" target=\"_blank\" rel=\"noopener noreferrer\">
-            <img src=\"assets/github-icon.svg\" alt=\"GitHub\" width=\"24\" height=\"24\">
+            <i class=\"fab fa-github\"></i>
       </a>
       </div>
       </footer>")
@@ -54,7 +55,8 @@ Here is the Doom Emacs configuration this blog uses, one should at least change 
       <a href=\"archive.html\">Archive</a>
       <a href=\"tags.html\">Tags</a>
       <div id=\"search-container\">
-      <input type=\"text\" id=\"search-input\" placeholder=\"Search anywhere...\">
+        <input type=\"text\" id=\"search-input\" placeholder=\"Search anywhere...\">
+        <i class=\"fas fa-search search-icon\"></i>
       </div>
       </nav>
       </header>"

@@ -17,6 +17,7 @@
       <meta name="referrer" content="no-referrer">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <link rel="stylesheet" href="assets/style.css" type="text/css"/>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
       <link rel="favicon" type="image/x-icon" href="favicon.ico">
       <script src="assets/search.js"></script></head>
 <body>
@@ -28,7 +29,8 @@
       <a href="archive.html">Archive</a>
       <a href="tags.html">Tags</a>
       <div id="search-container">
-      <input type="text" id="search-input" placeholder="Search anywhere...">
+        <input type="text" id="search-input" placeholder="Search anywhere...">
+        <i class="fas fa-search search-icon"></i>
       </div>
       </nav>
       </header></div>
@@ -39,32 +41,32 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org926f6a1">1. Terminology</a>
+<li><a href="#org445fc3c">1. Terminology</a>
 <ul>
-<li><a href="#org088305b">1.1. Ethereum sharding</a></li>
-<li><a href="#org188fbae">1.2. Blob</a></li>
-<li><a href="#org3855c8a">1.3. Erasure coding</a></li>
-<li><a href="#org023f727">1.4. Data availability sampling (DAS)</a></li>
-<li><a href="#orgc557703">1.5. Danksharding (L2 optimization)</a></li>
-<li><a href="#org9fd5e44">1.6. Relations between L1 and L2 scaling</a></li>
-<li><a href="#orgd286eec">1.7. Double spending prevention</a></li>
-<li><a href="#orgf194f85">1.8. Sealevel (Solana)</a></li>
+<li><a href="#org15f405f">1.1. Ethereum sharding</a></li>
+<li><a href="#org2a78fd3">1.2. Blob</a></li>
+<li><a href="#org3fbaa8d">1.3. Erasure coding</a></li>
+<li><a href="#orgb5a105d">1.4. Data availability sampling (DAS)</a></li>
+<li><a href="#orgb7904ff">1.5. Danksharding (L2 optimization)</a></li>
+<li><a href="#org25da124">1.6. Relations between L1 and L2 scaling</a></li>
+<li><a href="#orgf30a49f">1.7. Double spending prevention</a></li>
+<li><a href="#org514a673">1.8. Sealevel (Solana)</a></li>
 </ul>
 </li>
-<li><a href="#orgc5451b4">2. Ways to achieve parallel processing</a></li>
-<li><a href="#org63ff833">3. Production-ready parallelized EVM projects (Jan 2024)</a></li>
+<li><a href="#org0dc4425">2. Ways to achieve parallel processing</a></li>
+<li><a href="#org4d53146">3. Production-ready parallelized EVM projects (Jan 2024)</a></li>
 </ul>
 </div>
 </nav>
 <p>
 This is a personal note for <a href="https://blockworks.co/news/parallelized-evms-gaining-popularity">Blockworks news (12.01.2024)</a> as well as some terminology explained online, e.g., <a href="https://www.coindesk.com/learn/what-is-ethereum-sharding-a-beginners-guide/">Coindesk</a> and <a href="https://chatgpt.com/c/824f05c9-dc75-4eb6-aeda-59d057baf83a">GPT-4o</a>.
 </p>
-<div id="outline-container-org926f6a1" class="outline-2">
-<h2 id="org926f6a1"><span class="section-number-2">1.</span> Terminology</h2>
+<div id="outline-container-org445fc3c" class="outline-2">
+<h2 id="org445fc3c"><span class="section-number-2">1.</span> Terminology</h2>
 <div class="outline-text-2" id="text-1">
 </div>
-<div id="outline-container-org088305b" class="outline-3">
-<h3 id="org088305b"><span class="section-number-3">1.1.</span> Ethereum sharding</h3>
+<div id="outline-container-org15f405f" class="outline-3">
+<h3 id="org15f405f"><span class="section-number-3">1.1.</span> Ethereum sharding</h3>
 <div class="outline-text-3" id="text-1-1">
 <ul class="org-ul">
 <li>The Ethereum mainnet is divided into smaller interconnected networks called shards.</li>
@@ -74,8 +76,8 @@ This is a personal note for <a href="https://blockworks.co/news/parallelized-evm
 </ul>
 </div>
 </div>
-<div id="outline-container-org188fbae" class="outline-3">
-<h3 id="org188fbae"><span class="section-number-3">1.2.</span> Blob</h3>
+<div id="outline-container-org2a78fd3" class="outline-3">
+<h3 id="org2a78fd3"><span class="section-number-3">1.2.</span> Blob</h3>
 <div class="outline-text-3" id="text-1-2">
 <ul class="org-ul">
 <li>Rather than storing each transaction data directly in the blockchain, the data is aggregated into a blob (binary object).</li>
@@ -85,16 +87,16 @@ This is a personal note for <a href="https://blockworks.co/news/parallelized-evm
 </ul>
 </div>
 </div>
-<div id="outline-container-org3855c8a" class="outline-3">
-<h3 id="org3855c8a"><span class="section-number-3">1.3.</span> Erasure coding</h3>
+<div id="outline-container-org3fbaa8d" class="outline-3">
+<h3 id="org3fbaa8d"><span class="section-number-3">1.3.</span> Erasure coding</h3>
 <div class="outline-text-3" id="text-1-3">
 <ul class="org-ul">
 <li>Allows one to encode blobs such that if at least half of the data in the blob is published, anyone in the network can reconstruct and re-publish the rest of the data.</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org023f727" class="outline-3">
-<h3 id="org023f727"><span class="section-number-3">1.4.</span> Data availability sampling (DAS)</h3>
+<div id="outline-container-orgb5a105d" class="outline-3">
+<h3 id="orgb5a105d"><span class="section-number-3">1.4.</span> Data availability sampling (DAS)</h3>
 <div class="outline-text-3" id="text-1-4">
 <ul class="org-ul">
 <li>Validators randomly sample blob pieces to confirm the data can be reconstructed.g</li>
@@ -102,8 +104,8 @@ This is a personal note for <a href="https://blockworks.co/news/parallelized-evm
 </ul>
 </div>
 </div>
-<div id="outline-container-orgc557703" class="outline-3">
-<h3 id="orgc557703"><span class="section-number-3">1.5.</span> Danksharding (L2 optimization)</h3>
+<div id="outline-container-orgb7904ff" class="outline-3">
+<h3 id="orgb7904ff"><span class="section-number-3">1.5.</span> Danksharding (L2 optimization)</h3>
 <div class="outline-text-3" id="text-1-5">
 <ul class="org-ul">
 <li>A specific sharding implementation proposal.</li>
@@ -112,8 +114,8 @@ This is a personal note for <a href="https://blockworks.co/news/parallelized-evm
 </ul>
 </div>
 </div>
-<div id="outline-container-org9fd5e44" class="outline-3">
-<h3 id="org9fd5e44"><span class="section-number-3">1.6.</span> Relations between L1 and L2 scaling</h3>
+<div id="outline-container-org25da124" class="outline-3">
+<h3 id="org25da124"><span class="section-number-3">1.6.</span> Relations between L1 and L2 scaling</h3>
 <div class="outline-text-3" id="text-1-6">
 <ul class="org-ul">
 <li>L1 scaling: optimizations directly to the Ethereum mainnet and core infrastructure, e.g., parallel EVM.</li>
@@ -121,8 +123,8 @@ This is a personal note for <a href="https://blockworks.co/news/parallelized-evm
 </ul>
 </div>
 </div>
-<div id="outline-container-orgd286eec" class="outline-3">
-<h3 id="orgd286eec"><span class="section-number-3">1.7.</span> Double spending prevention</h3>
+<div id="outline-container-orgf30a49f" class="outline-3">
+<h3 id="orgf30a49f"><span class="section-number-3">1.7.</span> Double spending prevention</h3>
 <div class="outline-text-3" id="text-1-7">
 <ul class="org-ul">
 <li>Bitcoin: uses UTXOs to track which inputs have been spent (no need to go through the entire chain).</li>
@@ -130,8 +132,8 @@ This is a personal note for <a href="https://blockworks.co/news/parallelized-evm
 </ul>
 </div>
 </div>
-<div id="outline-container-orgf194f85" class="outline-3">
-<h3 id="orgf194f85"><span class="section-number-3">1.8.</span> Sealevel (Solana)</h3>
+<div id="outline-container-org514a673" class="outline-3">
+<h3 id="org514a673"><span class="section-number-3">1.8.</span> Sealevel (Solana)</h3>
 <div class="outline-text-3" id="text-1-8">
 <ul class="org-ul">
 <li>Solana&rsquo;s parallel smart contract runtime to process thousands of contracts in parallel.</li>
@@ -140,8 +142,8 @@ This is a personal note for <a href="https://blockworks.co/news/parallelized-evm
 </div>
 </div>
 </div>
-<div id="outline-container-orgc5451b4" class="outline-2">
-<h2 id="orgc5451b4"><span class="section-number-2">2.</span> Ways to achieve parallel processing</h2>
+<div id="outline-container-org0dc4425" class="outline-2">
+<h2 id="org0dc4425"><span class="section-number-2">2.</span> Ways to achieve parallel processing</h2>
 <div class="outline-text-2" id="text-2">
 <ul class="org-ul">
 <li>Process independent transactions in parallel.</li>
@@ -149,8 +151,8 @@ This is a personal note for <a href="https://blockworks.co/news/parallelized-evm
 </ul>
 </div>
 </div>
-<div id="outline-container-org63ff833" class="outline-2">
-<h2 id="org63ff833"><span class="section-number-2">3.</span> Production-ready parallelized EVM projects (Jan 2024)</h2>
+<div id="outline-container-org4d53146" class="outline-2">
+<h2 id="org4d53146"><span class="section-number-2">3.</span> Production-ready parallelized EVM projects (Jan 2024)</h2>
 <div class="outline-text-2" id="text-3">
 <ul class="org-ul">
 <li>Sei: optimistic parallel execution.</li>
@@ -169,48 +171,48 @@ This is a personal note for <a href="https://blockworks.co/news/parallelized-evm
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org8977499">1. Blockchain fundamentals</a>
+<li><a href="#orge38d6a8">1. Blockchain fundamentals</a>
 <ul>
-<li><a href="#org5ed2076">1.1. Ethereum engine API</a></li>
-<li><a href="#org54da93d">1.2. Foundry</a></li>
-<li><a href="#orgae6e48b">1.3. Revm</a></li>
-<li><a href="#org2aa9b98">1.4. Alloy</a></li>
-<li><a href="#org178b14e">1.5. Erigon &amp; Staged sync</a></li>
-<li><a href="#orgd1367fc">1.6. Storage engines</a>
+<li><a href="#orgd0cc13f">1.1. Ethereum engine API</a></li>
+<li><a href="#org8fd0dab">1.2. Foundry</a></li>
+<li><a href="#org14f4532">1.3. Revm</a></li>
+<li><a href="#orga6ba0dc">1.4. Alloy</a></li>
+<li><a href="#org12a735b">1.5. Erigon &amp; Staged sync</a></li>
+<li><a href="#orgb5ddf50">1.6. Storage engines</a>
 <ul>
-<li><a href="#org3618707">1.6.1. ACID</a></li>
-<li><a href="#orgfe007e0">1.6.2. MVCC (Multi-version concurrency control)</a></li>
-<li><a href="#orga36e056">1.6.3. Common database models</a></li>
-<li><a href="#org1745e09">1.6.4. Common storage engines</a></li>
+<li><a href="#org534538d">1.6.1. ACID</a></li>
+<li><a href="#orgf55a89b">1.6.2. MVCC (Multi-version concurrency control)</a></li>
+<li><a href="#orgc9be713">1.6.3. Common database models</a></li>
+<li><a href="#org3ed36d9">1.6.4. Common storage engines</a></li>
 </ul>
 </li>
-<li><a href="#org335e19f">1.7. Reth</a></li>
-<li><a href="#orga1c1162">1.8. Why gas per second as the performance metric</a></li>
-<li><a href="#org59b385e">1.9. EVM cost models</a></li>
-<li><a href="#orgd66ace3">1.10. TPC benchmark</a></li>
-<li><a href="#org9fb41e0">1.11. State growth</a></li>
-<li><a href="#org6fee061">1.12. JIT (Just-In-Time) and AOT (Ahead-of-Time) EVM</a></li>
-<li><a href="#org05dc127">1.13. Actor model</a></li>
-<li><a href="#org1797aa2">1.14. Storage trie</a></li>
-<li><a href="#orgfc8ea4c">1.15. Serverless database</a></li>
+<li><a href="#org224641e">1.7. Reth</a></li>
+<li><a href="#org4606488">1.8. Why gas per second as the performance metric</a></li>
+<li><a href="#org8ce312a">1.9. EVM cost models</a></li>
+<li><a href="#org36ab8c4">1.10. TPC benchmark</a></li>
+<li><a href="#orgf928e7f">1.11. State growth</a></li>
+<li><a href="#org9ca4054">1.12. JIT (Just-In-Time) and AOT (Ahead-of-Time) EVM</a></li>
+<li><a href="#org9b8d512">1.13. Actor model</a></li>
+<li><a href="#orgb4c223d">1.14. Storage trie</a></li>
+<li><a href="#org6cba0cd">1.15. Serverless database</a></li>
 </ul>
 </li>
-<li><a href="#orgd09a768">2. Reth scaling plan</a>
+<li><a href="#org862e64d">2. Reth scaling plan</a>
 <ul>
-<li><a href="#orgcabcfde">2.1. Vertical scaling (2024)</a>
+<li><a href="#org9c8521c">2.1. Vertical scaling (2024)</a>
 <ul>
-<li><a href="#orgb64c075">2.1.1. JIT/AOT EVM</a></li>
-<li><a href="#orgde765d1">2.1.2. Parallel EVM</a></li>
-<li><a href="#org137841c">2.1.3. Optimized state commitment</a></li>
+<li><a href="#org37936b1">2.1.1. JIT/AOT EVM</a></li>
+<li><a href="#org4153dae">2.1.2. Parallel EVM</a></li>
+<li><a href="#org3473519">2.1.3. Optimized state commitment</a></li>
 </ul>
 </li>
-<li><a href="#org5d06154">2.2. Horizontal scaling (2025)</a>
+<li><a href="#orgaa44f36">2.2. Horizontal scaling (2025)</a>
 <ul>
-<li><a href="#org14e8f60">2.2.1. Multi-Rollup (?)</a></li>
-<li><a href="#org739ea55">2.2.2. Cloud-Native nodes.</a></li>
+<li><a href="#org5d2f78b">2.2.1. Multi-Rollup (?)</a></li>
+<li><a href="#orgd7d3d94">2.2.2. Cloud-Native nodes.</a></li>
 </ul>
 </li>
-<li><a href="#orged28813">2.3. Open questions</a></li>
+<li><a href="#org4ca540c">2.3. Open questions</a></li>
 </ul>
 </li>
 </ul>
@@ -219,12 +221,12 @@ This is a personal note for <a href="https://blockworks.co/news/parallelized-evm
 <p>
 This is a personal note for <a href="https://www.paradigm.xyz/2024/04/reth-perf">Reth-performance-blog</a> as well as some terminology explain online, e.g., <a href="https://github.com/paradigmxyz/reth">Reth-repo</a> and <a href="https://claude.ai/chat/6364436f-d279-4c6b-947e-237bfea26409">Claude.ai</a>.
 </p>
-<div id="outline-container-org8977499" class="outline-2">
-<h2 id="org8977499"><span class="section-number-2">1.</span> Blockchain fundamentals</h2>
+<div id="outline-container-orge38d6a8" class="outline-2">
+<h2 id="orge38d6a8"><span class="section-number-2">1.</span> Blockchain fundamentals</h2>
 <div class="outline-text-2" id="text-1">
 </div>
-<div id="outline-container-org5ed2076" class="outline-3">
-<h3 id="org5ed2076"><span class="section-number-3">1.1.</span> <a href="https://github.com/ethereum/execution-apis/blob/a0d03086564ab1838b462befbc083f873dcf0c0f/src/engine/paris.md">Ethereum engine API</a></h3>
+<div id="outline-container-orgd0cc13f" class="outline-3">
+<h3 id="orgd0cc13f"><span class="section-number-3">1.1.</span> <a href="https://github.com/ethereum/execution-apis/blob/a0d03086564ab1838b462befbc083f873dcf0c0f/src/engine/paris.md">Ethereum engine API</a></h3>
 <div class="outline-text-3" id="text-1-1">
 <ul class="org-ul">
 <li>A collection of JSON-RPC methods that all execution clients implement.</li>
@@ -232,8 +234,8 @@ This is a personal note for <a href="https://www.paradigm.xyz/2024/04/reth-perf"
 </ul>
 </div>
 </div>
-<div id="outline-container-org54da93d" class="outline-3">
-<h3 id="org54da93d"><span class="section-number-3">1.2.</span> <a href="https://github.com/foundry-rs/foundry/">Foundry</a></h3>
+<div id="outline-container-org8fd0dab" class="outline-3">
+<h3 id="org8fd0dab"><span class="section-number-3">1.2.</span> <a href="https://github.com/foundry-rs/foundry/">Foundry</a></h3>
 <div class="outline-text-3" id="text-1-2">
 <ul class="org-ul">
 <li>A Rust-written toolkit for Ethereum application development.</li>
@@ -241,24 +243,24 @@ This is a personal note for <a href="https://www.paradigm.xyz/2024/04/reth-perf"
 </ul>
 </div>
 </div>
-<div id="outline-container-orgae6e48b" class="outline-3">
-<h3 id="orgae6e48b"><span class="section-number-3">1.3.</span> <a href="https://github.com/bluealloy/revm/">Revm</a></h3>
+<div id="outline-container-org14f4532" class="outline-3">
+<h3 id="org14f4532"><span class="section-number-3">1.3.</span> <a href="https://github.com/bluealloy/revm/">Revm</a></h3>
 <div class="outline-text-3" id="text-1-3">
 <ul class="org-ul">
 <li>A Rust-written EVM; responsible for executing transactions and contracts.</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org2aa9b98" class="outline-3">
-<h3 id="org2aa9b98"><span class="section-number-3">1.4.</span> <a href="https://github.com/alloy-rs">Alloy</a></h3>
+<div id="outline-container-orga6ba0dc" class="outline-3">
+<h3 id="orga6ba0dc"><span class="section-number-3">1.4.</span> <a href="https://github.com/alloy-rs">Alloy</a></h3>
 <div class="outline-text-3" id="text-1-4">
 <ul class="org-ul">
 <li>A library to interact with the Ethereum and other EVM-base chains.</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org178b14e" class="outline-3">
-<h3 id="org178b14e"><span class="section-number-3">1.5.</span> <a href="https://erigon.tech/">Erigon</a> &amp; Staged sync</h3>
+<div id="outline-container-org12a735b" class="outline-3">
+<h3 id="org12a735b"><span class="section-number-3">1.5.</span> <a href="https://erigon.tech/">Erigon</a> &amp; Staged sync</h3>
 <div class="outline-text-3" id="text-1-5">
 <ul class="org-ul">
 <li>Erigon: a Go-written Ethereum client implementation (execution layer).</li>
@@ -266,12 +268,12 @@ This is a personal note for <a href="https://www.paradigm.xyz/2024/04/reth-perf"
 </ul>
 </div>
 </div>
-<div id="outline-container-orgd1367fc" class="outline-3">
-<h3 id="orgd1367fc"><span class="section-number-3">1.6.</span> Storage engines</h3>
+<div id="outline-container-orgb5ddf50" class="outline-3">
+<h3 id="orgb5ddf50"><span class="section-number-3">1.6.</span> Storage engines</h3>
 <div class="outline-text-3" id="text-1-6">
 </div>
-<div id="outline-container-org3618707" class="outline-4">
-<h4 id="org3618707"><span class="section-number-4">1.6.1.</span> ACID</h4>
+<div id="outline-container-org534538d" class="outline-4">
+<h4 id="org534538d"><span class="section-number-4">1.6.1.</span> ACID</h4>
 <div class="outline-text-4" id="text-1-6-1">
 <ul class="org-ul">
 <li>A set of properties for database transactions: atomicity, consistency, isolation, duration.</li>
@@ -282,8 +284,8 @@ This is a personal note for <a href="https://www.paradigm.xyz/2024/04/reth-perf"
 </ul>
 </div>
 </div>
-<div id="outline-container-orgfe007e0" class="outline-4">
-<h4 id="orgfe007e0"><span class="section-number-4">1.6.2.</span> MVCC (Multi-version concurrency control)</h4>
+<div id="outline-container-orgf55a89b" class="outline-4">
+<h4 id="orgf55a89b"><span class="section-number-4">1.6.2.</span> MVCC (Multi-version concurrency control)</h4>
 <div class="outline-text-4" id="text-1-6-2">
 <ul class="org-ul">
 <li>A concurrency control model used in DBMS.</li>
@@ -291,8 +293,8 @@ This is a personal note for <a href="https://www.paradigm.xyz/2024/04/reth-perf"
 </ul>
 </div>
 </div>
-<div id="outline-container-orga36e056" class="outline-4">
-<h4 id="orga36e056"><span class="section-number-4">1.6.3.</span> Common database models</h4>
+<div id="outline-container-orgc9be713" class="outline-4">
+<h4 id="orgc9be713"><span class="section-number-4">1.6.3.</span> Common database models</h4>
 <div class="outline-text-4" id="text-1-6-3">
 <ul class="org-ul">
 <li>Relational model, e.g., SQL.</li>
@@ -302,8 +304,8 @@ This is a personal note for <a href="https://www.paradigm.xyz/2024/04/reth-perf"
 </ul>
 </div>
 </div>
-<div id="outline-container-org1745e09" class="outline-4">
-<h4 id="org1745e09"><span class="section-number-4">1.6.4.</span> Common storage engines</h4>
+<div id="outline-container-org3ed36d9" class="outline-4">
+<h4 id="org3ed36d9"><span class="section-number-4">1.6.4.</span> Common storage engines</h4>
 <div class="outline-text-4" id="text-1-6-4">
 <ul class="org-ul">
 <li>MDBX: Ultra-fate key-value embedded database with ACID and MVCC supported.</li>
@@ -316,8 +318,8 @@ This is a personal note for <a href="https://www.paradigm.xyz/2024/04/reth-perf"
 </div>
 </div>
 </div>
-<div id="outline-container-org335e19f" class="outline-3">
-<h3 id="org335e19f"><span class="section-number-3">1.7.</span> Reth</h3>
+<div id="outline-container-org224641e" class="outline-3">
+<h3 id="org224641e"><span class="section-number-3">1.7.</span> Reth</h3>
 <div class="outline-text-3" id="text-1-7">
 <ul class="org-ul">
 <li>A Rust implementation of an Ethereum full node; allows users to interact with the Ethereum blockchain.</li>
@@ -328,8 +330,8 @@ This is a personal note for <a href="https://www.paradigm.xyz/2024/04/reth-perf"
 </ul>
 </div>
 </div>
-<div id="outline-container-orga1c1162" class="outline-3">
-<h3 id="orga1c1162"><span class="section-number-3">1.8.</span> Why gas per second as the performance metric</h3>
+<div id="outline-container-org4606488" class="outline-3">
+<h3 id="org4606488"><span class="section-number-3">1.8.</span> Why gas per second as the performance metric</h3>
 <div class="outline-text-3" id="text-1-8">
 <ul class="org-ul">
 <li>More nuanced than TPS.</li>
@@ -338,8 +340,8 @@ This is a personal note for <a href="https://www.paradigm.xyz/2024/04/reth-perf"
 </ul>
 </div>
 </div>
-<div id="outline-container-org59b385e" class="outline-3">
-<h3 id="org59b385e"><span class="section-number-3">1.9.</span> EVM cost models</h3>
+<div id="outline-container-org8ce312a" class="outline-3">
+<h3 id="org8ce312a"><span class="section-number-3">1.9.</span> EVM cost models</h3>
 <div class="outline-text-3" id="text-1-9">
 <ul class="org-ul">
 <li>Determines the computational and storage costs for the execution.</li>
@@ -347,8 +349,8 @@ This is a personal note for <a href="https://www.paradigm.xyz/2024/04/reth-perf"
 </ul>
 </div>
 </div>
-<div id="outline-container-orgd66ace3" class="outline-3">
-<h3 id="orgd66ace3"><span class="section-number-3">1.10.</span> TPC benchmark</h3>
+<div id="outline-container-org36ab8c4" class="outline-3">
+<h3 id="org36ab8c4"><span class="section-number-3">1.10.</span> TPC benchmark</h3>
 <div class="outline-text-3" id="text-1-10">
 <ul class="org-ul">
 <li>Standardized performance tests for transaction processing and databases, e.g., how many transactions a system can process in a given period.</li>
@@ -356,8 +358,8 @@ This is a personal note for <a href="https://www.paradigm.xyz/2024/04/reth-perf"
 </ul>
 </div>
 </div>
-<div id="outline-container-org9fb41e0" class="outline-3">
-<h3 id="org9fb41e0"><span class="section-number-3">1.11.</span> State growth</h3>
+<div id="outline-container-orgf928e7f" class="outline-3">
+<h3 id="orgf928e7f"><span class="section-number-3">1.11.</span> State growth</h3>
 <div class="outline-text-3" id="text-1-11">
 <ul class="org-ul">
 <li>State: the set of data for building and validating new Ethereum blocks.</li>
@@ -365,8 +367,8 @@ This is a personal note for <a href="https://www.paradigm.xyz/2024/04/reth-perf"
 </ul>
 </div>
 </div>
-<div id="outline-container-org6fee061" class="outline-3">
-<h3 id="org6fee061"><span class="section-number-3">1.12.</span> JIT (Just-In-Time) and AOT (Ahead-of-Time) EVM</h3>
+<div id="outline-container-org9ca4054" class="outline-3">
+<h3 id="org9ca4054"><span class="section-number-3">1.12.</span> JIT (Just-In-Time) and AOT (Ahead-of-Time) EVM</h3>
 <div class="outline-text-3" id="text-1-12">
 <ul class="org-ul">
 <li>JIT: convert bytecode to native machine code just before execution to bypass the VM&rsquo;s interpretative process.</li>
@@ -374,8 +376,8 @@ This is a personal note for <a href="https://www.paradigm.xyz/2024/04/reth-perf"
 </ul>
 </div>
 </div>
-<div id="outline-container-org05dc127" class="outline-3">
-<h3 id="org05dc127"><span class="section-number-3">1.13.</span> Actor model</h3>
+<div id="outline-container-org9b8d512" class="outline-3">
+<h3 id="org9b8d512"><span class="section-number-3">1.13.</span> Actor model</h3>
 <div class="outline-text-3" id="text-1-13">
 <ul class="org-ul">
 <li>A paradigm/framework for designing distributed systems.</li>
@@ -383,16 +385,16 @@ This is a personal note for <a href="https://www.paradigm.xyz/2024/04/reth-perf"
 </ul>
 </div>
 </div>
-<div id="outline-container-org1797aa2" class="outline-3">
-<h3 id="org1797aa2"><span class="section-number-3">1.14.</span> Storage trie</h3>
+<div id="outline-container-orgb4c223d" class="outline-3">
+<h3 id="orgb4c223d"><span class="section-number-3">1.14.</span> Storage trie</h3>
 <div class="outline-text-3" id="text-1-14">
 <ul class="org-ul">
 <li>Each contract account has its own storage trie, which is usually stored in a KV database.</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-orgfc8ea4c" class="outline-3">
-<h3 id="orgfc8ea4c"><span class="section-number-3">1.15.</span> Serverless database</h3>
+<div id="outline-container-org6cba0cd" class="outline-3">
+<h3 id="org6cba0cd"><span class="section-number-3">1.15.</span> Serverless database</h3>
 <div class="outline-text-3" id="text-1-15">
 <ul class="org-ul">
 <li>Allow developers to focus on writing queries without managing database servers.</li>
@@ -402,23 +404,23 @@ This is a personal note for <a href="https://www.paradigm.xyz/2024/04/reth-perf"
 </div>
 </div>
 </div>
-<div id="outline-container-orgd09a768" class="outline-2">
-<h2 id="orgd09a768"><span class="section-number-2">2.</span> Reth scaling plan</h2>
+<div id="outline-container-org862e64d" class="outline-2">
+<h2 id="org862e64d"><span class="section-number-2">2.</span> Reth scaling plan</h2>
 <div class="outline-text-2" id="text-2">
 <ul class="org-ul">
 <li>Current status (April 2024): achieves 100-200 mg/s during live sync, including sender recovery, transaction execution and block trie calculation.</li>
 <li>The scaling plan does not involve solving state growth.</li>
 </ul>
 </div>
-<div id="outline-container-orgcabcfde" class="outline-3">
-<h3 id="orgcabcfde"><span class="section-number-3">2.1.</span> Vertical scaling (2024)</h3>
+<div id="outline-container-org9c8521c" class="outline-3">
+<h3 id="org9c8521c"><span class="section-number-3">2.1.</span> Vertical scaling (2024)</h3>
 <div class="outline-text-3" id="text-2-1">
 <ul class="org-ul">
 <li>Optimize how each system handle transactions and data.</li>
 </ul>
 </div>
-<div id="outline-container-orgb64c075" class="outline-4">
-<h4 id="orgb64c075"><span class="section-number-4">2.1.1.</span> JIT/AOT EVM</h4>
+<div id="outline-container-org37936b1" class="outline-4">
+<h4 id="org37936b1"><span class="section-number-4">2.1.1.</span> JIT/AOT EVM</h4>
 <div class="outline-text-4" id="text-2-1-1">
 <ul class="org-ul">
 <li>Reduce EVM interpreter overhead to speed up single-threaded transaction processing.</li>
@@ -427,15 +429,15 @@ This is a personal note for <a href="https://www.paradigm.xyz/2024/04/reth-perf"
 </ul>
 
 
-<figure id="org574931f">
+<figure id="orgf005882">
 <img src="https://www.paradigm.xyz/static/reth-perf/3.png" alt="3.png" align="center" width="500px">
 
 <figcaption><span class="figure-number">Figure 1: </span>The JIT/AOT compiler (<a href="https://www.paradigm.xyz/static/reth-perf/3.png">source</a>)</figcaption>
 </figure>
 </div>
 </div>
-<div id="outline-container-orgde765d1" class="outline-4">
-<h4 id="orgde765d1"><span class="section-number-4">2.1.2.</span> Parallel EVM</h4>
+<div id="outline-container-org4153dae" class="outline-4">
+<h4 id="org4153dae"><span class="section-number-4">2.1.2.</span> Parallel EVM</h4>
 <div class="outline-text-4" id="text-2-1-2">
 <ul class="org-ul">
 <li>Utilize multiple cores during EVM execution.</li>
@@ -445,8 +447,8 @@ This is a personal note for <a href="https://www.paradigm.xyz/2024/04/reth-perf"
 </ul>
 </div>
 </div>
-<div id="outline-container-org137841c" class="outline-4">
-<h4 id="org137841c"><span class="section-number-4">2.1.3.</span> Optimized state commitment</h4>
+<div id="outline-container-org3473519" class="outline-4">
+<h4 id="org3473519"><span class="section-number-4">2.1.3.</span> Optimized state commitment</h4>
 <div class="outline-text-4" id="text-2-1-3">
 <ul class="org-ul">
 <li>Traditional EVM implementation <b><b>couples</b></b> the transaction execution and the state root computation: the state root is updated whenever a transaction updates a trie, since the state root computation has to be sequential from the updated node to the root, this is slow.</li>
@@ -472,23 +474,23 @@ This is a personal note for <a href="https://www.paradigm.xyz/2024/04/reth-perf"
 </div>
 </div>
 </div>
-<div id="outline-container-org5d06154" class="outline-3">
-<h3 id="org5d06154"><span class="section-number-3">2.2.</span> Horizontal scaling (2025)</h3>
+<div id="outline-container-orgaa44f36" class="outline-3">
+<h3 id="orgaa44f36"><span class="section-number-3">2.2.</span> Horizontal scaling (2025)</h3>
 <div class="outline-text-3" id="text-2-2">
 <ul class="org-ul">
 <li>Spread the workload across multiple systems.</li>
 </ul>
 </div>
-<div id="outline-container-org14e8f60" class="outline-4">
-<h4 id="org14e8f60"><span class="section-number-4">2.2.1.</span> Multi-Rollup (?)</h4>
+<div id="outline-container-org5d2f78b" class="outline-4">
+<h4 id="org5d2f78b"><span class="section-number-4">2.2.1.</span> Multi-Rollup (?)</h4>
 <div class="outline-text-4" id="text-2-2-1">
 <ul class="org-ul">
 <li>Reduce operational overhead of running multiple rollups.</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org739ea55" class="outline-4">
-<h4 id="org739ea55"><span class="section-number-4">2.2.2.</span> Cloud-Native nodes.</h4>
+<div id="outline-container-orgd7d3d94" class="outline-4">
+<h4 id="orgd7d3d94"><span class="section-number-4">2.2.2.</span> Cloud-Native nodes.</h4>
 <div class="outline-text-4" id="text-2-2-2">
 <ul class="org-ul">
 <li>Deploy the heavy node (e.g., sequencer) as a service stack that can autoscale with compute demand and use cloud storage for persistence.</li>
@@ -497,8 +499,8 @@ This is a personal note for <a href="https://www.paradigm.xyz/2024/04/reth-perf"
 </div>
 </div>
 </div>
-<div id="outline-container-orged28813" class="outline-3">
-<h3 id="orged28813"><span class="section-number-3">2.3.</span> Open questions</h3>
+<div id="outline-container-org4ca540c" class="outline-3">
+<h3 id="org4ca540c"><span class="section-number-3">2.3.</span> Open questions</h3>
 <div class="outline-text-3" id="text-2-3">
 <ul class="org-ul">
 <li>Second order effects of above changes, e.g., on light clients.</li>
@@ -513,18 +515,18 @@ This is a personal note for <a href="https://www.paradigm.xyz/2024/04/reth-perf"
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org8c07a9c">1. Blockchain fundamentals</a>
+<li><a href="#orgbb11756">1. Blockchain fundamentals</a>
 <ul>
-<li><a href="#org3cda8fb">1.1. System contract</a></li>
-<li><a href="#org992e3cc">1.2. Transaction execution phases</a></li>
+<li><a href="#orgfe97a6b">1.1. System contract</a></li>
+<li><a href="#org9032206">1.2. Transaction execution phases</a></li>
 </ul>
 </li>
-<li><a href="#orgb528427">2. Design principle</a></li>
-<li><a href="#orga55892c">3. Workflow</a>
+<li><a href="#org70b5d8a">2. Design principle</a></li>
+<li><a href="#orgb775996">3. Workflow</a>
 <ul>
-<li><a href="#org5cc5da2">3.1. Dispatch factors</a></li>
-<li><a href="#orge670468">3.2. Slot execution stages</a></li>
-<li><a href="#org6ae044e">3.3. Conflict detection</a></li>
+<li><a href="#orge6e0f3b">3.1. Dispatch factors</a></li>
+<li><a href="#org30bd872">3.2. Slot execution stages</a></li>
+<li><a href="#orgcb81995">3.3. Conflict detection</a></li>
 </ul>
 </li>
 </ul>
@@ -534,12 +536,12 @@ This is a personal note for <a href="https://www.paradigm.xyz/2024/04/reth-perf"
 This is a personal note for <a href="https://github.com/bnb-chain/BEPs/blob/master/BEPs/BEP130.md">BEP-130</a>.
 BEP-130 is a proposal that introduces a parallel transaction execution mechanism on the BNB Smart Chain (BSC).
 </p>
-<div id="outline-container-org8c07a9c" class="outline-2">
-<h2 id="org8c07a9c"><span class="section-number-2">1.</span> Blockchain fundamentals</h2>
+<div id="outline-container-orgbb11756" class="outline-2">
+<h2 id="orgbb11756"><span class="section-number-2">1.</span> Blockchain fundamentals</h2>
 <div class="outline-text-2" id="text-1">
 </div>
-<div id="outline-container-org3cda8fb" class="outline-3">
-<h3 id="org3cda8fb"><span class="section-number-3">1.1.</span> System contract</h3>
+<div id="outline-container-orgfe97a6b" class="outline-3">
+<h3 id="orgfe97a6b"><span class="section-number-3">1.1.</span> System contract</h3>
 <div class="outline-text-3" id="text-1-1">
 <ul class="org-ul">
 <li>Built-in contracts to perform system level operations, e,g., gas fee reward, cross chain communication.</li>
@@ -547,8 +549,8 @@ BEP-130 is a proposal that introduces a parallel transaction execution mechanism
 </ul>
 </div>
 </div>
-<div id="outline-container-org992e3cc" class="outline-3">
-<h3 id="org992e3cc"><span class="section-number-3">1.2.</span> Transaction execution phases</h3>
+<div id="outline-container-org9032206" class="outline-3">
+<h3 id="org9032206"><span class="section-number-3">1.2.</span> Transaction execution phases</h3>
 <div class="outline-text-3" id="text-1-2">
 <ul class="org-ul">
 <li>Block mining phase: received from the P2P transaction pool, could contain invalid transactions.</li>
@@ -557,8 +559,8 @@ BEP-130 is a proposal that introduces a parallel transaction execution mechanism
 </div>
 </div>
 </div>
-<div id="outline-container-orgb528427" class="outline-2">
-<h2 id="orgb528427"><span class="section-number-2">2.</span> Design principle</h2>
+<div id="outline-container-org70b5d8a" class="outline-2">
+<h2 id="org70b5d8a"><span class="section-number-2">2.</span> Design principle</h2>
 <div class="outline-text-2" id="text-2">
 <ul class="org-ul">
 <li>Should always produce the same result as the current sequential execution.</li>
@@ -568,12 +570,12 @@ BEP-130 is a proposal that introduces a parallel transaction execution mechanism
 </ul>
 </div>
 </div>
-<div id="outline-container-orga55892c" class="outline-2">
-<h2 id="orga55892c"><span class="section-number-2">3.</span> Workflow</h2>
+<div id="outline-container-orgb775996" class="outline-2">
+<h2 id="orgb775996"><span class="section-number-2">3.</span> Workflow</h2>
 <div class="outline-text-2" id="text-3">
 </div>
-<div id="outline-container-org5cc5da2" class="outline-3">
-<h3 id="org5cc5da2"><span class="section-number-3">3.1.</span> Dispatch factors</h3>
+<div id="outline-container-orge6e0f3b" class="outline-3">
+<h3 id="orge6e0f3b"><span class="section-number-3">3.1.</span> Dispatch factors</h3>
 <div class="outline-text-3" id="text-3-1">
 <ul class="org-ul">
 <li>Is the slot idle or occupied?</li>
@@ -584,8 +586,8 @@ BEP-130 is a proposal that introduces a parallel transaction execution mechanism
 </ul>
 </div>
 </div>
-<div id="outline-container-orge670468" class="outline-3">
-<h3 id="orge670468"><span class="section-number-3">3.2.</span> Slot execution stages</h3>
+<div id="outline-container-org30bd872" class="outline-3">
+<h3 id="org30bd872"><span class="section-number-3">3.2.</span> Slot execution stages</h3>
 <div class="outline-text-3" id="text-3-2">
 <ol class="org-ol">
 <li>Execute the transaction \(Tx_i\)based on a specific worldstate, e.g., the state when the execution starts.</li>
@@ -600,8 +602,8 @@ BEP-130 is a proposal that introduces a parallel transaction execution mechanism
 </ol>
 </div>
 </div>
-<div id="outline-container-org6ae044e" class="outline-3">
-<h3 id="org6ae044e"><span class="section-number-3">3.3.</span> Conflict detection</h3>
+<div id="outline-container-orgcb81995" class="outline-3">
+<h3 id="orgcb81995"><span class="section-number-3">3.3.</span> Conflict detection</h3>
 <div class="outline-text-3" id="text-3-3">
 <ul class="org-ul">
 <li>Detection items: storage key/value pair; account balance; contract content and status.</li>
@@ -616,35 +618,35 @@ BEP-130 is a proposal that introduces a parallel transaction execution mechanism
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org68ca49b">1. Blockchain fundamentals</a>
+<li><a href="#orgf9ea6f8">1. Blockchain fundamentals</a>
 <ul>
-<li><a href="#orgb5c25f5">1.1. Why is parallel EVM not easy</a></li>
-<li><a href="#org0ff0777">1.2. A Parallel EVM ideas</a></li>
-<li><a href="#orgaefc13a">1.3. Block STM algorithm</a></li>
+<li><a href="#orgec7b451">1.1. Why is parallel EVM not easy</a></li>
+<li><a href="#org0813c25">1.2. A Parallel EVM ideas</a></li>
+<li><a href="#org200d369">1.3. Block STM algorithm</a></li>
 </ul>
 </li>
-<li><a href="#org0f9537d">2. BNB Parallel EVM 1.0: Infrastructure</a></li>
-<li><a href="#org9a991b3">3. BNB Parallel EVM 2.0: Performance enhancement</a></li>
-<li><a href="#orgb9c0c00">4. BNB Parallel EVM 3.0: Production</a>
+<li><a href="#org95ac103">2. BNB Parallel EVM 1.0: Infrastructure</a></li>
+<li><a href="#org610d289">3. BNB Parallel EVM 2.0: Performance enhancement</a></li>
+<li><a href="#orgf3d8dcf">4. BNB Parallel EVM 3.0: Production</a>
 <ul>
-<li><a href="#org7904432">4.1. Hint-based dispatcher</a></li>
-<li><a href="#org56bf61e">4.2. Seamless BNB chain ecosystem integration</a></li>
+<li><a href="#orge0c7449">4.1. Hint-based dispatcher</a></li>
+<li><a href="#orgc0ebd54">4.2. Seamless BNB chain ecosystem integration</a></li>
 </ul>
 </li>
-<li><a href="#org2e580ef">5. Comparison with other solutions</a></li>
-<li><a href="#org00bff4b">6. Other optimizations</a></li>
+<li><a href="#orge15f45d">5. Comparison with other solutions</a></li>
+<li><a href="#org434cf54">6. Other optimizations</a></li>
 </ul>
 </div>
 </nav>
 <p>
 This is a personal note for <a href="https://www.bnbchain.org/zh-CN/blog/road-to-high-performance-parallel-evm-for-bnb-chain">BNB chain-blog</a>.
 </p>
-<div id="outline-container-org68ca49b" class="outline-2">
-<h2 id="org68ca49b"><span class="section-number-2">1.</span> Blockchain fundamentals</h2>
+<div id="outline-container-orgf9ea6f8" class="outline-2">
+<h2 id="orgf9ea6f8"><span class="section-number-2">1.</span> Blockchain fundamentals</h2>
 <div class="outline-text-2" id="text-1">
 </div>
-<div id="outline-container-orgb5c25f5" class="outline-3">
-<h3 id="orgb5c25f5"><span class="section-number-3">1.1.</span> Why is parallel EVM not easy</h3>
+<div id="outline-container-orgec7b451" class="outline-3">
+<h3 id="orgec7b451"><span class="section-number-3">1.1.</span> Why is parallel EVM not easy</h3>
 <div class="outline-text-3" id="text-1-1">
 <ul class="org-ul">
 <li>Lack of visibility of potential transaction conflict.</li>
@@ -652,8 +654,8 @@ This is a personal note for <a href="https://www.bnbchain.org/zh-CN/blog/road-to
 </ul>
 </div>
 </div>
-<div id="outline-container-org0ff0777" class="outline-3">
-<h3 id="org0ff0777"><span class="section-number-3">1.2.</span> A Parallel EVM ideas</h3>
+<div id="outline-container-org0813c25" class="outline-3">
+<h3 id="org0813c25"><span class="section-number-3">1.2.</span> A Parallel EVM ideas</h3>
 <div class="outline-text-3" id="text-1-2">
 <ul class="org-ul">
 <li>Run multiple EVM instances concurrently on different threads.</li>
@@ -662,8 +664,8 @@ This is a personal note for <a href="https://www.bnbchain.org/zh-CN/blog/road-to
 </ul>
 </div>
 </div>
-<div id="outline-container-orgaefc13a" class="outline-3">
-<h3 id="orgaefc13a"><span class="section-number-3">1.3.</span> Block STM algorithm</h3>
+<div id="outline-container-org200d369" class="outline-3">
+<h3 id="org200d369"><span class="section-number-3">1.3.</span> Block STM algorithm</h3>
 <div class="outline-text-3" id="text-1-3">
 <ul class="org-ul">
 <li>Optimistic parallelism: assigns transactions to various threads.</li>
@@ -673,8 +675,8 @@ This is a personal note for <a href="https://www.bnbchain.org/zh-CN/blog/road-to
 </div>
 </div>
 </div>
-<div id="outline-container-org0f9537d" class="outline-2">
-<h2 id="org0f9537d"><span class="section-number-2">2.</span> BNB Parallel EVM 1.0: Infrastructure</h2>
+<div id="outline-container-org95ac103" class="outline-2">
+<h2 id="org95ac103"><span class="section-number-2">2.</span> BNB Parallel EVM 1.0: Infrastructure</h2>
 <div class="outline-text-2" id="text-2">
 <ul class="org-ul">
 <li>Proposal: <a href="https://github.com/bnb-chain/BEPs/pull/130?ref=bnbchain.ghost.io">BEP-130 (2022)</a></li>
@@ -686,8 +688,8 @@ This is a personal note for <a href="https://www.bnbchain.org/zh-CN/blog/road-to
 </ul>
 </div>
 </div>
-<div id="outline-container-org9a991b3" class="outline-2">
-<h2 id="org9a991b3"><span class="section-number-2">3.</span> BNB Parallel EVM 2.0: Performance enhancement</h2>
+<div id="outline-container-org610d289" class="outline-2">
+<h2 id="org610d289"><span class="section-number-2">3.</span> BNB Parallel EVM 2.0: Performance enhancement</h2>
 <div class="outline-text-2" id="text-3">
 <ul class="org-ul">
 <li>Dispatcher: combine both static and dynamic dispatch strategies.</li>
@@ -698,12 +700,12 @@ This is a personal note for <a href="https://www.bnbchain.org/zh-CN/blog/road-to
 </ul>
 </div>
 </div>
-<div id="outline-container-orgb9c0c00" class="outline-2">
-<h2 id="orgb9c0c00"><span class="section-number-2">4.</span> BNB Parallel EVM 3.0: Production</h2>
+<div id="outline-container-orgf3d8dcf" class="outline-2">
+<h2 id="orgf3d8dcf"><span class="section-number-2">4.</span> BNB Parallel EVM 3.0: Production</h2>
 <div class="outline-text-2" id="text-4">
 </div>
-<div id="outline-container-org7904432" class="outline-3">
-<h3 id="org7904432"><span class="section-number-3">4.1.</span> Hint-based dispatcher</h3>
+<div id="outline-container-orge0c7449" class="outline-3">
+<h3 id="orge0c7449"><span class="section-number-3">4.1.</span> Hint-based dispatcher</h3>
 <div class="outline-text-3" id="text-4-1">
 <ul class="org-ul">
 <li>leverages external hint providers to analyze transactions and generate predictions about potential state access conflicts.</li>
@@ -714,8 +716,8 @@ This is a personal note for <a href="https://www.bnbchain.org/zh-CN/blog/road-to
 </ul>
 </div>
 </div>
-<div id="outline-container-org56bf61e" class="outline-3">
-<h3 id="org56bf61e"><span class="section-number-3">4.2.</span> Seamless BNB chain ecosystem integration</h3>
+<div id="outline-container-orgc0ebd54" class="outline-3">
+<h3 id="orgc0ebd54"><span class="section-number-3">4.2.</span> Seamless BNB chain ecosystem integration</h3>
 <div class="outline-text-3" id="text-4-2">
 <ul class="org-ul">
 <li>Modularization and reconstructing.</li>
@@ -724,8 +726,8 @@ This is a personal note for <a href="https://www.bnbchain.org/zh-CN/blog/road-to
 </div>
 </div>
 </div>
-<div id="outline-container-org2e580ef" class="outline-2">
-<h2 id="org2e580ef"><span class="section-number-2">5.</span> Comparison with other solutions</h2>
+<div id="outline-container-orge15f45d" class="outline-2">
+<h2 id="orge15f45d"><span class="section-number-2">5.</span> Comparison with other solutions</h2>
 <div class="outline-text-2" id="text-5">
 <table>
 
@@ -793,8 +795,8 @@ This is a personal note for <a href="https://www.bnbchain.org/zh-CN/blog/road-to
 </table>
 </div>
 </div>
-<div id="outline-container-org00bff4b" class="outline-2">
-<h2 id="org00bff4b"><span class="section-number-2">6.</span> Other optimizations</h2>
+<div id="outline-container-org434cf54" class="outline-2">
+<h2 id="org434cf54"><span class="section-number-2">6.</span> Other optimizations</h2>
 <div class="outline-text-2" id="text-6">
 <ul class="org-ul">
 <li>Opcode-level optimization: fine-tuning individual EVM instructions for maximum efficiency.</li>
@@ -810,38 +812,38 @@ This is a personal note for <a href="https://www.bnbchain.org/zh-CN/blog/road-to
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org8cd2356">1. Blockchain fundamentals</a>
+<li><a href="#org2686ae0">1. Blockchain fundamentals</a>
 <ul>
-<li><a href="#org7287239">1.1. Conduit chain</a></li>
-<li><a href="#org30ae29b">1.2. Gas per second</a></li>
-<li><a href="#org534714c">1.3. Target gas per block</a></li>
-<li><a href="#org3626925">1.4. Current blockchain scalability</a></li>
-<li><a href="#orgfd60e1c">1.5. Blockchain node hardware requirements</a></li>
-<li><a href="#org7c2c68a">1.6. L1 and L2 nodes</a></li>
-<li><a href="#orgd4f46ac">1.7. Verifying a block</a></li>
-<li><a href="#org380980e">1.8. Maximum extractable value (MEV)</a></li>
-<li><a href="#org30e7741">1.9. Proposer-builder separation (PBS)</a></li>
-<li><a href="#orgab6780e">1.10. Live and historical sync</a></li>
-<li><a href="#org0befbdb">1.11. Portal Network</a></li>
-<li><a href="#org68b5b9d">1.12. Verkle tree</a></li>
-<li><a href="#org45692a0">1.13. Node storage</a>
+<li><a href="#org6e6e9ea">1.1. Conduit chain</a></li>
+<li><a href="#org0e716e4">1.2. Gas per second</a></li>
+<li><a href="#orgfca460d">1.3. Target gas per block</a></li>
+<li><a href="#org87936d0">1.4. Current blockchain scalability</a></li>
+<li><a href="#orge76b8ea">1.5. Blockchain node hardware requirements</a></li>
+<li><a href="#org1e5f91d">1.6. L1 and L2 nodes</a></li>
+<li><a href="#org751a3f0">1.7. Verifying a block</a></li>
+<li><a href="#org08bbc38">1.8. Maximum extractable value (MEV)</a></li>
+<li><a href="#orgb90bfc8">1.9. Proposer-builder separation (PBS)</a></li>
+<li><a href="#org02dbccd">1.10. Live and historical sync</a></li>
+<li><a href="#orgeb93d85">1.11. Portal Network</a></li>
+<li><a href="#orgc24e0a1">1.12. Verkle tree</a></li>
+<li><a href="#org298ef6e">1.13. Node storage</a>
 <ul>
-<li><a href="#org9590b1f">1.13.1. History expiry</a></li>
-<li><a href="#orgc1ab1a5">1.13.2. State expiry</a></li>
-<li><a href="#orgbe5f94a">1.13.3. Statelessness</a></li>
+<li><a href="#orgcc4239a">1.13.1. History expiry</a></li>
+<li><a href="#orgda84e01">1.13.2. State expiry</a></li>
+<li><a href="#orgfc9a598">1.13.3. Statelessness</a></li>
 </ul>
 </li>
-<li><a href="#orgf57fcba">1.14. Software transactional memory (STM)</a></li>
-<li><a href="#orgd984ca4">1.15. Block-STM</a></li>
+<li><a href="#orgbac4ffd">1.14. Software transactional memory (STM)</a></li>
+<li><a href="#org072467f">1.15. Block-STM</a></li>
 </ul>
 </li>
-<li><a href="#org397ce44">2. What is MagaETH</a>
+<li><a href="#orgcf9c950">2. What is MagaETH</a>
 <ul>
-<li><a href="#org126ad0f">2.1. Node specialization</a></li>
-<li><a href="#org5b5cb74">2.2. Design philosophy</a></li>
+<li><a href="#org670a8f9">2.1. Node specialization</a></li>
+<li><a href="#orgc63e4c2">2.2. Design philosophy</a></li>
 </ul>
 </li>
-<li><a href="#org27b711f">3. MegaETH challenges</a></li>
+<li><a href="#org0d2a6ff">3. MegaETH challenges</a></li>
 </ul>
 </div>
 </nav>
@@ -852,20 +854,20 @@ This is a personal note for <a href="https://megaeth.systems/research">MegaETH-b
 <p>
 In summary, this blog proposes many challenges when designing a high-performance EVM chain, but does not include any design details of MegaETH itself.
 </p>
-<div id="outline-container-org8cd2356" class="outline-2">
-<h2 id="org8cd2356"><span class="section-number-2">1.</span> Blockchain fundamentals</h2>
+<div id="outline-container-org2686ae0" class="outline-2">
+<h2 id="org2686ae0"><span class="section-number-2">1.</span> Blockchain fundamentals</h2>
 <div class="outline-text-2" id="text-1">
 </div>
-<div id="outline-container-org7287239" class="outline-3">
-<h3 id="org7287239"><span class="section-number-3">1.1.</span> <a href="https://docs.conduit.xyz/">Conduit chain</a></h3>
+<div id="outline-container-org6e6e9ea" class="outline-3">
+<h3 id="org6e6e9ea"><span class="section-number-3">1.1.</span> <a href="https://docs.conduit.xyz/">Conduit chain</a></h3>
 <div class="outline-text-3" id="text-1-1">
 <ul class="org-ul">
 <li>Allows one to deploy a rollup through its Rollups-as-a-service platform within in minutes.</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org30ae29b" class="outline-3">
-<h3 id="org30ae29b"><span class="section-number-3">1.2.</span> Gas per second</h3>
+<div id="outline-container-org0e716e4" class="outline-3">
+<h3 id="org0e716e4"><span class="section-number-3">1.2.</span> Gas per second</h3>
 <div class="outline-text-3" id="text-1-2">
 <ul class="org-ul">
 <li>Reflects the amount of computation the blockchain can handle per second.</li>
@@ -874,8 +876,8 @@ In summary, this blog proposes many challenges when designing a high-performance
 </ul>
 </div>
 </div>
-<div id="outline-container-org534714c" class="outline-3">
-<h3 id="org534714c"><span class="section-number-3">1.3.</span> Target gas per block</h3>
+<div id="outline-container-orgfca460d" class="outline-3">
+<h3 id="orgfca460d"><span class="section-number-3">1.3.</span> Target gas per block</h3>
 <div class="outline-text-3" id="text-1-3">
 <ul class="org-ul">
 <li>Dynamically regulate the amount of computation a block can include.</li>
@@ -883,11 +885,11 @@ In summary, this blog proposes many challenges when designing a high-performance
 </ul>
 </div>
 </div>
-<div id="outline-container-org3626925" class="outline-3">
-<h3 id="org3626925"><span class="section-number-3">1.4.</span> Current blockchain scalability</h3>
+<div id="outline-container-org87936d0" class="outline-3">
+<h3 id="org87936d0"><span class="section-number-3">1.4.</span> Current blockchain scalability</h3>
 <div class="outline-text-3" id="text-1-4">
 
-<figure id="orgece9dc1">
+<figure id="org805836d">
 <img src="https://hackmd.io/_uploads/rkHVB0iHR.png" alt="rkHVB0iHR.png" align="center" width="500px">
 
 <figcaption><span class="figure-number">Figure 1: </span>2024 blockchain scalability comparison</figcaption>
@@ -900,8 +902,8 @@ In summary, this blog proposes many challenges when designing a high-performance
 </ul>
 </div>
 </div>
-<div id="outline-container-orgfd60e1c" class="outline-3">
-<h3 id="orgfd60e1c"><span class="section-number-3">1.5.</span> Blockchain node hardware requirements</h3>
+<div id="outline-container-orge76b8ea" class="outline-3">
+<h3 id="orge76b8ea"><span class="section-number-3">1.5.</span> Blockchain node hardware requirements</h3>
 <div class="outline-text-3" id="text-1-5">
 <ul class="org-ul">
 <li>Lower hardware requirements for full nodes increase decentralization.</li>
@@ -909,8 +911,8 @@ In summary, this blog proposes many challenges when designing a high-performance
 </ul>
 </div>
 </div>
-<div id="outline-container-org7c2c68a" class="outline-3">
-<h3 id="org7c2c68a"><span class="section-number-3">1.6.</span> L1 and L2 nodes</h3>
+<div id="outline-container-org1e5f91d" class="outline-3">
+<h3 id="org1e5f91d"><span class="section-number-3">1.6.</span> L1 and L2 nodes</h3>
 <div class="outline-text-3" id="text-1-6">
 <ul class="org-ul">
 <li>L1 nodes are homogeneous; each node performs identical tasks, i.e., transaction consensus and execution without specialization.</li>
@@ -918,8 +920,8 @@ In summary, this blog proposes many challenges when designing a high-performance
 </ul>
 </div>
 </div>
-<div id="outline-container-orgd4f46ac" class="outline-3">
-<h3 id="orgd4f46ac"><span class="section-number-3">1.7.</span> Verifying a block</h3>
+<div id="outline-container-org751a3f0" class="outline-3">
+<h3 id="org751a3f0"><span class="section-number-3">1.7.</span> Verifying a block</h3>
 <div class="outline-text-3" id="text-1-7">
 <ul class="org-ul">
 <li>Re-execute the transactions in the block.</li>
@@ -928,16 +930,16 @@ In summary, this blog proposes many challenges when designing a high-performance
 </ul>
 </div>
 </div>
-<div id="outline-container-org380980e" class="outline-3">
-<h3 id="org380980e"><span class="section-number-3">1.8.</span> Maximum extractable value (MEV)</h3>
+<div id="outline-container-org08bbc38" class="outline-3">
+<h3 id="org08bbc38"><span class="section-number-3">1.8.</span> Maximum extractable value (MEV)</h3>
 <div class="outline-text-3" id="text-1-8">
 <ul class="org-ul">
 <li>Validators maximize their profitability by favorably ordering transactions.</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org30e7741" class="outline-3">
-<h3 id="org30e7741"><span class="section-number-3">1.9.</span> Proposer-builder separation (PBS)</h3>
+<div id="outline-container-orgb90bfc8" class="outline-3">
+<h3 id="orgb90bfc8"><span class="section-number-3">1.9.</span> Proposer-builder separation (PBS)</h3>
 <div class="outline-text-3" id="text-1-9">
 <ul class="org-ul">
 <li>Block builders are responsible for creating blocks and offering them to the block proposer in each slot.</li>
@@ -946,8 +948,8 @@ In summary, this blog proposes many challenges when designing a high-performance
 </ul>
 </div>
 </div>
-<div id="outline-container-orgab6780e" class="outline-3">
-<h3 id="orgab6780e"><span class="section-number-3">1.10.</span> Live and historical sync</h3>
+<div id="outline-container-org02dbccd" class="outline-3">
+<h3 id="org02dbccd"><span class="section-number-3">1.10.</span> Live and historical sync</h3>
 <div class="outline-text-3" id="text-1-10">
 <ul class="org-ul">
 <li>Live (online): continuously update a node with the latest data.</li>
@@ -956,8 +958,8 @@ In summary, this blog proposes many challenges when designing a high-performance
 </ul>
 </div>
 </div>
-<div id="outline-container-org0befbdb" class="outline-3">
-<h3 id="org0befbdb"><span class="section-number-3">1.11.</span> <a href="https://ethereum.org/en/developers/docs/networking-layer/portal-network/">Portal Network</a></h3>
+<div id="outline-container-orgeb93d85" class="outline-3">
+<h3 id="orgeb93d85"><span class="section-number-3">1.11.</span> <a href="https://ethereum.org/en/developers/docs/networking-layer/portal-network/">Portal Network</a></h3>
 <div class="outline-text-3" id="text-1-11">
 <ul class="org-ul">
 <li>An in-development p2p network for serving historical data where each node stores a small piece of Ethereum&rsquo;s history.</li>
@@ -966,8 +968,8 @@ In summary, this blog proposes many challenges when designing a high-performance
 </ul>
 </div>
 </div>
-<div id="outline-container-org68b5b9d" class="outline-3">
-<h3 id="org68b5b9d"><span class="section-number-3">1.12.</span> <a href="https://ethereum.org/en/roadmap/verkle-trees/">Verkle tree</a></h3>
+<div id="outline-container-orgc24e0a1" class="outline-3">
+<h3 id="orgc24e0a1"><span class="section-number-3">1.12.</span> <a href="https://ethereum.org/en/roadmap/verkle-trees/">Verkle tree</a></h3>
 <div class="outline-text-3" id="text-1-12">
 <ul class="org-ul">
 <li>Stateless clients rely on a witness that arrives with the block for PoI rather on maintaining own local trie.</li>
@@ -980,8 +982,8 @@ In summary, this blog proposes many challenges when designing a high-performance
 </ul>
 </div>
 </div>
-<div id="outline-container-org45692a0" class="outline-3">
-<h3 id="org45692a0"><span class="section-number-3">1.13.</span> Node storage</h3>
+<div id="outline-container-org298ef6e" class="outline-3">
+<h3 id="org298ef6e"><span class="section-number-3">1.13.</span> Node storage</h3>
 <div class="outline-text-3" id="text-1-13">
 <ul class="org-ul">
 <li>High disk space is the main barrier to a full node access, due to the need to store large chunks of Ethereum state data to process new transactions.</li>
@@ -989,8 +991,8 @@ In summary, this blog proposes many challenges when designing a high-performance
 <li>Clients should find new ways to verify transactions without relying on looking up local databases.</li>
 </ul>
 </div>
-<div id="outline-container-org9590b1f" class="outline-4">
-<h4 id="org9590b1f"><span class="section-number-4">1.13.1.</span> History expiry</h4>
+<div id="outline-container-orgcc4239a" class="outline-4">
+<h4 id="orgcc4239a"><span class="section-number-4">1.13.1.</span> History expiry</h4>
 <div class="outline-text-4" id="text-1-13-1">
 <ul class="org-ul">
 <li>Nodes discard state data older than X blocks with weak subjectivity checkpoints, i.e., a genesis block close to the present.</li>
@@ -1001,8 +1003,8 @@ In summary, this blog proposes many challenges when designing a high-performance
 </ul>
 </div>
 </div>
-<div id="outline-container-orgc1ab1a5" class="outline-4">
-<h4 id="orgc1ab1a5"><span class="section-number-4">1.13.2.</span> State expiry</h4>
+<div id="outline-container-orgda84e01" class="outline-4">
+<h4 id="orgda84e01"><span class="section-number-4">1.13.2.</span> State expiry</h4>
 <div class="outline-text-4" id="text-1-13-2">
 <ul class="org-ul">
 <li>Remove state from individual nodes if it has not been accessed recently.</li>
@@ -1012,8 +1014,8 @@ In summary, this blog proposes many challenges when designing a high-performance
 </ul>
 </div>
 </div>
-<div id="outline-container-orgbe5f94a" class="outline-4">
-<h4 id="orgbe5f94a"><span class="section-number-4">1.13.3.</span> Statelessness</h4>
+<div id="outline-container-orgfc9a598" class="outline-4">
+<h4 id="orgfc9a598"><span class="section-number-4">1.13.3.</span> Statelessness</h4>
 <div class="outline-text-4" id="text-1-13-3">
 <ul class="org-ul">
 <li>weak statelessness: only block producers need access to full state data.</li>
@@ -1024,8 +1026,8 @@ In summary, this blog proposes many challenges when designing a high-performance
 </div>
 </div>
 </div>
-<div id="outline-container-orgf57fcba" class="outline-3">
-<h3 id="orgf57fcba"><span class="section-number-3">1.14.</span> Software transactional memory (STM)</h3>
+<div id="outline-container-orgbac4ffd" class="outline-3">
+<h3 id="orgbac4ffd"><span class="section-number-3">1.14.</span> Software transactional memory (STM)</h3>
 <div class="outline-text-3" id="text-1-14">
 <ul class="org-ul">
 <li>A concurrency control mechanism to control access to shares memory in software.</li>
@@ -1035,8 +1037,8 @@ In summary, this blog proposes many challenges when designing a high-performance
 </ul>
 </div>
 </div>
-<div id="outline-container-orgd984ca4" class="outline-3">
-<h3 id="orgd984ca4"><span class="section-number-3">1.15.</span> Block-STM</h3>
+<div id="outline-container-org072467f" class="outline-3">
+<h3 id="org072467f"><span class="section-number-3">1.15.</span> Block-STM</h3>
 <div class="outline-text-3" id="text-1-15">
 <ul class="org-ul">
 <li>A parallel execution engine to schedule smart contract transactions based on STM.</li>
@@ -1045,16 +1047,16 @@ In summary, this blog proposes many challenges when designing a high-performance
 </div>
 </div>
 </div>
-<div id="outline-container-org397ce44" class="outline-2">
-<h2 id="org397ce44"><span class="section-number-2">2.</span> What is MagaETH</h2>
+<div id="outline-container-orgcf9c950" class="outline-2">
+<h2 id="orgcf9c950"><span class="section-number-2">2.</span> What is MagaETH</h2>
 <div class="outline-text-2" id="text-2">
 <ul class="org-ul">
 <li>An EVM-compatible L2 blockchain with Web2-level real-time processing and publishing, i.e., millisecond-level response times under heavy load.</li>
 <li>Main idea: delegate security and censorship resistance to base layers, e.g., Ethereum to make room for L2 optimization.</li>
 </ul>
 </div>
-<div id="outline-container-org126ad0f" class="outline-3">
-<h3 id="org126ad0f"><span class="section-number-3">2.1.</span> Node specialization</h3>
+<div id="outline-container-org670a8f9" class="outline-3">
+<h3 id="org670a8f9"><span class="section-number-3">2.1.</span> Node specialization</h3>
 <div class="outline-text-3" id="text-2-1">
 <ul class="org-ul">
 <li>sequencer: only one active sequencer at any time to <b><b>eliminate the consensus overhead</b></b>.</li>
@@ -1064,8 +1066,8 @@ In summary, this blog proposes many challenges when designing a high-performance
 </ul>
 </div>
 </div>
-<div id="outline-container-org5b5cb74" class="outline-3">
-<h3 id="org5b5cb74"><span class="section-number-3">2.2.</span> Design philosophy</h3>
+<div id="outline-container-orgc63e4c2" class="outline-3">
+<h3 id="orgc63e4c2"><span class="section-number-3">2.2.</span> Design philosophy</h3>
 <div class="outline-text-3" id="text-2-2">
 <ul class="org-ul">
 <li>Reth (Rust implementation of the Ethereum protocol) is bottlenecked by the MPT update in a live sync setup, even with a powerful sequencer.</li>
@@ -1075,11 +1077,11 @@ In summary, this blog proposes many challenges when designing a high-performance
 </div>
 </div>
 </div>
-<div id="outline-container-org27b711f" class="outline-2">
-<h2 id="org27b711f"><span class="section-number-2">3.</span> MegaETH challenges</h2>
+<div id="outline-container-org0d2a6ff" class="outline-2">
+<h2 id="org0d2a6ff"><span class="section-number-2">3.</span> MegaETH challenges</h2>
 <div class="outline-text-2" id="text-3">
 
-<figure id="org0321a4a">
+<figure id="orgc23c83d">
 <img src="https://hackmd.io/_uploads/BJW2EG4L0.png" alt="BJW2EG4L0.png" align="center" width="600px">
 
 <figcaption><span class="figure-number">Figure 2: </span>A transaction life-cycle.</figcaption>
@@ -1096,538 +1098,279 @@ In summary, this blog proposes many challenges when designing a high-performance
 </div>
 </div>
 <div class="taglist"><a href="https://chenyo.me/tags.html">Tags</a>: <a href="https://chenyo.me/tag-evm.html">evm</a> <a href="https://chenyo.me/tag-parallel-evm.html">parallel-evm</a> <a href="https://chenyo.me/tag-megaeth.html">megaeth</a> </div>
-      <div class="post-date">28 Jun 2024</div>
-      <h1 class="post-title">
-        <a href="https://chenyo.me/2024-06-28-parallel-evm:-sei-v2.html"
-          >Parallel EVM: Sei-v2</a
-        >
-      </h1>
-      <nav id="table-of-contents" role="doc-toc">
-        <h2>Table of Contents</h2>
-        <div id="text-table-of-contents" role="doc-toc">
-          <ul>
-            <li>
-              <a href="#org3000ecf">1. Blockchain fundamentals</a>
-              <ul>
-                <li><a href="#org8ec48a4">1.1. Mainnet and Testnet</a></li>
-                <li><a href="#org36efce5">1.2. Mainnet Alpha and Beta</a></li>
-                <li><a href="#org5a854c0">1.3. Layer 1 and Layer 2</a></li>
-                <li><a href="#orgab524b7">1.4. Rollups</a></li>
-                <li><a href="#org5c8e33b">1.5. State channels</a></li>
-                <li><a href="#orgb65d31e">1.6. Sidechains</a></li>
-                <li><a href="#org8dbd0d9">1.7. Ethereum and EVM</a></li>
-                <li><a href="#orgfef2ad1">1.8. IAVL tree</a></li>
-                <li><a href="#org5f05343">1.9. CosmWasm contract</a></li>
-                <li><a href="#org89d360f">1.10. Cosmos Ecosystem</a></li>
-                <li><a href="#org3ca8714">1.11. Blockchain layers</a></li>
-                <li>
-                  <a href="#org4fd4a6a">1.12. Optimistic parallelization</a>
-                </li>
-                <li>
-                  <a href="#org768fa5d"
-                    >1.13. Integrated and Modular blockchain</a
-                  >
-                </li>
-                <li>
-                  <a href="#orgd599131"
-                    >1.14. EVM Execution and storage layer</a
-                  >
-                </li>
-                <li>
-                  <a href="#org3a38d00">1.15. Block time and finalize time</a>
-                </li>
-                <li><a href="#org9c9e03d">1.16. Blockchain audit</a></li>
-              </ul>
-            </li>
-            <li><a href="#org7b83477">2. What is Sei</a></li>
-            <li>
-              <a href="#org180c00b">3. What is Sei v2</a>
-              <ul>
-                <li><a href="#org09487ef">3.1. Backwards compatibility</a></li>
-                <li>
-                  <a href="#org675d552">3.2. Optimistic parallelization</a>
-                </li>
-                <li><a href="#org7b474fb">3.3. SeiDB</a></li>
-                <li><a href="#org02ffccf">3.4. Interoperability</a></li>
-              </ul>
-            </li>
-          </ul>
-        </div>
-      </nav>
-      <p>
-        This is a personal note for
-        <a href="https://blog.sei.io/sei-v2-the-first-parallelized-evm/"
-          >Sei-v2-blog</a
-        >
-        as well as some terminology explained by
-        <a href="https://chatgpt.com/g/g-TJq7kBEsX-evm-gpt">EVM GPT</a>.
-      </p>
-      <div id="outline-container-org3000ecf" class="outline-2">
-        <h2 id="org3000ecf">
-          <span class="section-number-2">1.</span> Blockchain fundamentals
-        </h2>
-        <div class="outline-text-2" id="text-1"></div>
-        <div id="outline-container-org8ec48a4" class="outline-3">
-          <h3 id="org8ec48a4">
-            <span class="section-number-3">1.1.</span> Mainnet and Testnet
-          </h3>
-          <div class="outline-text-3" id="text-1-1">
-            <ul class="org-ul">
-              <li>
-                Mainnet: real transactions occur and have real-world value; any
-                operation is final and irreversible.
-              </li>
-              <li>
-                Testnet: a sandbox environment with test cryptocurrencies
-                without real-world value.
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-org36efce5" class="outline-3">
-          <h3 id="org36efce5">
-            <span class="section-number-3">1.2.</span> Mainnet Alpha and Beta
-          </h3>
-          <div class="outline-text-3" id="text-1-2">
-            <ul class="org-ul">
-              <li>
-                Alpha: test core functionalities and gather initial feedback in
-                live environment.
-              </li>
-              <li>
-                Beta: more stable and feature-complete, but still need more
-                testing.
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-org5a854c0" class="outline-3">
-          <h3 id="org5a854c0">
-            <span class="section-number-3">1.3.</span> Layer 1 and Layer 2
-          </h3>
-          <div class="outline-text-3" id="text-1-3">
-            <ul class="org-ul">
-              <li>
-                L1: the main network where all transactions are processed and
-                the primary chain is maintained.
-              </li>
-              <li>
-                L2: secondary frameworks on top of L1 chain, aimed to enhance
-                scalability without compromising the security of the L1.
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-orgab524b7" class="outline-3">
-          <h3 id="orgab524b7">
-            <span class="section-number-3">1.4.</span> Rollups
-          </h3>
-          <div class="outline-text-3" id="text-1-4">
-            <ul class="org-ul">
-              <li>
-                Processes transactions off-chain and periodically submits a
-                summary (rollup) to L1.
-              </li>
-              <li>
-                Optimistic rollups: assume transactions are valid be default and
-                use a challenge period to allow disputes
-                <ul class="org-ul">
-                  <li>Examples: Optimism, Arbitrum.</li>
-                </ul>
-              </li>
-              <li>
-                ZK-rollups: use zero-knowledge proofs to validate transactions.
-                <ul class="org-ul">
-                  <li>Examples: zkSync, StarkNet.</li>
-                </ul>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-org5c8e33b" class="outline-3">
-          <h3 id="org5c8e33b">
-            <span class="section-number-3">1.5.</span> State channels
-          </h3>
-          <div class="outline-text-3" id="text-1-5">
-            <ul class="org-ul">
-              <li>
-                allow participants to conduct numerous off-chain transactions,
-                with only the final state recorded on the L1.
-              </li>
-              <li>Examples: Bitcoin lightning network.</li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-orgb65d31e" class="outline-3">
-          <h3 id="orgb65d31e">
-            <span class="section-number-3">1.6.</span> Sidechains
-          </h3>
-          <div class="outline-text-3" id="text-1-6">
-            <ul class="org-ul">
-              <li>
-                Independent blockchains running parallel to the main chain, with
-                own consensus and security.
-              </li>
-              <li>Examples: Polygon.</li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-org8dbd0d9" class="outline-3">
-          <h3 id="org8dbd0d9">
-            <span class="section-number-3">1.7.</span> Ethereum and EVM
-          </h3>
-          <div class="outline-text-3" id="text-1-7">
-            <ul class="org-ul">
-              <li>
-                Ethereum: a blockchain ecosystem, includes the blockchain,
-                consensus mechanism, smart contracts, native cryptocurrency.
-              </li>
-              <li>
-                EVM: the runtime environment to execute smart contracts in
-                Ethereum.
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-orgfef2ad1" class="outline-3">
-          <h3 id="orgfef2ad1">
-            <span class="section-number-3">1.8.</span> IAVL tree
-          </h3>
-          <div class="outline-text-3" id="text-1-8">
-            <ul class="org-ul">
-              <li>
-                AVL tree: self-balancing binary tree where the difference in
-                heights between left and right subtrees of anynode is at most
-                one.
-              </li>
-              <li>
-                IAVL tree: immutable AVL tree; node cannot be changed once it is
-                added.
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-org5f05343" class="outline-3">
-          <h3 id="org5f05343">
-            <span class="section-number-3">1.9.</span> CosmWasm contract
-          </h3>
-          <div class="outline-text-3" id="text-1-9">
-            <ul class="org-ul">
-              <li>
-                Allows developers to write fast and portable smart contracts in
-                WebAssembly.
-              </li>
-              <li>
-                Designed to be interoperable within in the Cosmos ecosystem, a
-                network of independent blockchains connected via the
-                Inter-blockchain communication (IBC) protocol.
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-org89d360f" class="outline-3">
-          <h3 id="org89d360f">
-            <span class="section-number-3">1.10.</span> Cosmos Ecosystem
-          </h3>
-          <div class="outline-text-3" id="text-1-10">
-            <ul class="org-ul">
-              <li>
-                A network of independent, interoperable blockchains designed to
-                create an Internet of blockchain.
-              </li>
-              <li>
-                Decouples the consensus (BFT consensus engine) and networking
-                (IBC protocol) layers from the application layers
-              </li>
-              <li>
-                Cosmos SDK: a modular framework for building
-                application-specific blockchains efficiently.
-              </li>
-              <li>
-                Cosmos Hub: the first blockchain in the Cosmos network, serves
-                as a central hub to connect multiple blockchains via IBC.
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-org3ca8714" class="outline-3">
-          <h3 id="org3ca8714">
-            <span class="section-number-3">1.11.</span> Blockchain layers
-          </h3>
-          <div class="outline-text-3" id="text-1-11">
-            <ul class="org-ul">
-              <li>
-                Infrastructure layer: the physical devices that support the
-                network; and the underlying communication protocols for data
-                transfer between nodes.
-              </li>
-              <li>
-                Data layer: the distributed ledger and the storage methods.
-              </li>
-              <li>
-                Consensus layer: the protocols, validators and miners;
-                determines the transaction orders.
-              </li>
-              <li>
-                Execution layer: smart contracts and virtual machines;
-                determines the transaction update.
-              </li>
-              <li>
-                Application layer: dApps to provide service and user interfaces.
-              </li>
-              <li>
-                Governance layer: the community decision-making process and
-                proposals.
-              </li>
-              <li>
-                Security layer: cryptographic primitives and security protocols
-                to avoid attacks.
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-org4fd4a6a" class="outline-3">
-          <h3 id="org4fd4a6a">
-            <span class="section-number-3">1.12.</span> Optimistic
-            parallelization
-          </h3>
-          <div class="outline-text-3" id="text-1-12">
-            <ul class="org-ul">
-              <li>
-                Multiple transactions are processed in parallel under the
-                assumption that they will conflict with each other; necessary
-                corrections are made afterwards if conflicts are detected.
-              </li>
-              <li>Increase throughput if conflicts are well handled.</li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-org768fa5d" class="outline-3">
-          <h3 id="org768fa5d">
-            <span class="section-number-3">1.13.</span> Integrated and Modular
-            blockchain
-          </h3>
-          <div class="outline-text-3" id="text-1-13">
-            <ul class="org-ul">
-              <li>
-                Integrated: all components, e.g., execution layer, consensus
-                mechanism, networking are tightly coupled; faster internal
-                communication but lower flexibility and scalability.
-              </li>
-              <li>
-                Modular: allow independent upgrades for different components;
-                enhance scalability.
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-orgd599131" class="outline-3">
-          <h3 id="orgd599131">
-            <span class="section-number-3">1.14.</span> EVM Execution and
-            storage layer
-          </h3>
-          <div class="outline-text-3" id="text-1-14">
-            <ul class="org-ul">
-              <li>
-                Execution: responsible for running smart contracts and
-                processing transactions.
-              </li>
-              <li>
-                Storage: store all blockchain data, e.g., accounts, smart
-                contract states, transaction history.
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-org3a38d00" class="outline-3">
-          <h3 id="org3a38d00">
-            <span class="section-number-3">1.15.</span> Block time and finalize
-            time
-          </h3>
-          <div class="outline-text-3" id="text-1-15">
-            <ul class="org-ul">
-              <li>Block: the average time for a new block to be added.</li>
-              <li>
-                Finalize: the period after which a block is considered
-                irreversible.
-              </li>
-              <li>
-                Faster block times often imply cheaper transaction fees due to
-                increased transaction throughput and less block competition.
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-org9c9e03d" class="outline-3">
-          <h3 id="org9c9e03d">
-            <span class="section-number-3">1.16.</span> Blockchain audit
-          </h3>
-          <div class="outline-text-3" id="text-1-16">
-            <ul class="org-ul">
-              <li>
-                A review of a blockchain to ensures its security and
-                functionality.
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div id="outline-container-org7b83477" class="outline-2">
-        <h2 id="org7b83477">
-          <span class="section-number-2">2.</span> What is Sei
-        </h2>
-        <div class="outline-text-2" id="text-2">
-          <ul class="org-ul">
-            <li>On mainnet beta since August 2023.</li>
-            <li>
-              Consistently finalizes blocks at 390ms; the fastest chain in
-              existence.
-            </li>
-            <li>
-              Consistently sees activity of &gt;45 TPS (transaction per
-              seconds); the second highest number of successful transactions per
-              second.
-            </li>
-            <li>
-              Allows for Cosmwasm smart contracts written in Rust; more
-              execution environments like EVM is the biggest request.
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div id="outline-container-org180c00b" class="outline-2">
-        <h2 id="org180c00b">
-          <span class="section-number-2">3.</span> What is Sei v2
-        </h2>
-        <div class="outline-text-2" id="text-3">
-          <ul class="org-ul">
-            <li>The first fully parallelized EVM.</li>
-            <li>Backwards compatibility of EVM smart contracts.</li>
-            <li>
-              Optimistic parallelization; support parallelization without
-              requiring any dependencies.
-            </li>
-            <li>
-              Improves the storage layer to prevent state bloat, read/write, and
-              state sync for new nodes.
-            </li>
-            <li>
-              Seamless composability between different execution environments.
-            </li>
-            <li>
-              Offers 28,300 batched transactions per second of throughput; 390ms
-              block times and 390ms finality; far cheaper per-transaction costs.
-            </li>
-            <li>
-              Once audits are complete, the upgrade is released in a public
-              testnet in Q1 2024, and deployed to mainnet in H1 2024.
-            </li>
-          </ul>
-        </div>
-        <div id="outline-container-org09487ef" class="outline-3">
-          <h3 id="org09487ef">
-            <span class="section-number-3">3.1.</span> Backwards compatibility
-          </h3>
-          <div class="outline-text-3" id="text-3-1">
-            <ul class="org-ul">
-              <li>
-                Ethereum contracts can be seamlessly deployed on Sei v2 with no
-                code changes.
-              </li>
-              <li>
-                User can send a Eth transaction to the Ethereum contract on Sei
-                v2 via the same interface, e.g., Metamask, Hardhat.
-              </li>
-              <li>
-                Sei v2 imports Geth (a Go EVM implementation) to process the Eth
-                transaction, and convert the result to Sei storage.
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-org675d552" class="outline-3">
-          <h3 id="org675d552">
-            <span class="section-number-3">3.2.</span> Optimistic
-            parallelization
-          </h3>
-          <div class="outline-text-3" id="text-3-2">
-            <ul class="org-ul">
-              <li>
-                Sei requires smart contract developers to optionally define the
-                state that smart contracts are using, Sei v2 removes this need.
-              </li>
-              <li>
-                Sei v2 chain optimistically runs all transactions in parallel,
-                when reaching conflicts, i.e., transactions touching the same
-                state, the chain tracks the storage parts each transaction is
-                touching.
-              </li>
-              <li>
-                Transactions touching different parts will be rerun in parallel;
-                transactions touching the same state will be rerun sequentially.
-              </li>
-              <li>Recursively continue until no more conflicts.</li>
-              <li>
-                Since the transactions are ordered in a block, this process is
-                deterministic.
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-org7b474fb" class="outline-3">
-          <h3 id="org7b474fb">
-            <span class="section-number-3">3.3.</span> SeiDB
-          </h3>
-          <div class="outline-text-3" id="text-3-3">
-            <ul class="org-ul">
-              <li>
-                Sei uses a vanilla database layer composed of an IAVL tree,
-                which is less efficient in terms of storage and latency.
-              </li>
-              <li>
-                Sei v2 breaks the single IAVL tree into 2 components:
-                <ul class="org-ul">
-                  <li>
-                    state store: provide low latency direct access to raw
-                    key-value pairs to remove the overhead of redundant metadata
-                    and disk usage; uses a write-ahead log to help event
-                    recovery.
-                  </li>
-                  <li>
-                    state commitment: use an in-memory IAVL tree to help
-                    validators reach consensus faster.
-                  </li>
-                </ul>
-              </li>
-              <li>
-                After benchmarking, Sei v2 replaces GoLevelDB with PebbleDB for
-                better read/write in multi-threaded access.
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div id="outline-container-org02ffccf" class="outline-3">
-          <h3 id="org02ffccf">
-            <span class="section-number-3">3.4.</span> Interoperability
-          </h3>
-          <div class="outline-text-3" id="text-3-4">
-            <ul class="org-ul">
-              <li>
-                Sei v2 processes different transactions, e.g., Cosmwasm, EVM in
-                a uniformed way, and then forwards them to different storage
-                sections.
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div class="taglist">
-        <a href="https://chenyo.me/tags.html">Tags</a>:
-        <a href="https://chenyo.me/tag-evm.html">evm</a>
-        <a href="https://chenyo.me/tag-parallel-evm.html">parallel-evm</a>
-        <a href="https://chenyo.me/tag-sei.html">sei</a>
-      </div>
-    <div id="archive">
+<div class="post-date">28 Jun 2024</div><h1 class="post-title"><a href="https://chenyo.me/2024-06-28-parallel-evm:-sei-v2.html">Parallel EVM: Sei-v2</a></h1>
+<nav id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#orgd5fb0cc">1. Blockchain fundamentals</a>
+<ul>
+<li><a href="#orge619b7e">1.1. Mainnet and Testnet</a></li>
+<li><a href="#org612fd64">1.2. Mainnet Alpha and Beta</a></li>
+<li><a href="#orge5fb81f">1.3. Layer 1 and Layer 2</a></li>
+<li><a href="#orgb2768cb">1.4. Rollups</a></li>
+<li><a href="#org756323c">1.5. State channels</a></li>
+<li><a href="#org92e8215">1.6. Sidechains</a></li>
+<li><a href="#org1f77a0d">1.7. Ethereum and EVM</a></li>
+<li><a href="#orge8415c0">1.8. IAVL tree</a></li>
+<li><a href="#org6a6e2a4">1.9. CosmWasm contract</a></li>
+<li><a href="#orgcec617d">1.10. Cosmos Ecosystem</a></li>
+<li><a href="#org5fbd5a2">1.11. Blockchain layers</a></li>
+<li><a href="#org7f3f1ec">1.12. Optimistic parallelization</a></li>
+<li><a href="#org69fd57e">1.13. Integrated and Modular blockchain</a></li>
+<li><a href="#org8ef50db">1.14. EVM Execution and storage layer</a></li>
+<li><a href="#org1165cef">1.15. Block time and finalize time</a></li>
+<li><a href="#org594d5da">1.16. Blockchain audit</a></li>
+</ul>
+</li>
+<li><a href="#org9a374db">2. What is Sei</a></li>
+<li><a href="#org61eec1f">3. What is Sei v2</a>
+<ul>
+<li><a href="#org79054d2">3.1. Backwards compatibility</a></li>
+<li><a href="#org443f131">3.2. Optimistic parallelization</a></li>
+<li><a href="#org0d3ade3">3.3. SeiDB</a></li>
+<li><a href="#org8b49b5b">3.4. Interoperability</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</nav>
+<p>
+This is a personal note for <a href="https://blog.sei.io/sei-v2-the-first-parallelized-evm/">Sei-v2-blog</a> as well as some terminology explained by <a href="https://chatgpt.com/g/g-TJq7kBEsX-evm-gpt">EVM GPT</a>.
+</p>
+<div id="outline-container-orgd5fb0cc" class="outline-2">
+<h2 id="orgd5fb0cc"><span class="section-number-2">1.</span> Blockchain fundamentals</h2>
+<div class="outline-text-2" id="text-1">
+</div>
+<div id="outline-container-orge619b7e" class="outline-3">
+<h3 id="orge619b7e"><span class="section-number-3">1.1.</span> Mainnet and Testnet</h3>
+<div class="outline-text-3" id="text-1-1">
+<ul class="org-ul">
+<li>Mainnet: real transactions occur and have real-world value; any operation is final and irreversible.</li>
+<li>Testnet: a sandbox environment with test cryptocurrencies without real-world value.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org612fd64" class="outline-3">
+<h3 id="org612fd64"><span class="section-number-3">1.2.</span> Mainnet Alpha and Beta</h3>
+<div class="outline-text-3" id="text-1-2">
+<ul class="org-ul">
+<li>Alpha: test core functionalities and gather initial feedback in live environment.</li>
+<li>Beta: more stable and feature-complete, but still need more testing.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orge5fb81f" class="outline-3">
+<h3 id="orge5fb81f"><span class="section-number-3">1.3.</span> Layer 1 and Layer 2</h3>
+<div class="outline-text-3" id="text-1-3">
+<ul class="org-ul">
+<li>L1: the main network where all transactions are processed and the primary chain is maintained.</li>
+<li>L2: secondary frameworks on top of L1 chain, aimed to enhance scalability without compromising the security of the L1.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgb2768cb" class="outline-3">
+<h3 id="orgb2768cb"><span class="section-number-3">1.4.</span> Rollups</h3>
+<div class="outline-text-3" id="text-1-4">
+<ul class="org-ul">
+<li>Processes transactions off-chain and periodically submits a summary (rollup) to L1.</li>
+<li>Optimistic rollups: assume transactions are valid be default and use a challenge period to allow disputes
+<ul class="org-ul">
+<li>Examples: Optimism, Arbitrum.</li>
+</ul></li>
+<li>ZK-rollups: use zero-knowledge proofs to validate transactions.
+<ul class="org-ul">
+<li>Examples: zkSync, StarkNet.</li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org756323c" class="outline-3">
+<h3 id="org756323c"><span class="section-number-3">1.5.</span> State channels</h3>
+<div class="outline-text-3" id="text-1-5">
+<ul class="org-ul">
+<li>allow participants to conduct numerous off-chain transactions, with only the final state recorded on the L1.</li>
+<li>Examples: Bitcoin lightning network.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org92e8215" class="outline-3">
+<h3 id="org92e8215"><span class="section-number-3">1.6.</span> Sidechains</h3>
+<div class="outline-text-3" id="text-1-6">
+<ul class="org-ul">
+<li>Independent blockchains running parallel to the main chain, with own consensus and security.</li>
+<li>Examples: Polygon.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org1f77a0d" class="outline-3">
+<h3 id="org1f77a0d"><span class="section-number-3">1.7.</span> Ethereum and EVM</h3>
+<div class="outline-text-3" id="text-1-7">
+<ul class="org-ul">
+<li>Ethereum: a blockchain ecosystem, includes the blockchain, consensus mechanism, smart contracts, native cryptocurrency.</li>
+<li>EVM: the runtime environment to execute smart contracts in Ethereum.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orge8415c0" class="outline-3">
+<h3 id="orge8415c0"><span class="section-number-3">1.8.</span> IAVL tree</h3>
+<div class="outline-text-3" id="text-1-8">
+<ul class="org-ul">
+<li>AVL tree: self-balancing binary tree where the difference in heights between left and right subtrees of anynode is at most one.</li>
+<li>IAVL tree: immutable AVL tree; node cannot be changed once it is added.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org6a6e2a4" class="outline-3">
+<h3 id="org6a6e2a4"><span class="section-number-3">1.9.</span> CosmWasm contract</h3>
+<div class="outline-text-3" id="text-1-9">
+<ul class="org-ul">
+<li>Allows developers to write fast and portable smart contracts in WebAssembly.</li>
+<li>Designed to be interoperable within in the Cosmos ecosystem, a network of independent blockchains connected via the Inter-blockchain communication (IBC) protocol.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgcec617d" class="outline-3">
+<h3 id="orgcec617d"><span class="section-number-3">1.10.</span> Cosmos Ecosystem</h3>
+<div class="outline-text-3" id="text-1-10">
+<ul class="org-ul">
+<li>A network of independent, interoperable blockchains designed to create an Internet of blockchain.</li>
+<li>Decouples the consensus (BFT consensus engine) and networking (IBC protocol) layers from the application layers</li>
+<li>Cosmos SDK: a modular framework for building application-specific blockchains efficiently.</li>
+<li>Cosmos Hub: the first blockchain in the Cosmos network, serves as a central hub to connect multiple blockchains via IBC.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org5fbd5a2" class="outline-3">
+<h3 id="org5fbd5a2"><span class="section-number-3">1.11.</span> Blockchain layers</h3>
+<div class="outline-text-3" id="text-1-11">
+<ul class="org-ul">
+<li>Infrastructure layer: the physical devices that support the network; and the underlying communication protocols for data transfer between nodes.</li>
+<li>Data layer: the distributed ledger and the storage methods.</li>
+<li>Consensus layer: the protocols, validators and miners; determines the transaction orders.</li>
+<li>Execution layer: smart contracts and virtual machines; determines the transaction update.</li>
+<li>Application layer: dApps to provide service and user interfaces.</li>
+<li>Governance layer: the community decision-making process and proposals.</li>
+<li>Security layer: cryptographic primitives and security protocols to avoid attacks.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org7f3f1ec" class="outline-3">
+<h3 id="org7f3f1ec"><span class="section-number-3">1.12.</span> Optimistic parallelization</h3>
+<div class="outline-text-3" id="text-1-12">
+<ul class="org-ul">
+<li>Multiple transactions are processed in parallel under the assumption that they will conflict with each other; necessary corrections are made afterwards if conflicts are detected.</li>
+<li>Increase throughput if conflicts are well handled.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org69fd57e" class="outline-3">
+<h3 id="org69fd57e"><span class="section-number-3">1.13.</span> Integrated and Modular blockchain</h3>
+<div class="outline-text-3" id="text-1-13">
+<ul class="org-ul">
+<li>Integrated: all components, e.g., execution layer, consensus mechanism, networking are tightly coupled; faster internal communication but lower flexibility and scalability.</li>
+<li>Modular: allow independent upgrades for different components; enhance scalability.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org8ef50db" class="outline-3">
+<h3 id="org8ef50db"><span class="section-number-3">1.14.</span> EVM Execution and storage layer</h3>
+<div class="outline-text-3" id="text-1-14">
+<ul class="org-ul">
+<li>Execution: responsible for running smart contracts and processing transactions.</li>
+<li>Storage: store all blockchain data, e.g., accounts, smart contract states, transaction history.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org1165cef" class="outline-3">
+<h3 id="org1165cef"><span class="section-number-3">1.15.</span> Block time and finalize time</h3>
+<div class="outline-text-3" id="text-1-15">
+<ul class="org-ul">
+<li>Block: the average time for a new block to be added.</li>
+<li>Finalize: the period after which a block is considered irreversible.</li>
+<li>Faster block times often imply cheaper transaction fees due to increased transaction throughput and less block competition.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org594d5da" class="outline-3">
+<h3 id="org594d5da"><span class="section-number-3">1.16.</span> Blockchain audit</h3>
+<div class="outline-text-3" id="text-1-16">
+<ul class="org-ul">
+<li>A review of a blockchain to ensures its security and functionality.</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-org9a374db" class="outline-2">
+<h2 id="org9a374db"><span class="section-number-2">2.</span> What is Sei</h2>
+<div class="outline-text-2" id="text-2">
+<ul class="org-ul">
+<li>On mainnet beta since August 2023.</li>
+<li>Consistently finalizes blocks at 390ms; the fastest chain in existence.</li>
+<li>Consistently sees activity of &gt;45 TPS (transaction per seconds); the second highest number of successful transactions per second.</li>
+<li>Allows for Cosmwasm smart contracts written in Rust; more execution environments like EVM is the biggest request.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org61eec1f" class="outline-2">
+<h2 id="org61eec1f"><span class="section-number-2">3.</span> What is Sei v2</h2>
+<div class="outline-text-2" id="text-3">
+<ul class="org-ul">
+<li>The first fully parallelized EVM.</li>
+<li>Backwards compatibility of EVM smart contracts.</li>
+<li>Optimistic parallelization; support parallelization without requiring any dependencies.</li>
+<li>Improves the storage layer to prevent state bloat, read/write, and state sync for new nodes.</li>
+<li>Seamless composability between different execution environments.</li>
+<li>Offers 28,300 batched transactions per second of throughput; 390ms block times and 390ms finality; far cheaper per-transaction costs.</li>
+<li>Once audits are complete, the upgrade is released in a public testnet in Q1 2024, and deployed to mainnet in H1 2024.</li>
+</ul>
+</div>
+<div id="outline-container-org79054d2" class="outline-3">
+<h3 id="org79054d2"><span class="section-number-3">3.1.</span> Backwards compatibility</h3>
+<div class="outline-text-3" id="text-3-1">
+<ul class="org-ul">
+<li>Ethereum contracts can be seamlessly deployed on Sei v2 with no code changes.</li>
+<li>User can send a Eth transaction to the Ethereum contract on Sei v2 via the same interface, e.g., Metamask, Hardhat.</li>
+<li>Sei v2 imports Geth (a Go EVM implementation) to process the Eth transaction, and convert the result to Sei storage.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org443f131" class="outline-3">
+<h3 id="org443f131"><span class="section-number-3">3.2.</span> Optimistic parallelization</h3>
+<div class="outline-text-3" id="text-3-2">
+<ul class="org-ul">
+<li>Sei requires smart contract developers to optionally define the state that smart contracts are using, Sei v2 removes this need.</li>
+<li>Sei v2 chain optimistically runs all transactions in parallel, when reaching conflicts, i.e., transactions touching the same state, the chain tracks the storage parts each transaction is touching.</li>
+<li>Transactions touching different parts will be rerun in parallel; transactions touching the same state will be rerun sequentially.</li>
+<li>Recursively continue until no more conflicts.</li>
+<li>Since the transactions are ordered in a block, this process is deterministic.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org0d3ade3" class="outline-3">
+<h3 id="org0d3ade3"><span class="section-number-3">3.3.</span> SeiDB</h3>
+<div class="outline-text-3" id="text-3-3">
+<ul class="org-ul">
+<li>Sei uses a vanilla database layer composed of an IAVL tree, which is less efficient in terms of storage and latency.</li>
+<li>Sei v2 breaks the single IAVL tree into 2 components:
+<ul class="org-ul">
+<li>state store: provide low latency direct access to raw key-value pairs to remove the overhead of redundant metadata and disk usage; uses a write-ahead log to help event recovery.</li>
+<li>state commitment: use an in-memory IAVL tree to help validators reach consensus faster.</li>
+</ul></li>
+<li>After benchmarking, Sei v2 replaces GoLevelDB with PebbleDB for better read/write in multi-threaded access.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org8b49b5b" class="outline-3">
+<h3 id="org8b49b5b"><span class="section-number-3">3.4.</span> Interoperability</h3>
+<div class="outline-text-3" id="text-3-4">
+<ul class="org-ul">
+<li>Sei v2 processes different transactions, e.g., Cosmwasm, EVM in a uniformed way, and then forwards them to different storage sections.</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="taglist"><a href="https://chenyo.me/tags.html">Tags</a>: <a href="https://chenyo.me/tag-evm.html">evm</a> <a href="https://chenyo.me/tag-parallel-evm.html">parallel-evm</a> <a href="https://chenyo.me/tag-sei.html">sei</a> </div><div id="archive">
 <a href="https://chenyo.me/archive.html">Other posts</a>
 </div>
 </div>
@@ -1636,10 +1379,10 @@ In summary, this blog proposes many challenges when designing a high-performance
         <p>© 2024 chenyo. Some rights reserved.</p>
         <div class="social-links">
           <a href="https://t.me/feihuadawangjiushiwo" target="_blank" rel="noopener noreferrer">
-            <img src="assets/telegram-icon.svg" alt="Telegram" width="24" height="24">
+          <i class="fab fa-telegram"></i>
           </a>
           <a href="https://github.com/chenyo-17" target="_blank" rel="noopener noreferrer">
-            <img src="assets/github-icon.svg" alt="GitHub" width="24" height="24">
+            <i class="fab fa-github"></i>
       </a>
       </div>
       </footer></div>

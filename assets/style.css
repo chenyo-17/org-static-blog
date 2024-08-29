@@ -20,6 +20,34 @@ header h1 {
     margin: 0;
 }
 
+a {
+    color: #073642;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: #268bd2;
+    text-decoration: none;
+}
+
+footer {
+    margin-top: 30px;
+    border-top: 1px solid #eee;
+    padding-top: 10px;
+    font-size: 0.9em;
+    color: #666;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+mark {
+    background-color: #b58900;
+    color: #fdf6e3;
+    border-radius: 2px;
+}
+
 nav {
     margin-top: 10px;
     display: flex;
@@ -32,144 +60,48 @@ nav a {
     margin-right: 15px; /* Reduced from previous value if it was larger */
     text-decoration: none;
     color: #333;
+    transition: color 0.3s ease;
 }
 
-#search-container {
-    margin-left: auto; /* Push the search container to the right */
-    max-width: 300px;
+nav a:hover {
+    color: #268bd2;
 }
 
-#search-input {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #93a1a1; /* Solarized Light base1 */
-    border-radius: 4px;
-    font-size: 0.9em; /* Matching the smaller font size */
-    background-color: #fdf6e3; /* Solarized Light base3 */
-    color: #586e75; /* Solarized Light base01 */
-    &::selection {
-        background-color: #b58900; /* Solarized Light yellow */
-        color: #fdf6e3; /* Solarized Light base3 for text color */
-    }
-    &::-moz-selection {
-        background-color: #b58900; /* Solarized Light yellow */
-        color: #fdf6e3; /* Solarized Light base3 for text color */
-    }
+nav#table-of-contents {
+    display: flex;
+    flex-direction: column;
+    margin: -20px 0 5px;
 }
 
-a {
-    color: #073642; /* Solarized Light base02 */
-    text-decoration: none;
+nav#table-of-contents h2 {
+    margin-bottom: 10px;
 }
 
-a:hover {
-    text-decoration: underline;
+pre.src .hljs-attr,
+pre.src .hljs-attribute {
+    color: #e06c75;
 }
 
-/* Style for blog post entries */
-.post-date {
-    color: #666;
-    font-size: 0.9em;
+pre.src .hljs-bullet,
+pre.src .hljs-symbol,
+pre.src .hljs-meta,
+pre.src .hljs-selector-id,
+pre.src .hljs-selector-class {
+    color: #c678dd;
 }
 
-/* Style for code blocks */
-.org-src-container {
-    position: relative;
-    margin-bottom: 1.6em;
-}
-
-.org-src-container pre.src {
-    margin-top: 0; /* Remove top margin */
-    background-color: #282c34; /* Dark background for code blocks */
-    border: 1px solid #3e4451;
-    border-left: 3px solid #528bff;
-    color: #abb2bf;
-    page-break-inside: avoid;
-    font-family: "JetBrains Mono", "Menlo", "Monaco", "Consolas", "Courier New",
-        monospace;
-    font-size: 13px;
-    line-height: 1.6;
-    max-width: 100%;
-    overflow: auto;
-    padding: 1em 1.5em;
-    display: block;
-    word-wrap: break-word;
-    position: relative;
-    border-radius: 4px;
-}
-
-/* Hide the default class content */
-.org-src-container pre.src::before {
-    content: none;
-}
-
-/* Add language label for specific languages */
-.org-src-container pre.src-go::before {
-    content: "go";
-}
-
-.org-src-container pre.src-python::before {
-    content: "python";
-}
-
-.org-src-container pre.src-js::before {
-    content: "js";
-}
-
-.org-src-container pre.src-rust::before {
-    content: "rust";
-}
-
-.org-src-container pre.src-lsp::before {
-    content: "lsp";
-}
-
-.org-src-container pre.src-org::before {
-    content: "org";
-}
-
-.org-src-container pre.src-haskell::before {
-    content: "haskell";
-}
-
-.org-src-container pre.src-solidity::before {
-    content: "solidity";
-}
-
-.org-src-container pre.src-sql::before {
-    content: "sql";
-}
-
-.org-src-container pre.src-html::before {
-    content: "html";
-}
-
-.org-src-container pre.src-css::before {
-    content: "css";
-}
-
-.org-src-container pre.src-bash::before {
-    content: "bash";
-}
-
-/* Add language label for code blocks */
-.org-src-container pre.src::before {
-    position: absolute;
-    top: 0;
-    right: 0;
-    background-color: #528bff;
-    color: #fff;
-    padding: 2px 8px;
-    font-size: 0.85em;
-    font-weight: normal;
-    border-bottom-left-radius: 4px;
-    text-transform: lowercase;
-}
-
-/* Syntax highlighting */
 pre.src .hljs-comment,
 pre.src .hljs-quote {
     color: #5c6370;
+    font-style: italic;
+}
+
+pre.src .hljs-doctag,
+pre.src .hljs-string {
+    color: #98c379;
+}
+
+pre.src .hljs-emphasis {
     font-style: italic;
 }
 
@@ -187,15 +119,13 @@ pre.src .hljs-variable {
     color: #d19a66;
 }
 
-pre.src .hljs-doctag,
-pre.src .hljs-string {
-    color: #98c379;
+pre.src .hljs-regexp,
+pre.src .hljs-link {
+    color: #56b6c2;
 }
 
-pre.src .hljs-title,
-pre.src .hljs-section,
-pre.src .hljs-title.class_ {
-    color: #e5c07b;
+pre.src .hljs-strong {
+    font-weight: bold;
 }
 
 pre.src .hljs-tag,
@@ -204,92 +134,66 @@ pre.src .hljs-title.function_ {
     color: #61afef;
 }
 
-pre.src .hljs-attr,
-pre.src .hljs-attribute {
-    color: #e06c75;
+pre.src .hljs-title,
+pre.src .hljs-section,
+pre.src .hljs-title.class_ {
+    color: #e5c07b;
 }
 
-pre.src .hljs-regexp,
-pre.src .hljs-link {
-    color: #56b6c2;
-}
-
-pre.src .hljs-bullet,
-pre.src .hljs-symbol,
-pre.src .hljs-meta,
-pre.src .hljs-selector-id,
-pre.src .hljs-selector-class {
-    color: #c678dd;
-}
-
-pre.src .hljs-emphasis {
-    font-style: italic;
-}
-
-pre.src .hljs-strong {
-    font-weight: bold;
-}
-
-/* Style for tables */
 table {
     border-collapse: collapse;
     width: 100%;
     margin-bottom: 1em;
     border: 1px solid #ddd;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    background-color: #fdf6e3; /* Solarized Light base3 */
+    background-color: #fdf6e3;
 }
 
-th,
-td {
+td,
+th {
     border: 1px solid #ddd;
     padding: 12px;
     text-align: left;
 }
 
 th {
-    background-color: #fdf6e3; /* Solarized Light base3 */
+    background-color: #fdf6e3;
     color: #333;
     font-weight: bold;
-}
-
-tr:nth-child(even) {
-    background-color: #fdf6e3; /* Solarized Light base3 */
 }
 
 tr:hover {
     background-color: #f1f1f1;
 }
 
-/* Footer styling */
-footer {
-    margin-top: 30px;
-    border-top: 1px solid #eee;
-    padding-top: 10px;
-    font-size: 0.9em;
-    color: #666;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+tr:nth-child(even) {
+    background-color: #fdf6e3;
 }
 
-.social-links {
-    display: flex;
-    gap: 10px;
-}
-
-.social-links a {
-    text-decoration: none;
-    font-size: 1.5em;
+#content > *:not(#search-results) {
+    display: block;
 }
 
 #search-container {
     margin-top: 10px;
+    margin-left: auto;
+    max-width: 300px;
+    display: flex;
+    align-items: center;
 }
 
 #search-input {
-    width: 100%;
-    padding: 5px;
+    padding: 8px;
+    border: 1px solid #93a1a1;
+    border-radius: 4px;
+    font-size: 0.9em;
+    background-color: #fdf6e3;
+    color: #586e75;
+    transition: border-color 0.3s ease;
+}
+
+#search-input:hover {
+    border-color: #268bd2;
 }
 
 #search-result {
@@ -300,92 +204,189 @@ footer {
     font-weight: bold;
     color: #0066cc;
     text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+#search-result a:hover {
+    color: #268bd2;
 }
 
 #search-result p {
     margin: 5px 0;
 }
 
-mark {
-    background-color: #b58900; /* Solarized Light yellow */
-    color: #fdf6e3; /* Solarized Light base3 */
-    border-radius: 2px;
-}
-
-/* Search results styles */
 #search-results {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 20px;
     padding: 20px;
-}
-
-.search-result {
-    background-color: #fdf6e3; /* Solarized Light base3, same as body background */
-    border: 1px solid #eee8d5; /* Solarized Light base2 */
-    border-radius: 8px;
-    padding: 15px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    font-size: 0.9em; /* Slightly smaller font size */
-}
-
-.search-result a {
-    font-size: 1.1em; /* Slightly smaller than before, but still larger than normal text */
-    color: #073642; /* Solarized base02, same black color as normal post title */
-    text-decoration: none;
-    margin-bottom: 10px;
-    display: block;
-}
-
-.search-result-snippet {
-    background-color: #eee8d5; /* Solarized Light base2 */
-    border: 1px solid #93a1a1; /* Solarized Light base1 */
-    border-radius: 4px;
-    padding: 5px;
-    padding-bottom: 0px; /* reduce the bottom blank space in each snippet */
-    margin-top: 5px;
-    font-size: 0.85em; /* Even smaller font for snippets */
-}
-
-nav#table-of-contents {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 5px;
-    margin-top: -20px; /* reduces the gap between h1 and toc */
-}
-
-nav#table-of-contents h2 {
-    margin-bottom: 10px;
 }
 
 #text-table-of-contents {
     margin-top: 0;
 }
 
-/* Ensure the search results don't affect other content */
-#search-results {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
-    padding: 20px;
+.org-src-container {
+    position: relative;
+    margin-bottom: 1.6em;
 }
 
-/* Reset any grid or flex properties for non-search content */
-#content > *:not(#search-results) {
+.org-src-container pre.src {
+    margin-top: 0;
+    background-color: #282c34;
+    border: 1px solid #3e4451;
+    border-left: 3px solid #528bff;
+    color: #abb2bf;
+    page-break-inside: avoid;
+    font-family: "JetBrains Mono", "Menlo", "Monaco", "Consolas", "Courier New",
+        monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    max-width: 100%;
+    overflow: auto;
+    padding: 1em 1.5em;
     display: block;
+    word-wrap: break-word;
+    position: relative;
+    border-radius: 4px;
 }
 
-/* .clickable-snippet { */
-/*   color: #0000EE; /\* Default link color *\/ */
-/*   text-decoration: underline; */
-/*   cursor: pointer; */
-/*   display: inline; /\* Ensures the span doesn't expand to full width *\/ */
-/* } */
+.org-src-container pre.src::before {
+    content: none;
+}
 
-/* .clickable-snippet:hover { */
-/*   color: #551A8B; /\* Default visited link color *\/ */
-/* } */
+.org-src-container pre.src-bash::before {
+    content: "bash";
+}
 
-/* .search-result-snippet { */
-/*   margin-bottom: 10px; /\* Example: adds space between snippets *\/ */
-/* } */
+.org-src-container pre.src-css::before {
+    content: "css";
+}
+
+.org-src-container pre.src-go::before {
+    content: "go";
+}
+
+.org-src-container pre.src-haskell::before {
+    content: "haskell";
+}
+
+.org-src-container pre.src-html::before {
+    content: "html";
+}
+
+.org-src-container pre.src-js::before {
+    content: "js";
+}
+
+.org-src-container pre.src-lsp::before {
+    content: "lsp";
+}
+
+.org-src-container pre.src-org::before {
+    content: "org";
+}
+
+.org-src-container pre.src-python::before {
+    content: "python";
+}
+
+.org-src-container pre.src-rust::before {
+    content: "rust";
+}
+
+.org-src-container pre.src-solidity::before {
+    content: "solidity";
+}
+
+.org-src-container pre.src-sql::before {
+    content: "sql";
+}
+
+.org-src-container pre.src::before {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: #528bff;
+    color: #fff;
+    padding: 2px 8px;
+    font-size: 0.85em;
+    font-weight: normal;
+    border-bottom-left-radius: 4px;
+    text-transform: lowercase;
+}
+
+.post-date {
+    color: #666;
+    font-size: 0.9em;
+}
+
+.search-icon {
+    flex-grow: 1;
+    margin-left: 10px;
+    color: #586e75;
+    font-size: 1.2em;
+    transition: color 0.3s ease;
+}
+
+.search-icon:hover {
+    color: #268bd2;
+}
+
+.search-result {
+    background-color: #fdf6e3;
+    border: 1px solid #eee8d5;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    font-size: 0.9em;
+}
+
+.search-result a {
+    font-size: 1.1em;
+    color: #073642;
+    text-decoration: none;
+    margin-bottom: 10px;
+    display: block;
+    transition: color 0.3s ease;
+}
+
+.search-result a:hover {
+    color: #268bd2;
+}
+
+.search-result-snippet {
+    background-color: #eee8d5;
+    border: 1px solid #93a1a1;
+    border-radius: 4px;
+    padding: 5px 5px 0;
+    margin-top: 5px;
+    font-size: 0.85em;
+}
+
+.social-links {
+    display: flex;
+    gap: 10px;
+}
+
+.social-links a {
+    text-decoration: none;
+    font-size: 1.5em;
+    color: #586e75;
+    margin-left: 10px;
+    transition: color 0.3s ease;
+}
+
+.social-links a:hover {
+    color: #268bd2;
+}
+
+::selection {
+    background-color: #b58900; /* Solarized Light yellow */
+    color: #fdf6e3; /* Solarized Light base3 */
+}
+
+::-moz-selection {
+    background-color: #b58900; /* Solarized Light yellow */
+    color: #fdf6e3; /* Solarized Light base3 */
+}

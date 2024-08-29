@@ -18,6 +18,7 @@
       <meta name="referrer" content="no-referrer">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <link rel="stylesheet" href="assets/style.css" type="text/css"/>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
       <link rel="favicon" type="image/x-icon" href="favicon.ico">
       <script src="assets/search.js"></script></head>
 <body>
@@ -29,7 +30,8 @@
       <a href="archive.html">Archive</a>
       <a href="tags.html">Tags</a>
       <div id="search-container">
-      <input type="text" id="search-input" placeholder="Search anywhere...">
+        <input type="text" id="search-input" placeholder="Search anywhere...">
+        <i class="fas fa-search search-icon"></i>
       </div>
       </nav>
       </header></div>
@@ -39,18 +41,18 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org8c07a9c">1. Blockchain fundamentals</a>
+<li><a href="#orgbb11756">1. Blockchain fundamentals</a>
 <ul>
-<li><a href="#org3cda8fb">1.1. System contract</a></li>
-<li><a href="#org992e3cc">1.2. Transaction execution phases</a></li>
+<li><a href="#orgfe97a6b">1.1. System contract</a></li>
+<li><a href="#org9032206">1.2. Transaction execution phases</a></li>
 </ul>
 </li>
-<li><a href="#orgb528427">2. Design principle</a></li>
-<li><a href="#orga55892c">3. Workflow</a>
+<li><a href="#org70b5d8a">2. Design principle</a></li>
+<li><a href="#orgb775996">3. Workflow</a>
 <ul>
-<li><a href="#org5cc5da2">3.1. Dispatch factors</a></li>
-<li><a href="#orge670468">3.2. Slot execution stages</a></li>
-<li><a href="#org6ae044e">3.3. Conflict detection</a></li>
+<li><a href="#orge6e0f3b">3.1. Dispatch factors</a></li>
+<li><a href="#org30bd872">3.2. Slot execution stages</a></li>
+<li><a href="#orgcb81995">3.3. Conflict detection</a></li>
 </ul>
 </li>
 </ul>
@@ -60,12 +62,12 @@
 This is a personal note for <a href="https://github.com/bnb-chain/BEPs/blob/master/BEPs/BEP130.md">BEP-130</a>.
 BEP-130 is a proposal that introduces a parallel transaction execution mechanism on the BNB Smart Chain (BSC).
 </p>
-<div id="outline-container-org8c07a9c" class="outline-2">
-<h2 id="org8c07a9c"><span class="section-number-2">1.</span> Blockchain fundamentals</h2>
+<div id="outline-container-orgbb11756" class="outline-2">
+<h2 id="orgbb11756"><span class="section-number-2">1.</span> Blockchain fundamentals</h2>
 <div class="outline-text-2" id="text-1">
 </div>
-<div id="outline-container-org3cda8fb" class="outline-3">
-<h3 id="org3cda8fb"><span class="section-number-3">1.1.</span> System contract</h3>
+<div id="outline-container-orgfe97a6b" class="outline-3">
+<h3 id="orgfe97a6b"><span class="section-number-3">1.1.</span> System contract</h3>
 <div class="outline-text-3" id="text-1-1">
 <ul class="org-ul">
 <li>Built-in contracts to perform system level operations, e,g., gas fee reward, cross chain communication.</li>
@@ -73,8 +75,8 @@ BEP-130 is a proposal that introduces a parallel transaction execution mechanism
 </ul>
 </div>
 </div>
-<div id="outline-container-org992e3cc" class="outline-3">
-<h3 id="org992e3cc"><span class="section-number-3">1.2.</span> Transaction execution phases</h3>
+<div id="outline-container-org9032206" class="outline-3">
+<h3 id="org9032206"><span class="section-number-3">1.2.</span> Transaction execution phases</h3>
 <div class="outline-text-3" id="text-1-2">
 <ul class="org-ul">
 <li>Block mining phase: received from the P2P transaction pool, could contain invalid transactions.</li>
@@ -83,8 +85,8 @@ BEP-130 is a proposal that introduces a parallel transaction execution mechanism
 </div>
 </div>
 </div>
-<div id="outline-container-orgb528427" class="outline-2">
-<h2 id="orgb528427"><span class="section-number-2">2.</span> Design principle</h2>
+<div id="outline-container-org70b5d8a" class="outline-2">
+<h2 id="org70b5d8a"><span class="section-number-2">2.</span> Design principle</h2>
 <div class="outline-text-2" id="text-2">
 <ul class="org-ul">
 <li>Should always produce the same result as the current sequential execution.</li>
@@ -94,12 +96,12 @@ BEP-130 is a proposal that introduces a parallel transaction execution mechanism
 </ul>
 </div>
 </div>
-<div id="outline-container-orga55892c" class="outline-2">
-<h2 id="orga55892c"><span class="section-number-2">3.</span> Workflow</h2>
+<div id="outline-container-orgb775996" class="outline-2">
+<h2 id="orgb775996"><span class="section-number-2">3.</span> Workflow</h2>
 <div class="outline-text-2" id="text-3">
 </div>
-<div id="outline-container-org5cc5da2" class="outline-3">
-<h3 id="org5cc5da2"><span class="section-number-3">3.1.</span> Dispatch factors</h3>
+<div id="outline-container-orge6e0f3b" class="outline-3">
+<h3 id="orge6e0f3b"><span class="section-number-3">3.1.</span> Dispatch factors</h3>
 <div class="outline-text-3" id="text-3-1">
 <ul class="org-ul">
 <li>Is the slot idle or occupied?</li>
@@ -110,8 +112,8 @@ BEP-130 is a proposal that introduces a parallel transaction execution mechanism
 </ul>
 </div>
 </div>
-<div id="outline-container-orge670468" class="outline-3">
-<h3 id="orge670468"><span class="section-number-3">3.2.</span> Slot execution stages</h3>
+<div id="outline-container-org30bd872" class="outline-3">
+<h3 id="org30bd872"><span class="section-number-3">3.2.</span> Slot execution stages</h3>
 <div class="outline-text-3" id="text-3-2">
 <ol class="org-ol">
 <li>Execute the transaction \(Tx_i\)based on a specific worldstate, e.g., the state when the execution starts.</li>
@@ -126,8 +128,8 @@ BEP-130 is a proposal that introduces a parallel transaction execution mechanism
 </ol>
 </div>
 </div>
-<div id="outline-container-org6ae044e" class="outline-3">
-<h3 id="org6ae044e"><span class="section-number-3">3.3.</span> Conflict detection</h3>
+<div id="outline-container-orgcb81995" class="outline-3">
+<h3 id="orgcb81995"><span class="section-number-3">3.3.</span> Conflict detection</h3>
 <div class="outline-text-3" id="text-3-3">
 <ul class="org-ul">
 <li>Detection items: storage key/value pair; account balance; contract content and status.</li>
@@ -142,10 +144,10 @@ BEP-130 is a proposal that introduces a parallel transaction execution mechanism
         <p>© 2024 chenyo. Some rights reserved.</p>
         <div class="social-links">
           <a href="https://t.me/feihuadawangjiushiwo" target="_blank" rel="noopener noreferrer">
-            <img src="assets/telegram-icon.svg" alt="Telegram" width="24" height="24">
+          <i class="fab fa-telegram"></i>
           </a>
           <a href="https://github.com/chenyo-17" target="_blank" rel="noopener noreferrer">
-            <img src="assets/github-icon.svg" alt="GitHub" width="24" height="24">
+            <i class="fab fa-github"></i>
       </a>
       </div>
       </footer></div>

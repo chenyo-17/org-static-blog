@@ -18,6 +18,7 @@
       <meta name="referrer" content="no-referrer">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <link rel="stylesheet" href="assets/style.css" type="text/css"/>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
       <link rel="favicon" type="image/x-icon" href="favicon.ico">
       <script src="assets/search.js"></script></head>
 <body>
@@ -29,7 +30,8 @@
       <a href="archive.html">Archive</a>
       <a href="tags.html">Tags</a>
       <div id="search-container">
-      <input type="text" id="search-input" placeholder="Search anywhere...">
+        <input type="text" id="search-input" placeholder="Search anywhere...">
+        <i class="fas fa-search search-icon"></i>
       </div>
       </nav>
       </header></div>
@@ -39,34 +41,34 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org9385fcc">1. What is a React hook</a>
+<li><a href="#orgf757b9a">1. What is a React hook</a>
 <ul>
-<li><a href="#orgc1c1292">1.1. <code>useState</code> is not enough</a></li>
-<li><a href="#orge44f57f">1.2. <code>useEffect</code> runs after specific variable change</a></li>
+<li><a href="#org47ece2b">1.1. <code>useState</code> is not enough</a></li>
+<li><a href="#org5181aae">1.2. <code>useEffect</code> runs after specific variable change</a></li>
 </ul>
 </li>
-<li><a href="#org845da78">2. React hook patterns</a>
+<li><a href="#orgbd46748">2. React hook patterns</a>
 <ul>
-<li><a href="#org1dfacd1">2.1. Fetch and send data</a></li>
-<li><a href="#org697282d">2.2. Conditional rendering</a></li>
-<li><a href="#org10f7c85">2.3. Render an array of Data</a></li>
+<li><a href="#org1e849d1">2.1. Fetch and send data</a></li>
+<li><a href="#org4f863fb">2.2. Conditional rendering</a></li>
+<li><a href="#orgaadf161">2.3. Render an array of Data</a></li>
 </ul>
 </li>
-<li><a href="#org08dab9a">3. Example: Stopwatch</a></li>
-<li><a href="#orge4f1cec">4. DOM and component mounting</a></li>
+<li><a href="#orgabef526">3. Example: Stopwatch</a></li>
+<li><a href="#org76a4e33">4. DOM and component mounting</a></li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-org9385fcc" class="outline-2">
-<h2 id="org9385fcc"><span class="section-number-2">1.</span> What is a React hook</h2>
+<div id="outline-container-orgf757b9a" class="outline-2">
+<h2 id="orgf757b9a"><span class="section-number-2">1.</span> What is a React hook</h2>
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
 <li>Special functions to access parts of the component lifestyle.</li>
 <li>e.g., <code>useState</code></li>
 </ul>
 </div>
-<div id="outline-container-orgc1c1292" class="outline-3">
-<h3 id="orgc1c1292"><span class="section-number-3">1.1.</span> <code>useState</code> is not enough</h3>
+<div id="outline-container-org47ece2b" class="outline-3">
+<h3 id="org47ece2b"><span class="section-number-3">1.1.</span> <code>useState</code> is not enough</h3>
 <div class="outline-text-3" id="text-1-1">
 <div class="org-src-container">
 <pre class="src src-js"><span class="linenr">1: </span><span style="color: #51afef;">const</span> [<span style="color: #dcaeea;">persons</span>, <span style="color: #dcaeea;">setPersons</span>] = useState([]);
@@ -85,8 +87,8 @@
 </ul>
 </div>
 </div>
-<div id="outline-container-orge44f57f" class="outline-3">
-<h3 id="orge44f57f"><span class="section-number-3">1.2.</span> <code>useEffect</code> runs after specific variable change</h3>
+<div id="outline-container-org5181aae" class="outline-3">
+<h3 id="org5181aae"><span class="section-number-3">1.2.</span> <code>useEffect</code> runs after specific variable change</h3>
 <div class="outline-text-3" id="text-1-2">
 <div class="org-src-container">
 <pre class="src src-js"><span class="linenr">1: </span>useEffect(() =&gt; {
@@ -114,12 +116,12 @@
 </div>
 </div>
 </div>
-<div id="outline-container-org845da78" class="outline-2">
-<h2 id="org845da78"><span class="section-number-2">2.</span> React hook patterns</h2>
+<div id="outline-container-orgbd46748" class="outline-2">
+<h2 id="orgbd46748"><span class="section-number-2">2.</span> React hook patterns</h2>
 <div class="outline-text-2" id="text-2">
 </div>
-<div id="outline-container-org1dfacd1" class="outline-3">
-<h3 id="org1dfacd1"><span class="section-number-3">2.1.</span> Fetch and send data</h3>
+<div id="outline-container-org1e849d1" class="outline-3">
+<h3 id="org1e849d1"><span class="section-number-3">2.1.</span> Fetch and send data</h3>
 <div class="outline-text-3" id="text-2-1">
 <div class="org-src-container">
 <pre class="src src-js"><span class="linenr">1: </span><span style="color: #5B6268;">/* </span><span style="color: #5B6268;">fetch data on mount</span><span style="color: #5B6268;"> */</span>
@@ -144,8 +146,8 @@
 </div>
 </div>
 </div>
-<div id="outline-container-org697282d" class="outline-3">
-<h3 id="org697282d"><span class="section-number-3">2.2.</span> Conditional rendering</h3>
+<div id="outline-container-org4f863fb" class="outline-3">
+<h3 id="org4f863fb"><span class="section-number-3">2.2.</span> Conditional rendering</h3>
 <div class="outline-text-3" id="text-2-2">
 <div class="org-src-container">
 <pre class="src src-js"><span class="linenr">1: </span><span style="color: #5B6268;">// </span><span style="color: #5B6268;">JSX is a way of writing HTML in js</span>
@@ -160,8 +162,8 @@
 </div>
 </div>
 </div>
-<div id="outline-container-org10f7c85" class="outline-3">
-<h3 id="org10f7c85"><span class="section-number-3">2.3.</span> Render an array of Data</h3>
+<div id="outline-container-orgaadf161" class="outline-3">
+<h3 id="orgaadf161"><span class="section-number-3">2.3.</span> Render an array of Data</h3>
 <div class="outline-text-3" id="text-2-3">
 <div class="org-src-container">
 <pre class="src src-js"><span class="linenr">1: </span><span style="color: #51afef;">const</span> <span style="color: #dcaeea;">data</span> = [
@@ -180,8 +182,8 @@
 </div>
 </div>
 </div>
-<div id="outline-container-org08dab9a" class="outline-2">
-<h2 id="org08dab9a"><span class="section-number-2">3.</span> Example: Stopwatch</h2>
+<div id="outline-container-orgabef526" class="outline-2">
+<h2 id="orgabef526"><span class="section-number-2">3.</span> Example: Stopwatch</h2>
 <div class="outline-text-2" id="text-3">
 <div class="org-src-container">
 <pre class="src src-js"><span class="linenr"> 1: </span><span style="color: #51afef;">const</span> <span style="color: #dcaeea;">Stopwatch</span> = () =&gt; {
@@ -202,8 +204,8 @@
 </div>
 </div>
 </div>
-<div id="outline-container-orge4f1cec" class="outline-2">
-<h2 id="orge4f1cec"><span class="section-number-2">4.</span> DOM and component mounting</h2>
+<div id="outline-container-org76a4e33" class="outline-2">
+<h2 id="org76a4e33"><span class="section-number-2">4.</span> DOM and component mounting</h2>
 <div class="outline-text-2" id="text-4">
 <ul class="org-ul">
 <li>DOM (Document Object Model): a programming interface for web documents; represents the structure of a document, e.g., HTML, as a tree of objects, where each object corresponds to a part of the document; it dynamically updates the document contents
@@ -225,10 +227,10 @@
         <p>© 2024 chenyo. Some rights reserved.</p>
         <div class="social-links">
           <a href="https://t.me/feihuadawangjiushiwo" target="_blank" rel="noopener noreferrer">
-            <img src="assets/telegram-icon.svg" alt="Telegram" width="24" height="24">
+          <i class="fab fa-telegram"></i>
           </a>
           <a href="https://github.com/chenyo-17" target="_blank" rel="noopener noreferrer">
-            <img src="assets/github-icon.svg" alt="GitHub" width="24" height="24">
+            <i class="fab fa-github"></i>
       </a>
       </div>
       </footer></div>

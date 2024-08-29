@@ -17,6 +17,7 @@
       <meta name="referrer" content="no-referrer">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <link rel="stylesheet" href="assets/style.css" type="text/css"/>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
       <link rel="favicon" type="image/x-icon" href="favicon.ico">
       <script src="assets/search.js"></script></head>
 <body>
@@ -28,7 +29,8 @@
       <a href="archive.html">Archive</a>
       <a href="tags.html">Tags</a>
       <div id="search-container">
-      <input type="text" id="search-input" placeholder="Search anywhere...">
+        <input type="text" id="search-input" placeholder="Search anywhere...">
+        <i class="fas fa-search search-icon"></i>
       </div>
       </nav>
       </header></div>
@@ -40,14 +42,14 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orga9dda54">1. Basic html structure</a></li>
-<li><a href="#org3c02e34">2. Tags</a></li>
-<li><a href="#org78674b8">3. Attributes</a></li>
-<li><a href="#org48f7b15">4. Javascript</a>
+<li><a href="#org656791a">1. Basic html structure</a></li>
+<li><a href="#org3262fb0">2. Tags</a></li>
+<li><a href="#org5318749">3. Attributes</a></li>
+<li><a href="#orgdef9f44">4. Javascript</a>
 <ul>
-<li><a href="#orgacfa970">4.1. Fetch from an HTML URL</a></li>
-<li><a href="#orgdc9e777">4.2. Modify a DOM</a></li>
-<li><a href="#org31141c4">4.3. Syntax</a></li>
+<li><a href="#org85fa9b7">4.1. Fetch from an HTML URL</a></li>
+<li><a href="#org70ba25b">4.2. Modify a DOM</a></li>
+<li><a href="#org530c075">4.3. Syntax</a></li>
 </ul>
 </li>
 </ul>
@@ -56,8 +58,8 @@
 <p>
 This post records the basic web development knowledge I have learned in practice.
 </p>
-<div id="outline-container-orga9dda54" class="outline-2">
-<h2 id="orga9dda54"><span class="section-number-2">1.</span> Basic html structure</h2>
+<div id="outline-container-org656791a" class="outline-2">
+<h2 id="org656791a"><span class="section-number-2">1.</span> Basic html structure</h2>
 <div class="outline-text-2" id="text-1">
 <div class="org-src-container">
 <pre class="src src-html">&lt;<span style="color: #51afef;">!DOCTYPE</span> html&gt;
@@ -107,8 +109,8 @@ This post records the basic web development knowledge I have learned in practice
 </div>
 </div>
 </div>
-<div id="outline-container-org3c02e34" class="outline-2">
-<h2 id="org3c02e34"><span class="section-number-2">2.</span> Tags</h2>
+<div id="outline-container-org3262fb0" class="outline-2">
+<h2 id="org3262fb0"><span class="section-number-2">2.</span> Tags</h2>
 <div class="outline-text-2" id="text-2">
 <ul class="org-ul">
 <li><code class="src src-html">&lt;<span style="color: #c678dd;">a</span>&gt;</code>: contain links; have following attributes:
@@ -121,8 +123,8 @@ This post records the basic web development knowledge I have learned in practice
 </ul>
 </div>
 </div>
-<div id="outline-container-org78674b8" class="outline-2">
-<h2 id="org78674b8"><span class="section-number-2">3.</span> Attributes</h2>
+<div id="outline-container-org5318749" class="outline-2">
+<h2 id="org5318749"><span class="section-number-2">3.</span> Attributes</h2>
 <div class="outline-text-2" id="text-3">
 <ul class="org-ul">
 <li><code class="src src-html"><span style="color: #dcaeea;">id</span>="home"</code>:
@@ -132,12 +134,12 @@ This post records the basic web development knowledge I have learned in practice
 </ul>
 </div>
 </div>
-<div id="outline-container-org48f7b15" class="outline-2">
-<h2 id="org48f7b15"><span class="section-number-2">4.</span> Javascript</h2>
+<div id="outline-container-orgdef9f44" class="outline-2">
+<h2 id="orgdef9f44"><span class="section-number-2">4.</span> Javascript</h2>
 <div class="outline-text-2" id="text-4">
 </div>
-<div id="outline-container-orgacfa970" class="outline-3">
-<h3 id="orgacfa970"><span class="section-number-3">4.1.</span> Fetch from an HTML URL</h3>
+<div id="outline-container-org85fa9b7" class="outline-3">
+<h3 id="org85fa9b7"><span class="section-number-3">4.1.</span> Fetch from an HTML URL</h3>
 <div class="outline-text-3" id="text-4-1">
 <ol class="org-ol">
 <li><code class="src src-js"><span style="color: #51afef;">await</span> fetch(url)</code>: returns a <code class="src src-js">Response</code> object.
@@ -154,16 +156,16 @@ This post records the basic web development knowledge I have learned in practice
 </ol>
 </div>
 </div>
-<div id="outline-container-orgdc9e777" class="outline-3">
-<h3 id="orgdc9e777"><span class="section-number-3">4.2.</span> Modify a DOM</h3>
+<div id="outline-container-org70ba25b" class="outline-3">
+<h3 id="org70ba25b"><span class="section-number-3">4.2.</span> Modify a DOM</h3>
 <div class="outline-text-3" id="text-4-2">
 <ul class="org-ul">
 <li><code class="src src-js">content.querySelector(<span style="color: #98be65;">".taglist"</span>).remove()</code>: removes the element from the DOM, i.e., it modifies <code class="src src-js">content</code>.</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org31141c4" class="outline-3">
-<h3 id="org31141c4"><span class="section-number-3">4.3.</span> Syntax</h3>
+<div id="outline-container-org530c075" class="outline-3">
+<h3 id="org530c075"><span class="section-number-3">4.3.</span> Syntax</h3>
 <div class="outline-text-3" id="text-4-3">
 <ul class="org-ul">
 <li><code class="src src-js"><span style="color: #51afef;">const</span> <span style="color: #dcaeea;">escapedQuery</span> = query.replace(<span style="color: #98be65;">/[.*+?^${}()|[\]\\]/</span>g, <span style="color: #98be65;">"\\$&amp;"</span>)</code>: add a backslash to any special character in the query; <code>$&amp;</code> is a special pattern used in Javascript&rsquo;s <code class="src src-js">replacement</code> method.</li>
@@ -177,52 +179,52 @@ This post records the basic web development knowledge I have learned in practice
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgc800d68">1. Goals</a></li>
-<li><a href="#orgc34681e">2. Locks &amp; Latches</a>
+<li><a href="#org782fc12">1. Goals</a></li>
+<li><a href="#org7a83244">2. Locks &amp; Latches</a>
 <ul>
-<li><a href="#orgfcb6462">2.1. Locks</a></li>
-<li><a href="#org57f3c38">2.2. Latches</a></li>
+<li><a href="#orgdb78914">2.1. Locks</a></li>
+<li><a href="#org5fb73d2">2.2. Latches</a></li>
 </ul>
 </li>
-<li><a href="#org50cea72">3. Buffer pool</a>
+<li><a href="#org2d2f6e7">3. Buffer pool</a>
 <ul>
-<li><a href="#orgff0de2d">3.1. Metadata</a></li>
-<li><a href="#org201ce35">3.2. Memory allocation policies</a></li>
+<li><a href="#org7a44495">3.1. Metadata</a></li>
+<li><a href="#org184b0be">3.2. Memory allocation policies</a></li>
 </ul>
 </li>
-<li><a href="#orge7ca933">4. Buffer pool optimizations</a>
+<li><a href="#org09f1392">4. Buffer pool optimizations</a>
 <ul>
-<li><a href="#org6207174">4.1. Multiple buffer pools</a></li>
-<li><a href="#org20fb358">4.2. Pre-fetching</a></li>
-<li><a href="#orgb6fc3cd">4.3. Scan sharing</a></li>
-<li><a href="#orgc56e03f">4.4. Buffer pool bypass</a></li>
+<li><a href="#org05d905c">4.1. Multiple buffer pools</a></li>
+<li><a href="#org7f0e15f">4.2. Pre-fetching</a></li>
+<li><a href="#org71cf1c3">4.3. Scan sharing</a></li>
+<li><a href="#org6c17ecb">4.4. Buffer pool bypass</a></li>
 </ul>
 </li>
-<li><a href="#org29902d9">5. Buffer replacement policies</a>
+<li><a href="#org9758089">5. Buffer replacement policies</a>
 <ul>
-<li><a href="#org7bee9b5">5.1. Least recently used (LRU)</a></li>
-<li><a href="#org5477cd0">5.2. Clock</a></li>
-<li><a href="#org3875dd6">5.3. LRU-K</a>
+<li><a href="#org5e99945">5.1. Least recently used (LRU)</a></li>
+<li><a href="#orgd6e313b">5.2. Clock</a></li>
+<li><a href="#orgc83ef3b">5.3. LRU-K</a>
 <ul>
-<li><a href="#org3d504ea">5.3.1. MySQL approximate LRU-K</a></li>
+<li><a href="#orgc699ae5">5.3.1. MySQL approximate LRU-K</a></li>
 </ul>
 </li>
-<li><a href="#org50e7c24">5.4. Localization</a></li>
-<li><a href="#org113608b">5.5. Priority hint</a></li>
-<li><a href="#org4ba562e">5.6. Dirty pages</a></li>
+<li><a href="#orgaa1f83d">5.4. Localization</a></li>
+<li><a href="#org803c4a2">5.5. Priority hint</a></li>
+<li><a href="#org761ae22">5.6. Dirty pages</a></li>
 </ul>
 </li>
-<li><a href="#orgd9f04c5">6. Other memory pools</a></li>
-<li><a href="#orgebf7372">7. OS cache bypass</a></li>
-<li><a href="#org0d6a22f">8. I/O scheduling</a></li>
+<li><a href="#orgd1487ae">6. Other memory pools</a></li>
+<li><a href="#orgf69c73c">7. OS cache bypass</a></li>
+<li><a href="#orgd3e2933">8. I/O scheduling</a></li>
 </ul>
 </div>
 </nav>
 <p>
 This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall2023/notes/06-bufferpool.pdf">CMU 15-445 L6 notes</a> as well as some explanation from Claude.ai.
 </p>
-<div id="outline-container-orgc800d68" class="outline-2">
-<h2 id="orgc800d68"><span class="section-number-2">1.</span> Goals</h2>
+<div id="outline-container-org782fc12" class="outline-2">
+<h2 id="org782fc12"><span class="section-number-2">1.</span> Goals</h2>
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
 <li>Manage DBMS memory and move data between the memory and the disk, such that the execution engine does no worry about the data fetching.</li>
@@ -231,15 +233,15 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul>
 </div>
 </div>
-<div id="outline-container-orgc34681e" class="outline-2">
-<h2 id="orgc34681e"><span class="section-number-2">2.</span> Locks &amp; Latches</h2>
+<div id="outline-container-org7a83244" class="outline-2">
+<h2 id="org7a83244"><span class="section-number-2">2.</span> Locks &amp; Latches</h2>
 <div class="outline-text-2" id="text-2">
 <ul class="org-ul">
 <li>Both used to protect internal elements.</li>
 </ul>
 </div>
-<div id="outline-container-orgfcb6462" class="outline-3">
-<h3 id="orgfcb6462"><span class="section-number-3">2.1.</span> Locks</h3>
+<div id="outline-container-orgdb78914" class="outline-3">
+<h3 id="orgdb78914"><span class="section-number-3">2.1.</span> Locks</h3>
 <div class="outline-text-3" id="text-2-1">
 <ul class="org-ul">
 <li>A high-level logical primitive to allow for transaction atomicity.</li>
@@ -248,8 +250,8 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul>
 </div>
 </div>
-<div id="outline-container-org57f3c38" class="outline-3">
-<h3 id="org57f3c38"><span class="section-number-3">2.2.</span> Latches</h3>
+<div id="outline-container-org5fb73d2" class="outline-3">
+<h3 id="org5fb73d2"><span class="section-number-3">2.2.</span> Latches</h3>
 <div class="outline-text-3" id="text-2-2">
 <ul class="org-ul">
 <li>A low-level protection primitive a DBMS uses in its internal data structures, e.g., hash tables.</li>
@@ -259,8 +261,8 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </div>
 </div>
 </div>
-<div id="outline-container-org50cea72" class="outline-2">
-<h2 id="org50cea72"><span class="section-number-2">3.</span> Buffer pool</h2>
+<div id="outline-container-org2d2f6e7" class="outline-2">
+<h2 id="org2d2f6e7"><span class="section-number-2">3.</span> Buffer pool</h2>
 <div class="outline-text-2" id="text-3">
 <ul class="org-ul">
 <li>An in-memory cache of pages read from the disk.</li>
@@ -269,8 +271,8 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 <li>Dirty pages (i.e., modified pages) are buffered rather than writing back immediately.</li>
 </ul>
 </div>
-<div id="outline-container-orgff0de2d" class="outline-3">
-<h3 id="orgff0de2d"><span class="section-number-3">3.1.</span> Metadata</h3>
+<div id="outline-container-org7a44495" class="outline-3">
+<h3 id="org7a44495"><span class="section-number-3">3.1.</span> Metadata</h3>
 <div class="outline-text-3" id="text-3-1">
 <ul class="org-ul">
 <li>Page table: An in-memory hash mapping page ids to frame locations in the buffer pool.</li>
@@ -279,8 +281,8 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul>
 </div>
 </div>
-<div id="outline-container-org201ce35" class="outline-3">
-<h3 id="org201ce35"><span class="section-number-3">3.2.</span> Memory allocation policies</h3>
+<div id="outline-container-org184b0be" class="outline-3">
+<h3 id="org184b0be"><span class="section-number-3">3.2.</span> Memory allocation policies</h3>
 <div class="outline-text-3" id="text-3-2">
 <ul class="org-ul">
 <li>The buffer pool decides when to allocate a frame for a page.</li>
@@ -290,12 +292,12 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </div>
 </div>
 </div>
-<div id="outline-container-orge7ca933" class="outline-2">
-<h2 id="orge7ca933"><span class="section-number-2">4.</span> Buffer pool optimizations</h2>
+<div id="outline-container-org09f1392" class="outline-2">
+<h2 id="org09f1392"><span class="section-number-2">4.</span> Buffer pool optimizations</h2>
 <div class="outline-text-2" id="text-4">
 </div>
-<div id="outline-container-org6207174" class="outline-3">
-<h3 id="org6207174"><span class="section-number-3">4.1.</span> Multiple buffer pools</h3>
+<div id="outline-container-org05d905c" class="outline-3">
+<h3 id="org05d905c"><span class="section-number-3">4.1.</span> Multiple buffer pools</h3>
 <div class="outline-text-3" id="text-4-1">
 <ul class="org-ul">
 <li>Each database or page can have its own buffer pool and adopts local policies to reduce latch contention.</li>
@@ -307,8 +309,8 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul>
 </div>
 </div>
-<div id="outline-container-org20fb358" class="outline-3">
-<h3 id="org20fb358"><span class="section-number-3">4.2.</span> Pre-fetching</h3>
+<div id="outline-container-org7f0e15f" class="outline-3">
+<h3 id="org7f0e15f"><span class="section-number-3">4.2.</span> Pre-fetching</h3>
 <div class="outline-text-3" id="text-4-2">
 <ul class="org-ul">
 <li>While the first set of pages is being processed, the DBMS can pre-fetch the second set into the buffer pool based on the dependency between pages.
@@ -318,8 +320,8 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul>
 </div>
 </div>
-<div id="outline-container-orgb6fc3cd" class="outline-3">
-<h3 id="orgb6fc3cd"><span class="section-number-3">4.3.</span> Scan sharing</h3>
+<div id="outline-container-org71cf1c3" class="outline-3">
+<h3 id="org71cf1c3"><span class="section-number-3">4.3.</span> Scan sharing</h3>
 <div class="outline-text-3" id="text-4-3">
 <ul class="org-ul">
 <li>Query cursors can reuse retrieved data.</li>
@@ -328,8 +330,8 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul>
 </div>
 </div>
-<div id="outline-container-orgc56e03f" class="outline-3">
-<h3 id="orgc56e03f"><span class="section-number-3">4.4.</span> Buffer pool bypass</h3>
+<div id="outline-container-org6c17ecb" class="outline-3">
+<h3 id="org6c17ecb"><span class="section-number-3">4.4.</span> Buffer pool bypass</h3>
 <div class="outline-text-3" id="text-4-4">
 <ul class="org-ul">
 <li>Scanned pages do not have to be stored in the buffer pool to avoid the overhead.</li>
@@ -338,15 +340,15 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </div>
 </div>
 </div>
-<div id="outline-container-org29902d9" class="outline-2">
-<h2 id="org29902d9"><span class="section-number-2">5.</span> Buffer replacement policies</h2>
+<div id="outline-container-org9758089" class="outline-2">
+<h2 id="org9758089"><span class="section-number-2">5.</span> Buffer replacement policies</h2>
 <div class="outline-text-2" id="text-5">
 <ul class="org-ul">
 <li>The DBMS decides which page to evict from the buffer pool to free up a frame.</li>
 </ul>
 </div>
-<div id="outline-container-org7bee9b5" class="outline-3">
-<h3 id="org7bee9b5"><span class="section-number-3">5.1.</span> Least recently used (LRU)</h3>
+<div id="outline-container-org5e99945" class="outline-3">
+<h3 id="org5e99945"><span class="section-number-3">5.1.</span> Least recently used (LRU)</h3>
 <div class="outline-text-3" id="text-5-1">
 <ul class="org-ul">
 <li>LRU maintains a timestamp of when each page was last accessed, and evicts the page with the oldest timestamp.
@@ -360,8 +362,8 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul>
 </div>
 </div>
-<div id="outline-container-org5477cd0" class="outline-3">
-<h3 id="org5477cd0"><span class="section-number-3">5.2.</span> Clock</h3>
+<div id="outline-container-orgd6e313b" class="outline-3">
+<h3 id="orgd6e313b"><span class="section-number-3">5.2.</span> Clock</h3>
 <div class="outline-text-3" id="text-5-2">
 <ul class="org-ul">
 <li>An approximation of LRU but replace the timestamp with a reference bit which is set to 1 when a page is accessed.</li>
@@ -369,15 +371,15 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul>
 </div>
 </div>
-<div id="outline-container-org3875dd6" class="outline-3">
-<h3 id="org3875dd6"><span class="section-number-3">5.3.</span> LRU-K</h3>
+<div id="outline-container-orgc83ef3b" class="outline-3">
+<h3 id="orgc83ef3b"><span class="section-number-3">5.3.</span> LRU-K</h3>
 <div class="outline-text-3" id="text-5-3">
 <ul class="org-ul">
 <li>Tracks the last K accessed timestamps to predict the next accessed time, hence avoid the sequential flooding issue.</li>
 </ul>
 </div>
-<div id="outline-container-org3d504ea" class="outline-4">
-<h4 id="org3d504ea"><span class="section-number-4">5.3.1.</span> MySQL approximate LRU-K</h4>
+<div id="outline-container-orgc699ae5" class="outline-4">
+<h4 id="orgc699ae5"><span class="section-number-4">5.3.1.</span> MySQL approximate LRU-K</h4>
 <div class="outline-text-4" id="text-5-3-1">
 <ul class="org-ul">
 <li>Use a linked list with two entry points: &ldquo;old&rdquo; and &ldquo;young&rdquo;.</li>
@@ -387,8 +389,8 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </div>
 </div>
 </div>
-<div id="outline-container-org50e7c24" class="outline-3">
-<h3 id="org50e7c24"><span class="section-number-3">5.4.</span> Localization</h3>
+<div id="outline-container-orgaa1f83d" class="outline-3">
+<h3 id="orgaa1f83d"><span class="section-number-3">5.4.</span> Localization</h3>
 <div class="outline-text-3" id="text-5-4">
 <ul class="org-ul">
 <li>Instead of using a global replacement policy, the DBMS make eviction decisions based on each query.</li>
@@ -397,16 +399,16 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul>
 </div>
 </div>
-<div id="outline-container-org113608b" class="outline-3">
-<h3 id="org113608b"><span class="section-number-3">5.5.</span> Priority hint</h3>
+<div id="outline-container-org803c4a2" class="outline-3">
+<h3 id="org803c4a2"><span class="section-number-3">5.5.</span> Priority hint</h3>
 <div class="outline-text-3" id="text-5-5">
 <ul class="org-ul">
 <li>Transactions tell the buffer pool where pages are important based on the <b><b>context</b></b> of each page.</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org4ba562e" class="outline-3">
-<h3 id="org4ba562e"><span class="section-number-3">5.6.</span> Dirty pages</h3>
+<div id="outline-container-org761ae22" class="outline-3">
+<h3 id="org761ae22"><span class="section-number-3">5.6.</span> Dirty pages</h3>
 <div class="outline-text-3" id="text-5-6">
 <ul class="org-ul">
 <li>Two ways to handle dirty pages in the buffer pool:
@@ -419,8 +421,8 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </div>
 </div>
 </div>
-<div id="outline-container-orgd9f04c5" class="outline-2">
-<h2 id="orgd9f04c5"><span class="section-number-2">6.</span> Other memory pools</h2>
+<div id="outline-container-orgd1487ae" class="outline-2">
+<h2 id="orgd1487ae"><span class="section-number-2">6.</span> Other memory pools</h2>
 <div class="outline-text-2" id="text-6">
 <ul class="org-ul">
 <li>A DBMS also maintains other pools to store:
@@ -433,16 +435,16 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul>
 </div>
 </div>
-<div id="outline-container-orgebf7372" class="outline-2">
-<h2 id="orgebf7372"><span class="section-number-2">7.</span> OS cache bypass</h2>
+<div id="outline-container-orgf69c73c" class="outline-2">
+<h2 id="orgf69c73c"><span class="section-number-2">7.</span> OS cache bypass</h2>
 <div class="outline-text-2" id="text-7">
 <ul class="org-ul">
 <li>Most DBMS use direct I/O (e.g., with <code>fsync</code> instead of <code>fwrite</code>) to bypass the OS cache to avoid redundant page copy and to manage eviction policies more intelligently (cf. <a href="https://chenyo-17.github.io/org-static-blog/tag-database.html#org611ff38">Why not OS post</a>).</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org0d6a22f" class="outline-2">
-<h2 id="org0d6a22f"><span class="section-number-2">8.</span> I/O scheduling</h2>
+<div id="outline-container-orgd3e2933" class="outline-2">
+<h2 id="orgd3e2933"><span class="section-number-2">8.</span> I/O scheduling</h2>
 <div class="outline-text-2" id="text-8">
 <ul class="org-ul">
 <li>The DBMS maintains internal <b><b>queue</b></b> to track page read/write.</li>
@@ -456,35 +458,35 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org3561aef">1. Database workloads</a>
+<li><a href="#org7e9469d">1. Database workloads</a>
 <ul>
-<li><a href="#orgb72f93a">1.1. OLTP (Online Transaction Processing)</a></li>
-<li><a href="#org8c493dd">1.2. OLAP (Online Analytical Processing)</a></li>
-<li><a href="#org47ff7f7">1.3. HTAP (Hybrid)</a></li>
+<li><a href="#org3cf8568">1.1. OLTP (Online Transaction Processing)</a></li>
+<li><a href="#org307b772">1.2. OLAP (Online Analytical Processing)</a></li>
+<li><a href="#org39b32f3">1.3. HTAP (Hybrid)</a></li>
 </ul>
 </li>
-<li><a href="#orgfbb58c4">2. Storage models</a>
+<li><a href="#org1fdf856">2. Storage models</a>
 <ul>
-<li><a href="#org72447b2">2.1. N-ary Storage Model (NSM)</a></li>
-<li><a href="#orgae59ee3">2.2. Decomposition Storage Model (DSM)</a></li>
-<li><a href="#org22192f0">2.3. Partition Attributes Across (PAX)</a></li>
+<li><a href="#orgade2517">2.1. N-ary Storage Model (NSM)</a></li>
+<li><a href="#org976af9a">2.2. Decomposition Storage Model (DSM)</a></li>
+<li><a href="#org620fb11">2.3. Partition Attributes Across (PAX)</a></li>
 </ul>
 </li>
-<li><a href="#org4514651">3. Database compression</a>
+<li><a href="#orgd33dfed">3. Database compression</a>
 <ul>
-<li><a href="#orga5315cd">3.1. Compression granularity</a></li>
-<li><a href="#org0bf54c0">3.2. Naive compression</a></li>
+<li><a href="#org0ea9418">3.1. Compression granularity</a></li>
+<li><a href="#org57465bb">3.2. Naive compression</a></li>
 </ul>
 </li>
-<li><a href="#org3d59b6e">4. Columnar compression</a>
+<li><a href="#orgb2cc5d6">4. Columnar compression</a>
 <ul>
-<li><a href="#org740b3ed">4.1. Dictionary encoding</a></li>
-<li><a href="#org0bc46de">4.2. Run-Length encoding (RLE)</a></li>
-<li><a href="#orga696310">4.3. Bit-packing encoding</a></li>
-<li><a href="#orgbeaa23e">4.4. Mostly encoding</a></li>
-<li><a href="#org7a36dcd">4.5. Bitmap (One-hot) encoding</a></li>
-<li><a href="#org9ff89ba">4.6. Delta encoding</a></li>
-<li><a href="#org55376cc">4.7. Incremental encoding</a></li>
+<li><a href="#org4f8402c">4.1. Dictionary encoding</a></li>
+<li><a href="#org515312b">4.2. Run-Length encoding (RLE)</a></li>
+<li><a href="#org94d51ad">4.3. Bit-packing encoding</a></li>
+<li><a href="#orgd6fcfb0">4.4. Mostly encoding</a></li>
+<li><a href="#org832e579">4.5. Bitmap (One-hot) encoding</a></li>
+<li><a href="#org654298f">4.6. Delta encoding</a></li>
+<li><a href="#orgdc068dd">4.7. Incremental encoding</a></li>
 </ul>
 </li>
 </ul>
@@ -493,12 +495,12 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 <p>
 This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall2023/notes/05-storage3.pdf">CMU 15-445 L5 notes</a>.
 </p>
-<div id="outline-container-org3561aef" class="outline-2">
-<h2 id="org3561aef"><span class="section-number-2">1.</span> Database workloads</h2>
+<div id="outline-container-org7e9469d" class="outline-2">
+<h2 id="org7e9469d"><span class="section-number-2">1.</span> Database workloads</h2>
 <div class="outline-text-2" id="text-1">
 </div>
-<div id="outline-container-orgb72f93a" class="outline-3">
-<h3 id="orgb72f93a"><span class="section-number-3">1.1.</span> OLTP (Online Transaction Processing)</h3>
+<div id="outline-container-org3cf8568" class="outline-3">
+<h3 id="org3cf8568"><span class="section-number-3">1.1.</span> OLTP (Online Transaction Processing)</h3>
 <div class="outline-text-3" id="text-1-1">
 <ul class="org-ul">
 <li>Characterized by fast, repetitive, simple queries that operator on a small amount of data, e.g., a user adds an item to its Amazon cart and pay.</li>
@@ -506,8 +508,8 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul>
 </div>
 </div>
-<div id="outline-container-org8c493dd" class="outline-3">
-<h3 id="org8c493dd"><span class="section-number-3">1.2.</span> OLAP (Online Analytical Processing)</h3>
+<div id="outline-container-org307b772" class="outline-3">
+<h3 id="org307b772"><span class="section-number-3">1.2.</span> OLAP (Online Analytical Processing)</h3>
 <div class="outline-text-3" id="text-1-2">
 <ul class="org-ul">
 <li>Characterized by complex read queries on large data.</li>
@@ -515,8 +517,8 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul>
 </div>
 </div>
-<div id="outline-container-org47ff7f7" class="outline-3">
-<h3 id="org47ff7f7"><span class="section-number-3">1.3.</span> HTAP (Hybrid)</h3>
+<div id="outline-container-org39b32f3" class="outline-3">
+<h3 id="org39b32f3"><span class="section-number-3">1.3.</span> HTAP (Hybrid)</h3>
 <div class="outline-text-3" id="text-1-3">
 <ul class="org-ul">
 <li>OLTP + OLAP.</li>
@@ -524,15 +526,15 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </div>
 </div>
 </div>
-<div id="outline-container-orgfbb58c4" class="outline-2">
-<h2 id="orgfbb58c4"><span class="section-number-2">2.</span> Storage models</h2>
+<div id="outline-container-org1fdf856" class="outline-2">
+<h2 id="org1fdf856"><span class="section-number-2">2.</span> Storage models</h2>
 <div class="outline-text-2" id="text-2">
 <ul class="org-ul">
 <li>Different ways to store tuples in pages.</li>
 </ul>
 </div>
-<div id="outline-container-org72447b2" class="outline-3">
-<h3 id="org72447b2"><span class="section-number-3">2.1.</span> N-ary Storage Model (NSM)</h3>
+<div id="outline-container-orgade2517" class="outline-3">
+<h3 id="orgade2517"><span class="section-number-3">2.1.</span> N-ary Storage Model (NSM)</h3>
 <div class="outline-text-3" id="text-2-1">
 <ul class="org-ul">
 <li>Store all attributes for a single tuple contiguously in a single page, e.g., slotted pages.</li>
@@ -541,8 +543,8 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul>
 </div>
 </div>
-<div id="outline-container-orgae59ee3" class="outline-3">
-<h3 id="orgae59ee3"><span class="section-number-3">2.2.</span> Decomposition Storage Model (DSM)</h3>
+<div id="outline-container-org976af9a" class="outline-3">
+<h3 id="org976af9a"><span class="section-number-3">2.2.</span> Decomposition Storage Model (DSM)</h3>
 <div class="outline-text-3" id="text-2-2">
 <ul class="org-ul">
 <li>Store each attribute for all tuples contiguously in a block of data, i.e., column store.</li>
@@ -556,15 +558,15 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul>
 
 
-<figure id="org0be5f8a">
+<figure id="orgd08b94e">
 <img src="./static/db-dsm-storage-model.png" alt="db-dsm-storage-model.png" align="center" width="550px">
 
 <figcaption><span class="figure-number">Figure 1: </span>DSM storage model (<a href="https://15445.courses.cs.cmu.edu/fall2023/slides/05-storage3.pdf">Source</a>)</figcaption>
 </figure>
 </div>
 </div>
-<div id="outline-container-org22192f0" class="outline-3">
-<h3 id="org22192f0"><span class="section-number-3">2.3.</span> Partition Attributes Across (PAX)</h3>
+<div id="outline-container-org620fb11" class="outline-3">
+<h3 id="org620fb11"><span class="section-number-3">2.3.</span> Partition Attributes Across (PAX)</h3>
 <div class="outline-text-3" id="text-2-3">
 <ul class="org-ul">
 <li>Rows are horizontally partitioned into groups of rows; each row group uses a column store.</li>
@@ -572,7 +574,7 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul>
 
 
-<figure id="org3b8d44e">
+<figure id="org5bf22e8">
 <img src="./static/db-pax-storage-model.png" alt="db-pax-storage-model.png" align="center" width="300px">
 
 <figcaption><span class="figure-number">Figure 2: </span>PAX storage model (<a href="https://15445.courses.cs.cmu.edu/fall2023/slides/05-storage3.pdf">Source</a>)</figcaption>
@@ -580,8 +582,8 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </div>
 </div>
 </div>
-<div id="outline-container-org4514651" class="outline-2">
-<h2 id="org4514651"><span class="section-number-2">3.</span> Database compression</h2>
+<div id="outline-container-orgd33dfed" class="outline-2">
+<h2 id="orgd33dfed"><span class="section-number-2">3.</span> Database compression</h2>
 <div class="outline-text-2" id="text-3">
 <ul class="org-ul">
 <li>Disk I/O is always the main bottleneck; read-only analytical workloads are popular; compression in advance allows for more I/O throughput.</li>
@@ -598,8 +600,8 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul></li>
 </ul>
 </div>
-<div id="outline-container-orga5315cd" class="outline-3">
-<h3 id="orga5315cd"><span class="section-number-3">3.1.</span> Compression granularity</h3>
+<div id="outline-container-org0ea9418" class="outline-3">
+<h3 id="org0ea9418"><span class="section-number-3">3.1.</span> Compression granularity</h3>
 <div class="outline-text-3" id="text-3-1">
 <ul class="org-ul">
 <li>Block level: compress all tuples for the same table.</li>
@@ -609,8 +611,8 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul>
 </div>
 </div>
-<div id="outline-container-org0bf54c0" class="outline-3">
-<h3 id="org0bf54c0"><span class="section-number-3">3.2.</span> Naive compression</h3>
+<div id="outline-container-org57465bb" class="outline-3">
+<h3 id="org57465bb"><span class="section-number-3">3.2.</span> Naive compression</h3>
 <div class="outline-text-3" id="text-3-2">
 <ul class="org-ul">
 <li>Engineers often use a general purpose compression algorithm with lower compression ratio in exchange for faster compression/decompression.</li>
@@ -623,15 +625,15 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </div>
 </div>
 </div>
-<div id="outline-container-org3d59b6e" class="outline-2">
-<h2 id="org3d59b6e"><span class="section-number-2">4.</span> Columnar compression</h2>
+<div id="outline-container-orgb2cc5d6" class="outline-2">
+<h2 id="orgb2cc5d6"><span class="section-number-2">4.</span> Columnar compression</h2>
 <div class="outline-text-2" id="text-4">
 <ul class="org-ul">
 <li>Works best with OLAP, may need additional support for writes.</li>
 </ul>
 </div>
-<div id="outline-container-org740b3ed" class="outline-3">
-<h3 id="org740b3ed"><span class="section-number-3">4.1.</span> Dictionary encoding</h3>
+<div id="outline-container-org4f8402c" class="outline-3">
+<h3 id="org4f8402c"><span class="section-number-3">4.1.</span> Dictionary encoding</h3>
 <div class="outline-text-3" id="text-4-1">
 <ul class="org-ul">
 <li>The most common database compression scheme, support late materialization.</li>
@@ -644,8 +646,8 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul>
 </div>
 </div>
-<div id="outline-container-org0bc46de" class="outline-3">
-<h3 id="org0bc46de"><span class="section-number-3">4.2.</span> Run-Length encoding (RLE)</h3>
+<div id="outline-container-org515312b" class="outline-3">
+<h3 id="org515312b"><span class="section-number-3">4.2.</span> Run-Length encoding (RLE)</h3>
 <div class="outline-text-3" id="text-4-2">
 <ul class="org-ul">
 <li>Compress runs (consecutive instances) of the same value in a column into triplets <code>(value, offset, length)</code>.</li>
@@ -653,60 +655,60 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul>
 
 
-<figure id="org53501f9">
+<figure id="org286c292">
 <img src="./static/db-rle-storage-model.png" alt="db-rle-storage-model.png" align="center" width="550px">
 
 <figcaption><span class="figure-number">Figure 3: </span>Run-length encoding (<a href="https://15445.courses.cs.cmu.edu/fall2023/slides/05-storage3.pdf">Source</a>)</figcaption>
 </figure>
 </div>
 </div>
-<div id="outline-container-orga696310" class="outline-3">
-<h3 id="orga696310"><span class="section-number-3">4.3.</span> Bit-packing encoding</h3>
+<div id="outline-container-org94d51ad" class="outline-3">
+<h3 id="org94d51ad"><span class="section-number-3">4.3.</span> Bit-packing encoding</h3>
 <div class="outline-text-3" id="text-4-3">
 <ul class="org-ul">
 <li>Use less bits to store an attribute.</li>
 </ul>
 
 
-<figure id="org5a0e25b">
+<figure id="org24b667b">
 <img src="./static/db-bit-packing-storage-model.png" alt="db-bit-packing-storage-model.png" align="center" width="250px">
 
 <figcaption><span class="figure-number">Figure 4: </span>Bit-packing encoding (<a href="https://15445.courses.cs.cmu.edu/fall2023/slides/05-storage3.pdf">Source</a>)</figcaption>
 </figure>
 </div>
 </div>
-<div id="outline-container-orgbeaa23e" class="outline-3">
-<h3 id="orgbeaa23e"><span class="section-number-3">4.4.</span> Mostly encoding</h3>
+<div id="outline-container-orgd6fcfb0" class="outline-3">
+<h3 id="orgd6fcfb0"><span class="section-number-3">4.4.</span> Mostly encoding</h3>
 <div class="outline-text-3" id="text-4-4">
 <ul class="org-ul">
 <li>Use a special marker to indicate values that exceed the bit size and maintains a look-up table to store them.</li>
 </ul>
 
 
-<figure id="orgc8dacab">
+<figure id="orge9baba3">
 <img src="./static/db-mostly-encoding-storage-model.png" alt="db-mostly-encoding-storage-model.png" align="center" width="550px">
 
 <figcaption><span class="figure-number">Figure 5: </span>Mostly encoding (<a href="https://15445.courses.cs.cmu.edu/fall2023/slides/05-storage3.pdf">Source</a>)</figcaption>
 </figure>
 </div>
 </div>
-<div id="outline-container-org7a36dcd" class="outline-3">
-<h3 id="org7a36dcd"><span class="section-number-3">4.5.</span> Bitmap (One-hot) encoding</h3>
+<div id="outline-container-org832e579" class="outline-3">
+<h3 id="org832e579"><span class="section-number-3">4.5.</span> Bitmap (One-hot) encoding</h3>
 <div class="outline-text-3" id="text-4-5">
 <ul class="org-ul">
 <li>Only practical if the value cardinality is low.</li>
 </ul>
 
 
-<figure id="org8e90ad0">
+<figure id="orge6fbf16">
 <img src="./static/db-bitmap-encoding-storage-model.png" alt="db-bitmap-encoding-storage-model.png" align="center" width="400px">
 
 <figcaption><span class="figure-number">Figure 6: </span>Bitmap encoding (<a href="https://15445.courses.cs.cmu.edu/fall2023/slides/05-storage3.pdf">Source</a>)</figcaption>
 </figure>
 </div>
 </div>
-<div id="outline-container-org9ff89ba" class="outline-3">
-<h3 id="org9ff89ba"><span class="section-number-3">4.6.</span> Delta encoding</h3>
+<div id="outline-container-org654298f" class="outline-3">
+<h3 id="org654298f"><span class="section-number-3">4.6.</span> Delta encoding</h3>
 <div class="outline-text-3" id="text-4-6">
 <ul class="org-ul">
 <li>Record the difference between values; the base value can be stored in-line or in a separate look-up table.</li>
@@ -714,15 +716,15 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul>
 
 
-<figure id="org9b86f76">
+<figure id="org565fe34">
 <img src="./static/db-delta-encoding-storage-model.png" alt="db-delta-encoding-storage-model.png" align="center" width="500px">
 
 <figcaption><span class="figure-number">Figure 7: </span>Delta encoding (<a href="https://15445.courses.cs.cmu.edu/fall2023/slides/05-storage3.pdf">Source</a>)</figcaption>
 </figure>
 </div>
 </div>
-<div id="outline-container-org55376cc" class="outline-3">
-<h3 id="org55376cc"><span class="section-number-3">4.7.</span> Incremental encoding</h3>
+<div id="outline-container-orgdc068dd" class="outline-3">
+<h3 id="orgdc068dd"><span class="section-number-3">4.7.</span> Incremental encoding</h3>
 <div class="outline-text-3" id="text-4-7">
 <ul class="org-ul">
 <li>Common prefixes or suffixes and their lengths are recorded to avoid duplication.</li>
@@ -737,32 +739,32 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org926f6a1">1. Terminology</a>
+<li><a href="#org445fc3c">1. Terminology</a>
 <ul>
-<li><a href="#org088305b">1.1. Ethereum sharding</a></li>
-<li><a href="#org188fbae">1.2. Blob</a></li>
-<li><a href="#org3855c8a">1.3. Erasure coding</a></li>
-<li><a href="#org023f727">1.4. Data availability sampling (DAS)</a></li>
-<li><a href="#orgc557703">1.5. Danksharding (L2 optimization)</a></li>
-<li><a href="#org9fd5e44">1.6. Relations between L1 and L2 scaling</a></li>
-<li><a href="#orgd286eec">1.7. Double spending prevention</a></li>
-<li><a href="#orgf194f85">1.8. Sealevel (Solana)</a></li>
+<li><a href="#org15f405f">1.1. Ethereum sharding</a></li>
+<li><a href="#org2a78fd3">1.2. Blob</a></li>
+<li><a href="#org3fbaa8d">1.3. Erasure coding</a></li>
+<li><a href="#orgb5a105d">1.4. Data availability sampling (DAS)</a></li>
+<li><a href="#orgb7904ff">1.5. Danksharding (L2 optimization)</a></li>
+<li><a href="#org25da124">1.6. Relations between L1 and L2 scaling</a></li>
+<li><a href="#orgf30a49f">1.7. Double spending prevention</a></li>
+<li><a href="#org514a673">1.8. Sealevel (Solana)</a></li>
 </ul>
 </li>
-<li><a href="#orgc5451b4">2. Ways to achieve parallel processing</a></li>
-<li><a href="#org63ff833">3. Production-ready parallelized EVM projects (Jan 2024)</a></li>
+<li><a href="#org0dc4425">2. Ways to achieve parallel processing</a></li>
+<li><a href="#org4d53146">3. Production-ready parallelized EVM projects (Jan 2024)</a></li>
 </ul>
 </div>
 </nav>
 <p>
 This is a personal note for <a href="https://blockworks.co/news/parallelized-evms-gaining-popularity">Blockworks news (12.01.2024)</a> as well as some terminology explained online, e.g., <a href="https://www.coindesk.com/learn/what-is-ethereum-sharding-a-beginners-guide/">Coindesk</a> and <a href="https://chatgpt.com/c/824f05c9-dc75-4eb6-aeda-59d057baf83a">GPT-4o</a>.
 </p>
-<div id="outline-container-org926f6a1" class="outline-2">
-<h2 id="org926f6a1"><span class="section-number-2">1.</span> Terminology</h2>
+<div id="outline-container-org445fc3c" class="outline-2">
+<h2 id="org445fc3c"><span class="section-number-2">1.</span> Terminology</h2>
 <div class="outline-text-2" id="text-1">
 </div>
-<div id="outline-container-org088305b" class="outline-3">
-<h3 id="org088305b"><span class="section-number-3">1.1.</span> Ethereum sharding</h3>
+<div id="outline-container-org15f405f" class="outline-3">
+<h3 id="org15f405f"><span class="section-number-3">1.1.</span> Ethereum sharding</h3>
 <div class="outline-text-3" id="text-1-1">
 <ul class="org-ul">
 <li>The Ethereum mainnet is divided into smaller interconnected networks called shards.</li>
@@ -772,8 +774,8 @@ This is a personal note for <a href="https://blockworks.co/news/parallelized-evm
 </ul>
 </div>
 </div>
-<div id="outline-container-org188fbae" class="outline-3">
-<h3 id="org188fbae"><span class="section-number-3">1.2.</span> Blob</h3>
+<div id="outline-container-org2a78fd3" class="outline-3">
+<h3 id="org2a78fd3"><span class="section-number-3">1.2.</span> Blob</h3>
 <div class="outline-text-3" id="text-1-2">
 <ul class="org-ul">
 <li>Rather than storing each transaction data directly in the blockchain, the data is aggregated into a blob (binary object).</li>
@@ -783,16 +785,16 @@ This is a personal note for <a href="https://blockworks.co/news/parallelized-evm
 </ul>
 </div>
 </div>
-<div id="outline-container-org3855c8a" class="outline-3">
-<h3 id="org3855c8a"><span class="section-number-3">1.3.</span> Erasure coding</h3>
+<div id="outline-container-org3fbaa8d" class="outline-3">
+<h3 id="org3fbaa8d"><span class="section-number-3">1.3.</span> Erasure coding</h3>
 <div class="outline-text-3" id="text-1-3">
 <ul class="org-ul">
 <li>Allows one to encode blobs such that if at least half of the data in the blob is published, anyone in the network can reconstruct and re-publish the rest of the data.</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org023f727" class="outline-3">
-<h3 id="org023f727"><span class="section-number-3">1.4.</span> Data availability sampling (DAS)</h3>
+<div id="outline-container-orgb5a105d" class="outline-3">
+<h3 id="orgb5a105d"><span class="section-number-3">1.4.</span> Data availability sampling (DAS)</h3>
 <div class="outline-text-3" id="text-1-4">
 <ul class="org-ul">
 <li>Validators randomly sample blob pieces to confirm the data can be reconstructed.g</li>
@@ -800,8 +802,8 @@ This is a personal note for <a href="https://blockworks.co/news/parallelized-evm
 </ul>
 </div>
 </div>
-<div id="outline-container-orgc557703" class="outline-3">
-<h3 id="orgc557703"><span class="section-number-3">1.5.</span> Danksharding (L2 optimization)</h3>
+<div id="outline-container-orgb7904ff" class="outline-3">
+<h3 id="orgb7904ff"><span class="section-number-3">1.5.</span> Danksharding (L2 optimization)</h3>
 <div class="outline-text-3" id="text-1-5">
 <ul class="org-ul">
 <li>A specific sharding implementation proposal.</li>
@@ -810,8 +812,8 @@ This is a personal note for <a href="https://blockworks.co/news/parallelized-evm
 </ul>
 </div>
 </div>
-<div id="outline-container-org9fd5e44" class="outline-3">
-<h3 id="org9fd5e44"><span class="section-number-3">1.6.</span> Relations between L1 and L2 scaling</h3>
+<div id="outline-container-org25da124" class="outline-3">
+<h3 id="org25da124"><span class="section-number-3">1.6.</span> Relations between L1 and L2 scaling</h3>
 <div class="outline-text-3" id="text-1-6">
 <ul class="org-ul">
 <li>L1 scaling: optimizations directly to the Ethereum mainnet and core infrastructure, e.g., parallel EVM.</li>
@@ -819,8 +821,8 @@ This is a personal note for <a href="https://blockworks.co/news/parallelized-evm
 </ul>
 </div>
 </div>
-<div id="outline-container-orgd286eec" class="outline-3">
-<h3 id="orgd286eec"><span class="section-number-3">1.7.</span> Double spending prevention</h3>
+<div id="outline-container-orgf30a49f" class="outline-3">
+<h3 id="orgf30a49f"><span class="section-number-3">1.7.</span> Double spending prevention</h3>
 <div class="outline-text-3" id="text-1-7">
 <ul class="org-ul">
 <li>Bitcoin: uses UTXOs to track which inputs have been spent (no need to go through the entire chain).</li>
@@ -828,8 +830,8 @@ This is a personal note for <a href="https://blockworks.co/news/parallelized-evm
 </ul>
 </div>
 </div>
-<div id="outline-container-orgf194f85" class="outline-3">
-<h3 id="orgf194f85"><span class="section-number-3">1.8.</span> Sealevel (Solana)</h3>
+<div id="outline-container-org514a673" class="outline-3">
+<h3 id="org514a673"><span class="section-number-3">1.8.</span> Sealevel (Solana)</h3>
 <div class="outline-text-3" id="text-1-8">
 <ul class="org-ul">
 <li>Solana&rsquo;s parallel smart contract runtime to process thousands of contracts in parallel.</li>
@@ -838,8 +840,8 @@ This is a personal note for <a href="https://blockworks.co/news/parallelized-evm
 </div>
 </div>
 </div>
-<div id="outline-container-orgc5451b4" class="outline-2">
-<h2 id="orgc5451b4"><span class="section-number-2">2.</span> Ways to achieve parallel processing</h2>
+<div id="outline-container-org0dc4425" class="outline-2">
+<h2 id="org0dc4425"><span class="section-number-2">2.</span> Ways to achieve parallel processing</h2>
 <div class="outline-text-2" id="text-2">
 <ul class="org-ul">
 <li>Process independent transactions in parallel.</li>
@@ -847,8 +849,8 @@ This is a personal note for <a href="https://blockworks.co/news/parallelized-evm
 </ul>
 </div>
 </div>
-<div id="outline-container-org63ff833" class="outline-2">
-<h2 id="org63ff833"><span class="section-number-2">3.</span> Production-ready parallelized EVM projects (Jan 2024)</h2>
+<div id="outline-container-org4d53146" class="outline-2">
+<h2 id="org4d53146"><span class="section-number-2">3.</span> Production-ready parallelized EVM projects (Jan 2024)</h2>
 <div class="outline-text-2" id="text-3">
 <ul class="org-ul">
 <li>Sei: optimistic parallel execution.</li>
@@ -867,20 +869,20 @@ This is a personal note for <a href="https://blockworks.co/news/parallelized-evm
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org03d1534">1. What is it about?</a></li>
-<li><a href="#orgeb69f35">2. My first exam</a></li>
-<li><a href="#orga085182">3. My second exam</a></li>
-<li><a href="#org9c52e77">4. My third exam</a></li>
-<li><a href="#orgb1c1efe">5. My fourth exam</a></li>
-<li><a href="#orgbe9fff0">6. My feeling</a></li>
+<li><a href="#orgcb27cf7">1. What is it about?</a></li>
+<li><a href="#org6335688">2. My first exam</a></li>
+<li><a href="#orgf37e690">3. My second exam</a></li>
+<li><a href="#orge5eeaa8">4. My third exam</a></li>
+<li><a href="#orga6eadfd">5. My fourth exam</a></li>
+<li><a href="#org25412f3">6. My feeling</a></li>
 </ul>
 </div>
 </nav>
 <p>
 This post was co-authored with the assistance of Cursor and Claude AI.
 </p>
-<div id="outline-container-org03d1534" class="outline-2">
-<h2 id="org03d1534"><span class="section-number-2">1.</span> What is it about?</h2>
+<div id="outline-container-orgcb27cf7" class="outline-2">
+<h2 id="orgcb27cf7"><span class="section-number-2">1.</span> What is it about?</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 Over the past years, I&rsquo;ve been involved in organizing and monitoring four exams.
@@ -889,8 +891,8 @@ Now seems like an opportune moment to reflect on my exam organization journey.
 </p>
 </div>
 </div>
-<div id="outline-container-orgeb69f35" class="outline-2">
-<h2 id="orgeb69f35"><span class="section-number-2">2.</span> My first exam</h2>
+<div id="outline-container-org6335688" class="outline-2">
+<h2 id="org6335688"><span class="section-number-2">2.</span> My first exam</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 My first exam experience was relatively straightforward.
@@ -900,8 +902,8 @@ For the remainder of the time, I sat at the back of the room, occupying myself w
 </p>
 </div>
 </div>
-<div id="outline-container-orga085182" class="outline-2">
-<h2 id="orga085182"><span class="section-number-2">3.</span> My second exam</h2>
+<div id="outline-container-orgf37e690" class="outline-2">
+<h2 id="orgf37e690"><span class="section-number-2">3.</span> My second exam</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 This exam was identical to the first, but I was tasked with designing a significant portion of the questions.
@@ -926,8 +928,8 @@ The process was extremely time-consuming and offered minimal personal benefit or
 </p>
 </div>
 </div>
-<div id="outline-container-org9c52e77" class="outline-2">
-<h2 id="org9c52e77"><span class="section-number-2">4.</span> My third exam</h2>
+<div id="outline-container-orge5eeaa8" class="outline-2">
+<h2 id="orge5eeaa8"><span class="section-number-2">4.</span> My third exam</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 This was a different exam, where I again designed one part and monitored its administration.
@@ -944,8 +946,8 @@ Consequently, we faced the task of devising ways to simplify the exam questions 
 </p>
 </div>
 </div>
-<div id="outline-container-orgb1c1efe" class="outline-2">
-<h2 id="orgb1c1efe"><span class="section-number-2">5.</span> My fourth exam</h2>
+<div id="outline-container-orga6eadfd" class="outline-2">
+<h2 id="orga6eadfd"><span class="section-number-2">5.</span> My fourth exam</h2>
 <div class="outline-text-2" id="text-5">
 <p>
 Now comes the most recent exam, where I took on the role of a coordinator.
@@ -965,8 +967,8 @@ Well, not quite the end, as I still need to complete the grading and submit the 
 </p>
 </div>
 </div>
-<div id="outline-container-orgbe9fff0" class="outline-2">
-<h2 id="orgbe9fff0"><span class="section-number-2">6.</span> My feeling</h2>
+<div id="outline-container-org25412f3" class="outline-2">
+<h2 id="org25412f3"><span class="section-number-2">6.</span> My feeling</h2>
 <div class="outline-text-2" id="text-6">
 <p>
 After four instances of exam organization experience, I must admit that I do not recommend it.
@@ -993,10 +995,10 @@ only to have it attempted by a mere handful of students.
         <p>© 2024 chenyo. Some rights reserved.</p>
         <div class="social-links">
           <a href="https://t.me/feihuadawangjiushiwo" target="_blank" rel="noopener noreferrer">
-            <img src="assets/telegram-icon.svg" alt="Telegram" width="24" height="24">
+          <i class="fab fa-telegram"></i>
           </a>
           <a href="https://github.com/chenyo-17" target="_blank" rel="noopener noreferrer">
-            <img src="assets/github-icon.svg" alt="GitHub" width="24" height="24">
+            <i class="fab fa-github"></i>
       </a>
       </div>
       </footer></div>

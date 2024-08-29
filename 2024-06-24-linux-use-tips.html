@@ -18,6 +18,7 @@
       <meta name="referrer" content="no-referrer">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <link rel="stylesheet" href="assets/style.css" type="text/css"/>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
       <link rel="favicon" type="image/x-icon" href="favicon.ico">
       <script src="assets/search.js"></script></head>
 <body>
@@ -29,7 +30,8 @@
       <a href="archive.html">Archive</a>
       <a href="tags.html">Tags</a>
       <div id="search-container">
-      <input type="text" id="search-input" placeholder="Search anywhere...">
+        <input type="text" id="search-input" placeholder="Search anywhere...">
+        <i class="fas fa-search search-icon"></i>
       </div>
       </nav>
       </header></div>
@@ -39,41 +41,41 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org0ca4a93">1. i3</a>
+<li><a href="#orgc7ef55e">1. i3</a>
 <ul>
-<li><a href="#org52ede05">1.1. Move specific workspaces between different monitors (ref)</a></li>
+<li><a href="#org6e44e73">1.1. Move specific workspaces between different monitors (ref)</a></li>
 </ul>
 </li>
-<li><a href="#org141a7c6">2. Org</a>
+<li><a href="#org68b45e1">2. Org</a>
 <ul>
-<li><a href="#org8b69cfc">2.1. Format code blocks</a></li>
+<li><a href="#org1020cb0">2.1. Format code blocks</a></li>
 </ul>
 </li>
-<li><a href="#orge7b933d">3. Emacs</a>
+<li><a href="#org3ef4789">3. Emacs</a>
 <ul>
-<li><a href="#org80e7a56">3.1. Prefix argument</a></li>
-<li><a href="#org0f67a55">3.2. Help functions</a></li>
+<li><a href="#orgb3f3cc5">3.1. Prefix argument</a></li>
+<li><a href="#org2333b45">3.2. Help functions</a></li>
 </ul>
 </li>
-<li><a href="#orgc1a4b59">4. Vim</a>
+<li><a href="#orgc117541">4. Vim</a>
 <ul>
-<li><a href="#org3ccf313">4.1. Delete a word backwards</a></li>
+<li><a href="#org96b42fb">4.1. Delete a word backwards</a></li>
 </ul>
 </li>
-<li><a href="#org4fed9d9">5. Firefox</a>
+<li><a href="#orgd0f5a18">5. Firefox</a>
 <ul>
-<li><a href="#org60bcebd">5.1. Cache bypass refresh</a></li>
+<li><a href="#org18d6b5b">5.1. Cache bypass refresh</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-org0ca4a93" class="outline-2">
-<h2 id="org0ca4a93"><span class="section-number-2">1.</span> i3</h2>
+<div id="outline-container-orgc7ef55e" class="outline-2">
+<h2 id="orgc7ef55e"><span class="section-number-2">1.</span> i3</h2>
 <div class="outline-text-2" id="text-1">
 </div>
-<div id="outline-container-org52ede05" class="outline-3">
-<h3 id="org52ede05"><span class="section-number-3">1.1.</span> Move specific workspaces between different monitors <a href="https://i3wm.org/docs/user-contributed/swapping-workspaces.html">(ref)</a></h3>
+<div id="outline-container-org6e44e73" class="outline-3">
+<h3 id="org6e44e73"><span class="section-number-3">1.1.</span> Move specific workspaces between different monitors <a href="https://i3wm.org/docs/user-contributed/swapping-workspaces.html">(ref)</a></h3>
 <div class="outline-text-3" id="text-1-1">
 <ol class="org-ol">
 <li>Adjust the monitor relative positions.</li>
@@ -82,12 +84,12 @@
 </div>
 </div>
 </div>
-<div id="outline-container-org141a7c6" class="outline-2">
-<h2 id="org141a7c6"><span class="section-number-2">2.</span> Org</h2>
+<div id="outline-container-org68b45e1" class="outline-2">
+<h2 id="org68b45e1"><span class="section-number-2">2.</span> Org</h2>
 <div class="outline-text-2" id="text-2">
 </div>
-<div id="outline-container-org8b69cfc" class="outline-3">
-<h3 id="org8b69cfc"><span class="section-number-3">2.1.</span> Format code blocks</h3>
+<div id="outline-container-org1020cb0" class="outline-3">
+<h3 id="org1020cb0"><span class="section-number-3">2.1.</span> Format code blocks</h3>
 <div class="outline-text-3" id="text-2-1">
 <ul class="org-ul">
 <li>Use the shortcut <code>&lt; s &lt;TAB&gt;</code> to create a code block.</li>
@@ -96,20 +98,20 @@
 </div>
 </div>
 </div>
-<div id="outline-container-orge7b933d" class="outline-2">
-<h2 id="orge7b933d"><span class="section-number-2">3.</span> Emacs</h2>
+<div id="outline-container-org3ef4789" class="outline-2">
+<h2 id="org3ef4789"><span class="section-number-2">3.</span> Emacs</h2>
 <div class="outline-text-2" id="text-3">
 </div>
-<div id="outline-container-org80e7a56" class="outline-3">
-<h3 id="org80e7a56"><span class="section-number-3">3.1.</span> Prefix argument</h3>
+<div id="outline-container-orgb3f3cc5" class="outline-3">
+<h3 id="orgb3f3cc5"><span class="section-number-3">3.1.</span> Prefix argument</h3>
 <div class="outline-text-3" id="text-3-1">
 <ul class="org-ul">
 <li>When the function includes <code>(interactive "P")</code>, it means one can add a prefix argument <code>C-u 1</code> (or any integer) to trigger some effect.</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org0f67a55" class="outline-3">
-<h3 id="org0f67a55"><span class="section-number-3">3.2.</span> Help functions</h3>
+<div id="outline-container-org2333b45" class="outline-3">
+<h3 id="org2333b45"><span class="section-number-3">3.2.</span> Help functions</h3>
 <div class="outline-text-3" id="text-3-2">
 <ul class="org-ul">
 <li><code>Ctrl-h K</code> get the function name given a shortcut</li>
@@ -117,12 +119,12 @@
 </div>
 </div>
 </div>
-<div id="outline-container-orgc1a4b59" class="outline-2">
-<h2 id="orgc1a4b59"><span class="section-number-2">4.</span> Vim</h2>
+<div id="outline-container-orgc117541" class="outline-2">
+<h2 id="orgc117541"><span class="section-number-2">4.</span> Vim</h2>
 <div class="outline-text-2" id="text-4">
 </div>
-<div id="outline-container-org3ccf313" class="outline-3">
-<h3 id="org3ccf313"><span class="section-number-3">4.1.</span> Delete a word backwards</h3>
+<div id="outline-container-org96b42fb" class="outline-3">
+<h3 id="org96b42fb"><span class="section-number-3">4.1.</span> Delete a word backwards</h3>
 <div class="outline-text-3" id="text-4-1">
 <ul class="org-ul">
 <li><code>diw</code> or <code>daw</code></li>
@@ -130,12 +132,12 @@
 </div>
 </div>
 </div>
-<div id="outline-container-org4fed9d9" class="outline-2">
-<h2 id="org4fed9d9"><span class="section-number-2">5.</span> Firefox</h2>
+<div id="outline-container-orgd0f5a18" class="outline-2">
+<h2 id="orgd0f5a18"><span class="section-number-2">5.</span> Firefox</h2>
 <div class="outline-text-2" id="text-5">
 </div>
-<div id="outline-container-org60bcebd" class="outline-3">
-<h3 id="org60bcebd"><span class="section-number-3">5.1.</span> Cache bypass refresh</h3>
+<div id="outline-container-org18d6b5b" class="outline-3">
+<h3 id="org18d6b5b"><span class="section-number-3">5.1.</span> Cache bypass refresh</h3>
 <div class="outline-text-3" id="text-5-1">
 <ul class="org-ul">
 <li><code>Ctrl+Shift+R</code></li>
@@ -149,10 +151,10 @@
         <p>© 2024 chenyo. Some rights reserved.</p>
         <div class="social-links">
           <a href="https://t.me/feihuadawangjiushiwo" target="_blank" rel="noopener noreferrer">
-            <img src="assets/telegram-icon.svg" alt="Telegram" width="24" height="24">
+          <i class="fab fa-telegram"></i>
           </a>
           <a href="https://github.com/chenyo-17" target="_blank" rel="noopener noreferrer">
-            <img src="assets/github-icon.svg" alt="GitHub" width="24" height="24">
+            <i class="fab fa-github"></i>
       </a>
       </div>
       </footer></div>
