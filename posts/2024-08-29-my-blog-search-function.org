@@ -1,0 +1,60 @@
+#+title: My blog search function
+#+date: <2024-08-29 13:59>
+#+description: This post records why and how I made the current blog search function.
+#+filetags: personal blog
+
+* What happens
+
+Two months ago, I started to use the current blog to keep track of my study and personal notes.
+
+This blog uses [[https://github.com/bastibe/org-static-blog][bastibe/org-static-blog]], which is a convenient Emacs package to publish a static blog from Org-mode files.
+
+When I first started, this blog had no styling at all.
+With the help of Claude, I gradually decorated it with the theme and fonts of my choice.
+
+During this process, my husband made a feature request: a blog search function.
+
+* What is not enough with existing search functions?
+
+Most default search tools provided by popular static website frameworks do not return complete search results and their context.
+
+For instance, I am learning database design.
+Assume I cannot remember what a "slotted page" is but I know I have noted it before.
+If I enter "slotted" in the search box of a Jekyll-based blog, it will provide me with 2 post links implying these posts contain this keyword.
+In the best case, it also highlights the first occurrence of "slotted" in each post with its context.
+
+This does not really meet my needs.
+I would like to see all notes I have made for "slotted" to better refresh my memory, but the current results force me to click each post and perform a local search myself to achieve this goal.
+
+I understand that modern search tools consider scalability and intelligence.
+However, for a personal blog, we can achieve greater breadth.
+
+* What does the search function do in this blog?
+#+CAPTION: A blog search example
+#+ATTR_HTML: :align center
+#+ATTR_HTML: :width 700px :style border: 1px solid black;
+[[./static/blog-search.gif]]
+
+The current search function searches for all occurrences of the given search input and highlights each occurrence in an item surrounded by its context, e.g., 50 characters before and after the input.
+If multiple occurrences are close to each other, they are displayed once in the same item.
+Clicking each item opens a new tab and jumps to the closest header before the input.
+
+In this way, I can immediately see all results and their context on one page, and I only click an item when the short context is not sufficient.
+
+* How is it implemented?
+I implemented the search function along with all styling with the help of Cursor.
+The full logic can be found in [[https://github.com/chenyo-17/org-static-blog/blob/main/assets/search.js][search.js]].
+
+In short, every time I build the blog, a list of all post links is stored in [[https://github.com/chenyo-17/org-static-blog/blob/main/assets/post-list.json][post-list.json]].
+When the page is loaded, for each post link, the blog caches the full post content and all header indices.
+When a search input is detected, the search function iterates through each post to find each occurrence and the closest header.
+It then wraps the occurrence with certain context and prepares the link by appending the header tag to the post link.
+
+* How can it be improved?
+The current search function is simple and sub-optimal.
+It always re-stores all posts when the page is reloaded and is not lazy at all.
+The search is also neither fuzzy nor the most efficient.
+And it is not TypeScript 🙂.
+It just works well so far for a personal blog with about 30 posts.
+
+In addition, after I finished the implementation, my husband made another feature request: can you also highlight all occurrences in the opened link?

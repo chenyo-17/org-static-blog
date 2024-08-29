@@ -37,6 +37,119 @@
 <div id="content">
 <h2>Welcome!</h2>
       <p>Take a look if you are bored.</p>
+<div class="post-date">29 Aug 2024</div><h1 class="post-title"><a href="https://chenyo.me/2024-08-29-my-blog-search-function.html">My blog search function</a></h1>
+<nav id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#org0b4112e">1. What happens</a></li>
+<li><a href="#org9241145">2. What is not enough with existing search functions?</a></li>
+<li><a href="#org2c9a924">3. What does the search function do in this blog?</a></li>
+<li><a href="#org61b08f0">4. How is it implemented?</a></li>
+<li><a href="#orgfc1a340">5. How can it be improved?</a></li>
+</ul>
+</div>
+</nav>
+<div id="outline-container-org0b4112e" class="outline-2">
+<h2 id="org0b4112e"><span class="section-number-2">1.</span> What happens</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+Two months ago, I started to use the current blog to keep track of my study and personal notes.
+</p>
+
+<p>
+This blog uses <a href="https://github.com/bastibe/org-static-blog">bastibe/org-static-blog</a>, which is a convenient Emacs package to publish a static blog from Org-mode files.
+</p>
+
+<p>
+When I first started, this blog had no styling at all.
+With the help of Claude, I gradually decorated it with the theme and fonts of my choice.
+</p>
+
+<p>
+During this process, my husband made a feature request: a blog search function.
+</p>
+</div>
+</div>
+<div id="outline-container-org9241145" class="outline-2">
+<h2 id="org9241145"><span class="section-number-2">2.</span> What is not enough with existing search functions?</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+Most default search tools provided by popular static website frameworks do not return complete search results and their context.
+</p>
+
+<p>
+For instance, I am learning database design.
+Assume I cannot remember what a &ldquo;slotted page&rdquo; is but I know I have noted it before.
+If I enter &ldquo;slotted&rdquo; in the search box of a Jekyll-based blog, it will provide me with 2 post links implying these posts contain this keyword.
+In the best case, it also highlights the first occurrence of &ldquo;slotted&rdquo; in each post with its context.
+</p>
+
+<p>
+This does not really meet my needs.
+I would like to see all notes I have made for &ldquo;slotted&rdquo; to better refresh my memory, but the current results force me to click each post and perform a local search myself to achieve this goal.
+</p>
+
+<p>
+I understand that modern search tools consider scalability and intelligence.
+However, for a personal blog, we can achieve greater breadth.
+</p>
+</div>
+</div>
+<div id="outline-container-org2c9a924" class="outline-2">
+<h2 id="org2c9a924"><span class="section-number-2">3.</span> What does the search function do in this blog?</h2>
+<div class="outline-text-2" id="text-3">
+
+<figure id="orgf50c06c">
+<img src="./static/blog-search.gif" alt="blog-search.gif" align="center" width="700px" style="border: 1px solid black;">
+
+<figcaption><span class="figure-number">Figure 1: </span>A blog search example</figcaption>
+</figure>
+
+<p>
+The current search function searches for all occurrences of the given search input and highlights each occurrence in an item surrounded by its context, e.g., 50 characters before and after the input.
+If multiple occurrences are close to each other, they are displayed once in the same item.
+Clicking each item opens a new tab and jumps to the closest header before the input.
+</p>
+
+<p>
+In this way, I can immediately see all results and their context on one page, and I only click an item when the short context is not sufficient.
+</p>
+</div>
+</div>
+<div id="outline-container-org61b08f0" class="outline-2">
+<h2 id="org61b08f0"><span class="section-number-2">4.</span> How is it implemented?</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+I implemented the search function along with all styling with the help of Cursor.
+The full logic can be found in <a href="https://github.com/chenyo-17/org-static-blog/blob/main/assets/search.js">search.js</a>.
+</p>
+
+<p>
+In short, every time I build the blog, a list of all post links is stored in <a href="https://github.com/chenyo-17/org-static-blog/blob/main/assets/post-list.json">post-list.json</a>.
+When the page is loaded, for each post link, the blog caches the full post content and all header indices.
+When a search input is detected, the search function iterates through each post to find each occurrence and the closest header.
+It then wraps the occurrence with certain context and prepares the link by appending the header tag to the post link.
+</p>
+</div>
+</div>
+<div id="outline-container-orgfc1a340" class="outline-2">
+<h2 id="orgfc1a340"><span class="section-number-2">5.</span> How can it be improved?</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+The current search function is simple and sub-optimal.
+It always re-stores all posts when the page is reloaded and is not lazy at all.
+The search is also neither fuzzy nor the most efficient.
+And it is not TypeScript 🙂.
+It just works well so far for a personal blog with about 30 posts.
+</p>
+
+<p>
+In addition, after I finished the implementation, my husband made another feature request: can you also highlight all occurrences in the opened link?
+</p>
+</div>
+</div>
+<div class="taglist"><a href="https://chenyo.me/tags.html">Tags</a>: <a href="https://chenyo.me/tag-personal.html">personal</a> <a href="https://chenyo.me/tag-blog.html">blog</a> </div>
 <div class="post-date">15 Aug 2024</div><h1 class="post-title"><a href="https://chenyo.me/2024-08-15-web-learning-in-practice.html">Web learning in practice</a></h1>
 <nav id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
@@ -863,130 +976,7 @@ This is a personal note for <a href="https://blockworks.co/news/parallelized-evm
 </ul>
 </div>
 </div>
-<div class="taglist"><a href="https://chenyo.me/tags.html">Tags</a>: <a href="https://chenyo.me/tag-evm.html">evm</a> <a href="https://chenyo.me/tag-parallel-evm.html">parallel-evm</a> <a href="https://chenyo.me/tag-blockworks.html">blockworks</a> </div>
-<div class="post-date">07 Aug 2024</div><h1 class="post-title"><a href="https://chenyo.me/2024-08-07-my-exam-organization-experience.html">My Exam Organization Experience</a></h1>
-<nav id="table-of-contents" role="doc-toc">
-<h2>Table of Contents</h2>
-<div id="text-table-of-contents" role="doc-toc">
-<ul>
-<li><a href="#orgcb27cf7">1. What is it about?</a></li>
-<li><a href="#org6335688">2. My first exam</a></li>
-<li><a href="#orgf37e690">3. My second exam</a></li>
-<li><a href="#orge5eeaa8">4. My third exam</a></li>
-<li><a href="#orga6eadfd">5. My fourth exam</a></li>
-<li><a href="#org25412f3">6. My feeling</a></li>
-</ul>
-</div>
-</nav>
-<p>
-This post was co-authored with the assistance of Cursor and Claude AI.
-</p>
-<div id="outline-container-orgcb27cf7" class="outline-2">
-<h2 id="orgcb27cf7"><span class="section-number-2">1.</span> What is it about?</h2>
-<div class="outline-text-2" id="text-1">
-<p>
-Over the past years, I&rsquo;ve been involved in organizing and monitoring four exams.
-Yesterday marked my fourth and likely final exam monitoring session for the foreseeable future.
-Now seems like an opportune moment to reflect on my exam organization journey.
-</p>
-</div>
-</div>
-<div id="outline-container-org6335688" class="outline-2">
-<h2 id="org6335688"><span class="section-number-2">2.</span> My first exam</h2>
-<div class="outline-text-2" id="text-2">
-<p>
-My first exam experience was relatively straightforward.
-As I was unfamiliar with the exam content, my primary responsibility was taking students to the restrooms.
-I recall accompanying nearly 10 students during the session.
-For the remainder of the time, I sat at the back of the room, occupying myself with some drawing.
-</p>
-</div>
-</div>
-<div id="outline-container-orgf37e690" class="outline-2">
-<h2 id="orgf37e690"><span class="section-number-2">3.</span> My second exam</h2>
-<div class="outline-text-2" id="text-3">
-<p>
-This exam was identical to the first, but I was tasked with designing a significant portion of the questions.
-Initially, formulating questions seemed straightforward, but I later realized my inability to create effective ones.
-My first draft incorporated connections between various questions.
-During the review process, I was advised to maximize information density in questions, as stressed students prefer concise text.
-Additional challenges emerged when I began grading the exams.
-For example, open-ended questions consistently yielded unexpected answers, requiring me to modify the grading scheme while maintaining consistency with previous assessments.
-</p>
-
-<p>
-The exam monitoring this time was more demanding as I began responding to student inquiries.
-My limited knowledge of the entire exam often required me to seek assistance from colleagues, and occasionally I struggled to comprehend the questions.
-</p>
-
-<p>
-Grading the exam proved to be the most challenging aspect of the process.
-Evaluating over 100 exams, deciphering handwriting, determining fair point allocations, and recording scores was an incredibly tedious task.
-Unlike traditional mathematics exams that focus primarily on calculations, our exam encouraged creative thinking.
-Each answer contained implicit assumptions about the question, requiring careful interpretation to avoid excessive point deductions.
-The process was extremely time-consuming and offered minimal personal benefit or satisfaction.
-</p>
-</div>
-</div>
-<div id="outline-container-orge5eeaa8" class="outline-2">
-<h2 id="orge5eeaa8"><span class="section-number-2">4.</span> My third exam</h2>
-<div class="outline-text-2" id="text-4">
-<p>
-This was a different exam, where I again designed one part and monitored its administration.
-Fortunately, due to its advanced nature, few students registered for this exam.
-This time, I had the privilege of collaborating with exceptional colleagues.
-Despite these advantages, the design process still demanded considerable effort on my part.
-</p>
-
-<p>
-A unique aspect of this exam was that I also developed the course material, as it was a newly introduced subject.
-The topic proved challenging, and the exercises were demanding.
-Students expressed concerns about the complexity of the material.
-Consequently, we faced the task of devising ways to simplify the exam questions without compromising their effectiveness.
-</p>
-</div>
-</div>
-<div id="outline-container-orga6eadfd" class="outline-2">
-<h2 id="orga6eadfd"><span class="section-number-2">5.</span> My fourth exam</h2>
-<div class="outline-text-2" id="text-5">
-<p>
-Now comes the most recent exam, where I took on the role of a coordinator.
-This position entailed not only designing my portion of the tasks but also finding colleagues to design other tasks, managing the timeline, reviewing drafts, printing exams, coordinating exam monitoring, and overseeing the grading process.
-Fortunately, I had the support of proactive and helpful colleagues, which allowed everything to proceed smoothly.
-</p>
-
-<p>
-The monitoring process proved particularly demanding this time.
-As I was now familiar with the entire exam, I was responsible for reading instructions, making announcements, and answering as many questions as possible.
-I had to arrive at the exam rooms by 8 AM, forgoing breakfast, and remained standing and focused until noon.
-In retrospect, I may have been overly diligent due to inexperience and could have perhaps allowed myself to relax more. However, I&rsquo;ll never know for certain, as this marks the conclusion of my exam organization duties.
-</p>
-
-<p>
-Well, not quite the end, as I still need to complete the grading and submit the results.
-</p>
-</div>
-</div>
-<div id="outline-container-org25412f3" class="outline-2">
-<h2 id="org25412f3"><span class="section-number-2">6.</span> My feeling</h2>
-<div class="outline-text-2" id="text-6">
-<p>
-After four instances of exam organization experience, I must admit that I do not recommend it.
-This opinion is, of course, highly personal, as I am not particularly inclined towards teaching.
-From my perspective, it is a job that demands significant effort while offering minimal returns.
-I can confidently say that I invest more time in the exam process than any individual student taking it.
-</p>
-
-<p>
-The process of designing and grading exams presents a complex optimization challenge.
-There&rsquo;s an inverse relationship between the time spent on design and the time required for grading.
-The less effort put into crafting the exam, the more time-consuming the grading process becomes.
-Moreover, it&rsquo;s disheartening to spend two full days meticulously designing and reviewing a question,
-only to have it attempted by a mere handful of students.
-</p>
-</div>
-</div>
-<div class="taglist"><a href="https://chenyo.me/tags.html">Tags</a>: <a href="https://chenyo.me/tag-personal.html">personal</a> <a href="https://chenyo.me/tag-teach.html">teach</a> </div><div id="archive">
+<div class="taglist"><a href="https://chenyo.me/tags.html">Tags</a>: <a href="https://chenyo.me/tag-evm.html">evm</a> <a href="https://chenyo.me/tag-parallel-evm.html">parallel-evm</a> <a href="https://chenyo.me/tag-blockworks.html">blockworks</a> </div><div id="archive">
 <a href="https://chenyo.me/archive.html">Other posts</a>
 </div>
 </div>
