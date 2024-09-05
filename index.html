@@ -37,21 +37,205 @@
 <div id="content">
 <h2>Welcome!</h2>
       <p>Take a look if you are bored.</p>
+<div class="post-date">05 Sep 2024</div><h1 class="post-title"><a href="https://chenyo.me/2024-09-05-db-notes:-hash-tables.html">CMU 15-445 notes: Hash Tables</a></h1>
+<nav id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#org3d6480a">1. DBMS data structure application</a>
+<ul>
+<li><a href="#org18347eb">1.1. Design decisions</a></li>
+</ul>
+</li>
+<li><a href="#org2b3a3e1">2. Hash tables</a></li>
+<li><a href="#org77a6c5e">3. Hash function</a></li>
+<li><a href="#orgea6956c">4. Hashing scheme</a></li>
+<li><a href="#org85d5c9f">5. Static hashing scheme</a>
+<ul>
+<li><a href="#org357fa6e">5.1. Linear probe hashing</a>
+<ul>
+<li><a href="#orgd5ae410">5.1.1. Non-unique keys</a></li>
+<li><a href="#org14664a7">5.1.2. Optimization</a></li>
+</ul>
+</li>
+<li><a href="#org69e74f7">5.2. Cuckoo hashing</a></li>
+</ul>
+</li>
+<li><a href="#org1eabb44">6. Dynamic hashing schemes</a>
+<ul>
+<li><a href="#org8ea041c">6.1. Chained Hashing</a></li>
+<li><a href="#org71ff780">6.2. Extendible hashing</a></li>
+<li><a href="#org727fb14">6.3. Linear hashing</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</nav>
+<p>
+This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall2023/notes/07-hashtables.pdf">CMU 15-445 L7 notes</a> as well as some explanation from Claude.ai.
+</p>
+<div id="outline-container-org3d6480a" class="outline-2">
+<h2 id="org3d6480a"><span class="section-number-2">1.</span> DBMS data structure application</h2>
+<div class="outline-text-2" id="text-1">
+<ul class="org-ul">
+<li>Internal meta-data: <a href="https://chenyo.me/2024-08-13-db-notes:-memory-management.html#org7a44495">page tables</a>, <a href="https://chenyo.me/2024-07-31-db-notes:-database-storage.html#org66626ef">page directories</a>.</li>
+<li>Tuple storage on disk.</li>
+<li>Table indices: easy to find specific tuples.</li>
+</ul>
+</div>
+<div id="outline-container-org18347eb" class="outline-3">
+<h3 id="org18347eb"><span class="section-number-3">1.1.</span> Design decisions</h3>
+<div class="outline-text-3" id="text-1-1">
+<ul class="org-ul">
+<li>Data layout for efficient access.</li>
+<li>Concurrent access to data structures.</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-org2b3a3e1" class="outline-2">
+<h2 id="org2b3a3e1"><span class="section-number-2">2.</span> Hash tables</h2>
+<div class="outline-text-2" id="text-2">
+<ul class="org-ul">
+<li>Implements an associative array that maps keys to values.</li>
+<li>On average \(O(1)\) operation complexity with the worst case \(O(n)\); \(O(n)\) storage complexity.
+<ul class="org-ul">
+<li>Optimization for constant complexity is important in real world.</li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org77a6c5e" class="outline-2">
+<h2 id="org77a6c5e"><span class="section-number-2">3.</span> Hash function</h2>
+<div class="outline-text-2" id="text-3">
+<ul class="org-ul">
+<li>Maps a large key space into a smaller domain.</li>
+<li>Takes in any key as input, and returns a deterministic integer representation.</li>
+<li>Needs to consider the trade-off between fast execution and collision rate.
+<ul class="org-ul">
+<li>Does not need to be cryptographically.</li>
+<li>The state-of-art (Fall 2023) hash function is XXHash3.</li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgea6956c" class="outline-2">
+<h2 id="orgea6956c"><span class="section-number-2">4.</span> Hashing scheme</h2>
+<div class="outline-text-2" id="text-4">
+<ul class="org-ul">
+<li>Handles key collision after hashing.</li>
+<li>Needs to consider the trade-off between large table allocation (to avoid collision) and additional instruction execution when a collision occurs.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org85d5c9f" class="outline-2">
+<h2 id="org85d5c9f"><span class="section-number-2">5.</span> Static hashing scheme</h2>
+<div class="outline-text-2" id="text-5">
+<ul class="org-ul">
+<li>The hash table size is fixed; the DBMS has to rebuild a larger hash table (e.g., twice the size) from scratch when it runs out of space.</li>
+</ul>
+</div>
+<div id="outline-container-org357fa6e" class="outline-3">
+<h3 id="org357fa6e"><span class="section-number-3">5.1.</span> Linear probe hashing</h3>
+<div class="outline-text-3" id="text-5-1">
+<ul class="org-ul">
+<li>Insertion: when a collision occurs, linearly search the adjacent slots in a circular buffer until a open one is found.</li>
+<li>Lookup: search linearly from the first hashed slot until the desired entry or an empty slot is reached, or every slot has been iterated.
+<ul class="org-ul">
+<li>Requires to store both key and value in the slot.</li>
+</ul></li>
+<li>Deletion: simply deleting the entry prevents future lookups as it becomes empty; two solutions:
+<ul class="org-ul">
+<li>Replace the deleted entry with a dummy entry to tell future lookups to keep scanning.</li>
+<li>Shift the adjacent entries which were originally shifted, i.e., those who were originally hashed to the same key.
+<ul class="org-ul">
+<li>Very expensive and rarely implemented in practice.</li>
+</ul></li>
+</ul></li>
+<li>The state-of-art linear probe hashing is Google <code>absl::flat_hash_map</code>.</li>
+</ul>
+</div>
+<div id="outline-container-orgd5ae410" class="outline-4">
+<h4 id="orgd5ae410"><span class="section-number-4">5.1.1.</span> Non-unique keys</h4>
+<div class="outline-text-4" id="text-5-1-1">
+<ul class="org-ul">
+<li>The same key may be associated with multiple different values.</li>
+<li>Separate linked list: each value is a pointer to a linked list of all values, which may overflow to multiple pages.</li>
+<li>Redundant keys: store the same key multiple times with different values.
+<ul class="org-ul">
+<li>A more common approach.</li>
+<li>Linear probing still works, if it is fine to get one value.</li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org14664a7" class="outline-4">
+<h4 id="org14664a7"><span class="section-number-4">5.1.2.</span> Optimization</h4>
+<div class="outline-text-4" id="text-5-1-2">
+<ul class="org-ul">
+<li>Specialized hash table based on key types and size; e.g., for long string keys, one can store the pointer or the hash of the long string in the hash table.</li>
+<li>Store metadata in a separate array, e.g., store empty slot in a bitmap to avoid looking up deleted keys.</li>
+<li><b><b>Version control</b></b> of hash tables: invalidate entries by incrementing the version counter rather than explicitly marking the deletion.</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-org69e74f7" class="outline-3">
+<h3 id="org69e74f7"><span class="section-number-3">5.2.</span> Cuckoo hashing</h3>
+<div class="outline-text-3" id="text-5-2">
+<ul class="org-ul">
+<li>Maintains multiple hash tables with different hash functions to generate different hashes for the same key using different seeds.</li>
+<li>Insertion: check each table and choose one with a free slot; if none table has free slot, choose and evict an old entry and find it another table.
+<ul class="org-ul">
+<li>If a rare cycle happens, rebuild all hash tables with new seeds or with larger tables.</li>
+</ul></li>
+<li>\(O(1)\) lookups and deletion (also needs to store keys), but insertion is more expensive.</li>
+<li>Practical implementation maps a key to different slots in a single hash table.</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-org1eabb44" class="outline-2">
+<h2 id="org1eabb44"><span class="section-number-2">6.</span> Dynamic hashing schemes</h2>
+<div class="outline-text-2" id="text-6">
+<ul class="org-ul">
+<li>Resize the hash table on demand without rebuilding the entire table.</li>
+</ul>
+</div>
+<div id="outline-container-org8ea041c" class="outline-3">
+<h3 id="org8ea041c"><span class="section-number-3">6.1.</span> Chained Hashing</h3>
+<div class="outline-text-3" id="text-6-1">
+<ul class="org-ul">
+<li>Maintains a linked list of buckets for each slot in the hash table; keys hashed to the same slot are inserted into the linked list.</li>
+<li>Lookup: hash to the key&rsquo;s bucket and scan for it.</li>
+<li>Optimization: store bloom filter in the bucket pointer list to tell if a key exist in the linked list.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org71ff780" class="outline-3">
+<h3 id="org71ff780"><span class="section-number-3">6.2.</span> Extendible hashing</h3>
+</div>
+
+<div id="outline-container-org727fb14" class="outline-3">
+<h3 id="org727fb14"><span class="section-number-3">6.3.</span> Linear hashing</h3>
+</div>
+</div>
+<div class="taglist"><a href="https://chenyo.me/tags.html">Tags</a>: <a href="https://chenyo.me/tag-study.html">study</a> <a href="https://chenyo.me/tag-database.html">database</a> <a href="https://chenyo.me/tag-cmu.html">cmu</a> </div>
 <div class="post-date">29 Aug 2024</div><h1 class="post-title"><a href="https://chenyo.me/2024-08-29-my-blog-search-function.html">My blog search function</a></h1>
 <nav id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org0b4112e">1. What happens</a></li>
-<li><a href="#org9241145">2. What is not enough with existing search functions?</a></li>
-<li><a href="#org2c9a924">3. What does the search function do in this blog?</a></li>
-<li><a href="#org61b08f0">4. How is it implemented?</a></li>
-<li><a href="#orgfc1a340">5. How can it be improved?</a></li>
+<li><a href="#org475ae23">1. What happens</a></li>
+<li><a href="#org0da4e23">2. What is not enough with existing search functions?</a></li>
+<li><a href="#org760b8c1">3. What does the search function do in this blog?</a></li>
+<li><a href="#org925a38d">4. How is it implemented?</a></li>
+<li><a href="#orgd7c9a66">5. How can it be improved?</a></li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-org0b4112e" class="outline-2">
-<h2 id="org0b4112e"><span class="section-number-2">1.</span> What happens</h2>
+<div id="outline-container-org475ae23" class="outline-2">
+<h2 id="org475ae23"><span class="section-number-2">1.</span> What happens</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 Two months ago, I started to use the current blog to keep track of my study and personal notes.
@@ -71,8 +255,8 @@ During this process, my husband made a feature request: a blog search function.
 </p>
 </div>
 </div>
-<div id="outline-container-org9241145" class="outline-2">
-<h2 id="org9241145"><span class="section-number-2">2.</span> What is not enough with existing search functions?</h2>
+<div id="outline-container-org0da4e23" class="outline-2">
+<h2 id="org0da4e23"><span class="section-number-2">2.</span> What is not enough with existing search functions?</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 Most default search tools provided by popular static website frameworks do not return complete search results and their context.
@@ -96,11 +280,11 @@ However, for a personal blog, we can achieve greater breadth.
 </p>
 </div>
 </div>
-<div id="outline-container-org2c9a924" class="outline-2">
-<h2 id="org2c9a924"><span class="section-number-2">3.</span> What does the search function do in this blog?</h2>
+<div id="outline-container-org760b8c1" class="outline-2">
+<h2 id="org760b8c1"><span class="section-number-2">3.</span> What does the search function do in this blog?</h2>
 <div class="outline-text-2" id="text-3">
 
-<figure id="orgf50c06c">
+<figure id="orgb21d3b4">
 <img src="./static/blog-search.gif" alt="blog-search.gif" align="center" width="700px" style="border: 1px solid black;">
 
 <figcaption><span class="figure-number">Figure 1: </span>A blog search example</figcaption>
@@ -117,8 +301,8 @@ In this way, I can immediately see all results and their context on one page, an
 </p>
 </div>
 </div>
-<div id="outline-container-org61b08f0" class="outline-2">
-<h2 id="org61b08f0"><span class="section-number-2">4.</span> How is it implemented?</h2>
+<div id="outline-container-org925a38d" class="outline-2">
+<h2 id="org925a38d"><span class="section-number-2">4.</span> How is it implemented?</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 I implemented the search function along with all styling with the help of Cursor.
@@ -133,14 +317,16 @@ It then wraps the occurrence with certain context and prepares the link by appen
 </p>
 </div>
 </div>
-<div id="outline-container-orgfc1a340" class="outline-2">
-<h2 id="orgfc1a340"><span class="section-number-2">5.</span> How can it be improved?</h2>
+<div id="outline-container-orgd7c9a66" class="outline-2">
+<h2 id="orgd7c9a66"><span class="section-number-2">5.</span> How can it be improved?</h2>
 <div class="outline-text-2" id="text-5">
 <p>
 The current search function is simple and sub-optimal.
 It always re-stores all posts when the page is reloaded and is not lazy at all.
 The search is also neither fuzzy nor the most efficient.
-And it is not TypeScript 🙂.
+</p>
+
+<p>
 It just works well so far for a personal blog with about 30 posts.
 </p>
 
@@ -846,137 +1032,7 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </div>
 </div>
 </div>
-<div class="taglist"><a href="https://chenyo.me/tags.html">Tags</a>: <a href="https://chenyo.me/tag-study.html">study</a> <a href="https://chenyo.me/tag-database.html">database</a> <a href="https://chenyo.me/tag-cmu.html">cmu</a> </div>
-<div class="post-date">08 Aug 2024</div><h1 class="post-title"><a href="https://chenyo.me/2024-08-08-parallel-evm:-blockworks-bigger-picture.html">Parallel EVM: Blockworks news (Sei, Monad, Solana)</a></h1>
-<nav id="table-of-contents" role="doc-toc">
-<h2>Table of Contents</h2>
-<div id="text-table-of-contents" role="doc-toc">
-<ul>
-<li><a href="#org445fc3c">1. Terminology</a>
-<ul>
-<li><a href="#org15f405f">1.1. Ethereum sharding</a></li>
-<li><a href="#org2a78fd3">1.2. Blob</a></li>
-<li><a href="#org3fbaa8d">1.3. Erasure coding</a></li>
-<li><a href="#orgb5a105d">1.4. Data availability sampling (DAS)</a></li>
-<li><a href="#orgb7904ff">1.5. Danksharding (L2 optimization)</a></li>
-<li><a href="#org25da124">1.6. Relations between L1 and L2 scaling</a></li>
-<li><a href="#orgf30a49f">1.7. Double spending prevention</a></li>
-<li><a href="#org514a673">1.8. Sealevel (Solana)</a></li>
-</ul>
-</li>
-<li><a href="#org0dc4425">2. Ways to achieve parallel processing</a></li>
-<li><a href="#org4d53146">3. Production-ready parallelized EVM projects (Jan 2024)</a></li>
-</ul>
-</div>
-</nav>
-<p>
-This is a personal note for <a href="https://blockworks.co/news/parallelized-evms-gaining-popularity">Blockworks news (12.01.2024)</a> as well as some terminology explained online, e.g., <a href="https://www.coindesk.com/learn/what-is-ethereum-sharding-a-beginners-guide/">Coindesk</a> and <a href="https://chatgpt.com/c/824f05c9-dc75-4eb6-aeda-59d057baf83a">GPT-4o</a>.
-</p>
-<div id="outline-container-org445fc3c" class="outline-2">
-<h2 id="org445fc3c"><span class="section-number-2">1.</span> Terminology</h2>
-<div class="outline-text-2" id="text-1">
-</div>
-<div id="outline-container-org15f405f" class="outline-3">
-<h3 id="org15f405f"><span class="section-number-3">1.1.</span> Ethereum sharding</h3>
-<div class="outline-text-3" id="text-1-1">
-<ul class="org-ul">
-<li>The Ethereum mainnet is divided into smaller interconnected networks called shards.</li>
-<li>Each shard processes and validates its own transactions parallel to others.</li>
-<li>Pros: increase scalability and <b><b>participation</b></b>.</li>
-<li>Cons: a single unit can be compromised; lead to centralization.</li>
-</ul>
-</div>
-</div>
-<div id="outline-container-org2a78fd3" class="outline-3">
-<h3 id="org2a78fd3"><span class="section-number-3">1.2.</span> Blob</h3>
-<div class="outline-text-3" id="text-1-2">
-<ul class="org-ul">
-<li>Rather than storing each transaction data directly in the blockchain, the data is aggregated into a blob (binary object).</li>
-<li>Each blob performs erasure coding to dive the blob into multiple smaller pieces with redundancy.</li>
-<li>Encoded pieces are stored separately, the block header contain pointers to the piece locations without storing actual data.</li>
-<li>Transactions in a block may be distributed across multiple blobs.</li>
-</ul>
-</div>
-</div>
-<div id="outline-container-org3fbaa8d" class="outline-3">
-<h3 id="org3fbaa8d"><span class="section-number-3">1.3.</span> Erasure coding</h3>
-<div class="outline-text-3" id="text-1-3">
-<ul class="org-ul">
-<li>Allows one to encode blobs such that if at least half of the data in the blob is published, anyone in the network can reconstruct and re-publish the rest of the data.</li>
-</ul>
-</div>
-</div>
-<div id="outline-container-orgb5a105d" class="outline-3">
-<h3 id="orgb5a105d"><span class="section-number-3">1.4.</span> Data availability sampling (DAS)</h3>
-<div class="outline-text-3" id="text-1-4">
-<ul class="org-ul">
-<li>Validators randomly sample blob pieces to confirm the data can be reconstructed.g</li>
-<li>If a client cannot get enough pieces to verify the blob availability, or the blob fails the integrity check, or transactions within the blob are invalid or inconsistent with the blockchain state, the blob is rejected.</li>
-</ul>
-</div>
-</div>
-<div id="outline-container-orgb7904ff" class="outline-3">
-<h3 id="orgb7904ff"><span class="section-number-3">1.5.</span> Danksharding (L2 optimization)</h3>
-<div class="outline-text-3" id="text-1-5">
-<ul class="org-ul">
-<li>A specific sharding implementation proposal.</li>
-<li>Require data availability sampling and <a href="https://chenyo-17.github.io/org-static-blog/tag-evm.html#orgf2db0ef">proposer-builder separation</a>.</li>
-<li>Can support hundreds of individual rollups.</li>
-</ul>
-</div>
-</div>
-<div id="outline-container-org25da124" class="outline-3">
-<h3 id="org25da124"><span class="section-number-3">1.6.</span> Relations between L1 and L2 scaling</h3>
-<div class="outline-text-3" id="text-1-6">
-<ul class="org-ul">
-<li>L1 scaling: optimizations directly to the Ethereum mainnet and core infrastructure, e.g., parallel EVM.</li>
-<li>L2 scaling: building secondary rollup layers, e.g., optimistic rollups and ZK rollups, to offload mainnet computation and storage.</li>
-</ul>
-</div>
-</div>
-<div id="outline-container-orgf30a49f" class="outline-3">
-<h3 id="orgf30a49f"><span class="section-number-3">1.7.</span> Double spending prevention</h3>
-<div class="outline-text-3" id="text-1-7">
-<ul class="org-ul">
-<li>Bitcoin: uses UTXOs to track which inputs have been spent (no need to go through the entire chain).</li>
-<li>Ethereum: uses a nounce to track the number of transactions sent from an account, the nounce is included in the transaction and is incremented by 1 for every new transaction, and all transactions must be executed in order.</li>
-</ul>
-</div>
-</div>
-<div id="outline-container-org514a673" class="outline-3">
-<h3 id="org514a673"><span class="section-number-3">1.8.</span> Sealevel (Solana)</h3>
-<div class="outline-text-3" id="text-1-8">
-<ul class="org-ul">
-<li>Solana&rsquo;s parallel smart contract runtime to process thousands of contracts in parallel.</li>
-<li>Solana transactions describe all states a transaction accesses to efficiently recognize transaction dependency and to schedule parallel execution without accessing full blockchain state.</li>
-</ul>
-</div>
-</div>
-</div>
-<div id="outline-container-org0dc4425" class="outline-2">
-<h2 id="org0dc4425"><span class="section-number-2">2.</span> Ways to achieve parallel processing</h2>
-<div class="outline-text-2" id="text-2">
-<ul class="org-ul">
-<li>Process independent transactions in parallel.</li>
-<li>Sharding.</li>
-</ul>
-</div>
-</div>
-<div id="outline-container-org4d53146" class="outline-2">
-<h2 id="org4d53146"><span class="section-number-2">3.</span> Production-ready parallelized EVM projects (Jan 2024)</h2>
-<div class="outline-text-2" id="text-3">
-<ul class="org-ul">
-<li>Sei: optimistic parallel execution.</li>
-<li>Monad: custom EVM implementation, optimistic parallel execution, <b><b>custom state database</b></b>.
-<ul class="org-ul">
-<li>Commodity databases are not optimized for Merkle tree data read/write with SSD.</li>
-</ul></li>
-<li>Neon (Solana): transactions pre-specify dependencies.</li>
-<li>See <a href="https://chenyo-17.github.io/org-static-blog/tag-evm.html#orgcb5510d">BNB chain post</a> for more solutions.</li>
-</ul>
-</div>
-</div>
-<div class="taglist"><a href="https://chenyo.me/tags.html">Tags</a>: <a href="https://chenyo.me/tag-evm.html">evm</a> <a href="https://chenyo.me/tag-parallel-evm.html">parallel-evm</a> <a href="https://chenyo.me/tag-blockworks.html">blockworks</a> </div><div id="archive">
+<div class="taglist"><a href="https://chenyo.me/tags.html">Tags</a>: <a href="https://chenyo.me/tag-study.html">study</a> <a href="https://chenyo.me/tag-database.html">database</a> <a href="https://chenyo.me/tag-cmu.html">cmu</a> </div><div id="archive">
 <a href="https://chenyo.me/archive.html">Other posts</a>
 </div>
 </div>

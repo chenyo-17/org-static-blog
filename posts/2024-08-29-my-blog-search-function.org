@@ -54,7 +54,7 @@ It then wraps the occurrence with certain context and prepares the link by appen
 The current search function is simple and sub-optimal.
 It always re-stores all posts when the page is reloaded and is not lazy at all.
 The search is also neither fuzzy nor the most efficient.
-And it is not TypeScript 🙂.
+# And it is not TypeScript 🙂.
 It just works well so far for a personal blog with about 30 posts.
 
 In addition, after I finished the implementation, my husband made another feature request: can you also highlight all occurrences in the opened link?
