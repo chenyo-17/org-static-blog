@@ -1,0 +1,68 @@
+#+title: Hiked: Stoos
+#+date: <2024-09-06 21:32>
+#+description: This is an experience post of the Stoos solo hiking.
+#+filetags: personal trip stoos
+
+* What happened?
+
+About three weeks ago, I hiked Stoos and wrote a Redbook post.
+Unfortunately, the post was only visible to me, apparently violating community guidelines.
+
+I spent most of that day trying to identify the problematic content, repeatedly editing and reposting.
+Later, I learned this behavior is discouraged on Redbook, e.g., I am not really authorized to edit my own content.
+
+Frustrated, I abandoned my efforts, leaving my Redbook homepage cluttered with articles like "10 Behaviors That Harm Your Redbook Account" and "100 Forbidden Words on Redbook".
+
+Though brief, this experience instilled in me a tendency towards self-censorship, a feeling I deeply resent.
+I also noticed the lack of competitive alternatives to this centralized platform where users share authentic life experiences through multimedia.
+
+Well played, Redbook!
+
+* What now?
+
+Anyway, given that I invested considerable effort in creating post figures, I will post them here instead.
+
+#+CAPTION: The Stoos roadmap
+#+ATTR_HTML: :align center
+#+ATTR_HTML: :width 600px
+[[./static/stoos-2.png]]
+
+#+CAPTION: The uphill view
+#+ATTR_HTML: :align center
+#+ATTR_HTML: :width 600px
+[[./static/stoos-3.png]]
+
+#+CAPTION: The top view
+#+ATTR_HTML: :align center
+#+ATTR_HTML: :width 600px
+[[./static/stoos-4.png]]
+
+#+CAPTION: The ridge roadmap
+#+ATTR_HTML: :align center
+#+ATTR_HTML: :width 600px
+[[./static/stoos-5.png]]
+
+#+CAPTION: The ridge view
+#+ATTR_HTML: :align center
+#+ATTR_HTML: :width 600px
+[[./static/stoos-6.png]]
+
+#+CAPTION: My trace
+#+ATTR_HTML: :align center
+#+ATTR_HTML: :width 600px
+[[./static/stoos-7.png]]
+
+#+CAPTION: Recommended apps
+#+ATTR_HTML: :align center
+#+ATTR_HTML: :width 500px
+[[./static/stoos-8.png]]
+
+#+CAPTION: My favorite hike shoots
+#+ATTR_HTML: :align center
+#+ATTR_HTML: :width 600px
+[[./static/stoos-9.png]]
+
+#+CAPTION: The Redbook post
+#+ATTR_HTML: :align center
+#+ATTR_HTML: :width 700px
+[[./static/stoos-post.png]]

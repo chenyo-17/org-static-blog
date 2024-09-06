@@ -4,7 +4,125 @@
 <title><![CDATA[Chenyo's Blog]]></title>
 <description><![CDATA[Chenyo's Blog]]></description>
 <link>https://chenyo.me</link>
-<lastBuildDate>Fri, 06 Sep 2024 16:43:26 +0200</lastBuildDate>
+<lastBuildDate>Fri, 06 Sep 2024 22:13:00 +0200</lastBuildDate>
+<item>
+  <title><![CDATA[Hiked: Stoos]]></title>
+  <description><![CDATA[
+<nav id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#orgcbde956">1. What happened?</a></li>
+<li><a href="#orgbf5c5c0">2. What now?</a></li>
+</ul>
+</div>
+</nav>
+<div id="outline-container-orgcbde956" class="outline-2">
+<h2 id="orgcbde956"><span class="section-number-2">1.</span> What happened?</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+About three weeks ago, I hiked Stoos and wrote a Redbook post.
+Unfortunately, the post was only visible to me, apparently violating community guidelines.
+</p>
+
+<p>
+I spent most of that day trying to identify the problematic content, repeatedly editing and reposting.
+Later, I learned this behavior is discouraged on Redbook, e.g., I am not really authorized to edit my own content.
+</p>
+
+<p>
+Frustrated, I abandoned my efforts, leaving my Redbook homepage cluttered with articles like &ldquo;10 Behaviors That Harm Your Redbook Account&rdquo; and &ldquo;100 Forbidden Words on Redbook&rdquo;.
+</p>
+
+<p>
+Though brief, this experience instilled in me a tendency towards self-censorship, a feeling I deeply resent.
+I also noticed the lack of competitive alternatives to this centralized platform where users share authentic life experiences through multimedia.
+</p>
+
+<p>
+Well played, Redbook!
+</p>
+</div>
+</div>
+<div id="outline-container-orgbf5c5c0" class="outline-2">
+<h2 id="orgbf5c5c0"><span class="section-number-2">2.</span> What now?</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+Anyway, given that I invested considerable effort in creating post figures, I will post them here instead.
+</p>
+
+
+<figure id="org44e961f">
+<img src="./static/stoos-2.png" alt="stoos-2.png" align="center" width="600px">
+
+<figcaption><span class="figure-number">Figure 1: </span>The Stoos roadmap</figcaption>
+</figure>
+
+
+<figure id="orgca791e6">
+<img src="./static/stoos-3.png" alt="stoos-3.png" align="center" width="600px">
+
+<figcaption><span class="figure-number">Figure 2: </span>The uphill view</figcaption>
+</figure>
+
+
+<figure id="org4223594">
+<img src="./static/stoos-4.png" alt="stoos-4.png" align="center" width="600px">
+
+<figcaption><span class="figure-number">Figure 3: </span>The top view</figcaption>
+</figure>
+
+
+<figure id="org7e85dd3">
+<img src="./static/stoos-5.png" alt="stoos-5.png" align="center" width="600px">
+
+<figcaption><span class="figure-number">Figure 4: </span>The ridge roadmap</figcaption>
+</figure>
+
+
+<figure id="org0e7b9a3">
+<img src="./static/stoos-6.png" alt="stoos-6.png" align="center" width="600px">
+
+<figcaption><span class="figure-number">Figure 5: </span>The ridge view</figcaption>
+</figure>
+
+
+<figure id="org602e075">
+<img src="./static/stoos-7.png" alt="stoos-7.png" align="center" width="600px">
+
+<figcaption><span class="figure-number">Figure 6: </span>My trace</figcaption>
+</figure>
+
+
+<figure id="orgd9fd60e">
+<img src="./static/stoos-8.png" alt="stoos-8.png" align="center" width="500px">
+
+<figcaption><span class="figure-number">Figure 7: </span>Recommended apps</figcaption>
+</figure>
+
+
+<figure id="orgd588a4d">
+<img src="./static/stoos-9.png" alt="stoos-9.png" align="center" width="600px">
+
+<figcaption><span class="figure-number">Figure 8: </span>My favorite hike shoots</figcaption>
+</figure>
+
+
+<figure id="org1ca8c64">
+<img src="./static/stoos-post.png" alt="stoos-post.png" align="center" width="700px">
+
+<figcaption><span class="figure-number">Figure 9: </span>The Redbook post</figcaption>
+</figure>
+</div>
+</div>
+<div class="taglist"><a href="https://chenyo.me/tags.html">Tags</a>: <a href="https://chenyo.me/tag-personal.html">personal</a> <a href="https://chenyo.me/tag-trip.html">trip</a> <a href="https://chenyo.me/tag-stoos.html">stoos</a> </div>]]></description>
+  <category><![CDATA[personal]]></category>
+  <category><![CDATA[trip]]></category>
+  <category><![CDATA[stoos]]></category>
+  <link>https://chenyo.me/2024-09-06-hiked:-stoos.html</link>
+  <guid>https://chenyo.me/2024-09-06-hiked:-stoos.html</guid>
+  <pubDate>Fri, 06 Sep 2024 21:32:00 +0200</pubDate>
+</item>
 <item>
   <title><![CDATA[CMU 15-445 notes: Hash Tables]]></title>
   <description><![CDATA[
@@ -12,34 +130,34 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgf525e81">1. DBMS data structure application</a>
+<li><a href="#org6eba8f5">1. DBMS data structure application</a>
 <ul>
-<li><a href="#org0f401c5">1.1. Design decisions</a></li>
+<li><a href="#orgf3d0343">1.1. Design decisions</a></li>
 </ul>
 </li>
-<li><a href="#orgdd2878e">2. Hash tables</a>
+<li><a href="#orgf230abe">2. Hash tables</a>
 <ul>
-<li><a href="#org04db50d">2.1. Where are hash tables used</a></li>
+<li><a href="#org1d11c74">2.1. Where are hash tables used</a></li>
 </ul>
 </li>
-<li><a href="#orge791676">3. Hash function</a></li>
-<li><a href="#orgf6820f3">4. Hashing scheme</a></li>
-<li><a href="#org16afc52">5. Static hashing scheme</a>
+<li><a href="#orgc86279c">3. Hash function</a></li>
+<li><a href="#org79580a3">4. Hashing scheme</a></li>
+<li><a href="#org022fdac">5. Static hashing scheme</a>
 <ul>
-<li><a href="#orgbff4590">5.1. Linear probe hashing</a>
+<li><a href="#org730127d">5.1. Linear probe hashing</a>
 <ul>
-<li><a href="#orgfd5ffbb">5.1.1. Non-unique keys</a></li>
-<li><a href="#org10007e8">5.1.2. Optimization</a></li>
+<li><a href="#org860ef2f">5.1.1. Non-unique keys</a></li>
+<li><a href="#orgf796ca0">5.1.2. Optimization</a></li>
 </ul>
 </li>
-<li><a href="#org4b5ee43">5.2. Cuckoo hashing</a></li>
+<li><a href="#org37da536">5.2. Cuckoo hashing</a></li>
 </ul>
 </li>
-<li><a href="#orgc665421">6. Dynamic hashing schemes</a>
+<li><a href="#org9144bf0">6. Dynamic hashing schemes</a>
 <ul>
-<li><a href="#org849ddca">6.1. Chained Hashing</a></li>
-<li><a href="#orgeae433a">6.2. Extendible hashing</a></li>
-<li><a href="#org5d15df8">6.3. Linear hashing</a></li>
+<li><a href="#org2821670">6.1. Chained Hashing</a></li>
+<li><a href="#org97aff33">6.2. Extendible hashing</a></li>
+<li><a href="#org6267ed8">6.3. Linear hashing</a></li>
 </ul>
 </li>
 </ul>
@@ -48,8 +166,8 @@
 <p>
 This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall2023/notes/07-hashtables.pdf">CMU 15-445 L7 notes</a> as well as some explanation from Claude.ai.
 </p>
-<div id="outline-container-orgf525e81" class="outline-2">
-<h2 id="orgf525e81"><span class="section-number-2">1.</span> DBMS data structure application</h2>
+<div id="outline-container-org6eba8f5" class="outline-2">
+<h2 id="org6eba8f5"><span class="section-number-2">1.</span> DBMS data structure application</h2>
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
 <li>Internal meta-data: <a href="https://chenyo.me/2024-08-13-db-notes:-memory-management.html#org7a44495">page tables</a>, <a href="https://chenyo.me/2024-07-31-db-notes:-database-storage.html#org66626ef">page directories</a>.</li>
@@ -57,8 +175,8 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 <li>Table indices: easy to find specific tuples.</li>
 </ul>
 </div>
-<div id="outline-container-org0f401c5" class="outline-3">
-<h3 id="org0f401c5"><span class="section-number-3">1.1.</span> Design decisions</h3>
+<div id="outline-container-orgf3d0343" class="outline-3">
+<h3 id="orgf3d0343"><span class="section-number-3">1.1.</span> Design decisions</h3>
 <div class="outline-text-3" id="text-1-1">
 <ul class="org-ul">
 <li>Data layout for efficient access.</li>
@@ -67,8 +185,8 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </div>
 </div>
 </div>
-<div id="outline-container-orgdd2878e" class="outline-2">
-<h2 id="orgdd2878e"><span class="section-number-2">2.</span> Hash tables</h2>
+<div id="outline-container-orgf230abe" class="outline-2">
+<h2 id="orgf230abe"><span class="section-number-2">2.</span> Hash tables</h2>
 <div class="outline-text-2" id="text-2">
 <ul class="org-ul">
 <li>Implements an associative array that maps keys to values.</li>
@@ -78,17 +196,17 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul></li>
 </ul>
 </div>
-<div id="outline-container-org04db50d" class="outline-3">
-<h3 id="org04db50d"><span class="section-number-3">2.1.</span> Where are hash tables used</h3>
+<div id="outline-container-org1d11c74" class="outline-3">
+<h3 id="org1d11c74"><span class="section-number-3">2.1.</span> Where are hash tables used</h3>
 <div class="outline-text-3" id="text-2-1">
 <ul class="org-ul">
-<li>For tuple indexing. While tuples are stored on pages with NSM or DSM, during the query the DBMS needs to quickly locate the page that stores specific tuples. It can achieve this with separately-stored hash tables, where each key can be a hash of a tuple id, and the value points the location.</li>
+<li>For tuple indexing. While tuples are stored on pages with NSM or DSM, during the <b><b>query</b></b> the DBMS needs to quickly locate the page that stores specific tuples. It can achieve this with separately-stored hash tables, where each key can be a hash of a tuple id, and the value points the location.</li>
 </ul>
 </div>
 </div>
 </div>
-<div id="outline-container-orge791676" class="outline-2">
-<h2 id="orge791676"><span class="section-number-2">3.</span> Hash function</h2>
+<div id="outline-container-orgc86279c" class="outline-2">
+<h2 id="orgc86279c"><span class="section-number-2">3.</span> Hash function</h2>
 <div class="outline-text-2" id="text-3">
 <ul class="org-ul">
 <li>Maps a large key space into a smaller domain.</li>
@@ -101,8 +219,8 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul>
 </div>
 </div>
-<div id="outline-container-orgf6820f3" class="outline-2">
-<h2 id="orgf6820f3"><span class="section-number-2">4.</span> Hashing scheme</h2>
+<div id="outline-container-org79580a3" class="outline-2">
+<h2 id="org79580a3"><span class="section-number-2">4.</span> Hashing scheme</h2>
 <div class="outline-text-2" id="text-4">
 <ul class="org-ul">
 <li>Handles key collision after hashing.</li>
@@ -110,15 +228,15 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul>
 </div>
 </div>
-<div id="outline-container-org16afc52" class="outline-2">
-<h2 id="org16afc52"><span class="section-number-2">5.</span> Static hashing scheme</h2>
+<div id="outline-container-org022fdac" class="outline-2">
+<h2 id="org022fdac"><span class="section-number-2">5.</span> Static hashing scheme</h2>
 <div class="outline-text-2" id="text-5">
 <ul class="org-ul">
 <li>The hash table size is fixed; the DBMS has to rebuild a larger hash table (e.g., twice the size) from scratch when it runs out of space.</li>
 </ul>
 </div>
-<div id="outline-container-orgbff4590" class="outline-3">
-<h3 id="orgbff4590"><span class="section-number-3">5.1.</span> Linear probe hashing</h3>
+<div id="outline-container-org730127d" class="outline-3">
+<h3 id="org730127d"><span class="section-number-3">5.1.</span> Linear probe hashing</h3>
 <div class="outline-text-3" id="text-5-1">
 <ul class="org-ul">
 <li>Insertion: when a collision occurs, linearly search the adjacent slots in a circular buffer until a open one is found.</li>
@@ -137,8 +255,8 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 <li>The state-of-art linear probe hashing is Google <code>absl::flat_hash_map</code>.</li>
 </ul>
 </div>
-<div id="outline-container-orgfd5ffbb" class="outline-4">
-<h4 id="orgfd5ffbb"><span class="section-number-4">5.1.1.</span> Non-unique keys</h4>
+<div id="outline-container-org860ef2f" class="outline-4">
+<h4 id="org860ef2f"><span class="section-number-4">5.1.1.</span> Non-unique keys</h4>
 <div class="outline-text-4" id="text-5-1-1">
 <ul class="org-ul">
 <li>The same key may be associated with multiple different values.</li>
@@ -151,8 +269,8 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul>
 </div>
 </div>
-<div id="outline-container-org10007e8" class="outline-4">
-<h4 id="org10007e8"><span class="section-number-4">5.1.2.</span> Optimization</h4>
+<div id="outline-container-orgf796ca0" class="outline-4">
+<h4 id="orgf796ca0"><span class="section-number-4">5.1.2.</span> Optimization</h4>
 <div class="outline-text-4" id="text-5-1-2">
 <ul class="org-ul">
 <li>Specialized hash table based on key types and size; e.g., for long string keys, one can store the pointer or the hash of the long string in the hash table.</li>
@@ -162,8 +280,8 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </div>
 </div>
 </div>
-<div id="outline-container-org4b5ee43" class="outline-3">
-<h3 id="org4b5ee43"><span class="section-number-3">5.2.</span> Cuckoo hashing</h3>
+<div id="outline-container-org37da536" class="outline-3">
+<h3 id="org37da536"><span class="section-number-3">5.2.</span> Cuckoo hashing</h3>
 <div class="outline-text-3" id="text-5-2">
 <ul class="org-ul">
 <li>Maintains multiple hash tables with different hash functions to generate different hashes for the same key using different seeds.</li>
@@ -177,15 +295,15 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </div>
 </div>
 </div>
-<div id="outline-container-orgc665421" class="outline-2">
-<h2 id="orgc665421"><span class="section-number-2">6.</span> Dynamic hashing schemes</h2>
+<div id="outline-container-org9144bf0" class="outline-2">
+<h2 id="org9144bf0"><span class="section-number-2">6.</span> Dynamic hashing schemes</h2>
 <div class="outline-text-2" id="text-6">
 <ul class="org-ul">
 <li>Resize the hash table on demand without rebuilding the entire table.</li>
 </ul>
 </div>
-<div id="outline-container-org849ddca" class="outline-3">
-<h3 id="org849ddca"><span class="section-number-3">6.1.</span> Chained Hashing</h3>
+<div id="outline-container-org2821670" class="outline-3">
+<h3 id="org2821670"><span class="section-number-3">6.1.</span> Chained Hashing</h3>
 <div class="outline-text-3" id="text-6-1">
 <ul class="org-ul">
 <li>Maintains a linked list of buckets for each slot in the hash table; keys hashed to the same slot are inserted into the linked list.</li>
@@ -194,8 +312,8 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul>
 </div>
 </div>
-<div id="outline-container-orgeae433a" class="outline-3">
-<h3 id="orgeae433a"><span class="section-number-3">6.2.</span> Extendible hashing</h3>
+<div id="outline-container-org97aff33" class="outline-3">
+<h3 id="org97aff33"><span class="section-number-3">6.2.</span> Extendible hashing</h3>
 <div class="outline-text-3" id="text-6-2">
 <ul class="org-ul">
 <li>Improve chained hashing to avoid letting chains grow forever.</li>
@@ -203,22 +321,22 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul>
 
 
-<figure id="org0c50cfa">
+<figure id="org189d132">
 <img src="./static/db-extendible-hashing.png" alt="db-extendible-hashing.png" align="center" width="700px">
 
 <figcaption><span class="figure-number">Figure 1: </span>Extendible hashing example</figcaption>
 </figure>
 </div>
 </div>
-<div id="outline-container-org5d15df8" class="outline-3">
-<h3 id="org5d15df8"><span class="section-number-3">6.3.</span> Linear hashing</h3>
+<div id="outline-container-org6267ed8" class="outline-3">
+<h3 id="org6267ed8"><span class="section-number-3">6.3.</span> Linear hashing</h3>
 <div class="outline-text-3" id="text-6-3">
 <ul class="org-ul">
 <li>Maintains a split pointer to keep track of next bucket to split, even if the pointed bucket is not overflowed.</li>
 </ul>
 
 
-<figure id="org2a6cdc9">
+<figure id="org4925320">
 <img src="./static/db-linear-hashing.png" alt="db-linear-hashing.png" align="center" width="750px">
 
 <figcaption><span class="figure-number">Figure 2: </span>Linear hashing example</figcaption>
@@ -229,7 +347,7 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul>
 
 
-<figure id="org0b2d065">
+<figure id="orgb314f70">
 <img src="./static/db-linear-hashing-deletion.png" alt="db-linear-hashing-deletion.png" align="center" width="750px">
 
 <figcaption><span class="figure-number">Figure 3: </span>Linear hashing deletion example</figcaption>
