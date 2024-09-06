@@ -19,6 +19,9 @@ This is a personal note for the [[https://15445.courses.cs.cmu.edu/fall2023/note
 - On average \(O(1)\) operation complexity with the worst case \(O(n)\); \(O(n)\) storage complexity.
   - Optimization for constant complexity is important in real world.
 
+** Where are hash tables used
+- For tuple indexing. While tuples are stored on pages with NSM or DSM, during the **query** the DBMS needs to quickly locate the page that stores specific tuples. It can achieve this with separately-stored hash tables, where each key can be a hash of a tuple id, and the value points the location.
+
 * Hash function
 - Maps a large key space into a smaller domain.
 - Takes in any key as input, and returns a deterministic integer representation.
@@ -71,5 +74,32 @@ This is a personal note for the [[https://15445.courses.cs.cmu.edu/fall2023/note
 - Optimization: store bloom filter in the bucket pointer list to tell if a key exist in the linked list.
 
 ** Extendible hashing
+- Improve chained hashing to avoid letting chains grow forever.
+- Allow multiple slot locations in the hash table to point to the same chain.
+
+#+CAPTION: Extendible hashing example
+#+ATTR_HTML: :align center
+#+ATTR_HTML: :width 700px
+[[./static/db-extendible-hashing.png]]
 
 ** Linear hashing
+- Maintains a split pointer to keep track of next bucket to split, even if the pointed bucket is not overflowed.
+
+#+CAPTION: Linear hashing example
+#+ATTR_HTML: :align center
+#+ATTR_HTML: :width 750px
+[[./static/db-linear-hashing.png]]
+
+- There are always only 2 hash functions: \((key\ mod\ n)\) and \((key\ mod\ 2n)\) where \(n\) is the length of buckets when the split pointer is at the index 0 (i.e., the bucket length at any time is \(n + index(sp)\)).
+
+#+CAPTION: Linear hashing deletion example
+#+ATTR_HTML: :align center
+#+ATTR_HTML: :width 750px
+[[./static/db-linear-hashing-deletion.png]]
+
+- Why does \(k\ mod\ 2n < n + sp\) hold?
+  - A key is only mod by \(2n\) if the result of \((k\ mod\ n)\) is above the split pointer, i.e., \(0 \leq k\ mod\ n < sp)\).
+  - Let \(r = k\ mod\ n\), then \(k = pn + r\) and \(0 \leq r < sp\).
+  - Let \(r' = k\ mod\ 2n\), then \(k = q(2n) + r'\).
+  - If \(p = 2m\), then we also have \(k = m(2n) + r = q(2n) + r'\), in this case \(0 \leq r = r' < sp\).
+  - If \(p = 2m + 1\), then we have \(k = m(2n) + r + n = q(2n) + r'\), in this case \(n \leq r' = n + r < n + sp\).

@@ -4,7 +4,7 @@
 <title><![CDATA[Chenyo's Blog]]></title>
 <description><![CDATA[Chenyo's Blog]]></description>
 <link>https://chenyo.me</link>
-<lastBuildDate>Thu, 05 Sep 2024 22:29:43 +0200</lastBuildDate>
+<lastBuildDate>Fri, 06 Sep 2024 16:43:26 +0200</lastBuildDate>
 <item>
   <title><![CDATA[CMU 15-445 notes: Hash Tables]]></title>
   <description><![CDATA[
@@ -12,30 +12,34 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org3d6480a">1. DBMS data structure application</a>
+<li><a href="#orgf525e81">1. DBMS data structure application</a>
 <ul>
-<li><a href="#org18347eb">1.1. Design decisions</a></li>
+<li><a href="#org0f401c5">1.1. Design decisions</a></li>
 </ul>
 </li>
-<li><a href="#org2b3a3e1">2. Hash tables</a></li>
-<li><a href="#org77a6c5e">3. Hash function</a></li>
-<li><a href="#orgea6956c">4. Hashing scheme</a></li>
-<li><a href="#org85d5c9f">5. Static hashing scheme</a>
+<li><a href="#orgdd2878e">2. Hash tables</a>
 <ul>
-<li><a href="#org357fa6e">5.1. Linear probe hashing</a>
-<ul>
-<li><a href="#orgd5ae410">5.1.1. Non-unique keys</a></li>
-<li><a href="#org14664a7">5.1.2. Optimization</a></li>
+<li><a href="#org04db50d">2.1. Where are hash tables used</a></li>
 </ul>
 </li>
-<li><a href="#org69e74f7">5.2. Cuckoo hashing</a></li>
+<li><a href="#orge791676">3. Hash function</a></li>
+<li><a href="#orgf6820f3">4. Hashing scheme</a></li>
+<li><a href="#org16afc52">5. Static hashing scheme</a>
+<ul>
+<li><a href="#orgbff4590">5.1. Linear probe hashing</a>
+<ul>
+<li><a href="#orgfd5ffbb">5.1.1. Non-unique keys</a></li>
+<li><a href="#org10007e8">5.1.2. Optimization</a></li>
 </ul>
 </li>
-<li><a href="#org1eabb44">6. Dynamic hashing schemes</a>
+<li><a href="#org4b5ee43">5.2. Cuckoo hashing</a></li>
+</ul>
+</li>
+<li><a href="#orgc665421">6. Dynamic hashing schemes</a>
 <ul>
-<li><a href="#org8ea041c">6.1. Chained Hashing</a></li>
-<li><a href="#org71ff780">6.2. Extendible hashing</a></li>
-<li><a href="#org727fb14">6.3. Linear hashing</a></li>
+<li><a href="#org849ddca">6.1. Chained Hashing</a></li>
+<li><a href="#orgeae433a">6.2. Extendible hashing</a></li>
+<li><a href="#org5d15df8">6.3. Linear hashing</a></li>
 </ul>
 </li>
 </ul>
@@ -44,8 +48,8 @@
 <p>
 This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall2023/notes/07-hashtables.pdf">CMU 15-445 L7 notes</a> as well as some explanation from Claude.ai.
 </p>
-<div id="outline-container-org3d6480a" class="outline-2">
-<h2 id="org3d6480a"><span class="section-number-2">1.</span> DBMS data structure application</h2>
+<div id="outline-container-orgf525e81" class="outline-2">
+<h2 id="orgf525e81"><span class="section-number-2">1.</span> DBMS data structure application</h2>
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
 <li>Internal meta-data: <a href="https://chenyo.me/2024-08-13-db-notes:-memory-management.html#org7a44495">page tables</a>, <a href="https://chenyo.me/2024-07-31-db-notes:-database-storage.html#org66626ef">page directories</a>.</li>
@@ -53,8 +57,8 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 <li>Table indices: easy to find specific tuples.</li>
 </ul>
 </div>
-<div id="outline-container-org18347eb" class="outline-3">
-<h3 id="org18347eb"><span class="section-number-3">1.1.</span> Design decisions</h3>
+<div id="outline-container-org0f401c5" class="outline-3">
+<h3 id="org0f401c5"><span class="section-number-3">1.1.</span> Design decisions</h3>
 <div class="outline-text-3" id="text-1-1">
 <ul class="org-ul">
 <li>Data layout for efficient access.</li>
@@ -63,8 +67,8 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </div>
 </div>
 </div>
-<div id="outline-container-org2b3a3e1" class="outline-2">
-<h2 id="org2b3a3e1"><span class="section-number-2">2.</span> Hash tables</h2>
+<div id="outline-container-orgdd2878e" class="outline-2">
+<h2 id="orgdd2878e"><span class="section-number-2">2.</span> Hash tables</h2>
 <div class="outline-text-2" id="text-2">
 <ul class="org-ul">
 <li>Implements an associative array that maps keys to values.</li>
@@ -74,9 +78,17 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul></li>
 </ul>
 </div>
+<div id="outline-container-org04db50d" class="outline-3">
+<h3 id="org04db50d"><span class="section-number-3">2.1.</span> Where are hash tables used</h3>
+<div class="outline-text-3" id="text-2-1">
+<ul class="org-ul">
+<li>For tuple indexing. While tuples are stored on pages with NSM or DSM, during the query the DBMS needs to quickly locate the page that stores specific tuples. It can achieve this with separately-stored hash tables, where each key can be a hash of a tuple id, and the value points the location.</li>
+</ul>
 </div>
-<div id="outline-container-org77a6c5e" class="outline-2">
-<h2 id="org77a6c5e"><span class="section-number-2">3.</span> Hash function</h2>
+</div>
+</div>
+<div id="outline-container-orge791676" class="outline-2">
+<h2 id="orge791676"><span class="section-number-2">3.</span> Hash function</h2>
 <div class="outline-text-2" id="text-3">
 <ul class="org-ul">
 <li>Maps a large key space into a smaller domain.</li>
@@ -89,8 +101,8 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul>
 </div>
 </div>
-<div id="outline-container-orgea6956c" class="outline-2">
-<h2 id="orgea6956c"><span class="section-number-2">4.</span> Hashing scheme</h2>
+<div id="outline-container-orgf6820f3" class="outline-2">
+<h2 id="orgf6820f3"><span class="section-number-2">4.</span> Hashing scheme</h2>
 <div class="outline-text-2" id="text-4">
 <ul class="org-ul">
 <li>Handles key collision after hashing.</li>
@@ -98,15 +110,15 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul>
 </div>
 </div>
-<div id="outline-container-org85d5c9f" class="outline-2">
-<h2 id="org85d5c9f"><span class="section-number-2">5.</span> Static hashing scheme</h2>
+<div id="outline-container-org16afc52" class="outline-2">
+<h2 id="org16afc52"><span class="section-number-2">5.</span> Static hashing scheme</h2>
 <div class="outline-text-2" id="text-5">
 <ul class="org-ul">
 <li>The hash table size is fixed; the DBMS has to rebuild a larger hash table (e.g., twice the size) from scratch when it runs out of space.</li>
 </ul>
 </div>
-<div id="outline-container-org357fa6e" class="outline-3">
-<h3 id="org357fa6e"><span class="section-number-3">5.1.</span> Linear probe hashing</h3>
+<div id="outline-container-orgbff4590" class="outline-3">
+<h3 id="orgbff4590"><span class="section-number-3">5.1.</span> Linear probe hashing</h3>
 <div class="outline-text-3" id="text-5-1">
 <ul class="org-ul">
 <li>Insertion: when a collision occurs, linearly search the adjacent slots in a circular buffer until a open one is found.</li>
@@ -125,8 +137,8 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 <li>The state-of-art linear probe hashing is Google <code>absl::flat_hash_map</code>.</li>
 </ul>
 </div>
-<div id="outline-container-orgd5ae410" class="outline-4">
-<h4 id="orgd5ae410"><span class="section-number-4">5.1.1.</span> Non-unique keys</h4>
+<div id="outline-container-orgfd5ffbb" class="outline-4">
+<h4 id="orgfd5ffbb"><span class="section-number-4">5.1.1.</span> Non-unique keys</h4>
 <div class="outline-text-4" id="text-5-1-1">
 <ul class="org-ul">
 <li>The same key may be associated with multiple different values.</li>
@@ -139,8 +151,8 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul>
 </div>
 </div>
-<div id="outline-container-org14664a7" class="outline-4">
-<h4 id="org14664a7"><span class="section-number-4">5.1.2.</span> Optimization</h4>
+<div id="outline-container-org10007e8" class="outline-4">
+<h4 id="org10007e8"><span class="section-number-4">5.1.2.</span> Optimization</h4>
 <div class="outline-text-4" id="text-5-1-2">
 <ul class="org-ul">
 <li>Specialized hash table based on key types and size; e.g., for long string keys, one can store the pointer or the hash of the long string in the hash table.</li>
@@ -150,8 +162,8 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </div>
 </div>
 </div>
-<div id="outline-container-org69e74f7" class="outline-3">
-<h3 id="org69e74f7"><span class="section-number-3">5.2.</span> Cuckoo hashing</h3>
+<div id="outline-container-org4b5ee43" class="outline-3">
+<h3 id="org4b5ee43"><span class="section-number-3">5.2.</span> Cuckoo hashing</h3>
 <div class="outline-text-3" id="text-5-2">
 <ul class="org-ul">
 <li>Maintains multiple hash tables with different hash functions to generate different hashes for the same key using different seeds.</li>
@@ -165,15 +177,15 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </div>
 </div>
 </div>
-<div id="outline-container-org1eabb44" class="outline-2">
-<h2 id="org1eabb44"><span class="section-number-2">6.</span> Dynamic hashing schemes</h2>
+<div id="outline-container-orgc665421" class="outline-2">
+<h2 id="orgc665421"><span class="section-number-2">6.</span> Dynamic hashing schemes</h2>
 <div class="outline-text-2" id="text-6">
 <ul class="org-ul">
 <li>Resize the hash table on demand without rebuilding the entire table.</li>
 </ul>
 </div>
-<div id="outline-container-org8ea041c" class="outline-3">
-<h3 id="org8ea041c"><span class="section-number-3">6.1.</span> Chained Hashing</h3>
+<div id="outline-container-org849ddca" class="outline-3">
+<h3 id="org849ddca"><span class="section-number-3">6.1.</span> Chained Hashing</h3>
 <div class="outline-text-3" id="text-6-1">
 <ul class="org-ul">
 <li>Maintains a linked list of buckets for each slot in the hash table; keys hashed to the same slot are inserted into the linked list.</li>
@@ -182,12 +194,58 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul>
 </div>
 </div>
-<div id="outline-container-org71ff780" class="outline-3">
-<h3 id="org71ff780"><span class="section-number-3">6.2.</span> Extendible hashing</h3>
-</div>
+<div id="outline-container-orgeae433a" class="outline-3">
+<h3 id="orgeae433a"><span class="section-number-3">6.2.</span> Extendible hashing</h3>
+<div class="outline-text-3" id="text-6-2">
+<ul class="org-ul">
+<li>Improve chained hashing to avoid letting chains grow forever.</li>
+<li>Allow multiple slot locations in the hash table to point to the same chain.</li>
+</ul>
 
-<div id="outline-container-org727fb14" class="outline-3">
-<h3 id="org727fb14"><span class="section-number-3">6.3.</span> Linear hashing</h3>
+
+<figure id="org0c50cfa">
+<img src="./static/db-extendible-hashing.png" alt="db-extendible-hashing.png" align="center" width="700px">
+
+<figcaption><span class="figure-number">Figure 1: </span>Extendible hashing example</figcaption>
+</figure>
+</div>
+</div>
+<div id="outline-container-org5d15df8" class="outline-3">
+<h3 id="org5d15df8"><span class="section-number-3">6.3.</span> Linear hashing</h3>
+<div class="outline-text-3" id="text-6-3">
+<ul class="org-ul">
+<li>Maintains a split pointer to keep track of next bucket to split, even if the pointed bucket is not overflowed.</li>
+</ul>
+
+
+<figure id="org2a6cdc9">
+<img src="./static/db-linear-hashing.png" alt="db-linear-hashing.png" align="center" width="750px">
+
+<figcaption><span class="figure-number">Figure 2: </span>Linear hashing example</figcaption>
+</figure>
+
+<ul class="org-ul">
+<li>There are always only 2 hash functions: \((key\ mod\ n)\) and \((key\ mod\ 2n)\) where \(n\) is the length of buckets when the split pointer is at the index 0 (i.e., the bucket length at any time is \(n + index(sp)\)).</li>
+</ul>
+
+
+<figure id="org0b2d065">
+<img src="./static/db-linear-hashing-deletion.png" alt="db-linear-hashing-deletion.png" align="center" width="750px">
+
+<figcaption><span class="figure-number">Figure 3: </span>Linear hashing deletion example</figcaption>
+</figure>
+
+<ul class="org-ul">
+<li>Why does \(k\ mod\ 2n < n + sp\) hold?
+<ul class="org-ul">
+<li>A key is only mod by \(2n\) if the result of \((k\ mod\ n)\) is above the split pointer, i.e., \(0 \leq k\ mod\ n < sp)\).</li>
+<li>Let \(r = k\ mod\ n\), then \(k = pn + r\) and \(0 \leq r < sp\).</li>
+<li>Let \(r' = k\ mod\ 2n\), then \(k = q(2n) + r'\).</li>
+<li>If \(p = 2m\), then we also have \(k = m(2n) + r = q(2n) + r'\), in this case \(0 \leq r = r' < sp\).</li>
+<li>If \(p = 2m + 1\), then we have \(k = m(2n) + r + n = q(2n) + r'\), in this case \(n \leq r' = n + r < n + sp\).</li>
+</ul></li>
+</ul>
+</div>
 </div>
 </div>
 <div class="taglist"><a href="https://chenyo.me/tags.html">Tags</a>: <a href="https://chenyo.me/tag-study.html">study</a> <a href="https://chenyo.me/tag-database.html">database</a> <a href="https://chenyo.me/tag-cmu.html">cmu</a> </div>]]></description>
