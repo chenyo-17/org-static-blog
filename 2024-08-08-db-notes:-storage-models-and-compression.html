@@ -36,40 +36,40 @@
       </nav>
       </header></div>
 <div id="content">
-<div class="post-date">08 Aug 2024</div><h1 class="post-title"><a href="https://chenyo.me/2024-08-08-db-notes:-storage-models-&-compression.html">CMU 15-445 notes: Storage Models & Compression</a></h1>
+<div class="post-date">08 Aug 2024</div><h1 class="post-title"><a href="https://chenyo.me/2024-08-08-db-notes:-storage-models-and-compression.html">CMU 15-445 notes: Storage Models & Compression</a></h1>
 <nav id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org05e8c9f">1. Database workloads</a>
+<li><a href="#orgc883165">1. Database workloads</a>
 <ul>
-<li><a href="#org5de2687">1.1. OLTP (Online Transaction Processing)</a></li>
-<li><a href="#orgd904429">1.2. OLAP (Online Analytical Processing)</a></li>
-<li><a href="#org1fa5005">1.3. HTAP (Hybrid)</a></li>
+<li><a href="#org876ebf6">1.1. OLTP (Online Transaction Processing)</a></li>
+<li><a href="#org10f91cb">1.2. OLAP (Online Analytical Processing)</a></li>
+<li><a href="#orgae3ac54">1.3. HTAP (Hybrid)</a></li>
 </ul>
 </li>
-<li><a href="#org73438d0">2. Storage models</a>
+<li><a href="#org567cf9a">2. Storage models</a>
 <ul>
-<li><a href="#orgac57587">2.1. N-ary Storage Model (NSM)</a></li>
-<li><a href="#org0484c84">2.2. Decomposition Storage Model (DSM)</a></li>
-<li><a href="#org02cd365">2.3. Partition Attributes Across (PAX)</a></li>
+<li><a href="#orge440f74">2.1. N-ary Storage Model (NSM)</a></li>
+<li><a href="#org908f62d">2.2. Decomposition Storage Model (DSM)</a></li>
+<li><a href="#org801e1ad">2.3. Partition Attributes Across (PAX)</a></li>
 </ul>
 </li>
-<li><a href="#orgac534a0">3. Database compression</a>
+<li><a href="#orgeb9dd65">3. Database compression</a>
 <ul>
-<li><a href="#org3b4ff5b">3.1. Compression granularity</a></li>
-<li><a href="#org5f3f57e">3.2. Naive compression</a></li>
+<li><a href="#orgeeab136">3.1. Compression granularity</a></li>
+<li><a href="#orgbe6afe5">3.2. Naive compression</a></li>
 </ul>
 </li>
-<li><a href="#orgc665140">4. Columnar compression</a>
+<li><a href="#org406dcf9">4. Columnar compression</a>
 <ul>
-<li><a href="#org0a816dd">4.1. Dictionary encoding</a></li>
-<li><a href="#orgdfcc38d">4.2. Run-Length encoding (RLE)</a></li>
-<li><a href="#orgffd7553">4.3. Bit-packing encoding</a></li>
-<li><a href="#org7e2d8cd">4.4. Mostly encoding</a></li>
-<li><a href="#org9246b2c">4.5. Bitmap (One-hot) encoding</a></li>
-<li><a href="#org96cba7a">4.6. Delta encoding</a></li>
-<li><a href="#orgcd9cb6f">4.7. Incremental encoding</a></li>
+<li><a href="#orgfd3bfbe">4.1. Dictionary encoding</a></li>
+<li><a href="#orgb4ae498">4.2. Run-Length encoding (RLE)</a></li>
+<li><a href="#org7b9f9f9">4.3. Bit-packing encoding</a></li>
+<li><a href="#orgf9503c8">4.4. Mostly encoding</a></li>
+<li><a href="#org747efa1">4.5. Bitmap (One-hot) encoding</a></li>
+<li><a href="#org14bcf11">4.6. Delta encoding</a></li>
+<li><a href="#orgc3a6508">4.7. Incremental encoding</a></li>
 </ul>
 </li>
 </ul>
@@ -78,12 +78,12 @@
 <p>
 This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall2023/notes/05-storage3.pdf">CMU 15-445 L5 notes</a>.
 </p>
-<div id="outline-container-org05e8c9f" class="outline-2">
-<h2 id="org05e8c9f"><span class="section-number-2">1.</span> Database workloads</h2>
+<div id="outline-container-orgc883165" class="outline-2">
+<h2 id="orgc883165"><span class="section-number-2">1.</span> Database workloads</h2>
 <div class="outline-text-2" id="text-1">
 </div>
-<div id="outline-container-org5de2687" class="outline-3">
-<h3 id="org5de2687"><span class="section-number-3">1.1.</span> OLTP (Online Transaction Processing)</h3>
+<div id="outline-container-org876ebf6" class="outline-3">
+<h3 id="org876ebf6"><span class="section-number-3">1.1.</span> OLTP (Online Transaction Processing)</h3>
 <div class="outline-text-3" id="text-1-1">
 <ul class="org-ul">
 <li>Characterized by fast, repetitive, simple queries that operator on a small amount of data, e.g., a user adds an item to its Amazon cart and pay.</li>
@@ -91,8 +91,8 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul>
 </div>
 </div>
-<div id="outline-container-orgd904429" class="outline-3">
-<h3 id="orgd904429"><span class="section-number-3">1.2.</span> OLAP (Online Analytical Processing)</h3>
+<div id="outline-container-org10f91cb" class="outline-3">
+<h3 id="org10f91cb"><span class="section-number-3">1.2.</span> OLAP (Online Analytical Processing)</h3>
 <div class="outline-text-3" id="text-1-2">
 <ul class="org-ul">
 <li>Characterized by complex read queries on large data.</li>
@@ -100,8 +100,8 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul>
 </div>
 </div>
-<div id="outline-container-org1fa5005" class="outline-3">
-<h3 id="org1fa5005"><span class="section-number-3">1.3.</span> HTAP (Hybrid)</h3>
+<div id="outline-container-orgae3ac54" class="outline-3">
+<h3 id="orgae3ac54"><span class="section-number-3">1.3.</span> HTAP (Hybrid)</h3>
 <div class="outline-text-3" id="text-1-3">
 <ul class="org-ul">
 <li>OLTP + OLAP.</li>
@@ -109,15 +109,15 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </div>
 </div>
 </div>
-<div id="outline-container-org73438d0" class="outline-2">
-<h2 id="org73438d0"><span class="section-number-2">2.</span> Storage models</h2>
+<div id="outline-container-org567cf9a" class="outline-2">
+<h2 id="org567cf9a"><span class="section-number-2">2.</span> Storage models</h2>
 <div class="outline-text-2" id="text-2">
 <ul class="org-ul">
 <li>Different ways to store tuples in pages.</li>
 </ul>
 </div>
-<div id="outline-container-orgac57587" class="outline-3">
-<h3 id="orgac57587"><span class="section-number-3">2.1.</span> N-ary Storage Model (NSM)</h3>
+<div id="outline-container-orge440f74" class="outline-3">
+<h3 id="orge440f74"><span class="section-number-3">2.1.</span> N-ary Storage Model (NSM)</h3>
 <div class="outline-text-3" id="text-2-1">
 <ul class="org-ul">
 <li>Store all attributes for a single tuple contiguously in a single page, e.g., slotted pages.</li>
@@ -126,8 +126,8 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul>
 </div>
 </div>
-<div id="outline-container-org0484c84" class="outline-3">
-<h3 id="org0484c84"><span class="section-number-3">2.2.</span> Decomposition Storage Model (DSM)</h3>
+<div id="outline-container-org908f62d" class="outline-3">
+<h3 id="org908f62d"><span class="section-number-3">2.2.</span> Decomposition Storage Model (DSM)</h3>
 <div class="outline-text-3" id="text-2-2">
 <ul class="org-ul">
 <li>Store each attribute for all tuples contiguously in a block of data, i.e., column store.</li>
@@ -141,15 +141,15 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul>
 
 
-<figure id="org3541b04">
+<figure id="org72f63eb">
 <img src="./static/db-dsm-storage-model.png" alt="db-dsm-storage-model.png" align="center" width="550px">
 
 <figcaption><span class="figure-number">Figure 1: </span>DSM storage model (<a href="https://15445.courses.cs.cmu.edu/fall2023/slides/05-storage3.pdf">Source</a>)</figcaption>
 </figure>
 </div>
 </div>
-<div id="outline-container-org02cd365" class="outline-3">
-<h3 id="org02cd365"><span class="section-number-3">2.3.</span> Partition Attributes Across (PAX)</h3>
+<div id="outline-container-org801e1ad" class="outline-3">
+<h3 id="org801e1ad"><span class="section-number-3">2.3.</span> Partition Attributes Across (PAX)</h3>
 <div class="outline-text-3" id="text-2-3">
 <ul class="org-ul">
 <li>Rows are horizontally partitioned into groups of rows; each row group uses a column store.</li>
@@ -157,7 +157,7 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul>
 
 
-<figure id="org93012bd">
+<figure id="org4455f3c">
 <img src="./static/db-pax-storage-model.png" alt="db-pax-storage-model.png" align="center" width="300px">
 
 <figcaption><span class="figure-number">Figure 2: </span>PAX storage model (<a href="https://15445.courses.cs.cmu.edu/fall2023/slides/05-storage3.pdf">Source</a>)</figcaption>
@@ -165,8 +165,8 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </div>
 </div>
 </div>
-<div id="outline-container-orgac534a0" class="outline-2">
-<h2 id="orgac534a0"><span class="section-number-2">3.</span> Database compression</h2>
+<div id="outline-container-orgeb9dd65" class="outline-2">
+<h2 id="orgeb9dd65"><span class="section-number-2">3.</span> Database compression</h2>
 <div class="outline-text-2" id="text-3">
 <ul class="org-ul">
 <li>Disk I/O is always the main bottleneck; read-only analytical workloads are popular; compression in advance allows for more I/O throughput.</li>
@@ -183,8 +183,8 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul></li>
 </ul>
 </div>
-<div id="outline-container-org3b4ff5b" class="outline-3">
-<h3 id="org3b4ff5b"><span class="section-number-3">3.1.</span> Compression granularity</h3>
+<div id="outline-container-orgeeab136" class="outline-3">
+<h3 id="orgeeab136"><span class="section-number-3">3.1.</span> Compression granularity</h3>
 <div class="outline-text-3" id="text-3-1">
 <ul class="org-ul">
 <li>Block level: compress all tuples for the same table.</li>
@@ -194,8 +194,8 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul>
 </div>
 </div>
-<div id="outline-container-org5f3f57e" class="outline-3">
-<h3 id="org5f3f57e"><span class="section-number-3">3.2.</span> Naive compression</h3>
+<div id="outline-container-orgbe6afe5" class="outline-3">
+<h3 id="orgbe6afe5"><span class="section-number-3">3.2.</span> Naive compression</h3>
 <div class="outline-text-3" id="text-3-2">
 <ul class="org-ul">
 <li>Engineers often use a general purpose compression algorithm with lower compression ratio in exchange for faster compression/decompression.</li>
@@ -208,15 +208,15 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </div>
 </div>
 </div>
-<div id="outline-container-orgc665140" class="outline-2">
-<h2 id="orgc665140"><span class="section-number-2">4.</span> Columnar compression</h2>
+<div id="outline-container-org406dcf9" class="outline-2">
+<h2 id="org406dcf9"><span class="section-number-2">4.</span> Columnar compression</h2>
 <div class="outline-text-2" id="text-4">
 <ul class="org-ul">
 <li>Works best with OLAP, may need additional support for writes.</li>
 </ul>
 </div>
-<div id="outline-container-org0a816dd" class="outline-3">
-<h3 id="org0a816dd"><span class="section-number-3">4.1.</span> Dictionary encoding</h3>
+<div id="outline-container-orgfd3bfbe" class="outline-3">
+<h3 id="orgfd3bfbe"><span class="section-number-3">4.1.</span> Dictionary encoding</h3>
 <div class="outline-text-3" id="text-4-1">
 <ul class="org-ul">
 <li>The most common database compression scheme, support late materialization.</li>
@@ -229,8 +229,8 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul>
 </div>
 </div>
-<div id="outline-container-orgdfcc38d" class="outline-3">
-<h3 id="orgdfcc38d"><span class="section-number-3">4.2.</span> Run-Length encoding (RLE)</h3>
+<div id="outline-container-orgb4ae498" class="outline-3">
+<h3 id="orgb4ae498"><span class="section-number-3">4.2.</span> Run-Length encoding (RLE)</h3>
 <div class="outline-text-3" id="text-4-2">
 <ul class="org-ul">
 <li>Compress runs (consecutive instances) of the same value in a column into triplets <code>(value, offset, length)</code>.</li>
@@ -238,60 +238,60 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul>
 
 
-<figure id="orgdfa26c7">
+<figure id="org41f927d">
 <img src="./static/db-rle-storage-model.png" alt="db-rle-storage-model.png" align="center" width="550px">
 
 <figcaption><span class="figure-number">Figure 3: </span>Run-length encoding (<a href="https://15445.courses.cs.cmu.edu/fall2023/slides/05-storage3.pdf">Source</a>)</figcaption>
 </figure>
 </div>
 </div>
-<div id="outline-container-orgffd7553" class="outline-3">
-<h3 id="orgffd7553"><span class="section-number-3">4.3.</span> Bit-packing encoding</h3>
+<div id="outline-container-org7b9f9f9" class="outline-3">
+<h3 id="org7b9f9f9"><span class="section-number-3">4.3.</span> Bit-packing encoding</h3>
 <div class="outline-text-3" id="text-4-3">
 <ul class="org-ul">
 <li>Use less bits to store an attribute.</li>
 </ul>
 
 
-<figure id="orgd47919f">
+<figure id="org186437e">
 <img src="./static/db-bit-packing-storage-model.png" alt="db-bit-packing-storage-model.png" align="center" width="250px">
 
 <figcaption><span class="figure-number">Figure 4: </span>Bit-packing encoding (<a href="https://15445.courses.cs.cmu.edu/fall2023/slides/05-storage3.pdf">Source</a>)</figcaption>
 </figure>
 </div>
 </div>
-<div id="outline-container-org7e2d8cd" class="outline-3">
-<h3 id="org7e2d8cd"><span class="section-number-3">4.4.</span> Mostly encoding</h3>
+<div id="outline-container-orgf9503c8" class="outline-3">
+<h3 id="orgf9503c8"><span class="section-number-3">4.4.</span> Mostly encoding</h3>
 <div class="outline-text-3" id="text-4-4">
 <ul class="org-ul">
 <li>Use a special marker to indicate values that exceed the bit size and maintains a look-up table to store them.</li>
 </ul>
 
 
-<figure id="orge6cdecb">
+<figure id="org5d2928a">
 <img src="./static/db-mostly-encoding-storage-model.png" alt="db-mostly-encoding-storage-model.png" align="center" width="550px">
 
 <figcaption><span class="figure-number">Figure 5: </span>Mostly encoding (<a href="https://15445.courses.cs.cmu.edu/fall2023/slides/05-storage3.pdf">Source</a>)</figcaption>
 </figure>
 </div>
 </div>
-<div id="outline-container-org9246b2c" class="outline-3">
-<h3 id="org9246b2c"><span class="section-number-3">4.5.</span> Bitmap (One-hot) encoding</h3>
+<div id="outline-container-org747efa1" class="outline-3">
+<h3 id="org747efa1"><span class="section-number-3">4.5.</span> Bitmap (One-hot) encoding</h3>
 <div class="outline-text-3" id="text-4-5">
 <ul class="org-ul">
 <li>Only practical if the value cardinality is low.</li>
 </ul>
 
 
-<figure id="orgb85cf34">
+<figure id="org4d22f30">
 <img src="./static/db-bitmap-encoding-storage-model.png" alt="db-bitmap-encoding-storage-model.png" align="center" width="400px">
 
 <figcaption><span class="figure-number">Figure 6: </span>Bitmap encoding (<a href="https://15445.courses.cs.cmu.edu/fall2023/slides/05-storage3.pdf">Source</a>)</figcaption>
 </figure>
 </div>
 </div>
-<div id="outline-container-org96cba7a" class="outline-3">
-<h3 id="org96cba7a"><span class="section-number-3">4.6.</span> Delta encoding</h3>
+<div id="outline-container-org14bcf11" class="outline-3">
+<h3 id="org14bcf11"><span class="section-number-3">4.6.</span> Delta encoding</h3>
 <div class="outline-text-3" id="text-4-6">
 <ul class="org-ul">
 <li>Record the difference between values; the base value can be stored in-line or in a separate look-up table.</li>
@@ -299,15 +299,15 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul>
 
 
-<figure id="org662b1fe">
+<figure id="orga9e25bd">
 <img src="./static/db-delta-encoding-storage-model.png" alt="db-delta-encoding-storage-model.png" align="center" width="500px">
 
 <figcaption><span class="figure-number">Figure 7: </span>Delta encoding (<a href="https://15445.courses.cs.cmu.edu/fall2023/slides/05-storage3.pdf">Source</a>)</figcaption>
 </figure>
 </div>
 </div>
-<div id="outline-container-orgcd9cb6f" class="outline-3">
-<h3 id="orgcd9cb6f"><span class="section-number-3">4.7.</span> Incremental encoding</h3>
+<div id="outline-container-orgc3a6508" class="outline-3">
+<h3 id="orgc3a6508"><span class="section-number-3">4.7.</span> Incremental encoding</h3>
 <div class="outline-text-3" id="text-4-7">
 <ul class="org-ul">
 <li>Common prefixes or suffixes and their lengths are recorded to avoid duplication.</li>
