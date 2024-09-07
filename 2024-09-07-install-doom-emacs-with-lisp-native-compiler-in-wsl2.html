@@ -2,11 +2,12 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="description" content="This post records how to install doom emacs in WSL2">
 <link rel="alternate"
       type="application/rss+xml"
       href="https://chenyo.me/rss.xml"
       title="RSS feed for https://chenyo.me">
-<title>Chenyo's Blog</title>
+<title>Install Doom Emacs with Lisp native compilation in WSL2</title>
 <script type="text/javascript"
              src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
        </script>
@@ -35,7 +36,6 @@
       </nav>
       </header></div>
 <div id="content">
-<h1 class="title">Posts tagged "linux":</h1>
 <div class="post-date">07 Sep 2024</div><h1 class="post-title"><a href="https://chenyo.me/2024-09-07-install-doom-emacs-with-lisp-native-compiler-in-wsl2.html">Install Doom Emacs with Lisp native compilation in WSL2</a></h1>
 <nav id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
@@ -329,200 +329,7 @@ The first thing is I cannot reload the configuration with <code>M-x doom/reload<
 </ul>
 </div>
 </div>
-<div class="taglist"><a href="https://chenyo.me/tags.html">Tags</a>: <a href="https://chenyo.me/tag-linux.html">linux</a> <a href="https://chenyo.me/tag-emacs.html">emacs</a> <a href="https://chenyo.me/tag-tool.html">tool</a> </div>
-<div class="post-date">24 Jun 2024</div><h1 class="post-title"><a href="https://chenyo.me/2024-06-24-a-stupid-debugging-experience.html">A stupid debugging experience</a></h1>
-<nav id="table-of-contents" role="doc-toc">
-<h2>Table of Contents</h2>
-<div id="text-table-of-contents" role="doc-toc">
-<ul>
-<li><a href="#org54331e1">1. What happended</a></li>
-<li><a href="#orgcc86001">2. What did I do</a></li>
-<li><a href="#org8c78942">3. Another issue of running RPC in docker</a></li>
-</ul>
-</div>
-</nav>
-<div id="outline-container-org54331e1" class="outline-2">
-<h2 id="org54331e1"><span class="section-number-2">1.</span> What happended</h2>
-<div class="outline-text-2" id="text-1">
-<ul class="org-ul">
-<li>Servers SA and SB have the same docker installation, and the same running container CA and CB.</li>
-<li><p>
-A Go file G can be built on CA, but on CB it reports this error:
-</p>
-<p class="verse">
-runtime: failed to create new OS thread (have 2 already; errno=11)<br>
-runtime: may need to increase max user processes (ulimit -u)<br>
-fatal error: newosproc<br>
-</p></li>
-</ul>
-</div>
-</div>
-<div id="outline-container-orgcc86001" class="outline-2">
-<h2 id="orgcc86001"><span class="section-number-2">2.</span> What did I do</h2>
-<div class="outline-text-2" id="text-2">
-<ol class="org-ol">
-<li>I compared any related configurations between SA and SB. and between CA and CB, e.g., <code class="src src-bash"><span style="color: #c678dd;">ulimit</span> -a</code>, <code class="src src-bash">/etc/security/limits.conf</code>. They all look the same.</li>
-<li>I created a new container CN on SA with the same docker image, CN can compile G.</li>
-<li>I looked into the (complex) <code>docker run</code> script for CA/CB and figured out it was due to a resource constraint <code>--pids-limit 100</code>.
-<ul class="org-ul">
-<li>Increasing this limit to 200 seems resolve the issue, but I had no idea why the Go compiler needed so many resources (perhaps due to package I imported).</li>
-</ul></li>
-<li><b><b>Until this point</b></b>, I realized, since the container did not support the compilation, why not just only transfer the compiled binary!
-<ul class="org-ul">
-<li>How silly that I didn&rsquo;t even try this in the beginning!</li>
-</ul></li>
-<li>Since the program imports the <code>net</code> package, and there is a <a href="https://www.reddit.com/r/golang/comments/pi97sp/what_is_the_consequence_of_using_cgo_enabled0/">known issue</a> of Alpine image running a Go binary file, I followed the post and disabled <code>CGO</code> on SA, then <code>docker cp</code> the binary to CA, and it worked.</li>
-</ol>
-</div>
-</div>
-<div id="outline-container-org8c78942" class="outline-2">
-<h2 id="org8c78942"><span class="section-number-2">3.</span> Another issue of running RPC in docker</h2>
-<div class="outline-text-2" id="text-3">
-<ul class="org-ul">
-<li>The other day, I also spent hours debugging a <code>route unreachable</code> error when I want to send a request from CA to SA.</li>
-<li>The CA is using the <code>bridge</code> network, so it should talk to SA via SA&rsquo;s interface <code>docker0</code> within the subnet <code>172.17.0.0/16</code>.</li>
-<li><p>
-However, in my case, the docker by default rejects packages from any container as shown in SA&rsquo;s <code>tcpdump</code> result:
-</p>
-<p class="verse">
-172.17.0.1-&gt;172.17.0.3 ICMP host unreachable- admin prohibited, length 68<br>
-</p></li>
-
-<li><p>
-By checking SA&rsquo;s iptables, I found this rule:
-</p>
-<div class="org-src-container">
-<pre class="src src-bash">  -A INPUT -j REJECT --reject-with icmp-host-prohibited
-</pre>
-</div>
-<ul class="org-ul">
-<li>Strangely, the <code>ping</code> still works with this rule.</li>
-</ul></li>
-
-<li><p>
-In the end, I need to append a new rule to make the RPC work.
-</p>
-<div class="org-src-container">
-<pre class="src src-bash">  iptables -I INPUT <span style="color: #da8548; font-weight: bold;">1</span> -i docker0 -p tcp --dport &lt;port&gt; -s 172.17.0.0/16 -j ACCEPT
-</pre>
-</div></li>
-</ul>
-</div>
-</div>
-<div class="taglist"><a href="https://chenyo.me/tags.html">Tags</a>: <a href="https://chenyo.me/tag-docker.html">docker</a> <a href="https://chenyo.me/tag-go.html">go</a> <a href="https://chenyo.me/tag-linux.html">linux</a> <a href="https://chenyo.me/tag-alpine.html">alpine</a> </div>
-<div class="post-date">24 Jun 2024</div><h1 class="post-title"><a href="https://chenyo.me/2024-06-24-linux-use-tips.html">Linux use tips</a></h1>
-<nav id="table-of-contents" role="doc-toc">
-<h2>Table of Contents</h2>
-<div id="text-table-of-contents" role="doc-toc">
-<ul>
-<li><a href="#orgde99fb3">1. i3</a>
-<ul>
-<li><a href="#org3d16fa4">1.1. Move specific workspaces between different monitors (ref)</a></li>
-</ul>
-</li>
-<li><a href="#org46bbc25">2. Org</a>
-<ul>
-<li><a href="#org2572ba0">2.1. Format code blocks</a></li>
-</ul>
-</li>
-<li><a href="#orgbbccf77">3. Emacs</a>
-<ul>
-<li><a href="#orge3126b1">3.1. Prefix argument</a></li>
-<li><a href="#org2615f5c">3.2. Help functions</a></li>
-</ul>
-</li>
-<li><a href="#orga4046d1">4. Vim</a>
-<ul>
-<li><a href="#orgd85260c">4.1. Delete a word backwards</a></li>
-</ul>
-</li>
-<li><a href="#orgc5a6400">5. Firefox</a>
-<ul>
-<li><a href="#orgde49f07">5.1. Cache bypass refresh</a></li>
-</ul>
-</li>
-</ul>
-</div>
-</nav>
-<div id="outline-container-orgde99fb3" class="outline-2">
-<h2 id="orgde99fb3"><span class="section-number-2">1.</span> i3</h2>
-<div class="outline-text-2" id="text-1">
-</div>
-<div id="outline-container-org3d16fa4" class="outline-3">
-<h3 id="org3d16fa4"><span class="section-number-3">1.1.</span> Move specific workspaces between different monitors <a href="https://i3wm.org/docs/user-contributed/swapping-workspaces.html">(ref)</a></h3>
-<div class="outline-text-3" id="text-1-1">
-<ol class="org-ol">
-<li>Adjust the monitor relative positions.</li>
-<li>Use <code class="src src-bash">i3-msg -- move workspace to output right</code> to move the <b><b>current</b></b> workspace to the monitor on the right</li>
-</ol>
-</div>
-</div>
-</div>
-<div id="outline-container-org46bbc25" class="outline-2">
-<h2 id="org46bbc25"><span class="section-number-2">2.</span> Org</h2>
-<div class="outline-text-2" id="text-2">
-</div>
-<div id="outline-container-org2572ba0" class="outline-3">
-<h3 id="org2572ba0"><span class="section-number-3">2.1.</span> Format code blocks</h3>
-<div class="outline-text-3" id="text-2-1">
-<ul class="org-ul">
-<li>Use the shortcut <code>&lt; s &lt;TAB&gt;</code> to create a code block.</li>
-<li>Use <code>C-c '</code> to enter the code environment to use the language major mode.</li>
-</ul>
-</div>
-</div>
-</div>
-<div id="outline-container-orgbbccf77" class="outline-2">
-<h2 id="orgbbccf77"><span class="section-number-2">3.</span> Emacs</h2>
-<div class="outline-text-2" id="text-3">
-</div>
-<div id="outline-container-orge3126b1" class="outline-3">
-<h3 id="orge3126b1"><span class="section-number-3">3.1.</span> Prefix argument</h3>
-<div class="outline-text-3" id="text-3-1">
-<ul class="org-ul">
-<li>When the function includes <code>(interactive "P")</code>, it means one can add a prefix argument <code>C-u 1</code> (or any integer) to trigger some effect.</li>
-</ul>
-</div>
-</div>
-<div id="outline-container-org2615f5c" class="outline-3">
-<h3 id="org2615f5c"><span class="section-number-3">3.2.</span> Help functions</h3>
-<div class="outline-text-3" id="text-3-2">
-<ul class="org-ul">
-<li><code>Ctrl-h K</code> get the function name given a shortcut</li>
-</ul>
-</div>
-</div>
-</div>
-<div id="outline-container-orga4046d1" class="outline-2">
-<h2 id="orga4046d1"><span class="section-number-2">4.</span> Vim</h2>
-<div class="outline-text-2" id="text-4">
-</div>
-<div id="outline-container-orgd85260c" class="outline-3">
-<h3 id="orgd85260c"><span class="section-number-3">4.1.</span> Delete a word backwards</h3>
-<div class="outline-text-3" id="text-4-1">
-<ul class="org-ul">
-<li><code>diw</code> or <code>daw</code></li>
-</ul>
-</div>
-</div>
-</div>
-<div id="outline-container-orgc5a6400" class="outline-2">
-<h2 id="orgc5a6400"><span class="section-number-2">5.</span> Firefox</h2>
-<div class="outline-text-2" id="text-5">
-</div>
-<div id="outline-container-orgde49f07" class="outline-3">
-<h3 id="orgde49f07"><span class="section-number-3">5.1.</span> Cache bypass refresh</h3>
-<div class="outline-text-3" id="text-5-1">
-<ul class="org-ul">
-<li><code>Ctrl+Shift+R</code></li>
-</ul>
-</div>
-</div>
-</div>
-<div class="taglist"><a href="https://chenyo.me/tags.html">Tags</a>: <a href="https://chenyo.me/tag-tool.html">tool</a> <a href="https://chenyo.me/tag-linux.html">linux</a> <a href="https://chenyo.me/tag-i3.html">i3</a> <a href="https://chenyo.me/tag-arch.html">arch</a> </div><div id="archive">
-<a href="https://chenyo.me/archive.html">Other posts</a>
-</div>
-</div>
+<div class="taglist"><a href="https://chenyo.me/tags.html">Tags</a>: <a href="https://chenyo.me/tag-linux.html">linux</a> <a href="https://chenyo.me/tag-emacs.html">emacs</a> <a href="https://chenyo.me/tag-tool.html">tool</a> </div></div>
 <div id="postamble" class="status"><div id="search-results"></div>
       <footer>
         <p>© 2024 chenyo. Some rights reserved.</p>

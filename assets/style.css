@@ -31,6 +31,45 @@ a:hover {
     text-decoration: none;
 }
 
+blockquote {
+    background-color: #eee8d5; /* Solarized Light base2 */
+    border-left: 4px solid #93a1a1; /* Solarized Light base1 */
+    margin: 1.5em 0;
+    padding: 1em 1.5em;
+    font-style: italic;
+    color: #657b83; /* Solarized Light base00 */
+    position: relative;
+    border-radius: 0 4px 4px 0;
+}
+
+blockquote::before {
+    content: "";
+    font-size: 3em;
+    position: absolute;
+    left: 10px;
+    top: -10px;
+    color: #93a1a1; /* Solarized Light base1 */
+    opacity: 0.5;
+}
+
+blockquote p {
+    margin: 0;
+}
+
+blockquote p + p {
+    margin-top: 1em;
+}
+
+code {
+    font-family: "JetBrains Mono", "Menlo", "Monaco", "Consolas", "Courier New",
+        monospace;
+    font-size: 0.9em;
+    background-color: #eee8d5; /* Solarized Light base2 */
+    color: #073642; /* Solarized Light base02 */
+    padding: 2px 4px;
+    border-radius: 3px;
+}
+
 footer {
     margin-top: 30px;
     border-top: 1px solid #eee;
@@ -240,7 +279,7 @@ tr:nth-child(even) {
     page-break-inside: avoid;
     font-family: "JetBrains Mono", "Menlo", "Monaco", "Consolas", "Courier New",
         monospace;
-    font-size: 13px;
+    font-size: 15px;
     line-height: 1.6;
     max-width: 100%;
     overflow: auto;

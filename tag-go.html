@@ -41,16 +41,16 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org7e58120">1. Concurrency vs Parallelism</a></li>
-<li><a href="#orga0d96fa">2. Use goroutines for states</a>
+<li><a href="#org1c33d2c">1. Concurrency vs Parallelism</a></li>
+<li><a href="#orga651307">2. Use goroutines for states</a>
 <ul>
-<li><a href="#org9895021">2.1. Matching a regex</a></li>
-<li><a href="#org7411763">2.2. When the state variable cannot be avoided</a></li>
+<li><a href="#org98d2e6e">2.1. Matching a regex</a></li>
+<li><a href="#org2c0b401">2.2. When the state variable cannot be avoided</a></li>
 </ul>
 </li>
-<li><a href="#org02abb05">3. Pattern 1: publish/subscribe server</a>
+<li><a href="#org152569f">3. Pattern 1: publish/subscribe server</a>
 <ul>
-<li><a href="#org1f910ba">3.1. Options for slow goroutines</a></li>
+<li><a href="#orgc720ace">3.1. Options for slow goroutines</a></li>
 </ul>
 </li>
 </ul>
@@ -59,8 +59,8 @@
 <p>
 This a personal note for the <a href="https://www.youtube.com/watch?v=IdCbMO0Ey9I">Russ Cox guest lecture</a>.
 </p>
-<div id="outline-container-org7e58120" class="outline-2">
-<h2 id="org7e58120"><span class="section-number-2">1.</span> Concurrency vs Parallelism</h2>
+<div id="outline-container-org1c33d2c" class="outline-2">
+<h2 id="org1c33d2c"><span class="section-number-2">1.</span> Concurrency vs Parallelism</h2>
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
 <li>Concurrency: write a program to handle lot of things at once
@@ -71,12 +71,12 @@ This a personal note for the <a href="https://www.youtube.com/watch?v=IdCbMO0Ey9
 </ul>
 </div>
 </div>
-<div id="outline-container-orga0d96fa" class="outline-2">
-<h2 id="orga0d96fa"><span class="section-number-2">2.</span> Use goroutines for states</h2>
+<div id="outline-container-orga651307" class="outline-2">
+<h2 id="orga651307"><span class="section-number-2">2.</span> Use goroutines for states</h2>
 <div class="outline-text-2" id="text-2">
 </div>
-<div id="outline-container-org9895021" class="outline-3">
-<h3 id="org9895021"><span class="section-number-3">2.1.</span> Matching a regex</h3>
+<div id="outline-container-org98d2e6e" class="outline-3">
+<h3 id="org98d2e6e"><span class="section-number-3">2.1.</span> Matching a regex</h3>
 <div class="outline-text-3" id="text-2-1">
 <ul class="org-ul">
 <li>return if a given string matches a regex: start with <code>"</code>, contains arbitrary escape sequence and ends with <code>*</code></li>
@@ -133,8 +133,8 @@ clear logic: store states in the code
 </ul>
 </div>
 </div>
-<div id="outline-container-org7411763" class="outline-3">
-<h3 id="org7411763"><span class="section-number-3">2.2.</span> When the state variable cannot be avoided</h3>
+<div id="outline-container-org2c0b401" class="outline-3">
+<h3 id="org2c0b401"><span class="section-number-3">2.2.</span> When the state variable cannot be avoided</h3>
 <div class="outline-text-3" id="text-2-2">
 <ul class="org-ul">
 <li><p>
@@ -236,8 +236,8 @@ use additional goroutines to hold states
 </div>
 </div>
 </div>
-<div id="outline-container-org02abb05" class="outline-2">
-<h2 id="org02abb05"><span class="section-number-2">3.</span> Pattern 1: publish/subscribe server</h2>
+<div id="outline-container-org152569f" class="outline-2">
+<h2 id="org152569f"><span class="section-number-2">3.</span> Pattern 1: publish/subscribe server</h2>
 <div class="outline-text-2" id="text-3">
 <ul class="org-ul">
 <li>the information goes one way: server -&gt; client</li>
@@ -287,8 +287,8 @@ prefer <code>defer</code> when unlocking the mutex
 </div></li>
 </ul>
 </div>
-<div id="outline-container-org1f910ba" class="outline-3">
-<h3 id="org1f910ba"><span class="section-number-3">3.1.</span> Options for slow goroutines</h3>
+<div id="outline-container-orgc720ace" class="outline-3">
+<h3 id="orgc720ace"><span class="section-number-3">3.1.</span> Options for slow goroutines</h3>
 <div class="outline-text-3" id="text-3-1">
 <ul class="org-ul">
 <li>slow down event generation</li>
@@ -408,14 +408,14 @@ convert mutexes into goroutines, not suitable for Raft where state transition is
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org7f093b0">1. What happended</a></li>
-<li><a href="#org850dd7f">2. What did I do</a></li>
-<li><a href="#org684414a">3. Another issue of running RPC in docker</a></li>
+<li><a href="#org54331e1">1. What happended</a></li>
+<li><a href="#orgcc86001">2. What did I do</a></li>
+<li><a href="#org8c78942">3. Another issue of running RPC in docker</a></li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-org7f093b0" class="outline-2">
-<h2 id="org7f093b0"><span class="section-number-2">1.</span> What happended</h2>
+<div id="outline-container-org54331e1" class="outline-2">
+<h2 id="org54331e1"><span class="section-number-2">1.</span> What happended</h2>
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
 <li>Servers SA and SB have the same docker installation, and the same running container CA and CB.</li>
@@ -430,8 +430,8 @@ fatal error: newosproc<br>
 </ul>
 </div>
 </div>
-<div id="outline-container-org850dd7f" class="outline-2">
-<h2 id="org850dd7f"><span class="section-number-2">2.</span> What did I do</h2>
+<div id="outline-container-orgcc86001" class="outline-2">
+<h2 id="orgcc86001"><span class="section-number-2">2.</span> What did I do</h2>
 <div class="outline-text-2" id="text-2">
 <ol class="org-ol">
 <li>I compared any related configurations between SA and SB. and between CA and CB, e.g., <code class="src src-bash"><span style="color: #c678dd;">ulimit</span> -a</code>, <code class="src src-bash">/etc/security/limits.conf</code>. They all look the same.</li>
@@ -448,8 +448,8 @@ fatal error: newosproc<br>
 </ol>
 </div>
 </div>
-<div id="outline-container-org684414a" class="outline-2">
-<h2 id="org684414a"><span class="section-number-2">3.</span> Another issue of running RPC in docker</h2>
+<div id="outline-container-org8c78942" class="outline-2">
+<h2 id="org8c78942"><span class="section-number-2">3.</span> Another issue of running RPC in docker</h2>
 <div class="outline-text-2" id="text-3">
 <ul class="org-ul">
 <li>The other day, I also spent hours debugging a <code>route unreachable</code> error when I want to send a request from CA to SA.</li>

@@ -41,14 +41,14 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org0bb47d5">1. Terminology</a>
+<li><a href="#orgded331c">1. Terminology</a>
 <ul>
-<li><a href="#orgf3be0b0">1.1. Motivation</a></li>
-<li><a href="#org8b07351">1.2. Blockchain paradigm</a></li>
-<li><a href="#orgf05a38c">1.3. Ethereum Transaction execution</a></li>
-<li><a href="#orgddba989">1.4. World state \(\sigma\)</a>
+<li><a href="#org759fe8d">1.1. Motivation</a></li>
+<li><a href="#org9fbd4fb">1.2. Blockchain paradigm</a></li>
+<li><a href="#orga17711a">1.3. Ethereum Transaction execution</a></li>
+<li><a href="#orga13af86">1.4. World state \(\sigma\)</a>
 <ul>
-<li><a href="#orgeaa6397">1.4.1. The account state \(\sigma[a]\)</a></li>
+<li><a href="#orgdc2478c">1.4.1. The account state \(\sigma[a]\)</a></li>
 </ul>
 </li>
 </ul>
@@ -64,8 +64,8 @@ This is a personal note of EVM, resources are from:
 <li><a href="https://chatgpt.com/g/g-TJq7kBEsX-evm-gpt">EVM GPT</a></li>
 <li><a href="https://ethereum.github.io/yellowpaper/paper.pdf">Ethereum yellowpaper: Paris version (26.06.2024)</a></li>
 </ul>
-<div id="outline-container-org0bb47d5" class="outline-2">
-<h2 id="org0bb47d5"><span class="section-number-2">1.</span> Terminology</h2>
+<div id="outline-container-orgded331c" class="outline-2">
+<h2 id="orgded331c"><span class="section-number-2">1.</span> Terminology</h2>
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
 <li>EVM: a decentralized virtual environment that executes code consistently and securely across all Ethereum nodes.</li>
@@ -85,14 +85,14 @@ This is a personal note of EVM, resources are from:
 </ul>
 
 
-<figure id="org94632f3">
+<figure id="orge113bec">
 <img src="https://ethereum.org/_next/image/?url=%2Fcontent%2Fdevelopers%2Fdocs%2Fevm%2Fevm.png&amp;w=1920&amp;q=75" alt="?url=%2Fcontent%2Fdevelopers%2Fdocs%2Fevm%2Fevm.png&amp;w=1920&amp;q=75" align="center" width="500px">
 
 <figcaption><span class="figure-number">Figure 1: </span>The EVM structure</figcaption>
 </figure>
 </div>
-<div id="outline-container-orgf3be0b0" class="outline-3">
-<h3 id="orgf3be0b0"><span class="section-number-3">1.1.</span> Motivation</h3>
+<div id="outline-container-org759fe8d" class="outline-3">
+<h3 id="org759fe8d"><span class="section-number-3">1.1.</span> Motivation</h3>
 <div class="outline-text-3" id="text-1-1">
 <ul class="org-ul">
 <li>To facilitate transactions between individuals who would otherwise have no means to trust one another.</li>
@@ -100,10 +100,10 @@ This is a personal note of EVM, resources are from:
 </ul>
 </div>
 </div>
-<div id="outline-container-org8b07351" class="outline-3">
-<h3 id="org8b07351"><span class="section-number-3">1.2.</span> Blockchain paradigm</h3>
+<div id="outline-container-org9fbd4fb" class="outline-3">
+<h3 id="org9fbd4fb"><span class="section-number-3">1.2.</span> Blockchain paradigm</h3>
 <div class="outline-text-3" id="text-1-2">
-<div class="latex" id="org30d2ef3">
+<div class="latex" id="orgc66f7da">
 \begin{aligned}
 \sigma_{t+1} & \equiv \Pi\left(\boldsymbol{\sigma}_t, B\right) \\
 B & \equiv\left(\ldots,\left(T_0, T_1, \ldots\right), \ldots\right) \\
@@ -119,8 +119,8 @@ B & \equiv\left(\ldots,\left(T_0, T_1, \ldots\right), \ldots\right) \\
 </ul>
 </div>
 </div>
-<div id="outline-container-orgf05a38c" class="outline-3">
-<h3 id="orgf05a38c"><span class="section-number-3">1.3.</span> Ethereum Transaction execution</h3>
+<div id="outline-container-orga17711a" class="outline-3">
+<h3 id="orga17711a"><span class="section-number-3">1.3.</span> Ethereum Transaction execution</h3>
 <div class="outline-text-3" id="text-1-3">
 <ol class="org-ol">
 <li>An user (externally owned accounts, EOA) signs a transaction, including the sender, receiver (the contract address), Ether value, Gas limit and Gas price.</li>
@@ -137,8 +137,8 @@ B & \equiv\left(\ldots,\left(T_0, T_1, \ldots\right), \ldots\right) \\
 </ol>
 </div>
 </div>
-<div id="outline-container-orgddba989" class="outline-3">
-<h3 id="orgddba989"><span class="section-number-3">1.4.</span> World state \(\sigma\)</h3>
+<div id="outline-container-orga13af86" class="outline-3">
+<h3 id="orga13af86"><span class="section-number-3">1.4.</span> World state \(\sigma\)</h3>
 <div class="outline-text-3" id="text-1-4">
 <ul class="org-ul">
 <li>A mapping between 160-bit addresses and account states, maintained in a modified Merkle Patricia tree (MPT), serialized as RLP, stored in a off-chain database backend.</li>
@@ -146,8 +146,8 @@ B & \equiv\left(\ldots,\left(T_0, T_1, \ldots\right), \ldots\right) \\
 <li><a href="https://media.licdn.com/dms/image/D4D12AQG2itcSOHtiKw/article-cover_image-shrink_720_1280/0/1690981109933?e=1725494400&amp;v=beta&amp;t=4e2FSROhKCs2qeGtpyb5STePXe80agLfg3G9nuD4oKc">Merkle Patricia Trie representation of state data across blocks</a></li>
 </ul>
 </div>
-<div id="outline-container-orgeaa6397" class="outline-4">
-<h4 id="orgeaa6397"><span class="section-number-4">1.4.1.</span> The account state \(\sigma[a]\)</h4>
+<div id="outline-container-orgdc2478c" class="outline-4">
+<h4 id="orgdc2478c"><span class="section-number-4">1.4.1.</span> The account state \(\sigma[a]\)</h4>
 <div class="outline-text-4" id="text-1-4-1">
 <ul class="org-ul">
 <li><code>nonce</code>: the number of transactions the address has sent, or the number of contracts the address has made.</li>

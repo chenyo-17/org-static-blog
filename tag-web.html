@@ -41,14 +41,14 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org656791a">1. Basic html structure</a></li>
-<li><a href="#org3262fb0">2. Tags</a></li>
-<li><a href="#org5318749">3. Attributes</a></li>
-<li><a href="#orgdef9f44">4. Javascript</a>
+<li><a href="#org1ddbc5e">1. Basic html structure</a></li>
+<li><a href="#org72282a2">2. Tags</a></li>
+<li><a href="#org96f782d">3. Attributes</a></li>
+<li><a href="#orgf05c8ce">4. Javascript</a>
 <ul>
-<li><a href="#org85fa9b7">4.1. Fetch from an HTML URL</a></li>
-<li><a href="#org70ba25b">4.2. Modify a DOM</a></li>
-<li><a href="#org530c075">4.3. Syntax</a></li>
+<li><a href="#org2c9507c">4.1. Fetch from an HTML URL</a></li>
+<li><a href="#org4dff14f">4.2. Modify a DOM</a></li>
+<li><a href="#org108e1e6">4.3. Syntax</a></li>
 </ul>
 </li>
 </ul>
@@ -57,8 +57,8 @@
 <p>
 This post records the basic web development knowledge I have learned in practice.
 </p>
-<div id="outline-container-org656791a" class="outline-2">
-<h2 id="org656791a"><span class="section-number-2">1.</span> Basic html structure</h2>
+<div id="outline-container-org1ddbc5e" class="outline-2">
+<h2 id="org1ddbc5e"><span class="section-number-2">1.</span> Basic html structure</h2>
 <div class="outline-text-2" id="text-1">
 <div class="org-src-container">
 <pre class="src src-html">&lt;<span style="color: #51afef;">!DOCTYPE</span> html&gt;
@@ -108,8 +108,8 @@ This post records the basic web development knowledge I have learned in practice
 </div>
 </div>
 </div>
-<div id="outline-container-org3262fb0" class="outline-2">
-<h2 id="org3262fb0"><span class="section-number-2">2.</span> Tags</h2>
+<div id="outline-container-org72282a2" class="outline-2">
+<h2 id="org72282a2"><span class="section-number-2">2.</span> Tags</h2>
 <div class="outline-text-2" id="text-2">
 <ul class="org-ul">
 <li><code class="src src-html">&lt;<span style="color: #c678dd;">a</span>&gt;</code>: contain links; have following attributes:
@@ -122,8 +122,8 @@ This post records the basic web development knowledge I have learned in practice
 </ul>
 </div>
 </div>
-<div id="outline-container-org5318749" class="outline-2">
-<h2 id="org5318749"><span class="section-number-2">3.</span> Attributes</h2>
+<div id="outline-container-org96f782d" class="outline-2">
+<h2 id="org96f782d"><span class="section-number-2">3.</span> Attributes</h2>
 <div class="outline-text-2" id="text-3">
 <ul class="org-ul">
 <li><code class="src src-html"><span style="color: #dcaeea;">id</span>="home"</code>:
@@ -133,12 +133,12 @@ This post records the basic web development knowledge I have learned in practice
 </ul>
 </div>
 </div>
-<div id="outline-container-orgdef9f44" class="outline-2">
-<h2 id="orgdef9f44"><span class="section-number-2">4.</span> Javascript</h2>
+<div id="outline-container-orgf05c8ce" class="outline-2">
+<h2 id="orgf05c8ce"><span class="section-number-2">4.</span> Javascript</h2>
 <div class="outline-text-2" id="text-4">
 </div>
-<div id="outline-container-org85fa9b7" class="outline-3">
-<h3 id="org85fa9b7"><span class="section-number-3">4.1.</span> Fetch from an HTML URL</h3>
+<div id="outline-container-org2c9507c" class="outline-3">
+<h3 id="org2c9507c"><span class="section-number-3">4.1.</span> Fetch from an HTML URL</h3>
 <div class="outline-text-3" id="text-4-1">
 <ol class="org-ol">
 <li><code class="src src-js"><span style="color: #51afef;">await</span> fetch(url)</code>: returns a <code class="src src-js">Response</code> object.
@@ -155,16 +155,16 @@ This post records the basic web development knowledge I have learned in practice
 </ol>
 </div>
 </div>
-<div id="outline-container-org70ba25b" class="outline-3">
-<h3 id="org70ba25b"><span class="section-number-3">4.2.</span> Modify a DOM</h3>
+<div id="outline-container-org4dff14f" class="outline-3">
+<h3 id="org4dff14f"><span class="section-number-3">4.2.</span> Modify a DOM</h3>
 <div class="outline-text-3" id="text-4-2">
 <ul class="org-ul">
 <li><code class="src src-js">content.querySelector(<span style="color: #98be65;">".taglist"</span>).remove()</code>: removes the element from the DOM, i.e., it modifies <code class="src src-js">content</code>.</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org530c075" class="outline-3">
-<h3 id="org530c075"><span class="section-number-3">4.3.</span> Syntax</h3>
+<div id="outline-container-org108e1e6" class="outline-3">
+<h3 id="org108e1e6"><span class="section-number-3">4.3.</span> Syntax</h3>
 <div class="outline-text-3" id="text-4-3">
 <ul class="org-ul">
 <li><code class="src src-js"><span style="color: #51afef;">const</span> <span style="color: #dcaeea;">escapedQuery</span> = query.replace(<span style="color: #98be65;">/[.*+?^${}()|[\]\\]/</span>g, <span style="color: #98be65;">"\\$&amp;"</span>)</code>: add a backslash to any special character in the query; <code>$&amp;</code> is a special pattern used in Javascript&rsquo;s <code class="src src-js">replacement</code> method.</li>
@@ -178,21 +178,21 @@ This post records the basic web development knowledge I have learned in practice
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org492def5">1. Router</a></li>
-<li><a href="#org5fdff10">2. Link</a></li>
-<li><a href="#org36d198e">3. Workshop 3</a>
+<li><a href="#orgd65c560">1. Router</a></li>
+<li><a href="#org6a48dda">2. Link</a></li>
+<li><a href="#orgcbf2ab4">3. Workshop 3</a>
 <ul>
-<li><a href="#org442934d">3.1. Structure</a></li>
-<li><a href="#org70a4cf5">3.2. States</a></li>
-<li><a href="#org5970791">3.3. Props</a></li>
-<li><a href="#org8b3289a">3.4. Why passing down the update function in props 1, 4, 6?</a></li>
+<li><a href="#orge01c1aa">3.1. Structure</a></li>
+<li><a href="#org9bf22d6">3.2. States</a></li>
+<li><a href="#orgdd04f10">3.3. Props</a></li>
+<li><a href="#org3e5e356">3.4. Why passing down the update function in props 1, 4, 6?</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-org492def5" class="outline-2">
-<h2 id="org492def5"><span class="section-number-2">1.</span> Router</h2>
+<div id="outline-container-orgd65c560" class="outline-2">
+<h2 id="orgd65c560"><span class="section-number-2">1.</span> Router</h2>
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
 <li>use the Reach <a href="https://reach.tech/router/">Reach Router</a> library</li>
@@ -214,8 +214,8 @@ URL -&gt; Router -&gt; render different components
 </ul>
 </div>
 </div>
-<div id="outline-container-org5fdff10" class="outline-2">
-<h2 id="org5fdff10"><span class="section-number-2">2.</span> Link</h2>
+<div id="outline-container-org6a48dda" class="outline-2">
+<h2 id="org6a48dda"><span class="section-number-2">2.</span> Link</h2>
 <div class="outline-text-2" id="text-2">
 <ul class="org-ul">
 <li>relative: <code class="src src-js">&lt;Link to=<span style="color: #98be65;">"newpage"</span>&gt;Click me&lt;/Link&gt;</code></li>
@@ -223,23 +223,23 @@ URL -&gt; Router -&gt; render different components
 </ul>
 </div>
 </div>
-<div id="outline-container-org36d198e" class="outline-2">
-<h2 id="org36d198e"><span class="section-number-2">3.</span> Workshop 3</h2>
+<div id="outline-container-orgcbf2ab4" class="outline-2">
+<h2 id="orgcbf2ab4"><span class="section-number-2">3.</span> Workshop 3</h2>
 <div class="outline-text-2" id="text-3">
 </div>
-<div id="outline-container-org442934d" class="outline-3">
-<h3 id="org442934d"><span class="section-number-3">3.1.</span> Structure</h3>
+<div id="outline-container-orge01c1aa" class="outline-3">
+<h3 id="orge01c1aa"><span class="section-number-3">3.1.</span> Structure</h3>
 <div class="outline-text-3" id="text-3-1">
 
-<figure id="org97029c7">
+<figure id="org5976f5a">
 <img src="./static/workshop-3-structure.png" alt="workshop-3-structure.png" align="center" width="600px">
 
 <figcaption><span class="figure-number">Figure 1: </span>The Catbook structure in workshop 3</figcaption>
 </figure>
 </div>
 </div>
-<div id="outline-container-org70a4cf5" class="outline-3">
-<h3 id="org70a4cf5"><span class="section-number-3">3.2.</span> States</h3>
+<div id="outline-container-org9bf22d6" class="outline-3">
+<h3 id="org9bf22d6"><span class="section-number-3">3.2.</span> States</h3>
 <div class="outline-text-3" id="text-3-2">
 <table>
 
@@ -271,8 +271,8 @@ URL -&gt; Router -&gt; render different components
 </table>
 </div>
 </div>
-<div id="outline-container-org5970791" class="outline-3">
-<h3 id="org5970791"><span class="section-number-3">3.3.</span> Props</h3>
+<div id="outline-container-orgdd04f10" class="outline-3">
+<h3 id="orgdd04f10"><span class="section-number-3">3.3.</span> Props</h3>
 <div class="outline-text-3" id="text-3-3">
 <table>
 
@@ -324,8 +324,8 @@ URL -&gt; Router -&gt; render different components
 </table>
 </div>
 </div>
-<div id="outline-container-org8b3289a" class="outline-3">
-<h3 id="org8b3289a"><span class="section-number-3">3.4.</span> Why passing down the update function in props 1, 4, 6?</h3>
+<div id="outline-container-org3e5e356" class="outline-3">
+<h3 id="org3e5e356"><span class="section-number-3">3.4.</span> Why passing down the update function in props 1, 4, 6?</h3>
 <div class="outline-text-3" id="text-3-4">
 <ul class="org-ul">
 <li>To share the parent states, i.e., <code>stories</code> and <code>comments</code> to child component. Since the post action happens in the child component, we need a way to automatically update the states to see new contents immediately.</li>
@@ -339,34 +339,34 @@ URL -&gt; Router -&gt; render different components
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgf757b9a">1. What is a React hook</a>
+<li><a href="#org915331c">1. What is a React hook</a>
 <ul>
-<li><a href="#org47ece2b">1.1. <code>useState</code> is not enough</a></li>
-<li><a href="#org5181aae">1.2. <code>useEffect</code> runs after specific variable change</a></li>
+<li><a href="#org52d8924">1.1. <code>useState</code> is not enough</a></li>
+<li><a href="#orgb8767ef">1.2. <code>useEffect</code> runs after specific variable change</a></li>
 </ul>
 </li>
-<li><a href="#orgbd46748">2. React hook patterns</a>
+<li><a href="#org29c63d5">2. React hook patterns</a>
 <ul>
-<li><a href="#org1e849d1">2.1. Fetch and send data</a></li>
-<li><a href="#org4f863fb">2.2. Conditional rendering</a></li>
-<li><a href="#orgaadf161">2.3. Render an array of Data</a></li>
+<li><a href="#org723e882">2.1. Fetch and send data</a></li>
+<li><a href="#org8e42c9c">2.2. Conditional rendering</a></li>
+<li><a href="#org2d8bd1d">2.3. Render an array of Data</a></li>
 </ul>
 </li>
-<li><a href="#orgabef526">3. Example: Stopwatch</a></li>
-<li><a href="#org76a4e33">4. DOM and component mounting</a></li>
+<li><a href="#org927a626">3. Example: Stopwatch</a></li>
+<li><a href="#org12cbcee">4. DOM and component mounting</a></li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-orgf757b9a" class="outline-2">
-<h2 id="orgf757b9a"><span class="section-number-2">1.</span> What is a React hook</h2>
+<div id="outline-container-org915331c" class="outline-2">
+<h2 id="org915331c"><span class="section-number-2">1.</span> What is a React hook</h2>
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
 <li>Special functions to access parts of the component lifestyle.</li>
 <li>e.g., <code>useState</code></li>
 </ul>
 </div>
-<div id="outline-container-org47ece2b" class="outline-3">
-<h3 id="org47ece2b"><span class="section-number-3">1.1.</span> <code>useState</code> is not enough</h3>
+<div id="outline-container-org52d8924" class="outline-3">
+<h3 id="org52d8924"><span class="section-number-3">1.1.</span> <code>useState</code> is not enough</h3>
 <div class="outline-text-3" id="text-1-1">
 <div class="org-src-container">
 <pre class="src src-js"><span class="linenr">1: </span><span style="color: #51afef;">const</span> [<span style="color: #dcaeea;">persons</span>, <span style="color: #dcaeea;">setPersons</span>] = useState([]);
@@ -385,8 +385,8 @@ URL -&gt; Router -&gt; render different components
 </ul>
 </div>
 </div>
-<div id="outline-container-org5181aae" class="outline-3">
-<h3 id="org5181aae"><span class="section-number-3">1.2.</span> <code>useEffect</code> runs after specific variable change</h3>
+<div id="outline-container-orgb8767ef" class="outline-3">
+<h3 id="orgb8767ef"><span class="section-number-3">1.2.</span> <code>useEffect</code> runs after specific variable change</h3>
 <div class="outline-text-3" id="text-1-2">
 <div class="org-src-container">
 <pre class="src src-js"><span class="linenr">1: </span>useEffect(() =&gt; {
@@ -414,12 +414,12 @@ URL -&gt; Router -&gt; render different components
 </div>
 </div>
 </div>
-<div id="outline-container-orgbd46748" class="outline-2">
-<h2 id="orgbd46748"><span class="section-number-2">2.</span> React hook patterns</h2>
+<div id="outline-container-org29c63d5" class="outline-2">
+<h2 id="org29c63d5"><span class="section-number-2">2.</span> React hook patterns</h2>
 <div class="outline-text-2" id="text-2">
 </div>
-<div id="outline-container-org1e849d1" class="outline-3">
-<h3 id="org1e849d1"><span class="section-number-3">2.1.</span> Fetch and send data</h3>
+<div id="outline-container-org723e882" class="outline-3">
+<h3 id="org723e882"><span class="section-number-3">2.1.</span> Fetch and send data</h3>
 <div class="outline-text-3" id="text-2-1">
 <div class="org-src-container">
 <pre class="src src-js"><span class="linenr">1: </span><span style="color: #5B6268;">/* </span><span style="color: #5B6268;">fetch data on mount</span><span style="color: #5B6268;"> */</span>
@@ -444,8 +444,8 @@ URL -&gt; Router -&gt; render different components
 </div>
 </div>
 </div>
-<div id="outline-container-org4f863fb" class="outline-3">
-<h3 id="org4f863fb"><span class="section-number-3">2.2.</span> Conditional rendering</h3>
+<div id="outline-container-org8e42c9c" class="outline-3">
+<h3 id="org8e42c9c"><span class="section-number-3">2.2.</span> Conditional rendering</h3>
 <div class="outline-text-3" id="text-2-2">
 <div class="org-src-container">
 <pre class="src src-js"><span class="linenr">1: </span><span style="color: #5B6268;">// </span><span style="color: #5B6268;">JSX is a way of writing HTML in js</span>
@@ -460,8 +460,8 @@ URL -&gt; Router -&gt; render different components
 </div>
 </div>
 </div>
-<div id="outline-container-orgaadf161" class="outline-3">
-<h3 id="orgaadf161"><span class="section-number-3">2.3.</span> Render an array of Data</h3>
+<div id="outline-container-org2d8bd1d" class="outline-3">
+<h3 id="org2d8bd1d"><span class="section-number-3">2.3.</span> Render an array of Data</h3>
 <div class="outline-text-3" id="text-2-3">
 <div class="org-src-container">
 <pre class="src src-js"><span class="linenr">1: </span><span style="color: #51afef;">const</span> <span style="color: #dcaeea;">data</span> = [
@@ -480,8 +480,8 @@ URL -&gt; Router -&gt; render different components
 </div>
 </div>
 </div>
-<div id="outline-container-orgabef526" class="outline-2">
-<h2 id="orgabef526"><span class="section-number-2">3.</span> Example: Stopwatch</h2>
+<div id="outline-container-org927a626" class="outline-2">
+<h2 id="org927a626"><span class="section-number-2">3.</span> Example: Stopwatch</h2>
 <div class="outline-text-2" id="text-3">
 <div class="org-src-container">
 <pre class="src src-js"><span class="linenr"> 1: </span><span style="color: #51afef;">const</span> <span style="color: #dcaeea;">Stopwatch</span> = () =&gt; {
@@ -502,8 +502,8 @@ URL -&gt; Router -&gt; render different components
 </div>
 </div>
 </div>
-<div id="outline-container-org76a4e33" class="outline-2">
-<h2 id="org76a4e33"><span class="section-number-2">4.</span> DOM and component mounting</h2>
+<div id="outline-container-org12cbcee" class="outline-2">
+<h2 id="org12cbcee"><span class="section-number-2">4.</span> DOM and component mounting</h2>
 <div class="outline-text-2" id="text-4">
 <ul class="org-ul">
 <li>DOM (Document Object Model): a programming interface for web documents; represents the structure of a document, e.g., HTML, as a tree of objects, where each object corresponds to a part of the document; it dynamically updates the document contents

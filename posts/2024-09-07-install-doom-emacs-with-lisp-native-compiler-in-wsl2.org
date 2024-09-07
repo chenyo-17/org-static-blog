@@ -1,0 +1,175 @@
+#+title: Install Doom Emacs with Lisp native compilation in WSL2
+#+date: <2024-09-07 12:38>
+#+description: This post records how to install doom emacs in WSL2
+#+filetags: linux emacs tool
+
+Today I installed Doom Emacs for my husband on his WSL2.
+Although the entire process was guided by Claude, there were some back-and-forth during the interaction.
+Therefore I would like to record the full commands I have used here in sequence for any potential reference.
+
+* Assumptions
+This installation guide assumes a fresh installation of WSL2 Ubuntu 22.04 on Windows 11 in 2024 September.
+
+* Install prerequisite packages
+According to the Doom Emacs [[https://github.com/doomemacs/doomemacs#prerequisites][documentation]], the following packages are recommended:
+- Git 2.23+: this is already installed by default.
+- Emacs 29.4 with [[https://www.emacswiki.org/emacs/GccEmacs][Lisp native compilation]]: this is finicky and will be elaborated later.
+- ripgrep 14.0+: the documentation says 11.0+ suffices, but ~doom doctor~ still complains the latest version (13.0) installed from ~apt~ is not advanced, so we need to install it from its Github released package later.
+- GNU find: also installed already.
+- fd: ~sudo apt install fd-find~ suffices.
+
+* Install Emacs 29.4
+** Before building
+First, let's install some build dependencies:
+
+#+begin_src bash
+sudo apt update
+sudo apt upgrade  # update packages
+sudo apt install build-essential libjansson4 libjansson-dev \
+    libgnutls28-dev libtree-sitter-dev libsqlite3-dev
+sudo apt install texinfo  # to generate documentation
+#+end_src
+
+~build-essnetial~ should install necessary tools to build C/C++ programs such as gcc, g++, make, gdb and dpkg.
+The rest packages install pre-compiled libraries.
+
+Besides these packages, there are two important packages to support List native compilation:
+
+#+begin_src bash
+sudo apt install ibgccjit0 libgccjit-11-dev  # 11 is my gcc version
+#+end_src
+
+After installing them, make sure to export the path in the current session, otherwise the compiler will not realize it.
+
+#+begin_src bash
+export LD_LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/11:$LD_LIBRARY_PATH
+#+end_src
+
+The last thing to do is install a bunch of X and GTK-3 development libraries for Emacs GUI, and another bunch of image processing libraries.
+
+#+begin_src bash
+sudo apt install libx11-dev libtiff-dev libgtk-3-dev libncurses-dev
+sudo apt install libtiff5-dev libgif-dev libjpeg-dev libpng-dev libxpm-dev
+#+end_src
+
+Without the above packages, one may encounter the following error when configuring the Emacs build:
+
+#+begin_quote
+You seem to be running X, but no X development libraries
+were found.  You should install the relevant development files for X
+and for the toolkit you want, such as Gtk+ or Motif. Also make
+sure you have development files for image handling, i.e.
+tiff, gif, jpeg, png and xpm.
+#+end_quote
+
+** Build Emacs 29.4 with native-comp
+At this moment, we can start to download Emacs source code:
+
+#+begin_src bash
+wget https://ftp.gnu.org/gnu/emacs/emacs-29.4.tar.xz
+tar xvf emacs-29.4.tar.xz
+cd emacs-29.4
+#+end_src
+
+Then we can configure the build (i.e., generate Makefile) with the following command.
+
+#+begin_src bash
+./configure --with-native-compilation --with-x-toolkit=gtk3 --without-pop
+#+end_src
+
+- ~--with-native-compilation~: with this flag the Emacs source code is compiled to native machine code to achieve better performance.
+  - Otherwise it is compiled to bytecode and then interpreted by Emacs virtual machine during runtime.
+- ~--with-x-toolkit=gtk3~: this is recommended by Claude.
+- ~--without-pop~: if we are not using Emacs as the email client, we don't need to bother configure the protocol.
+
+If everything goes well, one should see the following line in the output.
+If not, make sure ~libgccjit~ has been installed and exported.
+
+#+begin_quote
+Does Emacs have native lisp compiler? yes
+#+end_quote
+
+Now we can finally start compiling the Emacs:
+
+#+begin_src bash
+make -j$(nproc)
+#+end_src
+
+If some error occurs, we may want to start again, to do this:
+
+#+begin_src bash
+sudo apt install autoconf automake
+rm -f Makefile
+./autogen.sh  # regenerate the configuration file
+# then rebuild
+make -j$(nproc)
+#+end_src
+
+Finally, install Emacs globally:
+
+#+begin_src bash
+sudo make install
+#+end_src
+
+To confirm the Emacs indeed used the native Lisp compiler, one can evaluate inside the vanilla Emacs with ~M-:~ (~M~ is ~Alt~ in WSL2):
+
+#+begin_src lisp
+(native-comp-available-p) ;; should return t
+#+end_src
+
+Congratulations! You have now installed the latest and fastest Emacs on WSL2.
+
+* Install ~ripgrep~
+As mentioned in ripgrep [[https://github.com/BurntSushi/ripgrep?tab=readme-ov-file#installation][documentation]], for Debian/Ubuntu users, one should
+install the latest ripgrep 14.0+ with the following commands.
+
+#+begin_src bash
+curl -LO https://github.com/BurntSushi/ripgrep/releases/download/14.1.0/ripgrep_14.1.0-1_amd64.deb  # check the latest version on its documentation
+sudo dpkg -i ripgrep_14.1.0-1_amd64.deb  # dpkg has been installed before
+#+end_src
+
+Instead, if one installs it with ~apt~, a 13.0+ version is installed and running ~doom doctor~ later returns the warning:
+
+#+BEGIN_QUOTE
+The installed ripgrep binary was not built with support for PCRE lookaheads.
+#+END_QUOTE
+
+* Install Doom Emacs
+Installing Doom Emacs is straightforward, but before that, one should first remove the default Emacs configuration folder:
+
+#+begin_src bash
+rm -rf ~/.emacs.d
+#+end_src
+
+Then, clone and install Doom Emacs, it could take a while.
+
+#+begin_src bash
+git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.config/emacs
+~/.config/emacs/bin/doom install
+#+end_src
+
+Don't forget to export ~~/.config/emacs/bin~ to ~PATH~:
+
+#+begin_src bash
+echo 'export PATH="$HOME/.config/emacs/bin:$PATH"' >> ~/.bashrc
+source ~/.bashrc
+#+end_src
+
+Now one can run ~doom doctor~ to check any missing dependencies, e.g., ~shellcheck~.
+One common issue is the Nerd font is not installed by default so that some icons are not properly displayed.
+To fix that, run ~M-x nerd-icons-install-font~ inside the Emacs, then update the font cache with:
+
+#+begin_src bash
+fc-cache -fv
+# fc-list | grep Nerd  # to verify the font is installed
+#+end_src
+
+* Some issues with running Emacs in WSL2
+- The first thing is I cannot reload the configuration with ~M-x doom/reload~ as running this command always gives me the following error message so that I need to restart the Emacs every time the configuration is changed.
+
+  #+begin_quote
+  %s sync -B -e
+  /bin/bash: line 1: fg: no job control
+  #+end_quote
+
+- I really dislike the [[https://www.reddit.com/r/wsl2/comments/16b4skx/wsl_softwares_with_white_window_borders/][white border]] that surrounds any application launched by WSL!

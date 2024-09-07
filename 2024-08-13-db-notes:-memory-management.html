@@ -41,52 +41,52 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org782fc12">1. Goals</a></li>
-<li><a href="#org7a83244">2. Locks &amp; Latches</a>
+<li><a href="#orgc61227e">1. Goals</a></li>
+<li><a href="#org77a0101">2. Locks &amp; Latches</a>
 <ul>
-<li><a href="#orgdb78914">2.1. Locks</a></li>
-<li><a href="#org5fb73d2">2.2. Latches</a></li>
+<li><a href="#org3795c4d">2.1. Locks</a></li>
+<li><a href="#orgd6fc397">2.2. Latches</a></li>
 </ul>
 </li>
-<li><a href="#org2d2f6e7">3. Buffer pool</a>
+<li><a href="#org1c76dc5">3. Buffer pool</a>
 <ul>
-<li><a href="#org7a44495">3.1. Metadata</a></li>
-<li><a href="#org184b0be">3.2. Memory allocation policies</a></li>
+<li><a href="#orgb852292">3.1. Metadata</a></li>
+<li><a href="#org56af867">3.2. Memory allocation policies</a></li>
 </ul>
 </li>
-<li><a href="#org09f1392">4. Buffer pool optimizations</a>
+<li><a href="#org42624b4">4. Buffer pool optimizations</a>
 <ul>
-<li><a href="#org05d905c">4.1. Multiple buffer pools</a></li>
-<li><a href="#org7f0e15f">4.2. Pre-fetching</a></li>
-<li><a href="#org71cf1c3">4.3. Scan sharing</a></li>
-<li><a href="#org6c17ecb">4.4. Buffer pool bypass</a></li>
+<li><a href="#org89a77cd">4.1. Multiple buffer pools</a></li>
+<li><a href="#org1b51ad8">4.2. Pre-fetching</a></li>
+<li><a href="#org9ba5688">4.3. Scan sharing</a></li>
+<li><a href="#org16ef737">4.4. Buffer pool bypass</a></li>
 </ul>
 </li>
-<li><a href="#org9758089">5. Buffer replacement policies</a>
+<li><a href="#orged8eb82">5. Buffer replacement policies</a>
 <ul>
-<li><a href="#org5e99945">5.1. Least recently used (LRU)</a></li>
-<li><a href="#orgd6e313b">5.2. Clock</a></li>
-<li><a href="#orgc83ef3b">5.3. LRU-K</a>
+<li><a href="#org590934d">5.1. Least recently used (LRU)</a></li>
+<li><a href="#org52e108c">5.2. Clock</a></li>
+<li><a href="#org94bdb0b">5.3. LRU-K</a>
 <ul>
-<li><a href="#orgc699ae5">5.3.1. MySQL approximate LRU-K</a></li>
+<li><a href="#org4f28a16">5.3.1. MySQL approximate LRU-K</a></li>
 </ul>
 </li>
-<li><a href="#orgaa1f83d">5.4. Localization</a></li>
-<li><a href="#org803c4a2">5.5. Priority hint</a></li>
-<li><a href="#org761ae22">5.6. Dirty pages</a></li>
+<li><a href="#org5827e39">5.4. Localization</a></li>
+<li><a href="#orga34bca6">5.5. Priority hint</a></li>
+<li><a href="#org0dcf881">5.6. Dirty pages</a></li>
 </ul>
 </li>
-<li><a href="#orgd1487ae">6. Other memory pools</a></li>
-<li><a href="#orgf69c73c">7. OS cache bypass</a></li>
-<li><a href="#orgd3e2933">8. I/O scheduling</a></li>
+<li><a href="#orgba285d4">6. Other memory pools</a></li>
+<li><a href="#orgfc788e7">7. OS cache bypass</a></li>
+<li><a href="#orgf8c985d">8. I/O scheduling</a></li>
 </ul>
 </div>
 </nav>
 <p>
 This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall2023/notes/06-bufferpool.pdf">CMU 15-445 L6 notes</a> as well as some explanation from Claude.ai.
 </p>
-<div id="outline-container-org782fc12" class="outline-2">
-<h2 id="org782fc12"><span class="section-number-2">1.</span> Goals</h2>
+<div id="outline-container-orgc61227e" class="outline-2">
+<h2 id="orgc61227e"><span class="section-number-2">1.</span> Goals</h2>
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
 <li>Manage DBMS memory and move data between the memory and the disk, such that the execution engine does no worry about the data fetching.</li>
@@ -95,15 +95,15 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul>
 </div>
 </div>
-<div id="outline-container-org7a83244" class="outline-2">
-<h2 id="org7a83244"><span class="section-number-2">2.</span> Locks &amp; Latches</h2>
+<div id="outline-container-org77a0101" class="outline-2">
+<h2 id="org77a0101"><span class="section-number-2">2.</span> Locks &amp; Latches</h2>
 <div class="outline-text-2" id="text-2">
 <ul class="org-ul">
 <li>Both used to protect internal elements.</li>
 </ul>
 </div>
-<div id="outline-container-orgdb78914" class="outline-3">
-<h3 id="orgdb78914"><span class="section-number-3">2.1.</span> Locks</h3>
+<div id="outline-container-org3795c4d" class="outline-3">
+<h3 id="org3795c4d"><span class="section-number-3">2.1.</span> Locks</h3>
 <div class="outline-text-3" id="text-2-1">
 <ul class="org-ul">
 <li>A high-level logical primitive to allow for transaction atomicity.</li>
@@ -112,8 +112,8 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul>
 </div>
 </div>
-<div id="outline-container-org5fb73d2" class="outline-3">
-<h3 id="org5fb73d2"><span class="section-number-3">2.2.</span> Latches</h3>
+<div id="outline-container-orgd6fc397" class="outline-3">
+<h3 id="orgd6fc397"><span class="section-number-3">2.2.</span> Latches</h3>
 <div class="outline-text-3" id="text-2-2">
 <ul class="org-ul">
 <li>A low-level protection primitive a DBMS uses in its internal data structures, e.g., hash tables.</li>
@@ -123,8 +123,8 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </div>
 </div>
 </div>
-<div id="outline-container-org2d2f6e7" class="outline-2">
-<h2 id="org2d2f6e7"><span class="section-number-2">3.</span> Buffer pool</h2>
+<div id="outline-container-org1c76dc5" class="outline-2">
+<h2 id="org1c76dc5"><span class="section-number-2">3.</span> Buffer pool</h2>
 <div class="outline-text-2" id="text-3">
 <ul class="org-ul">
 <li>An in-memory cache of pages read from the disk.</li>
@@ -133,8 +133,8 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 <li>Dirty pages (i.e., modified pages) are buffered rather than writing back immediately.</li>
 </ul>
 </div>
-<div id="outline-container-org7a44495" class="outline-3">
-<h3 id="org7a44495"><span class="section-number-3">3.1.</span> Metadata</h3>
+<div id="outline-container-orgb852292" class="outline-3">
+<h3 id="orgb852292"><span class="section-number-3">3.1.</span> Metadata</h3>
 <div class="outline-text-3" id="text-3-1">
 <ul class="org-ul">
 <li>Page table: An in-memory hash mapping page ids to frame locations in the buffer pool.</li>
@@ -143,8 +143,8 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul>
 </div>
 </div>
-<div id="outline-container-org184b0be" class="outline-3">
-<h3 id="org184b0be"><span class="section-number-3">3.2.</span> Memory allocation policies</h3>
+<div id="outline-container-org56af867" class="outline-3">
+<h3 id="org56af867"><span class="section-number-3">3.2.</span> Memory allocation policies</h3>
 <div class="outline-text-3" id="text-3-2">
 <ul class="org-ul">
 <li>The buffer pool decides when to allocate a frame for a page.</li>
@@ -154,12 +154,12 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </div>
 </div>
 </div>
-<div id="outline-container-org09f1392" class="outline-2">
-<h2 id="org09f1392"><span class="section-number-2">4.</span> Buffer pool optimizations</h2>
+<div id="outline-container-org42624b4" class="outline-2">
+<h2 id="org42624b4"><span class="section-number-2">4.</span> Buffer pool optimizations</h2>
 <div class="outline-text-2" id="text-4">
 </div>
-<div id="outline-container-org05d905c" class="outline-3">
-<h3 id="org05d905c"><span class="section-number-3">4.1.</span> Multiple buffer pools</h3>
+<div id="outline-container-org89a77cd" class="outline-3">
+<h3 id="org89a77cd"><span class="section-number-3">4.1.</span> Multiple buffer pools</h3>
 <div class="outline-text-3" id="text-4-1">
 <ul class="org-ul">
 <li>Each database or page can have its own buffer pool and adopts local policies to reduce latch contention.</li>
@@ -171,8 +171,8 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul>
 </div>
 </div>
-<div id="outline-container-org7f0e15f" class="outline-3">
-<h3 id="org7f0e15f"><span class="section-number-3">4.2.</span> Pre-fetching</h3>
+<div id="outline-container-org1b51ad8" class="outline-3">
+<h3 id="org1b51ad8"><span class="section-number-3">4.2.</span> Pre-fetching</h3>
 <div class="outline-text-3" id="text-4-2">
 <ul class="org-ul">
 <li>While the first set of pages is being processed, the DBMS can pre-fetch the second set into the buffer pool based on the dependency between pages.
@@ -182,8 +182,8 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul>
 </div>
 </div>
-<div id="outline-container-org71cf1c3" class="outline-3">
-<h3 id="org71cf1c3"><span class="section-number-3">4.3.</span> Scan sharing</h3>
+<div id="outline-container-org9ba5688" class="outline-3">
+<h3 id="org9ba5688"><span class="section-number-3">4.3.</span> Scan sharing</h3>
 <div class="outline-text-3" id="text-4-3">
 <ul class="org-ul">
 <li>Query cursors can reuse retrieved data.</li>
@@ -192,8 +192,8 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul>
 </div>
 </div>
-<div id="outline-container-org6c17ecb" class="outline-3">
-<h3 id="org6c17ecb"><span class="section-number-3">4.4.</span> Buffer pool bypass</h3>
+<div id="outline-container-org16ef737" class="outline-3">
+<h3 id="org16ef737"><span class="section-number-3">4.4.</span> Buffer pool bypass</h3>
 <div class="outline-text-3" id="text-4-4">
 <ul class="org-ul">
 <li>Scanned pages do not have to be stored in the buffer pool to avoid the overhead.</li>
@@ -202,15 +202,15 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </div>
 </div>
 </div>
-<div id="outline-container-org9758089" class="outline-2">
-<h2 id="org9758089"><span class="section-number-2">5.</span> Buffer replacement policies</h2>
+<div id="outline-container-orged8eb82" class="outline-2">
+<h2 id="orged8eb82"><span class="section-number-2">5.</span> Buffer replacement policies</h2>
 <div class="outline-text-2" id="text-5">
 <ul class="org-ul">
 <li>The DBMS decides which page to evict from the buffer pool to free up a frame.</li>
 </ul>
 </div>
-<div id="outline-container-org5e99945" class="outline-3">
-<h3 id="org5e99945"><span class="section-number-3">5.1.</span> Least recently used (LRU)</h3>
+<div id="outline-container-org590934d" class="outline-3">
+<h3 id="org590934d"><span class="section-number-3">5.1.</span> Least recently used (LRU)</h3>
 <div class="outline-text-3" id="text-5-1">
 <ul class="org-ul">
 <li>LRU maintains a timestamp of when each page was last accessed, and evicts the page with the oldest timestamp.
@@ -224,8 +224,8 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul>
 </div>
 </div>
-<div id="outline-container-orgd6e313b" class="outline-3">
-<h3 id="orgd6e313b"><span class="section-number-3">5.2.</span> Clock</h3>
+<div id="outline-container-org52e108c" class="outline-3">
+<h3 id="org52e108c"><span class="section-number-3">5.2.</span> Clock</h3>
 <div class="outline-text-3" id="text-5-2">
 <ul class="org-ul">
 <li>An approximation of LRU but replace the timestamp with a reference bit which is set to 1 when a page is accessed.</li>
@@ -233,15 +233,15 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul>
 </div>
 </div>
-<div id="outline-container-orgc83ef3b" class="outline-3">
-<h3 id="orgc83ef3b"><span class="section-number-3">5.3.</span> LRU-K</h3>
+<div id="outline-container-org94bdb0b" class="outline-3">
+<h3 id="org94bdb0b"><span class="section-number-3">5.3.</span> LRU-K</h3>
 <div class="outline-text-3" id="text-5-3">
 <ul class="org-ul">
 <li>Tracks the last K accessed timestamps to predict the next accessed time, hence avoid the sequential flooding issue.</li>
 </ul>
 </div>
-<div id="outline-container-orgc699ae5" class="outline-4">
-<h4 id="orgc699ae5"><span class="section-number-4">5.3.1.</span> MySQL approximate LRU-K</h4>
+<div id="outline-container-org4f28a16" class="outline-4">
+<h4 id="org4f28a16"><span class="section-number-4">5.3.1.</span> MySQL approximate LRU-K</h4>
 <div class="outline-text-4" id="text-5-3-1">
 <ul class="org-ul">
 <li>Use a linked list with two entry points: &ldquo;old&rdquo; and &ldquo;young&rdquo;.</li>
@@ -251,8 +251,8 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </div>
 </div>
 </div>
-<div id="outline-container-orgaa1f83d" class="outline-3">
-<h3 id="orgaa1f83d"><span class="section-number-3">5.4.</span> Localization</h3>
+<div id="outline-container-org5827e39" class="outline-3">
+<h3 id="org5827e39"><span class="section-number-3">5.4.</span> Localization</h3>
 <div class="outline-text-3" id="text-5-4">
 <ul class="org-ul">
 <li>Instead of using a global replacement policy, the DBMS make eviction decisions based on each query.</li>
@@ -261,16 +261,16 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul>
 </div>
 </div>
-<div id="outline-container-org803c4a2" class="outline-3">
-<h3 id="org803c4a2"><span class="section-number-3">5.5.</span> Priority hint</h3>
+<div id="outline-container-orga34bca6" class="outline-3">
+<h3 id="orga34bca6"><span class="section-number-3">5.5.</span> Priority hint</h3>
 <div class="outline-text-3" id="text-5-5">
 <ul class="org-ul">
 <li>Transactions tell the buffer pool where pages are important based on the <b><b>context</b></b> of each page.</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org761ae22" class="outline-3">
-<h3 id="org761ae22"><span class="section-number-3">5.6.</span> Dirty pages</h3>
+<div id="outline-container-org0dcf881" class="outline-3">
+<h3 id="org0dcf881"><span class="section-number-3">5.6.</span> Dirty pages</h3>
 <div class="outline-text-3" id="text-5-6">
 <ul class="org-ul">
 <li>Two ways to handle dirty pages in the buffer pool:
@@ -283,8 +283,8 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </div>
 </div>
 </div>
-<div id="outline-container-orgd1487ae" class="outline-2">
-<h2 id="orgd1487ae"><span class="section-number-2">6.</span> Other memory pools</h2>
+<div id="outline-container-orgba285d4" class="outline-2">
+<h2 id="orgba285d4"><span class="section-number-2">6.</span> Other memory pools</h2>
 <div class="outline-text-2" id="text-6">
 <ul class="org-ul">
 <li>A DBMS also maintains other pools to store:
@@ -297,16 +297,16 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul>
 </div>
 </div>
-<div id="outline-container-orgf69c73c" class="outline-2">
-<h2 id="orgf69c73c"><span class="section-number-2">7.</span> OS cache bypass</h2>
+<div id="outline-container-orgfc788e7" class="outline-2">
+<h2 id="orgfc788e7"><span class="section-number-2">7.</span> OS cache bypass</h2>
 <div class="outline-text-2" id="text-7">
 <ul class="org-ul">
 <li>Most DBMS use direct I/O (e.g., with <code>fsync</code> instead of <code>fwrite</code>) to bypass the OS cache to avoid redundant page copy and to manage eviction policies more intelligently (cf. <a href="https://chenyo-17.github.io/org-static-blog/tag-database.html#org611ff38">Why not OS post</a>).</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-orgd3e2933" class="outline-2">
-<h2 id="orgd3e2933"><span class="section-number-2">8.</span> I/O scheduling</h2>
+<div id="outline-container-orgf8c985d" class="outline-2">
+<h2 id="orgf8c985d"><span class="section-number-2">8.</span> I/O scheduling</h2>
 <div class="outline-text-2" id="text-8">
 <ul class="org-ul">
 <li>The DBMS maintains internal <b><b>queue</b></b> to track page read/write.</li>

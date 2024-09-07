@@ -37,18 +37,312 @@
 <div id="content">
 <h2>Welcome!</h2>
       <p>Take a look if you are bored.</p>
+<div class="post-date">07 Sep 2024</div><h1 class="post-title"><a href="https://chenyo.me/2024-09-07-install-doom-emacs-with-lisp-native-compiler-in-wsl2.html">Install Doom Emacs with Lisp native compilation in WSL2</a></h1>
+<nav id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#org1c9ab46">1. Assumptions</a></li>
+<li><a href="#orga272317">2. Install prerequisite packages</a></li>
+<li><a href="#org364c109">3. Install Emacs 29.4</a>
+<ul>
+<li><a href="#org5da0b33">3.1. Before building</a></li>
+<li><a href="#org5a81b5a">3.2. Build Emacs 29.4 with native-comp</a></li>
+</ul>
+</li>
+<li><a href="#org59d5d98">4. Install <code>ripgrep</code></a></li>
+<li><a href="#org8008b50">5. Install Doom Emacs</a></li>
+<li><a href="#org6f03a33">6. Some issues with running Emacs in WSL2</a></li>
+</ul>
+</div>
+</nav>
+<p>
+Today I installed Doom Emacs for my husband on his WSL2.
+Although the entire process was guided by Claude, there were some back-and-forth during the interaction.
+Therefore I would like to record the full commands I have used here in sequence for any potential reference.
+</p>
+<div id="outline-container-org1c9ab46" class="outline-2">
+<h2 id="org1c9ab46"><span class="section-number-2">1.</span> Assumptions</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+This installation guide assumes a fresh installation of WSL2 Ubuntu 22.04 on Windows 11 in 2024 September.
+</p>
+</div>
+</div>
+<div id="outline-container-orga272317" class="outline-2">
+<h2 id="orga272317"><span class="section-number-2">2.</span> Install prerequisite packages</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+According to the Doom Emacs <a href="https://github.com/doomemacs/doomemacs#prerequisites">documentation</a>, the following packages are recommended:
+</p>
+<ul class="org-ul">
+<li>Git 2.23+: this is already installed by default.</li>
+<li>Emacs 29.4 with <a href="https://www.emacswiki.org/emacs/GccEmacs">Lisp native compilation</a>: this is finicky and will be elaborated later.</li>
+<li>ripgrep 14.0+: the documentation says 11.0+ suffices, but <code>doom doctor</code> still complains the latest version (13.0) installed from <code>apt</code> is not advanced, so we need to install it from its Github released package later.</li>
+<li>GNU find: also installed already.</li>
+<li>fd: <code>sudo apt install fd-find</code> suffices.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org364c109" class="outline-2">
+<h2 id="org364c109"><span class="section-number-2">3.</span> Install Emacs 29.4</h2>
+<div class="outline-text-2" id="text-3">
+</div>
+<div id="outline-container-org5da0b33" class="outline-3">
+<h3 id="org5da0b33"><span class="section-number-3">3.1.</span> Before building</h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
+First, let&rsquo;s install some build dependencies:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #ECBE7B;">sudo</span> apt update
+<span style="color: #ECBE7B;">sudo</span> apt upgrade  <span style="color: #5B6268;"># </span><span style="color: #5B6268;">update packages</span>
+<span style="color: #ECBE7B;">sudo</span> apt install build-essential libjansson4 libjansson-dev <span style="color: #98be65;">\</span>
+    libgnutls28-dev libtree-sitter-dev libsqlite3-dev
+<span style="color: #ECBE7B;">sudo</span> apt install texinfo  <span style="color: #5B6268;"># </span><span style="color: #5B6268;">to generate documentation</span>
+</pre>
+</div>
+
+<p>
+<code>build-essnetial</code> should install necessary tools to build C/C++ programs such as gcc, g++, make, gdb and dpkg.
+The rest packages install pre-compiled libraries.
+</p>
+
+<p>
+Besides these packages, there are two important packages to support List native compilation:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #ECBE7B;">sudo</span> apt install ibgccjit0 libgccjit-11-dev  <span style="color: #5B6268;"># </span><span style="color: #5B6268;">11 is my gcc version</span>
+</pre>
+</div>
+
+<p>
+After installing them, make sure to export the path in the current session, otherwise the compiler will not realize it.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #c678dd;">export</span> <span style="color: #dcaeea;">LD_LIBRARY_PATH</span>=/usr/lib/gcc/x86_64-linux-gnu/11:$<span style="color: #dcaeea;">LD_LIBRARY_PATH</span>
+</pre>
+</div>
+
+<p>
+The last thing to do is install a bunch of X and GTK-3 development libraries for Emacs GUI, and another bunch of image processing libraries.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #ECBE7B;">sudo</span> apt install libx11-dev libtiff-dev libgtk-3-dev libncurses-dev
+<span style="color: #ECBE7B;">sudo</span> apt install libtiff5-dev libgif-dev libjpeg-dev libpng-dev libxpm-dev
+</pre>
+</div>
+
+<p>
+Without the above packages, one may encounter the following error when configuring the Emacs build:
+</p>
+
+<blockquote>
+<p>
+You seem to be running X, but no X development libraries
+were found.  You should install the relevant development files for X
+and for the toolkit you want, such as Gtk+ or Motif. Also make
+sure you have development files for image handling, i.e.
+tiff, gif, jpeg, png and xpm.
+</p>
+</blockquote>
+</div>
+</div>
+<div id="outline-container-org5a81b5a" class="outline-3">
+<h3 id="org5a81b5a"><span class="section-number-3">3.2.</span> Build Emacs 29.4 with native-comp</h3>
+<div class="outline-text-3" id="text-3-2">
+<p>
+At this moment, we can start to download Emacs source code:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">wget https://ftp.gnu.org/gnu/emacs/emacs-29.4.tar.xz
+tar xvf emacs-29.4.tar.xz
+<span style="color: #ECBE7B;">cd</span> emacs-29.4
+</pre>
+</div>
+
+<p>
+Then we can configure the build (i.e., generate Makefile) with the following command.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">./configure --with-native-compilation --with-x-toolkit=gtk3 --without-pop
+</pre>
+</div>
+
+<ul class="org-ul">
+<li><code>--with-native-compilation</code>: with this flag the Emacs source code is compiled to native machine code to achieve better performance.
+<ul class="org-ul">
+<li>Otherwise it is compiled to bytecode and then interpreted by Emacs virtual machine during runtime.</li>
+</ul></li>
+<li><code>--with-x-toolkit=gtk3</code>: this is recommended by Claude.</li>
+<li><code>--without-pop</code>: if we are not using Emacs as the email client, we don&rsquo;t need to bother configure the protocol.</li>
+</ul>
+
+<p>
+If everything goes well, one should see the following line in the output.
+If not, make sure <code>libgccjit</code> has been installed and exported.
+</p>
+
+<blockquote>
+<p>
+Does Emacs have native lisp compiler? yes
+</p>
+</blockquote>
+
+<p>
+Now we can finally start compiling the Emacs:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #ECBE7B;">make</span> -j$<span style="color: #51afef;">(</span>nproc<span style="color: #51afef;">)</span>
+</pre>
+</div>
+
+<p>
+If some error occurs, we may want to start again, to do this:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #ECBE7B;">sudo</span> apt install autoconf automake
+<span style="color: #ECBE7B;">rm</span> -f Makefile
+./autogen.sh  <span style="color: #5B6268;"># </span><span style="color: #5B6268;">regenerate the configuration file</span>
+<span style="color: #5B6268;"># </span><span style="color: #5B6268;">then rebuild</span>
+<span style="color: #ECBE7B;">make</span> -j$<span style="color: #51afef;">(</span>nproc<span style="color: #51afef;">)</span>
+</pre>
+</div>
+
+<p>
+Finally, install Emacs globally:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #ECBE7B;">sudo</span> <span style="color: #ECBE7B;">make</span> install
+</pre>
+</div>
+
+<p>
+To confirm the Emacs indeed used the native Lisp compiler, one can evaluate inside the vanilla Emacs with <code>M-:</code> (<code>M</code> is <code>Alt</code> in WSL2):
+</p>
+
+<div class="org-src-container">
+<pre class="src src-lisp">(native-comp-available-p) <span style="color: #5B6268;">;; </span><span style="color: #5B6268;">should return t</span>
+</pre>
+</div>
+
+<p>
+Congratulations! You have now installed the latest and fastest Emacs on WSL2.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org59d5d98" class="outline-2">
+<h2 id="org59d5d98"><span class="section-number-2">4.</span> Install <code>ripgrep</code></h2>
+<div class="outline-text-2" id="text-4">
+<p>
+As mentioned in ripgrep <a href="https://github.com/BurntSushi/ripgrep?tab=readme-ov-file#installation">documentation</a>, for Debian/Ubuntu users, one should
+install the latest ripgrep 14.0+ with the following commands.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #ECBE7B;">curl</span> -LO https://github.com/BurntSushi/ripgrep/releases/download/14.1.0/ripgrep_14.1.0-1_amd64.deb  <span style="color: #5B6268;"># </span><span style="color: #5B6268;">check the latest version on its documentation</span>
+<span style="color: #ECBE7B;">sudo</span> dpkg -i ripgrep_14.1.0-1_amd64.deb  <span style="color: #5B6268;"># </span><span style="color: #5B6268;">dpkg has been installed before</span>
+</pre>
+</div>
+
+<p>
+Instead, if one installs it with <code>apt</code>, a 13.0+ version is installed and running <code>doom doctor</code> later returns the warning:
+</p>
+
+<blockquote>
+<p>
+The installed ripgrep binary was not built with support for PCRE lookaheads.
+</p>
+</blockquote>
+</div>
+</div>
+<div id="outline-container-org8008b50" class="outline-2">
+<h2 id="org8008b50"><span class="section-number-2">5.</span> Install Doom Emacs</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+Installing Doom Emacs is straightforward, but before that, one should first remove the default Emacs configuration folder:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #ECBE7B;">rm</span> -rf ~/.emacs.d
+</pre>
+</div>
+
+<p>
+Then, clone and install Doom Emacs, it could take a while.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #ECBE7B;">git</span> clone --depth <span style="color: #da8548; font-weight: bold;">1</span> https://github.com/doomemacs/doomemacs ~/.config/emacs
+~/.config/emacs/bin/doom install
+</pre>
+</div>
+
+<p>
+Don&rsquo;t forget to export <code>~/.config/emacs/bin</code> to <code>PATH</code>:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #ECBE7B;">echo</span> <span style="color: #98be65;">'export PATH="$HOME/.config/emacs/bin:$PATH"'</span> &gt;&gt; ~/.bashrc
+<span style="color: #c678dd;">source</span> ~/.bashrc
+</pre>
+</div>
+
+<p>
+Now one can run <code>doom doctor</code> to check any missing dependencies, e.g., <code>shellcheck</code>.
+One common issue is the Nerd font is not installed by default so that some icons are not properly displayed.
+To fix that, run <code>M-x nerd-icons-install-font</code> inside the Emacs, then update the font cache with:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">fc-cache -fv
+<span style="color: #5B6268;"># </span><span style="color: #5B6268;">fc-list | </span><span style="color: #5B6268;">grep</span><span style="color: #5B6268;"> Nerd  # to verify the font is installed</span>
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org6f03a33" class="outline-2">
+<h2 id="org6f03a33"><span class="section-number-2">6.</span> Some issues with running Emacs in WSL2</h2>
+<div class="outline-text-2" id="text-6">
+<ul class="org-ul">
+<li><p>
+The first thing is I cannot reload the configuration with <code>M-x doom/reload</code> as running this command always gives me the following error message so that I need to restart the Emacs every time the configuration is changed.
+</p>
+
+<blockquote>
+<p>
+%s sync -B -e
+/bin/bash: line 1: fg: no job control
+</p>
+</blockquote></li>
+
+<li>I really dislike the <a href="https://www.reddit.com/r/wsl2/comments/16b4skx/wsl_softwares_with_white_window_borders/">white border</a> that surrounds any application launched by WSL!</li>
+</ul>
+</div>
+</div>
+<div class="taglist"><a href="https://chenyo.me/tags.html">Tags</a>: <a href="https://chenyo.me/tag-linux.html">linux</a> <a href="https://chenyo.me/tag-emacs.html">emacs</a> <a href="https://chenyo.me/tag-tool.html">tool</a> </div>
 <div class="post-date">06 Sep 2024</div><h1 class="post-title"><a href="https://chenyo.me/2024-09-06-hiked:-stoos.html">Hiked: Stoos</a></h1>
 <nav id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgcbde956">1. What happened?</a></li>
-<li><a href="#orgbf5c5c0">2. What now?</a></li>
+<li><a href="#orgd567c4a">1. What happened?</a></li>
+<li><a href="#org36ea2ae">2. What now?</a></li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-orgcbde956" class="outline-2">
-<h2 id="orgcbde956"><span class="section-number-2">1.</span> What happened?</h2>
+<div id="outline-container-orgd567c4a" class="outline-2">
+<h2 id="orgd567c4a"><span class="section-number-2">1.</span> What happened?</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 About three weeks ago, I hiked Stoos and wrote a Redbook post.
@@ -74,71 +368,71 @@ Well played, Redbook!
 </p>
 </div>
 </div>
-<div id="outline-container-orgbf5c5c0" class="outline-2">
-<h2 id="orgbf5c5c0"><span class="section-number-2">2.</span> What now?</h2>
+<div id="outline-container-org36ea2ae" class="outline-2">
+<h2 id="org36ea2ae"><span class="section-number-2">2.</span> What now?</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 Anyway, given that I invested considerable effort in creating post figures, I will post them here instead.
 </p>
 
 
-<figure id="org44e961f">
+<figure id="org3749092">
 <img src="./static/stoos-2.png" alt="stoos-2.png" align="center" width="600px">
 
 <figcaption><span class="figure-number">Figure 1: </span>The Stoos roadmap</figcaption>
 </figure>
 
 
-<figure id="orgca791e6">
+<figure id="org74cef6c">
 <img src="./static/stoos-3.png" alt="stoos-3.png" align="center" width="600px">
 
 <figcaption><span class="figure-number">Figure 2: </span>The uphill view</figcaption>
 </figure>
 
 
-<figure id="org4223594">
+<figure id="org1a79473">
 <img src="./static/stoos-4.png" alt="stoos-4.png" align="center" width="600px">
 
 <figcaption><span class="figure-number">Figure 3: </span>The top view</figcaption>
 </figure>
 
 
-<figure id="org7e85dd3">
+<figure id="org8b55657">
 <img src="./static/stoos-5.png" alt="stoos-5.png" align="center" width="600px">
 
 <figcaption><span class="figure-number">Figure 4: </span>The ridge roadmap</figcaption>
 </figure>
 
 
-<figure id="org0e7b9a3">
+<figure id="org95d2338">
 <img src="./static/stoos-6.png" alt="stoos-6.png" align="center" width="600px">
 
 <figcaption><span class="figure-number">Figure 5: </span>The ridge view</figcaption>
 </figure>
 
 
-<figure id="org602e075">
+<figure id="org44b48d6">
 <img src="./static/stoos-7.png" alt="stoos-7.png" align="center" width="600px">
 
 <figcaption><span class="figure-number">Figure 6: </span>My trace</figcaption>
 </figure>
 
 
-<figure id="orgd9fd60e">
+<figure id="org37a95e2">
 <img src="./static/stoos-8.png" alt="stoos-8.png" align="center" width="500px">
 
 <figcaption><span class="figure-number">Figure 7: </span>Recommended apps</figcaption>
 </figure>
 
 
-<figure id="orgd588a4d">
+<figure id="org5b48a6a">
 <img src="./static/stoos-9.png" alt="stoos-9.png" align="center" width="600px">
 
 <figcaption><span class="figure-number">Figure 8: </span>My favorite hike shoots</figcaption>
 </figure>
 
 
-<figure id="org1ca8c64">
+<figure id="orgb5b309a">
 <img src="./static/stoos-post.png" alt="stoos-post.png" align="center" width="700px">
 
 <figcaption><span class="figure-number">Figure 9: </span>The Redbook post</figcaption>
@@ -151,34 +445,34 @@ Anyway, given that I invested considerable effort in creating post figures, I wi
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org6eba8f5">1. DBMS data structure application</a>
+<li><a href="#orgebfcfaf">1. DBMS data structure application</a>
 <ul>
-<li><a href="#orgf3d0343">1.1. Design decisions</a></li>
+<li><a href="#org49b2e07">1.1. Design decisions</a></li>
 </ul>
 </li>
-<li><a href="#orgf230abe">2. Hash tables</a>
+<li><a href="#org8624d45">2. Hash tables</a>
 <ul>
-<li><a href="#org1d11c74">2.1. Where are hash tables used</a></li>
+<li><a href="#org7070138">2.1. Where are hash tables used</a></li>
 </ul>
 </li>
-<li><a href="#orgc86279c">3. Hash function</a></li>
-<li><a href="#org79580a3">4. Hashing scheme</a></li>
-<li><a href="#org022fdac">5. Static hashing scheme</a>
+<li><a href="#orgd3f4888">3. Hash function</a></li>
+<li><a href="#orga4cb315">4. Hashing scheme</a></li>
+<li><a href="#orgf23f8e6">5. Static hashing scheme</a>
 <ul>
-<li><a href="#org730127d">5.1. Linear probe hashing</a>
+<li><a href="#org95143ed">5.1. Linear probe hashing</a>
 <ul>
-<li><a href="#org860ef2f">5.1.1. Non-unique keys</a></li>
-<li><a href="#orgf796ca0">5.1.2. Optimization</a></li>
+<li><a href="#org3d4f53f">5.1.1. Non-unique keys</a></li>
+<li><a href="#orge15fd5f">5.1.2. Optimization</a></li>
 </ul>
 </li>
-<li><a href="#org37da536">5.2. Cuckoo hashing</a></li>
+<li><a href="#orge51ce38">5.2. Cuckoo hashing</a></li>
 </ul>
 </li>
-<li><a href="#org9144bf0">6. Dynamic hashing schemes</a>
+<li><a href="#org7d34843">6. Dynamic hashing schemes</a>
 <ul>
-<li><a href="#org2821670">6.1. Chained Hashing</a></li>
-<li><a href="#org97aff33">6.2. Extendible hashing</a></li>
-<li><a href="#org6267ed8">6.3. Linear hashing</a></li>
+<li><a href="#orgcc4ccdb">6.1. Chained Hashing</a></li>
+<li><a href="#orgba66b11">6.2. Extendible hashing</a></li>
+<li><a href="#org3fbacf8">6.3. Linear hashing</a></li>
 </ul>
 </li>
 </ul>
@@ -187,8 +481,8 @@ Anyway, given that I invested considerable effort in creating post figures, I wi
 <p>
 This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall2023/notes/07-hashtables.pdf">CMU 15-445 L7 notes</a> as well as some explanation from Claude.ai.
 </p>
-<div id="outline-container-org6eba8f5" class="outline-2">
-<h2 id="org6eba8f5"><span class="section-number-2">1.</span> DBMS data structure application</h2>
+<div id="outline-container-orgebfcfaf" class="outline-2">
+<h2 id="orgebfcfaf"><span class="section-number-2">1.</span> DBMS data structure application</h2>
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
 <li>Internal meta-data: <a href="https://chenyo.me/2024-08-13-db-notes:-memory-management.html#org7a44495">page tables</a>, <a href="https://chenyo.me/2024-07-31-db-notes:-database-storage.html#org66626ef">page directories</a>.</li>
@@ -196,8 +490,8 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 <li>Table indices: easy to find specific tuples.</li>
 </ul>
 </div>
-<div id="outline-container-orgf3d0343" class="outline-3">
-<h3 id="orgf3d0343"><span class="section-number-3">1.1.</span> Design decisions</h3>
+<div id="outline-container-org49b2e07" class="outline-3">
+<h3 id="org49b2e07"><span class="section-number-3">1.1.</span> Design decisions</h3>
 <div class="outline-text-3" id="text-1-1">
 <ul class="org-ul">
 <li>Data layout for efficient access.</li>
@@ -206,8 +500,8 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </div>
 </div>
 </div>
-<div id="outline-container-orgf230abe" class="outline-2">
-<h2 id="orgf230abe"><span class="section-number-2">2.</span> Hash tables</h2>
+<div id="outline-container-org8624d45" class="outline-2">
+<h2 id="org8624d45"><span class="section-number-2">2.</span> Hash tables</h2>
 <div class="outline-text-2" id="text-2">
 <ul class="org-ul">
 <li>Implements an associative array that maps keys to values.</li>
@@ -217,8 +511,8 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul></li>
 </ul>
 </div>
-<div id="outline-container-org1d11c74" class="outline-3">
-<h3 id="org1d11c74"><span class="section-number-3">2.1.</span> Where are hash tables used</h3>
+<div id="outline-container-org7070138" class="outline-3">
+<h3 id="org7070138"><span class="section-number-3">2.1.</span> Where are hash tables used</h3>
 <div class="outline-text-3" id="text-2-1">
 <ul class="org-ul">
 <li>For tuple indexing. While tuples are stored on pages with NSM or DSM, during the <b><b>query</b></b> the DBMS needs to quickly locate the page that stores specific tuples. It can achieve this with separately-stored hash tables, where each key can be a hash of a tuple id, and the value points the location.</li>
@@ -226,8 +520,8 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </div>
 </div>
 </div>
-<div id="outline-container-orgc86279c" class="outline-2">
-<h2 id="orgc86279c"><span class="section-number-2">3.</span> Hash function</h2>
+<div id="outline-container-orgd3f4888" class="outline-2">
+<h2 id="orgd3f4888"><span class="section-number-2">3.</span> Hash function</h2>
 <div class="outline-text-2" id="text-3">
 <ul class="org-ul">
 <li>Maps a large key space into a smaller domain.</li>
@@ -240,8 +534,8 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul>
 </div>
 </div>
-<div id="outline-container-org79580a3" class="outline-2">
-<h2 id="org79580a3"><span class="section-number-2">4.</span> Hashing scheme</h2>
+<div id="outline-container-orga4cb315" class="outline-2">
+<h2 id="orga4cb315"><span class="section-number-2">4.</span> Hashing scheme</h2>
 <div class="outline-text-2" id="text-4">
 <ul class="org-ul">
 <li>Handles key collision after hashing.</li>
@@ -249,15 +543,15 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul>
 </div>
 </div>
-<div id="outline-container-org022fdac" class="outline-2">
-<h2 id="org022fdac"><span class="section-number-2">5.</span> Static hashing scheme</h2>
+<div id="outline-container-orgf23f8e6" class="outline-2">
+<h2 id="orgf23f8e6"><span class="section-number-2">5.</span> Static hashing scheme</h2>
 <div class="outline-text-2" id="text-5">
 <ul class="org-ul">
 <li>The hash table size is fixed; the DBMS has to rebuild a larger hash table (e.g., twice the size) from scratch when it runs out of space.</li>
 </ul>
 </div>
-<div id="outline-container-org730127d" class="outline-3">
-<h3 id="org730127d"><span class="section-number-3">5.1.</span> Linear probe hashing</h3>
+<div id="outline-container-org95143ed" class="outline-3">
+<h3 id="org95143ed"><span class="section-number-3">5.1.</span> Linear probe hashing</h3>
 <div class="outline-text-3" id="text-5-1">
 <ul class="org-ul">
 <li>Insertion: when a collision occurs, linearly search the adjacent slots in a circular buffer until a open one is found.</li>
@@ -276,8 +570,8 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 <li>The state-of-art linear probe hashing is Google <code>absl::flat_hash_map</code>.</li>
 </ul>
 </div>
-<div id="outline-container-org860ef2f" class="outline-4">
-<h4 id="org860ef2f"><span class="section-number-4">5.1.1.</span> Non-unique keys</h4>
+<div id="outline-container-org3d4f53f" class="outline-4">
+<h4 id="org3d4f53f"><span class="section-number-4">5.1.1.</span> Non-unique keys</h4>
 <div class="outline-text-4" id="text-5-1-1">
 <ul class="org-ul">
 <li>The same key may be associated with multiple different values.</li>
@@ -290,8 +584,8 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul>
 </div>
 </div>
-<div id="outline-container-orgf796ca0" class="outline-4">
-<h4 id="orgf796ca0"><span class="section-number-4">5.1.2.</span> Optimization</h4>
+<div id="outline-container-orge15fd5f" class="outline-4">
+<h4 id="orge15fd5f"><span class="section-number-4">5.1.2.</span> Optimization</h4>
 <div class="outline-text-4" id="text-5-1-2">
 <ul class="org-ul">
 <li>Specialized hash table based on key types and size; e.g., for long string keys, one can store the pointer or the hash of the long string in the hash table.</li>
@@ -301,8 +595,8 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </div>
 </div>
 </div>
-<div id="outline-container-org37da536" class="outline-3">
-<h3 id="org37da536"><span class="section-number-3">5.2.</span> Cuckoo hashing</h3>
+<div id="outline-container-orge51ce38" class="outline-3">
+<h3 id="orge51ce38"><span class="section-number-3">5.2.</span> Cuckoo hashing</h3>
 <div class="outline-text-3" id="text-5-2">
 <ul class="org-ul">
 <li>Maintains multiple hash tables with different hash functions to generate different hashes for the same key using different seeds.</li>
@@ -316,15 +610,15 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </div>
 </div>
 </div>
-<div id="outline-container-org9144bf0" class="outline-2">
-<h2 id="org9144bf0"><span class="section-number-2">6.</span> Dynamic hashing schemes</h2>
+<div id="outline-container-org7d34843" class="outline-2">
+<h2 id="org7d34843"><span class="section-number-2">6.</span> Dynamic hashing schemes</h2>
 <div class="outline-text-2" id="text-6">
 <ul class="org-ul">
 <li>Resize the hash table on demand without rebuilding the entire table.</li>
 </ul>
 </div>
-<div id="outline-container-org2821670" class="outline-3">
-<h3 id="org2821670"><span class="section-number-3">6.1.</span> Chained Hashing</h3>
+<div id="outline-container-orgcc4ccdb" class="outline-3">
+<h3 id="orgcc4ccdb"><span class="section-number-3">6.1.</span> Chained Hashing</h3>
 <div class="outline-text-3" id="text-6-1">
 <ul class="org-ul">
 <li>Maintains a linked list of buckets for each slot in the hash table; keys hashed to the same slot are inserted into the linked list.</li>
@@ -333,8 +627,8 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul>
 </div>
 </div>
-<div id="outline-container-org97aff33" class="outline-3">
-<h3 id="org97aff33"><span class="section-number-3">6.2.</span> Extendible hashing</h3>
+<div id="outline-container-orgba66b11" class="outline-3">
+<h3 id="orgba66b11"><span class="section-number-3">6.2.</span> Extendible hashing</h3>
 <div class="outline-text-3" id="text-6-2">
 <ul class="org-ul">
 <li>Improve chained hashing to avoid letting chains grow forever.</li>
@@ -342,22 +636,22 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul>
 
 
-<figure id="org189d132">
+<figure id="org37ed52f">
 <img src="./static/db-extendible-hashing.png" alt="db-extendible-hashing.png" align="center" width="700px">
 
 <figcaption><span class="figure-number">Figure 1: </span>Extendible hashing example</figcaption>
 </figure>
 </div>
 </div>
-<div id="outline-container-org6267ed8" class="outline-3">
-<h3 id="org6267ed8"><span class="section-number-3">6.3.</span> Linear hashing</h3>
+<div id="outline-container-org3fbacf8" class="outline-3">
+<h3 id="org3fbacf8"><span class="section-number-3">6.3.</span> Linear hashing</h3>
 <div class="outline-text-3" id="text-6-3">
 <ul class="org-ul">
 <li>Maintains a split pointer to keep track of next bucket to split, even if the pointed bucket is not overflowed.</li>
 </ul>
 
 
-<figure id="org4925320">
+<figure id="org80e9b5d">
 <img src="./static/db-linear-hashing.png" alt="db-linear-hashing.png" align="center" width="750px">
 
 <figcaption><span class="figure-number">Figure 2: </span>Linear hashing example</figcaption>
@@ -368,7 +662,7 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul>
 
 
-<figure id="orgb314f70">
+<figure id="orgd6e1588">
 <img src="./static/db-linear-hashing-deletion.png" alt="db-linear-hashing-deletion.png" align="center" width="750px">
 
 <figcaption><span class="figure-number">Figure 3: </span>Linear hashing deletion example</figcaption>
@@ -393,16 +687,16 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org475ae23">1. What happens</a></li>
-<li><a href="#org0da4e23">2. What is not enough with existing search functions?</a></li>
-<li><a href="#org760b8c1">3. What does the search function do in this blog?</a></li>
-<li><a href="#org925a38d">4. How is it implemented?</a></li>
-<li><a href="#orgd7c9a66">5. How can it be improved?</a></li>
+<li><a href="#org0576ce6">1. What happens</a></li>
+<li><a href="#org69894db">2. What is not enough with existing search functions?</a></li>
+<li><a href="#orgb7274a3">3. What does the search function do in this blog?</a></li>
+<li><a href="#org7a9cd23">4. How is it implemented?</a></li>
+<li><a href="#org8278722">5. How can it be improved?</a></li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-org475ae23" class="outline-2">
-<h2 id="org475ae23"><span class="section-number-2">1.</span> What happens</h2>
+<div id="outline-container-org0576ce6" class="outline-2">
+<h2 id="org0576ce6"><span class="section-number-2">1.</span> What happens</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 Two months ago, I started to use the current blog to keep track of my study and personal notes.
@@ -422,8 +716,8 @@ During this process, my husband made a feature request: a blog search function.
 </p>
 </div>
 </div>
-<div id="outline-container-org0da4e23" class="outline-2">
-<h2 id="org0da4e23"><span class="section-number-2">2.</span> What is not enough with existing search functions?</h2>
+<div id="outline-container-org69894db" class="outline-2">
+<h2 id="org69894db"><span class="section-number-2">2.</span> What is not enough with existing search functions?</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 Most default search tools provided by popular static website frameworks do not return complete search results and their context.
@@ -447,11 +741,11 @@ However, for a personal blog, we can achieve greater breadth.
 </p>
 </div>
 </div>
-<div id="outline-container-org760b8c1" class="outline-2">
-<h2 id="org760b8c1"><span class="section-number-2">3.</span> What does the search function do in this blog?</h2>
+<div id="outline-container-orgb7274a3" class="outline-2">
+<h2 id="orgb7274a3"><span class="section-number-2">3.</span> What does the search function do in this blog?</h2>
 <div class="outline-text-2" id="text-3">
 
-<figure id="orgb21d3b4">
+<figure id="orgb27dd29">
 <img src="./static/blog-search.gif" alt="blog-search.gif" align="center" width="700px" style="border: 1px solid black;">
 
 <figcaption><span class="figure-number">Figure 1: </span>A blog search example</figcaption>
@@ -468,8 +762,8 @@ In this way, I can immediately see all results and their context on one page, an
 </p>
 </div>
 </div>
-<div id="outline-container-org925a38d" class="outline-2">
-<h2 id="org925a38d"><span class="section-number-2">4.</span> How is it implemented?</h2>
+<div id="outline-container-org7a9cd23" class="outline-2">
+<h2 id="org7a9cd23"><span class="section-number-2">4.</span> How is it implemented?</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 I implemented the search function along with all styling with the help of Cursor.
@@ -484,8 +778,8 @@ It then wraps the occurrence with certain context and prepares the link by appen
 </p>
 </div>
 </div>
-<div id="outline-container-orgd7c9a66" class="outline-2">
-<h2 id="orgd7c9a66"><span class="section-number-2">5.</span> How can it be improved?</h2>
+<div id="outline-container-org8278722" class="outline-2">
+<h2 id="org8278722"><span class="section-number-2">5.</span> How can it be improved?</h2>
 <div class="outline-text-2" id="text-5">
 <p>
 The current search function is simple and sub-optimal.
@@ -508,14 +802,14 @@ In addition, after I finished the implementation, my husband made another featur
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org656791a">1. Basic html structure</a></li>
-<li><a href="#org3262fb0">2. Tags</a></li>
-<li><a href="#org5318749">3. Attributes</a></li>
-<li><a href="#orgdef9f44">4. Javascript</a>
+<li><a href="#org1ddbc5e">1. Basic html structure</a></li>
+<li><a href="#org72282a2">2. Tags</a></li>
+<li><a href="#org96f782d">3. Attributes</a></li>
+<li><a href="#orgf05c8ce">4. Javascript</a>
 <ul>
-<li><a href="#org85fa9b7">4.1. Fetch from an HTML URL</a></li>
-<li><a href="#org70ba25b">4.2. Modify a DOM</a></li>
-<li><a href="#org530c075">4.3. Syntax</a></li>
+<li><a href="#org2c9507c">4.1. Fetch from an HTML URL</a></li>
+<li><a href="#org4dff14f">4.2. Modify a DOM</a></li>
+<li><a href="#org108e1e6">4.3. Syntax</a></li>
 </ul>
 </li>
 </ul>
@@ -524,8 +818,8 @@ In addition, after I finished the implementation, my husband made another featur
 <p>
 This post records the basic web development knowledge I have learned in practice.
 </p>
-<div id="outline-container-org656791a" class="outline-2">
-<h2 id="org656791a"><span class="section-number-2">1.</span> Basic html structure</h2>
+<div id="outline-container-org1ddbc5e" class="outline-2">
+<h2 id="org1ddbc5e"><span class="section-number-2">1.</span> Basic html structure</h2>
 <div class="outline-text-2" id="text-1">
 <div class="org-src-container">
 <pre class="src src-html">&lt;<span style="color: #51afef;">!DOCTYPE</span> html&gt;
@@ -575,8 +869,8 @@ This post records the basic web development knowledge I have learned in practice
 </div>
 </div>
 </div>
-<div id="outline-container-org3262fb0" class="outline-2">
-<h2 id="org3262fb0"><span class="section-number-2">2.</span> Tags</h2>
+<div id="outline-container-org72282a2" class="outline-2">
+<h2 id="org72282a2"><span class="section-number-2">2.</span> Tags</h2>
 <div class="outline-text-2" id="text-2">
 <ul class="org-ul">
 <li><code class="src src-html">&lt;<span style="color: #c678dd;">a</span>&gt;</code>: contain links; have following attributes:
@@ -589,8 +883,8 @@ This post records the basic web development knowledge I have learned in practice
 </ul>
 </div>
 </div>
-<div id="outline-container-org5318749" class="outline-2">
-<h2 id="org5318749"><span class="section-number-2">3.</span> Attributes</h2>
+<div id="outline-container-org96f782d" class="outline-2">
+<h2 id="org96f782d"><span class="section-number-2">3.</span> Attributes</h2>
 <div class="outline-text-2" id="text-3">
 <ul class="org-ul">
 <li><code class="src src-html"><span style="color: #dcaeea;">id</span>="home"</code>:
@@ -600,12 +894,12 @@ This post records the basic web development knowledge I have learned in practice
 </ul>
 </div>
 </div>
-<div id="outline-container-orgdef9f44" class="outline-2">
-<h2 id="orgdef9f44"><span class="section-number-2">4.</span> Javascript</h2>
+<div id="outline-container-orgf05c8ce" class="outline-2">
+<h2 id="orgf05c8ce"><span class="section-number-2">4.</span> Javascript</h2>
 <div class="outline-text-2" id="text-4">
 </div>
-<div id="outline-container-org85fa9b7" class="outline-3">
-<h3 id="org85fa9b7"><span class="section-number-3">4.1.</span> Fetch from an HTML URL</h3>
+<div id="outline-container-org2c9507c" class="outline-3">
+<h3 id="org2c9507c"><span class="section-number-3">4.1.</span> Fetch from an HTML URL</h3>
 <div class="outline-text-3" id="text-4-1">
 <ol class="org-ol">
 <li><code class="src src-js"><span style="color: #51afef;">await</span> fetch(url)</code>: returns a <code class="src src-js">Response</code> object.
@@ -622,16 +916,16 @@ This post records the basic web development knowledge I have learned in practice
 </ol>
 </div>
 </div>
-<div id="outline-container-org70ba25b" class="outline-3">
-<h3 id="org70ba25b"><span class="section-number-3">4.2.</span> Modify a DOM</h3>
+<div id="outline-container-org4dff14f" class="outline-3">
+<h3 id="org4dff14f"><span class="section-number-3">4.2.</span> Modify a DOM</h3>
 <div class="outline-text-3" id="text-4-2">
 <ul class="org-ul">
 <li><code class="src src-js">content.querySelector(<span style="color: #98be65;">".taglist"</span>).remove()</code>: removes the element from the DOM, i.e., it modifies <code class="src src-js">content</code>.</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org530c075" class="outline-3">
-<h3 id="org530c075"><span class="section-number-3">4.3.</span> Syntax</h3>
+<div id="outline-container-org108e1e6" class="outline-3">
+<h3 id="org108e1e6"><span class="section-number-3">4.3.</span> Syntax</h3>
 <div class="outline-text-3" id="text-4-3">
 <ul class="org-ul">
 <li><code class="src src-js"><span style="color: #51afef;">const</span> <span style="color: #dcaeea;">escapedQuery</span> = query.replace(<span style="color: #98be65;">/[.*+?^${}()|[\]\\]/</span>g, <span style="color: #98be65;">"\\$&amp;"</span>)</code>: add a backslash to any special character in the query; <code>$&amp;</code> is a special pattern used in Javascript&rsquo;s <code class="src src-js">replacement</code> method.</li>
@@ -639,286 +933,7 @@ This post records the basic web development knowledge I have learned in practice
 </div>
 </div>
 </div>
-<div class="taglist"><a href="https://chenyo.me/tags.html">Tags</a>: <a href="https://chenyo.me/tag-web.html">web</a> <a href="https://chenyo.me/tag-app.html">app</a> </div>
-<div class="post-date">13 Aug 2024</div><h1 class="post-title"><a href="https://chenyo.me/2024-08-13-db-notes:-memory-management.html">CMU 15-445 notes: Memory Management</a></h1>
-<nav id="table-of-contents" role="doc-toc">
-<h2>Table of Contents</h2>
-<div id="text-table-of-contents" role="doc-toc">
-<ul>
-<li><a href="#org782fc12">1. Goals</a></li>
-<li><a href="#org7a83244">2. Locks &amp; Latches</a>
-<ul>
-<li><a href="#orgdb78914">2.1. Locks</a></li>
-<li><a href="#org5fb73d2">2.2. Latches</a></li>
-</ul>
-</li>
-<li><a href="#org2d2f6e7">3. Buffer pool</a>
-<ul>
-<li><a href="#org7a44495">3.1. Metadata</a></li>
-<li><a href="#org184b0be">3.2. Memory allocation policies</a></li>
-</ul>
-</li>
-<li><a href="#org09f1392">4. Buffer pool optimizations</a>
-<ul>
-<li><a href="#org05d905c">4.1. Multiple buffer pools</a></li>
-<li><a href="#org7f0e15f">4.2. Pre-fetching</a></li>
-<li><a href="#org71cf1c3">4.3. Scan sharing</a></li>
-<li><a href="#org6c17ecb">4.4. Buffer pool bypass</a></li>
-</ul>
-</li>
-<li><a href="#org9758089">5. Buffer replacement policies</a>
-<ul>
-<li><a href="#org5e99945">5.1. Least recently used (LRU)</a></li>
-<li><a href="#orgd6e313b">5.2. Clock</a></li>
-<li><a href="#orgc83ef3b">5.3. LRU-K</a>
-<ul>
-<li><a href="#orgc699ae5">5.3.1. MySQL approximate LRU-K</a></li>
-</ul>
-</li>
-<li><a href="#orgaa1f83d">5.4. Localization</a></li>
-<li><a href="#org803c4a2">5.5. Priority hint</a></li>
-<li><a href="#org761ae22">5.6. Dirty pages</a></li>
-</ul>
-</li>
-<li><a href="#orgd1487ae">6. Other memory pools</a></li>
-<li><a href="#orgf69c73c">7. OS cache bypass</a></li>
-<li><a href="#orgd3e2933">8. I/O scheduling</a></li>
-</ul>
-</div>
-</nav>
-<p>
-This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall2023/notes/06-bufferpool.pdf">CMU 15-445 L6 notes</a> as well as some explanation from Claude.ai.
-</p>
-<div id="outline-container-org782fc12" class="outline-2">
-<h2 id="org782fc12"><span class="section-number-2">1.</span> Goals</h2>
-<div class="outline-text-2" id="text-1">
-<ul class="org-ul">
-<li>Manage DBMS memory and move data between the memory and the disk, such that the execution engine does no worry about the data fetching.</li>
-<li>Spatial control: keep relevant pages physically together on disk.</li>
-<li>Temporal control: minimize the number of stalls to read data from the disk.</li>
-</ul>
-</div>
-</div>
-<div id="outline-container-org7a83244" class="outline-2">
-<h2 id="org7a83244"><span class="section-number-2">2.</span> Locks &amp; Latches</h2>
-<div class="outline-text-2" id="text-2">
-<ul class="org-ul">
-<li>Both used to protect internal elements.</li>
-</ul>
-</div>
-<div id="outline-container-orgdb78914" class="outline-3">
-<h3 id="orgdb78914"><span class="section-number-3">2.1.</span> Locks</h3>
-<div class="outline-text-3" id="text-2-1">
-<ul class="org-ul">
-<li>A high-level logical primitive to allow for transaction atomicity.</li>
-<li>Exposed to users when queries are run.</li>
-<li>Need to be able to rollback changes.</li>
-</ul>
-</div>
-</div>
-<div id="outline-container-org5fb73d2" class="outline-3">
-<h3 id="org5fb73d2"><span class="section-number-3">2.2.</span> Latches</h3>
-<div class="outline-text-3" id="text-2-2">
-<ul class="org-ul">
-<li>A low-level protection primitive a DBMS uses in its internal data structures, e.g., hash tables.</li>
-<li>Only held when the operation is being made, like a mutex.</li>
-<li>Do not need to expose to users or used to rollback changes.</li>
-</ul>
-</div>
-</div>
-</div>
-<div id="outline-container-org2d2f6e7" class="outline-2">
-<h2 id="org2d2f6e7"><span class="section-number-2">3.</span> Buffer pool</h2>
-<div class="outline-text-2" id="text-3">
-<ul class="org-ul">
-<li>An in-memory cache of pages read from the disk.</li>
-<li>The buffer pool&rsquo;s region of memory is organized as an array of fixed size pages; each array entry is called a frame.</li>
-<li>When the DBMS requests a page, the buffer pool first searches its cache, if not found, it copies he page from the disk into one of its frame.</li>
-<li>Dirty pages (i.e., modified pages) are buffered rather than writing back immediately.</li>
-</ul>
-</div>
-<div id="outline-container-org7a44495" class="outline-3">
-<h3 id="org7a44495"><span class="section-number-3">3.1.</span> Metadata</h3>
-<div class="outline-text-3" id="text-3-1">
-<ul class="org-ul">
-<li>Page table: An in-memory hash mapping page ids to frame locations in the buffer pool.</li>
-<li>Dirty flag: set by a thread whenever it modifies a page to indicate the pages must be written back to disk.</li>
-<li>Pin/Reference counter: tracks the number of threads that are currently accessing the page; the storage manager is not allowed to evict a page if its pin count is greater than 0.</li>
-</ul>
-</div>
-</div>
-<div id="outline-container-org184b0be" class="outline-3">
-<h3 id="org184b0be"><span class="section-number-3">3.2.</span> Memory allocation policies</h3>
-<div class="outline-text-3" id="text-3-2">
-<ul class="org-ul">
-<li>The buffer pool decides when to allocate a frame for a page.</li>
-<li>Global policies: decisions based on the overall workload, e.g., least recently used (LRU) or clock algorithm.</li>
-<li>Local policies: decisions applying to specific query, e.g., priority-based page replacement.</li>
-</ul>
-</div>
-</div>
-</div>
-<div id="outline-container-org09f1392" class="outline-2">
-<h2 id="org09f1392"><span class="section-number-2">4.</span> Buffer pool optimizations</h2>
-<div class="outline-text-2" id="text-4">
-</div>
-<div id="outline-container-org05d905c" class="outline-3">
-<h3 id="org05d905c"><span class="section-number-3">4.1.</span> Multiple buffer pools</h3>
-<div class="outline-text-3" id="text-4-1">
-<ul class="org-ul">
-<li>Each database or page can have its own buffer pool and adopts local policies to reduce latch contention.</li>
-<li>To map a page to a buffer pool, the DBMS can use object IDs or page IDs as the key.
-<ul class="org-ul">
-<li>Record ID: a unique identifier for a row in a table (cf. <a href="https://chenyo-17.github.io/org-static-blog/tag-database.html#org2317270">Tuple layout post</a>).</li>
-<li>Object ID: a unique identifier for an object, used to reference a user-defined type.</li>
-</ul></li>
-</ul>
-</div>
-</div>
-<div id="outline-container-org7f0e15f" class="outline-3">
-<h3 id="org7f0e15f"><span class="section-number-3">4.2.</span> Pre-fetching</h3>
-<div class="outline-text-3" id="text-4-2">
-<ul class="org-ul">
-<li>While the first set of pages is being processed, the DBMS can pre-fetch the second set into the buffer pool based on the dependency between pages.
-<ul class="org-ul">
-<li>E.g., If pages are index-organized, the sibling pages can be pre-fetched.</li>
-</ul></li>
-</ul>
-</div>
-</div>
-<div id="outline-container-org71cf1c3" class="outline-3">
-<h3 id="org71cf1c3"><span class="section-number-3">4.3.</span> Scan sharing</h3>
-<div class="outline-text-3" id="text-4-3">
-<ul class="org-ul">
-<li>Query cursors can reuse retrieved data.</li>
-<li>When a query comes while a previous query is being processed by scanning the table, the new query can attach its scanning cursor to the first query&rsquo;s cursor.</li>
-<li>The DBMS keeps track of where the second query joined to make sure it also completes the scan.</li>
-</ul>
-</div>
-</div>
-<div id="outline-container-org6c17ecb" class="outline-3">
-<h3 id="org6c17ecb"><span class="section-number-3">4.4.</span> Buffer pool bypass</h3>
-<div class="outline-text-3" id="text-4-4">
-<ul class="org-ul">
-<li>Scanned pages do not have to be stored in the buffer pool to avoid the overhead.</li>
-<li>Use cases: a query needs to read a large sequence of contiguous pages; temporary pages like sorting or joins.</li>
-</ul>
-</div>
-</div>
-</div>
-<div id="outline-container-org9758089" class="outline-2">
-<h2 id="org9758089"><span class="section-number-2">5.</span> Buffer replacement policies</h2>
-<div class="outline-text-2" id="text-5">
-<ul class="org-ul">
-<li>The DBMS decides which page to evict from the buffer pool to free up a frame.</li>
-</ul>
-</div>
-<div id="outline-container-org5e99945" class="outline-3">
-<h3 id="org5e99945"><span class="section-number-3">5.1.</span> Least recently used (LRU)</h3>
-<div class="outline-text-3" id="text-5-1">
-<ul class="org-ul">
-<li>LRU maintains a timestamp of when each page was last accessed, and evicts the page with the oldest timestamp.
-<ul class="org-ul">
-<li>The timestamp can be stored in a queue for efficient sorting.</li>
-</ul></li>
-<li>Susceptible to sequential flooding, where the buffer pool is corrupted due to a sequential scan.
-<ul class="org-ul">
-<li>With the LRU policy the oldest pages are evicted, but they are more likely to be scanned soon.</li>
-</ul></li>
-</ul>
-</div>
-</div>
-<div id="outline-container-orgd6e313b" class="outline-3">
-<h3 id="orgd6e313b"><span class="section-number-3">5.2.</span> Clock</h3>
-<div class="outline-text-3" id="text-5-2">
-<ul class="org-ul">
-<li>An approximation of LRU but replace the timestamp with a reference bit which is set to 1 when a page is accessed.</li>
-<li>Regularly sweeping all pages, if a bit is set to 1, reset to 0; if a bit is 0, evict the page.</li>
-</ul>
-</div>
-</div>
-<div id="outline-container-orgc83ef3b" class="outline-3">
-<h3 id="orgc83ef3b"><span class="section-number-3">5.3.</span> LRU-K</h3>
-<div class="outline-text-3" id="text-5-3">
-<ul class="org-ul">
-<li>Tracks the last K accessed timestamps to predict the next accessed time, hence avoid the sequential flooding issue.</li>
-</ul>
-</div>
-<div id="outline-container-orgc699ae5" class="outline-4">
-<h4 id="orgc699ae5"><span class="section-number-4">5.3.1.</span> MySQL approximate LRU-K</h4>
-<div class="outline-text-4" id="text-5-3-1">
-<ul class="org-ul">
-<li>Use a linked list with two entry points: &ldquo;old&rdquo; and &ldquo;young&rdquo;.</li>
-<li>The new pages are always inserted to the head of &ldquo;old&rdquo;.</li>
-<li>If a page in the &ldquo;old&rdquo; is accessed again, it is then inserted to the head of &ldquo;young&rdquo;.</li>
-</ul>
-</div>
-</div>
-</div>
-<div id="outline-container-orgaa1f83d" class="outline-3">
-<h3 id="orgaa1f83d"><span class="section-number-3">5.4.</span> Localization</h3>
-<div class="outline-text-3" id="text-5-4">
-<ul class="org-ul">
-<li>Instead of using a global replacement policy, the DBMS make eviction decisions based on each query.</li>
-<li>Pages brought in by one query are less likely to evict pages that are important for other ongoing queries.</li>
-<li>The DBMS can <b><b>predicts</b></b> more accurately which pages should stay or be evicted once the query is complete, so that the buffer pool is less polluted with less useful pages.</li>
-</ul>
-</div>
-</div>
-<div id="outline-container-org803c4a2" class="outline-3">
-<h3 id="org803c4a2"><span class="section-number-3">5.5.</span> Priority hint</h3>
-<div class="outline-text-3" id="text-5-5">
-<ul class="org-ul">
-<li>Transactions tell the buffer pool where pages are important based on the <b><b>context</b></b> of each page.</li>
-</ul>
-</div>
-</div>
-<div id="outline-container-org761ae22" class="outline-3">
-<h3 id="org761ae22"><span class="section-number-3">5.6.</span> Dirty pages</h3>
-<div class="outline-text-3" id="text-5-6">
-<ul class="org-ul">
-<li>Two ways to handle dirty pages in the buffer pool:
-<ul class="org-ul">
-<li>Fast: only drop clean pages.</li>
-<li>Slow: write back dirty pages to ensure persistent change, and then evict them (if they will not be read again.).</li>
-</ul></li>
-<li>Can periodically walk through the page table and write back dirty pages in the background.</li>
-</ul>
-</div>
-</div>
-</div>
-<div id="outline-container-orgd1487ae" class="outline-2">
-<h2 id="orgd1487ae"><span class="section-number-2">6.</span> Other memory pools</h2>
-<div class="outline-text-2" id="text-6">
-<ul class="org-ul">
-<li>A DBMS also maintains other pools to store:
-<ul class="org-ul">
-<li>query caches,</li>
-<li>logs,</li>
-<li>temporary tables, e.g., sorting, join,</li>
-<li>dictionary caches.</li>
-</ul></li>
-</ul>
-</div>
-</div>
-<div id="outline-container-orgf69c73c" class="outline-2">
-<h2 id="orgf69c73c"><span class="section-number-2">7.</span> OS cache bypass</h2>
-<div class="outline-text-2" id="text-7">
-<ul class="org-ul">
-<li>Most DBMS use direct I/O (e.g., with <code>fsync</code> instead of <code>fwrite</code>) to bypass the OS cache to avoid redundant page copy and to manage eviction policies more intelligently (cf. <a href="https://chenyo-17.github.io/org-static-blog/tag-database.html#org611ff38">Why not OS post</a>).</li>
-</ul>
-</div>
-</div>
-<div id="outline-container-orgd3e2933" class="outline-2">
-<h2 id="orgd3e2933"><span class="section-number-2">8.</span> I/O scheduling</h2>
-<div class="outline-text-2" id="text-8">
-<ul class="org-ul">
-<li>The DBMS maintains internal <b><b>queue</b></b> to track page read/write.</li>
-<li>The priority are determined by multi-facets, e.g., critical path task, SLAs.</li>
-</ul>
-</div>
-</div>
-<div class="taglist"><a href="https://chenyo.me/tags.html">Tags</a>: <a href="https://chenyo.me/tag-study.html">study</a> <a href="https://chenyo.me/tag-database.html">database</a> <a href="https://chenyo.me/tag-cmu.html">cmu</a> </div><div id="archive">
+<div class="taglist"><a href="https://chenyo.me/tags.html">Tags</a>: <a href="https://chenyo.me/tag-web.html">web</a> <a href="https://chenyo.me/tag-app.html">app</a> </div><div id="archive">
 <a href="https://chenyo.me/archive.html">Other posts</a>
 </div>
 </div>
