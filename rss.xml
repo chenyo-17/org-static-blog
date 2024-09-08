@@ -4,7 +4,7 @@
 <title><![CDATA[Chenyo's Blog]]></title>
 <description><![CDATA[Chenyo's Blog]]></description>
 <link>https://chenyo.me</link>
-<lastBuildDate>Sun, 08 Sep 2024 12:14:24 +0200</lastBuildDate>
+<lastBuildDate>Sun, 08 Sep 2024 16:54:41 +0200</lastBuildDate>
 <item>
   <title><![CDATA[Install Doom Emacs with Lisp native compilation in WSL2]]></title>
   <description><![CDATA[
@@ -4606,27 +4606,29 @@ I felt &ldquo;Argo&rdquo; could have delved deeper into the absurdities of war r
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org953f06f">1. Concurrency vs Parallelism</a></li>
-<li><a href="#orgb2f2541">2. Use goroutines for states</a>
+<li><a href="#org61f909d">1. Concurrency vs Parallelism</a></li>
+<li><a href="#org59bcf39">2. Use goroutines for states</a>
 <ul>
-<li><a href="#orga1d508a">2.1. Matching a regex</a></li>
-<li><a href="#orge16a3ef">2.2. When the state variable cannot be avoided</a></li>
+<li><a href="#org6ac3639">2.1. Matching a regex</a></li>
+<li><a href="#orgeae3186">2.2. When the state variable cannot be avoided</a></li>
 </ul>
 </li>
-<li><a href="#orgd8d1a1d">3. Pattern 1: publish/subscribe server</a>
+<li><a href="#org19624ac">3. Pattern 1: publish/subscribe server</a>
 <ul>
-<li><a href="#orgedda909">3.1. Options for slow goroutines</a></li>
+<li><a href="#org460463a">3.1. Options for slow goroutines</a></li>
 </ul>
 </li>
-<li><a href="#org1a3753d">4. Pattern 2: work scheduler</a></li>
+<li><a href="#orga6afd64">4. Pattern 2: work scheduler</a></li>
+<li><a href="#org65862ae">5. Pattern 3: replicated service client</a></li>
+<li><a href="#org29d6849">6. Pattern 4: Protocol multiplexer</a></li>
 </ul>
 </div>
 </nav>
 <p>
 This a personal note for the <a href="https://www.youtube.com/watch?v=IdCbMO0Ey9I">Russ Cox guest lecture</a>.
 </p>
-<div id="outline-container-org953f06f" class="outline-2">
-<h2 id="org953f06f"><span class="section-number-2">1.</span> Concurrency vs Parallelism</h2>
+<div id="outline-container-org61f909d" class="outline-2">
+<h2 id="org61f909d"><span class="section-number-2">1.</span> Concurrency vs Parallelism</h2>
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
 <li>Concurrency: write a program to handle lot of things at once
@@ -4637,12 +4639,12 @@ This a personal note for the <a href="https://www.youtube.com/watch?v=IdCbMO0Ey9
 </ul>
 </div>
 </div>
-<div id="outline-container-orgb2f2541" class="outline-2">
-<h2 id="orgb2f2541"><span class="section-number-2">2.</span> Use goroutines for states</h2>
+<div id="outline-container-org59bcf39" class="outline-2">
+<h2 id="org59bcf39"><span class="section-number-2">2.</span> Use goroutines for states</h2>
 <div class="outline-text-2" id="text-2">
 </div>
-<div id="outline-container-orga1d508a" class="outline-3">
-<h3 id="orga1d508a"><span class="section-number-3">2.1.</span> Matching a regex</h3>
+<div id="outline-container-org6ac3639" class="outline-3">
+<h3 id="org6ac3639"><span class="section-number-3">2.1.</span> Matching a regex</h3>
 <div class="outline-text-3" id="text-2-1">
 <ul class="org-ul">
 <li>return if a given string matches a regex: start with <code>"</code>, contains arbitrary escape sequence and ends with <code>"</code></li>
@@ -4699,8 +4701,8 @@ clear logic: store states in the code
 </ul>
 </div>
 </div>
-<div id="outline-container-orge16a3ef" class="outline-3">
-<h3 id="orge16a3ef"><span class="section-number-3">2.2.</span> When the state variable cannot be avoided</h3>
+<div id="outline-container-orgeae3186" class="outline-3">
+<h3 id="orgeae3186"><span class="section-number-3">2.2.</span> When the state variable cannot be avoided</h3>
 <div class="outline-text-3" id="text-2-2">
 <ul class="org-ul">
 <li><p>
@@ -4802,8 +4804,8 @@ use additional goroutines to hold states
 </div>
 </div>
 </div>
-<div id="outline-container-orgd8d1a1d" class="outline-2">
-<h2 id="orgd8d1a1d"><span class="section-number-2">3.</span> Pattern 1: publish/subscribe server</h2>
+<div id="outline-container-org19624ac" class="outline-2">
+<h2 id="org19624ac"><span class="section-number-2">3.</span> Pattern 1: publish/subscribe server</h2>
 <div class="outline-text-2" id="text-3">
 <ul class="org-ul">
 <li>the information goes one way: server -&gt; client</li>
@@ -4855,8 +4857,8 @@ prefer <code>defer</code> when unlocking the mutex
 </div></li>
 </ul>
 </div>
-<div id="outline-container-orgedda909" class="outline-3">
-<h3 id="orgedda909"><span class="section-number-3">3.1.</span> Options for slow goroutines</h3>
+<div id="outline-container-org460463a" class="outline-3">
+<h3 id="org460463a"><span class="section-number-3">3.1.</span> Options for slow goroutines</h3>
 <div class="outline-text-3" id="text-3-1">
 <ul class="org-ul">
 <li>slow down event generation</li>
@@ -4973,8 +4975,8 @@ convert mutexes into goroutines, not suitable for Raft where state transition is
 </div>
 </div>
 </div>
-<div id="outline-container-org1a3753d" class="outline-2">
-<h2 id="org1a3753d"><span class="section-number-2">4.</span> Pattern 2: work scheduler</h2>
+<div id="outline-container-orga6afd64" class="outline-2">
+<h2 id="orga6afd64"><span class="section-number-2">4.</span> Pattern 2: work scheduler</h2>
 <div class="outline-text-2" id="text-4">
 <ul class="org-ul">
 <li><p>
@@ -5032,7 +5034,7 @@ Optimization for the above code: while the task loop creates goroutines \(M\) ti
 <span class="linenr"> 2: </span>    <span style="color: #dcaeea;">call</span> <span style="color: #51afef;">func</span>(<span style="color: #dcaeea;">srv</span> <span style="color: #ECBE7B;">string</span>, <span style="color: #dcaeea;">task</span> <span style="color: #ECBE7B;">int</span>)) {
 <span class="linenr"> 3: </span>
 <span class="linenr"> 4: </span>    <span style="color: #dcaeea;">work</span> := <span style="color: #c678dd;">make</span>(<span style="color: #51afef;">chan</span> <span style="color: #ECBE7B;">int</span>)  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">a queue of all works yet to be done</span>
-<span class="linenr"> 5: </span>    <span style="color: #dcaeea;">done</span> := <span style="color: #c678dd;">make</span>(<span style="color: #51afef;">chan</span> <span style="color: #ECBE7B;">bool</span>)  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">a queue of all done tasks</span>
+<span class="linenr"> 5: </span>    <span style="color: #dcaeea;">done</span> := <span style="color: #c678dd;">make</span>(<span style="color: #51afef;">chan</span> <span style="color: #ECBE7B;">bool</span>) <span style="color: #5B6268;">// </span><span style="color: #5B6268;">a queue of all done tasks</span>
 <span class="linenr"> 6: </span>    <span style="color: #dcaeea;">exit</span> := <span style="color: #c678dd;">make</span>(<span style="color: #51afef;">chan</span> <span style="color: #ECBE7B;">bool</span>) <span style="color: #5B6268;">// </span><span style="color: #5B6268;">signal when should not pull new servers</span>
 <span class="linenr"> 7: </span>
 <span class="linenr"> 8: </span>    <span style="color: #dcaeea;">runTasks</span> := <span style="color: #51afef;">func</span>(<span style="color: #dcaeea;">srv</span> <span style="color: #ECBE7B;">string</span>) {
@@ -5054,9 +5056,9 @@ Optimization for the above code: while the task loop creates goroutines \(M\) ti
 <span class="linenr">24: </span>            <span style="color: #51afef;">for</span> {
 <span class="linenr">25: </span>                <span style="color: #51afef;">select</span> {
 <span class="linenr">26: </span>                <span style="color: #51afef;">case</span> <span style="color: #dcaeea;">src</span> := &lt;-servers:
-<span class="linenr">27: </span>                        <span style="color: #51afef;">go</span> <span style="color: #c678dd;">runTasks</span>(srv)
+<span class="linenr">27: </span>                    <span style="color: #51afef;">go</span> <span style="color: #c678dd;">runTasks</span>(srv)
 <span class="linenr">28: </span>                <span style="color: #51afef;">case</span> &lt;-exit:
-<span class="linenr">29: </span>                        <span style="color: #51afef;">return</span>
+<span class="linenr">29: </span>                    <span style="color: #51afef;">return</span>
 <span class="linenr">30: </span>                }
 <span class="linenr">31: </span>            }
 <span class="linenr">32: </span>        }
@@ -5081,27 +5083,27 @@ Optimization for the above code: while the task loop creates goroutines \(M\) ti
 <span class="linenr">51: </span>
 <span class="linenr">52: </span>    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">fix 1: one can switch between work and donw channel</span>
 <span class="linenr">53: </span>    <span style="color: #dcaeea;">i</span> := <span style="color: #da8548; font-weight: bold;">0</span>
-<span class="linenr">54: </span>    <span style="color: #a9a1e1;">WorkLoop</span>:
-<span class="linenr">55: </span>        <span style="color: #51afef;">for</span> <span style="color: #dcaeea;">task</span> := <span style="color: #da8548; font-weight: bold;">0</span>; task &lt; numTask; task++ {
-<span class="linenr">56: </span>            <span style="color: #51afef;">for</span> {
-<span class="linenr">57: </span>                <span style="color: #51afef;">select</span> {
-<span class="linenr">58: </span>                <span style="color: #51afef;">case</span> work &lt;- task:
-<span class="linenr">59: </span>                    <span style="color: #51afef;">continue</span> <span style="color: #a9a1e1;">WorkLoop</span>
-<span class="linenr">60: </span>                <span style="color: #51afef;">case</span> &lt;-done:
-<span class="linenr">61: </span>                    i++
-<span class="linenr">62: </span>                }
-<span class="linenr">63: </span>            }
-<span class="linenr">64: </span>        }
+<span class="linenr">54: </span><span style="color: #a9a1e1;">WorkLoop</span>:
+<span class="linenr">55: </span>    <span style="color: #51afef;">for</span> <span style="color: #dcaeea;">task</span> := <span style="color: #da8548; font-weight: bold;">0</span>; task &lt; numTask; task++ {
+<span class="linenr">56: </span>        <span style="color: #51afef;">for</span> {
+<span class="linenr">57: </span>            <span style="color: #51afef;">select</span> {
+<span class="linenr">58: </span>            <span style="color: #51afef;">case</span> work &lt;- task:
+<span class="linenr">59: </span>                <span style="color: #51afef;">continue</span> <span style="color: #a9a1e1;">WorkLoop</span>
+<span class="linenr">60: </span>            <span style="color: #51afef;">case</span> &lt;-done:
+<span class="linenr">61: </span>                i++
+<span class="linenr">62: </span>            }
+<span class="linenr">63: </span>        }
+<span class="linenr">64: </span>    }
 <span class="linenr">65: </span>
-<span class="linenr">66: </span>        <span style="color: #5B6268;">// </span><span style="color: #5B6268;">wait for the last assigned tasks to be done</span>
-<span class="linenr">67: </span>        <span style="color: #51afef;">for</span> ; i &lt; numTask; i++ {
-<span class="linenr">68: </span>            &lt;-done
-<span class="linenr">69: </span>        }
+<span class="linenr">66: </span>    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">wait for the last assigned tasks to be done</span>
+<span class="linenr">67: </span>    <span style="color: #51afef;">for</span> ; i &lt; numTask; i++ {
+<span class="linenr">68: </span>        &lt;-done
+<span class="linenr">69: </span>    }
 <span class="linenr">70: </span>
-<span class="linenr">71: </span>        <span style="color: #5B6268;">// </span><span style="color: #5B6268;">only close work channel in the end,</span>
-<span class="linenr">72: </span>        <span style="color: #5B6268;">// </span><span style="color: #5B6268;">in case some tasks failed and need to be redo</span>
-<span class="linenr">73: </span>        <span style="color: #c678dd;">close</span>(work)
-<span class="linenr">74: </span>        exit &lt;- <span style="color: #a9a1e1;">true</span>  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">stop pulling new servers</span>
+<span class="linenr">71: </span>    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">only close work channel in the end,</span>
+<span class="linenr">72: </span>    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">in case some tasks failed and need to be redo</span>
+<span class="linenr">73: </span>    <span style="color: #c678dd;">close</span>(work)
+<span class="linenr">74: </span>    exit &lt;- <span style="color: #a9a1e1;">true</span> <span style="color: #5B6268;">// </span><span style="color: #5B6268;">stop pulling new servers</span>
 <span class="linenr">75: </span>
 <span class="linenr">76: </span>    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">fix 2: move the work assignment to a separate go routine</span>
 <span class="linenr">77: </span>    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">go func() {</span>
@@ -5114,6 +5116,174 @@ Optimization for the above code: while the task loop creates goroutines \(M\) ti
 <span class="linenr">84: </span>    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">fix 3: increase buffer for the work channel</span>
 <span class="linenr">85: </span>    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">work := make(chan int, numTask)</span>
 <span class="linenr">86: </span>}
+</pre>
+</div></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org65862ae" class="outline-2">
+<h2 id="org65862ae"><span class="section-number-2">5.</span> Pattern 3: replicated service client</h2>
+<div class="outline-text-2" id="text-5">
+<ul class="org-ul">
+<li><p>
+A client replicates its requests to multiple servers, waits for the first reply and changes its preferred server.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-go"><span style="color: #51afef;">func</span> (<span style="color: #dcaeea;">c</span> *<span style="color: #ECBE7B;">Client</span>) <span style="color: #c678dd;">Call</span>(<span style="color: #dcaeea;">args</span> <span style="color: #ECBE7B;">Args</span>) <span style="color: #ECBE7B;">Reply</span> {
+    <span style="color: #51afef;">type</span> <span style="color: #ECBE7B;">result</span> <span style="color: #51afef;">struct</span> {
+        serverID <span style="color: #ECBE7B;">int</span>
+        reply <span style="color: #ECBE7B;">Reply</span>
+    }
+
+    <span style="color: #51afef;">const</span> <span style="color: #a9a1e1;">timeout</span> = <span style="color: #da8548; font-weight: bold;">1</span> * time.Second
+    <span style="color: #dcaeea;">t</span> := time.<span style="color: #c678dd;">NewTimer</span>(timeout)
+    <span style="color: #51afef;">defer</span> t.<span style="color: #c678dd;">Stop</span>()
+
+    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">a channel for all servers to send reply</span>
+    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">so that even if the client has received a reply</span>
+    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">other later replies don't hang</span>
+    <span style="color: #dcaeea;">done</span> := <span style="color: #c678dd;">make</span>(<span style="color: #51afef;">chan</span> <span style="color: #ECBE7B;">result</span>, <span style="color: #c678dd;">len</span>(c.servers))
+
+    c.mu.<span style="color: #c678dd;">Lock</span>()
+    <span style="color: #dcaeea;">prefer</span> := c.prefer
+    c.mu.<span style="color: #c678dd;">Unlock</span>()
+
+    <span style="color: #51afef;">var</span> <span style="color: #dcaeea;">r</span> <span style="color: #ECBE7B;">result</span>
+    <span style="color: #51afef;">for</span> <span style="color: #dcaeea;">off</span> := <span style="color: #da8548; font-weight: bold;">0</span>; off &lt; <span style="color: #c678dd;">len</span>(c.servers); off++ {
+        <span style="color: #5B6268;">// </span><span style="color: #5B6268;">start from the preferred server</span>
+        <span style="color: #dcaeea;">id</span> := (prefer + off) % <span style="color: #c678dd;">len</span>(c.servers)
+        <span style="color: #51afef;">go</span> <span style="color: #51afef;">func</span>() {
+            done &lt;- <span style="color: #ECBE7B;">result</span>{id, c.<span style="color: #c678dd;">callOne</span>(c.servers[id], arfs)}
+        }()
+
+        <span style="color: #5B6268;">// </span><span style="color: #5B6268;">now wait for either a done signal or a timeout</span>
+        <span style="color: #5B6268;">// </span><span style="color: #5B6268;">if it is done, don't send to other servers</span>
+        <span style="color: #5B6268;">// </span><span style="color: #5B6268;">otherwise, reset the timer and sends to the next server</span>
+        <span style="color: #51afef;">select</span> {
+        <span style="color: #51afef;">case</span> r = &lt;-done:
+            <span style="color: #51afef;">goto</span> <span style="color: #a9a1e1;">Done</span>  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">use a goto if it makes code clear</span>
+        <span style="color: #51afef;">case</span> &lt;-t.C:
+            <span style="color: #5B6268;">// </span><span style="color: #5B6268;">timeout</span>
+            t.<span style="color: #c678dd;">Reset</span>(timeout)
+        }
+    }
+
+    r = &lt;-done  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">wait for the first reply even if it is a RPC timeout</span>
+
+<span style="color: #a9a1e1;">Done</span>:
+    c.mu.<span style="color: #c678dd;">Lock</span>()
+    c.prefer = r.serverID <span style="color: #5B6268;">// </span><span style="color: #5B6268;">update preference</span>
+    c.mu.<span style="color: #c678dd;">Unlock</span>()
+    <span style="color: #51afef;">return</span> r.reply
+}
+
+</pre>
+</div></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org29d6849" class="outline-2">
+<h2 id="org29d6849"><span class="section-number-2">6.</span> Pattern 4: Protocol multiplexer</h2>
+<div class="outline-text-2" id="text-6">
+<ul class="org-ul">
+<li><p>
+A multiplexer sits in front of a service and forward messages between multiple clients and the service, e.g., an RPC.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-go"><span class="linenr"> 1: </span><span style="color: #51afef;">type</span> <span style="color: #ECBE7B;">ProtocolMux</span> <span style="color: #51afef;">interface</span> {
+<span class="linenr"> 2: </span>    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">A mux is binded to a specific service</span>
+<span class="linenr"> 3: </span>    <span style="color: #c678dd;">Init</span>(<span style="color: #ECBE7B;">Service</span>)
+<span class="linenr"> 4: </span>    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">A client uses this method to send message to the service</span>
+<span class="linenr"> 5: </span>    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">and wait for the service reply</span>
+<span class="linenr"> 6: </span>    <span style="color: #c678dd;">Call</span>(<span style="color: #ECBE7B;">Msg</span>) <span style="color: #ECBE7B;">Msg</span>
+<span class="linenr"> 7: </span>}
+<span class="linenr"> 8: </span>
+<span class="linenr"> 9: </span><span style="color: #5B6268;">// </span><span style="color: #5B6268;">Methods that a service exposes to let a mux use</span>
+<span class="linenr">10: </span><span style="color: #5B6268;">// </span><span style="color: #5B6268;">Underlining messgae processing are in the implementation</span>
+<span class="linenr">11: </span><span style="color: #5B6268;">// </span><span style="color: #5B6268;">of the actual service struct</span>
+<span class="linenr">12: </span><span style="color: #51afef;">type</span> <span style="color: #ECBE7B;">Service</span> <span style="color: #51afef;">interface</span> {
+<span class="linenr">13: </span>    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">A tag is a muxing identifier in the request or reply message,</span>
+<span class="linenr">14: </span>    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">e.g., which client channel to send the reply</span>
+<span class="linenr">15: </span>    <span style="color: #c678dd;">ReadTag</span>(<span style="color: #ECBE7B;">Msg</span>) <span style="color: #ECBE7B;">int64</span>
+<span class="linenr">16: </span>    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">Send a request message to the service</span>
+<span class="linenr">17: </span>    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">multiple sends cannot be called concurrently</span>
+<span class="linenr">18: </span>    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">probably due to only a single channel between</span>
+<span class="linenr">19: </span>    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">mux and the service (serialization)</span>
+<span class="linenr">20: </span>    <span style="color: #c678dd;">Send</span>(<span style="color: #ECBE7B;">Msg</span>)
+<span class="linenr">21: </span>    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">Waits and return the reply message,</span>
+<span class="linenr">22: </span>    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">multiple recvs cannot be called concurrently</span>
+<span class="linenr">23: </span>    <span style="color: #c678dd;">Recv</span>() <span style="color: #ECBE7B;">Msg</span>
+<span class="linenr">24: </span>}
+</pre>
+</div></li>
+
+<li><p>
+The mux maintains a channel to queue unsent requests and a channel to queue unsent replies.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-go"><span class="linenr"> 1: </span><span style="color: #51afef;">type</span> <span style="color: #ECBE7B;">Mux</span> <span style="color: #51afef;">struct</span> {
+<span class="linenr"> 2: </span>    srv <span style="color: #ECBE7B;">Service</span>
+<span class="linenr"> 3: </span>    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">stores unsent requests</span>
+<span class="linenr"> 4: </span>    send <span style="color: #51afef;">chan</span> <span style="color: #ECBE7B;">Msg</span>
+<span class="linenr"> 5: </span>    mu <span style="color: #ECBE7B;">sync.Mutex</span>
+<span class="linenr"> 6: </span>    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">maps channel tag to channel</span>
+<span class="linenr"> 7: </span>    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">whose replies have not been sent out</span>
+<span class="linenr"> 8: </span>    pending <span style="color: #51afef;">map</span>[<span style="color: #ECBE7B;">int64</span>]<span style="color: #51afef;">chan</span>&lt;- <span style="color: #ECBE7B;">Msg</span>
+<span class="linenr"> 9: </span>}
+<span class="linenr">10: </span>
+<span class="linenr">11: </span><span style="color: #51afef;">func</span> (<span style="color: #dcaeea;">m</span> *<span style="color: #ECBE7B;">Mux</span>) <span style="color: #c678dd;">Init</span>(<span style="color: #dcaeea;">srv</span> <span style="color: #ECBE7B;">Service</span>) {
+<span class="linenr">12: </span>    m.srv = srv
+<span class="linenr">13: </span>    m.pending = <span style="color: #c678dd;">make</span>(<span style="color: #51afef;">map</span>[<span style="color: #ECBE7B;">int64</span>]<span style="color: #51afef;">chan</span> <span style="color: #ECBE7B;">Msg</span>)
+<span class="linenr">14: </span>    <span style="color: #51afef;">go</span> m.<span style="color: #c678dd;">sendLoop</span>()
+<span class="linenr">15: </span>    <span style="color: #51afef;">go</span> m.<span style="color: #c678dd;">recvLoop</span>()
+<span class="linenr">16: </span>}
+<span class="linenr">17: </span>
+<span class="linenr">18: </span><span style="color: #5B6268;">// </span><span style="color: #5B6268;">sending out queued requests</span>
+<span class="linenr">19: </span><span style="color: #51afef;">func</span> (<span style="color: #dcaeea;">m</span> *<span style="color: #ECBE7B;">Mux</span>) <span style="color: #ECBE7B;">sendLoop</span> {
+<span class="linenr">20: </span>    <span style="color: #51afef;">for</span> <span style="color: #dcaeea;">args</span> := <span style="color: #51afef;">range</span> m.send {
+<span class="linenr">21: </span>        m.srv.<span style="color: #c678dd;">Send</span>(args)
+<span class="linenr">22: </span>    }
+<span class="linenr">23: </span>}
+<span class="linenr">24: </span>
+<span class="linenr">25: </span><span style="color: #51afef;">func</span> (<span style="color: #dcaeea;">m</span> *<span style="color: #ECBE7B;">Mux</span>) <span style="color: #c678dd;">recvLoop</span>() {
+<span class="linenr">26: </span>    <span style="color: #51afef;">for</span> {
+<span class="linenr">27: </span>        <span style="color: #dcaeea;">reply</span> := m.srv.<span style="color: #c678dd;">Recv</span>()
+<span class="linenr">28: </span>        <span style="color: #dcaeea;">tag</span> := m.srv.<span style="color: #c678dd;">ReadTag</span>(reply)
+<span class="linenr">29: </span>        m.mu.<span style="color: #c678dd;">Lock</span>()
+<span class="linenr">30: </span>        <span style="color: #5B6268;">// </span><span style="color: #5B6268;">get the reply channel</span>
+<span class="linenr">31: </span>        <span style="color: #dcaeea;">done</span> := m.pending[tag]
+<span class="linenr">32: </span>        <span style="color: #5B6268;">// </span><span style="color: #5B6268;">clear the channel since the message loop</span>
+<span class="linenr">33: </span>        <span style="color: #5B6268;">// </span><span style="color: #5B6268;">is complete</span>
+<span class="linenr">34: </span>        <span style="color: #c678dd;">delete</span>(m.pending, tag)
+<span class="linenr">35: </span>        m.mu.<span style="color: #c678dd;">Unlock</span>()
+<span class="linenr">36: </span>
+<span class="linenr">37: </span>        <span style="color: #51afef;">if</span> done == <span style="color: #a9a1e1;">nil</span> {
+<span class="linenr">38: </span>            <span style="color: #c678dd;">panic</span>(<span style="color: #98be65;">"unexpected reply"</span>)
+<span class="linenr">39: </span>        }
+<span class="linenr">40: </span>        done &lt;- reply
+<span class="linenr">41: </span>    }
+<span class="linenr">42: </span>
+<span class="linenr">43: </span>}
+<span class="linenr">44: </span>
+<span class="linenr">45: </span><span style="color: #5B6268;">// </span><span style="color: #5B6268;">Clients call this method concurrently</span>
+<span class="linenr">46: </span><span style="color: #51afef;">func</span> (<span style="color: #dcaeea;">m</span> *<span style="color: #ECBE7B;">Mux</span>) <span style="color: #c678dd;">Call</span>(<span style="color: #dcaeea;">args</span> <span style="color: #ECBE7B;">Msg</span>) (<span style="color: #dcaeea;">reply</span> <span style="color: #ECBE7B;">Msg</span>) {
+<span class="linenr">47: </span>    <span style="color: #dcaeea;">tag</span> := m.srv.<span style="color: #c678dd;">ReadTag</span>(args)
+<span class="linenr">48: </span>    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">to record which message should reply</span>
+<span class="linenr">49: </span>    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">to which client</span>
+<span class="linenr">50: </span>    <span style="color: #dcaeea;">done</span> := <span style="color: #c678dd;">make</span>(<span style="color: #51afef;">chan</span> <span style="color: #ECBE7B;">Msg</span>, <span style="color: #da8548; font-weight: bold;">1</span>)
+<span class="linenr">51: </span>    m.mu.<span style="color: #c678dd;">Lock</span>()
+<span class="linenr">52: </span>    <span style="color: #51afef;">if</span> m.pending[tag] != <span style="color: #a9a1e1;">nil</span> {
+<span class="linenr">53: </span>        m.mu.<span style="color: #c678dd;">Unlock</span>()
+<span class="linenr">54: </span>        <span style="color: #c678dd;">panic</span>(<span style="color: #98be65;">"duplicate request"</span>)
+<span class="linenr">55: </span>    }
+<span class="linenr">56: </span>    m.pending[tag] = done
+<span class="linenr">57: </span>    m.mu.<span style="color: #c678dd;">Unlock</span>()
+<span class="linenr">58: </span>    m.send &lt;- args
+<span class="linenr">59: </span>    <span style="color: #51afef;">return</span> &lt;-done <span style="color: #5B6268;">// </span><span style="color: #5B6268;">hang until a reply is received</span>
+<span class="linenr">60: </span>}
 </pre>
 </div></li>
 </ul>

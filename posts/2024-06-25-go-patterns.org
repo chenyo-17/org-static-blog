@@ -351,7 +351,7 @@ func Schedule(servers chan string, numTask int,
 	call func(srv string, task int)) {
 
 	work := make(chan int)  // a queue of all works yet to be done
-	done := make(chan bool)  // a queue of all done tasks
+	done := make(chan bool) // a queue of all done tasks
 	exit := make(chan bool) // signal when should not pull new servers
 
 	runTasks := func(srv string) {
@@ -373,9 +373,9 @@ func Schedule(servers chan string, numTask int,
 			for {
 				select {
 				case src := <-servers:
-						go runTasks(srv)
+					go runTasks(srv)
 				case <-exit:
-						return
+					return
 				}
 			}
 		}
@@ -400,27 +400,27 @@ func Schedule(servers chan string, numTask int,
 
 	// fix 1: one can switch between work and donw channel
 	i := 0
-	WorkLoop:
-		for task := 0; task < numTask; task++ {
-			for {
-				select {
-				case work <- task:
-					continue WorkLoop
-				case <-done:
-					i++
-				}
+WorkLoop:
+	for task := 0; task < numTask; task++ {
+		for {
+			select {
+			case work <- task:
+				continue WorkLoop
+			case <-done:
+				i++
 			}
 		}
+	}
 
-		// wait for the last assigned tasks to be done
-		for ; i < numTask; i++ {
-			<-done
-		}
+	// wait for the last assigned tasks to be done
+	for ; i < numTask; i++ {
+		<-done
+	}
 
-		// only close work channel in the end,
-		// in case some tasks failed and need to be redo
-		close(work)
-		exit <- true  // stop pulling new servers
+	// only close work channel in the end,
+	// in case some tasks failed and need to be redo
+	close(work)
+	exit <- true // stop pulling new servers
 
 	// fix 2: move the work assignment to a separate go routine
 	// go func() {
@@ -434,3 +434,154 @@ func Schedule(servers chan string, numTask int,
 	// work := make(chan int, numTask)
 }
  #+end_src
+
+
+* Pattern 3: replicated service client
+- A client replicates its requests to multiple servers, waits for the first reply and changes its preferred server.
+
+ #+begin_src go
+func (c *Client) Call(args Args) Reply {
+	type result struct {
+		serverID int
+		reply Reply
+	}
+
+	const timeout = 1 * time.Second
+	t := time.NewTimer(timeout)
+	defer t.Stop()
+
+	// a channel for all servers to send reply
+	// so that even if the client has received a reply
+	// other later replies don't hang
+	done := make(chan result, len(c.servers))
+
+	c.mu.Lock()
+	prefer := c.prefer
+	c.mu.Unlock()
+
+	var r result
+	for off := 0; off < len(c.servers); off++ {
+		// start from the preferred server
+		id := (prefer + off) % len(c.servers)
+		go func() {
+			done <- result{id, c.callOne(c.servers[id], arfs)}
+		}()
+
+		// now wait for either a done signal or a timeout
+		// if it is done, don't send to other servers
+		// otherwise, reset the timer and sends to the next server
+		select {
+		case r = <-done:
+			goto Done  // use a goto if it makes code clear
+		case <-t.C:
+			// timeout
+			t.Reset(timeout)
+		}
+	}
+
+	r = <-done  // wait for the first reply even if it is a RPC timeout
+
+Done:
+	c.mu.Lock()
+	c.prefer = r.serverID // update preference
+	c.mu.Unlock()
+	return r.reply
+}
+
+ #+end_src
+
+
+* Pattern 4: Protocol multiplexer
+- A multiplexer sits in front of a service and forward messages between multiple clients and the service, e.g., an RPC.
+
+ #+begin_src go -n
+type ProtocolMux interface {
+	// A mux is binded to a specific service
+	Init(Service)
+	// A client uses this method to send message to the service
+	// and wait for the service reply
+	Call(Msg) Msg
+}
+
+// Methods that a service exposes to let a mux use
+// Underlining messgae processing are in the implementation
+// of the actual service struct
+type Service interface {
+	// A tag is a muxing identifier in the request or reply message,
+	// e.g., which client channel to send the reply
+	ReadTag(Msg) int64
+	// Send a request message to the service
+	// multiple sends cannot be called concurrently
+	// probably due to only a single channel between
+	// mux and the service (serialization)
+	Send(Msg)
+	// Waits and return the reply message,
+	// multiple recvs cannot be called concurrently
+	Recv() Msg
+}
+ #+end_src
+
+- The mux maintains a channel to queue unsent requests and a channel to queue unsent replies.
+
+  #+begin_src go -n
+type Mux struct {
+	srv Service
+	// stores unsent requests
+	send chan Msg
+	mu sync.Mutex
+	// maps channel tag to channel
+	// whose replies have not been sent out
+	pending map[int64]chan<- Msg
+}
+
+func (m *Mux) Init(srv Service) {
+	m.srv = srv
+	m.pending = make(map[int64]chan Msg)
+	go m.sendLoop()
+	go m.recvLoop()
+}
+
+// sending out queued requests
+func (m *Mux) sendLoop {
+	for args := range m.send {
+		m.srv.Send(args)
+	}
+}
+
+func (m *Mux) recvLoop() {
+	for {
+		reply := m.srv.Recv()
+		tag := m.srv.ReadTag(reply)
+		m.mu.Lock()
+		// get the reply channel
+		done := m.pending[tag]
+		// clear the channel since the message loop
+		// is complete
+		delete(m.pending, tag)
+		m.mu.Unlock()
+
+		if done == nil {
+			panic("unexpected reply")
+		}
+		done <- reply
+	}
+
+}
+
+// Clients call this method concurrently
+func (m *Mux) Call(args Msg) (reply Msg) {
+	tag := m.srv.ReadTag(args)
+	// to record which message should reply
+	// to which client
+	done := make(chan Msg, 1)
+	m.mu.Lock()
+	if m.pending[tag] != nil {
+		m.mu.Unlock()
+		panic("duplicate request")
+	}
+	m.pending[tag] = done
+	m.mu.Unlock()
+	m.send <- args
+	return <-done // hang until a reply is received
+}
+  #+end_src
