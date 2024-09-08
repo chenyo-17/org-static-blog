@@ -557,40 +557,40 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </div>
 </div>
 <div class="taglist"><a href="https://chenyo.me/tags.html">Tags</a>: <a href="https://chenyo.me/tag-study.html">study</a> <a href="https://chenyo.me/tag-database.html">database</a> <a href="https://chenyo.me/tag-cmu.html">cmu</a> </div>
-<div class="post-date">08 Aug 2024</div><h1 class="post-title"><a href="https://chenyo.me/2024-08-08-db-notes:-storage-models-&-compression.html">CMU 15-445 notes: Storage Models and Compression</a></h1>
+<div class="post-date">08 Aug 2024</div><h1 class="post-title"><a href="https://chenyo.me/2024-08-08-db-notes:-storage-models-and-compression.html">CMU 15-445 notes: Storage Models & Compression</a></h1>
 <nav id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org5b77dfd">1. Database workloads</a>
+<li><a href="#orgc883165">1. Database workloads</a>
 <ul>
-<li><a href="#orgb87ab06">1.1. OLTP (Online Transaction Processing)</a></li>
-<li><a href="#orgfb7bdb0">1.2. OLAP (Online Analytical Processing)</a></li>
-<li><a href="#orge3194ef">1.3. HTAP (Hybrid)</a></li>
+<li><a href="#org876ebf6">1.1. OLTP (Online Transaction Processing)</a></li>
+<li><a href="#org10f91cb">1.2. OLAP (Online Analytical Processing)</a></li>
+<li><a href="#orgae3ac54">1.3. HTAP (Hybrid)</a></li>
 </ul>
 </li>
-<li><a href="#org93fd9c5">2. Storage models</a>
+<li><a href="#org567cf9a">2. Storage models</a>
 <ul>
-<li><a href="#orgc8df47e">2.1. N-ary Storage Model (NSM)</a></li>
-<li><a href="#org722605b">2.2. Decomposition Storage Model (DSM)</a></li>
-<li><a href="#org75fa839">2.3. Partition Attributes Across (PAX)</a></li>
+<li><a href="#orge440f74">2.1. N-ary Storage Model (NSM)</a></li>
+<li><a href="#org908f62d">2.2. Decomposition Storage Model (DSM)</a></li>
+<li><a href="#org801e1ad">2.3. Partition Attributes Across (PAX)</a></li>
 </ul>
 </li>
-<li><a href="#org42c68f8">3. Database compression</a>
+<li><a href="#orgeb9dd65">3. Database compression</a>
 <ul>
-<li><a href="#orge3e08f7">3.1. Compression granularity</a></li>
-<li><a href="#orgb947ca2">3.2. Naive compression</a></li>
+<li><a href="#orgeeab136">3.1. Compression granularity</a></li>
+<li><a href="#orgbe6afe5">3.2. Naive compression</a></li>
 </ul>
 </li>
-<li><a href="#org2f8efe1">4. Columnar compression</a>
+<li><a href="#org406dcf9">4. Columnar compression</a>
 <ul>
-<li><a href="#org3433665">4.1. Dictionary encoding</a></li>
-<li><a href="#org51a62ce">4.2. Run-Length encoding (RLE)</a></li>
-<li><a href="#org40a1881">4.3. Bit-packing encoding</a></li>
-<li><a href="#org180159b">4.4. Mostly encoding</a></li>
-<li><a href="#orgbe4a953">4.5. Bitmap (One-hot) encoding</a></li>
-<li><a href="#org5326409">4.6. Delta encoding</a></li>
-<li><a href="#orga45bfa5">4.7. Incremental encoding</a></li>
+<li><a href="#orgfd3bfbe">4.1. Dictionary encoding</a></li>
+<li><a href="#orgb4ae498">4.2. Run-Length encoding (RLE)</a></li>
+<li><a href="#org7b9f9f9">4.3. Bit-packing encoding</a></li>
+<li><a href="#orgf9503c8">4.4. Mostly encoding</a></li>
+<li><a href="#org747efa1">4.5. Bitmap (One-hot) encoding</a></li>
+<li><a href="#org14bcf11">4.6. Delta encoding</a></li>
+<li><a href="#orgc3a6508">4.7. Incremental encoding</a></li>
 </ul>
 </li>
 </ul>
@@ -599,12 +599,12 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 <p>
 This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall2023/notes/05-storage3.pdf">CMU 15-445 L5 notes</a>.
 </p>
-<div id="outline-container-org5b77dfd" class="outline-2">
-<h2 id="org5b77dfd"><span class="section-number-2">1.</span> Database workloads</h2>
+<div id="outline-container-orgc883165" class="outline-2">
+<h2 id="orgc883165"><span class="section-number-2">1.</span> Database workloads</h2>
 <div class="outline-text-2" id="text-1">
 </div>
-<div id="outline-container-orgb87ab06" class="outline-3">
-<h3 id="orgb87ab06"><span class="section-number-3">1.1.</span> OLTP (Online Transaction Processing)</h3>
+<div id="outline-container-org876ebf6" class="outline-3">
+<h3 id="org876ebf6"><span class="section-number-3">1.1.</span> OLTP (Online Transaction Processing)</h3>
 <div class="outline-text-3" id="text-1-1">
 <ul class="org-ul">
 <li>Characterized by fast, repetitive, simple queries that operator on a small amount of data, e.g., a user adds an item to its Amazon cart and pay.</li>
@@ -612,8 +612,8 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul>
 </div>
 </div>
-<div id="outline-container-orgfb7bdb0" class="outline-3">
-<h3 id="orgfb7bdb0"><span class="section-number-3">1.2.</span> OLAP (Online Analytical Processing)</h3>
+<div id="outline-container-org10f91cb" class="outline-3">
+<h3 id="org10f91cb"><span class="section-number-3">1.2.</span> OLAP (Online Analytical Processing)</h3>
 <div class="outline-text-3" id="text-1-2">
 <ul class="org-ul">
 <li>Characterized by complex read queries on large data.</li>
@@ -621,8 +621,8 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul>
 </div>
 </div>
-<div id="outline-container-orge3194ef" class="outline-3">
-<h3 id="orge3194ef"><span class="section-number-3">1.3.</span> HTAP (Hybrid)</h3>
+<div id="outline-container-orgae3ac54" class="outline-3">
+<h3 id="orgae3ac54"><span class="section-number-3">1.3.</span> HTAP (Hybrid)</h3>
 <div class="outline-text-3" id="text-1-3">
 <ul class="org-ul">
 <li>OLTP + OLAP.</li>
@@ -630,15 +630,15 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </div>
 </div>
 </div>
-<div id="outline-container-org93fd9c5" class="outline-2">
-<h2 id="org93fd9c5"><span class="section-number-2">2.</span> Storage models</h2>
+<div id="outline-container-org567cf9a" class="outline-2">
+<h2 id="org567cf9a"><span class="section-number-2">2.</span> Storage models</h2>
 <div class="outline-text-2" id="text-2">
 <ul class="org-ul">
 <li>Different ways to store tuples in pages.</li>
 </ul>
 </div>
-<div id="outline-container-orgc8df47e" class="outline-3">
-<h3 id="orgc8df47e"><span class="section-number-3">2.1.</span> N-ary Storage Model (NSM)</h3>
+<div id="outline-container-orge440f74" class="outline-3">
+<h3 id="orge440f74"><span class="section-number-3">2.1.</span> N-ary Storage Model (NSM)</h3>
 <div class="outline-text-3" id="text-2-1">
 <ul class="org-ul">
 <li>Store all attributes for a single tuple contiguously in a single page, e.g., slotted pages.</li>
@@ -647,8 +647,8 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul>
 </div>
 </div>
-<div id="outline-container-org722605b" class="outline-3">
-<h3 id="org722605b"><span class="section-number-3">2.2.</span> Decomposition Storage Model (DSM)</h3>
+<div id="outline-container-org908f62d" class="outline-3">
+<h3 id="org908f62d"><span class="section-number-3">2.2.</span> Decomposition Storage Model (DSM)</h3>
 <div class="outline-text-3" id="text-2-2">
 <ul class="org-ul">
 <li>Store each attribute for all tuples contiguously in a block of data, i.e., column store.</li>
@@ -662,15 +662,15 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul>
 
 
-<figure id="orgcfe39cf">
+<figure id="org72f63eb">
 <img src="./static/db-dsm-storage-model.png" alt="db-dsm-storage-model.png" align="center" width="550px">
 
 <figcaption><span class="figure-number">Figure 1: </span>DSM storage model (<a href="https://15445.courses.cs.cmu.edu/fall2023/slides/05-storage3.pdf">Source</a>)</figcaption>
 </figure>
 </div>
 </div>
-<div id="outline-container-org75fa839" class="outline-3">
-<h3 id="org75fa839"><span class="section-number-3">2.3.</span> Partition Attributes Across (PAX)</h3>
+<div id="outline-container-org801e1ad" class="outline-3">
+<h3 id="org801e1ad"><span class="section-number-3">2.3.</span> Partition Attributes Across (PAX)</h3>
 <div class="outline-text-3" id="text-2-3">
 <ul class="org-ul">
 <li>Rows are horizontally partitioned into groups of rows; each row group uses a column store.</li>
@@ -678,7 +678,7 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul>
 
 
-<figure id="orgd7c4208">
+<figure id="org4455f3c">
 <img src="./static/db-pax-storage-model.png" alt="db-pax-storage-model.png" align="center" width="300px">
 
 <figcaption><span class="figure-number">Figure 2: </span>PAX storage model (<a href="https://15445.courses.cs.cmu.edu/fall2023/slides/05-storage3.pdf">Source</a>)</figcaption>
@@ -686,8 +686,8 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </div>
 </div>
 </div>
-<div id="outline-container-org42c68f8" class="outline-2">
-<h2 id="org42c68f8"><span class="section-number-2">3.</span> Database compression</h2>
+<div id="outline-container-orgeb9dd65" class="outline-2">
+<h2 id="orgeb9dd65"><span class="section-number-2">3.</span> Database compression</h2>
 <div class="outline-text-2" id="text-3">
 <ul class="org-ul">
 <li>Disk I/O is always the main bottleneck; read-only analytical workloads are popular; compression in advance allows for more I/O throughput.</li>
@@ -704,8 +704,8 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul></li>
 </ul>
 </div>
-<div id="outline-container-orge3e08f7" class="outline-3">
-<h3 id="orge3e08f7"><span class="section-number-3">3.1.</span> Compression granularity</h3>
+<div id="outline-container-orgeeab136" class="outline-3">
+<h3 id="orgeeab136"><span class="section-number-3">3.1.</span> Compression granularity</h3>
 <div class="outline-text-3" id="text-3-1">
 <ul class="org-ul">
 <li>Block level: compress all tuples for the same table.</li>
@@ -715,8 +715,8 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul>
 </div>
 </div>
-<div id="outline-container-orgb947ca2" class="outline-3">
-<h3 id="orgb947ca2"><span class="section-number-3">3.2.</span> Naive compression</h3>
+<div id="outline-container-orgbe6afe5" class="outline-3">
+<h3 id="orgbe6afe5"><span class="section-number-3">3.2.</span> Naive compression</h3>
 <div class="outline-text-3" id="text-3-2">
 <ul class="org-ul">
 <li>Engineers often use a general purpose compression algorithm with lower compression ratio in exchange for faster compression/decompression.</li>
@@ -729,15 +729,15 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </div>
 </div>
 </div>
-<div id="outline-container-org2f8efe1" class="outline-2">
-<h2 id="org2f8efe1"><span class="section-number-2">4.</span> Columnar compression</h2>
+<div id="outline-container-org406dcf9" class="outline-2">
+<h2 id="org406dcf9"><span class="section-number-2">4.</span> Columnar compression</h2>
 <div class="outline-text-2" id="text-4">
 <ul class="org-ul">
 <li>Works best with OLAP, may need additional support for writes.</li>
 </ul>
 </div>
-<div id="outline-container-org3433665" class="outline-3">
-<h3 id="org3433665"><span class="section-number-3">4.1.</span> Dictionary encoding</h3>
+<div id="outline-container-orgfd3bfbe" class="outline-3">
+<h3 id="orgfd3bfbe"><span class="section-number-3">4.1.</span> Dictionary encoding</h3>
 <div class="outline-text-3" id="text-4-1">
 <ul class="org-ul">
 <li>The most common database compression scheme, support late materialization.</li>
@@ -750,8 +750,8 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul>
 </div>
 </div>
-<div id="outline-container-org51a62ce" class="outline-3">
-<h3 id="org51a62ce"><span class="section-number-3">4.2.</span> Run-Length encoding (RLE)</h3>
+<div id="outline-container-orgb4ae498" class="outline-3">
+<h3 id="orgb4ae498"><span class="section-number-3">4.2.</span> Run-Length encoding (RLE)</h3>
 <div class="outline-text-3" id="text-4-2">
 <ul class="org-ul">
 <li>Compress runs (consecutive instances) of the same value in a column into triplets <code>(value, offset, length)</code>.</li>
@@ -759,60 +759,60 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul>
 
 
-<figure id="orgdc63f24">
+<figure id="org41f927d">
 <img src="./static/db-rle-storage-model.png" alt="db-rle-storage-model.png" align="center" width="550px">
 
 <figcaption><span class="figure-number">Figure 3: </span>Run-length encoding (<a href="https://15445.courses.cs.cmu.edu/fall2023/slides/05-storage3.pdf">Source</a>)</figcaption>
 </figure>
 </div>
 </div>
-<div id="outline-container-org40a1881" class="outline-3">
-<h3 id="org40a1881"><span class="section-number-3">4.3.</span> Bit-packing encoding</h3>
+<div id="outline-container-org7b9f9f9" class="outline-3">
+<h3 id="org7b9f9f9"><span class="section-number-3">4.3.</span> Bit-packing encoding</h3>
 <div class="outline-text-3" id="text-4-3">
 <ul class="org-ul">
 <li>Use less bits to store an attribute.</li>
 </ul>
 
 
-<figure id="orge6da532">
+<figure id="org186437e">
 <img src="./static/db-bit-packing-storage-model.png" alt="db-bit-packing-storage-model.png" align="center" width="250px">
 
 <figcaption><span class="figure-number">Figure 4: </span>Bit-packing encoding (<a href="https://15445.courses.cs.cmu.edu/fall2023/slides/05-storage3.pdf">Source</a>)</figcaption>
 </figure>
 </div>
 </div>
-<div id="outline-container-org180159b" class="outline-3">
-<h3 id="org180159b"><span class="section-number-3">4.4.</span> Mostly encoding</h3>
+<div id="outline-container-orgf9503c8" class="outline-3">
+<h3 id="orgf9503c8"><span class="section-number-3">4.4.</span> Mostly encoding</h3>
 <div class="outline-text-3" id="text-4-4">
 <ul class="org-ul">
 <li>Use a special marker to indicate values that exceed the bit size and maintains a look-up table to store them.</li>
 </ul>
 
 
-<figure id="org6b1f963">
+<figure id="org5d2928a">
 <img src="./static/db-mostly-encoding-storage-model.png" alt="db-mostly-encoding-storage-model.png" align="center" width="550px">
 
 <figcaption><span class="figure-number">Figure 5: </span>Mostly encoding (<a href="https://15445.courses.cs.cmu.edu/fall2023/slides/05-storage3.pdf">Source</a>)</figcaption>
 </figure>
 </div>
 </div>
-<div id="outline-container-orgbe4a953" class="outline-3">
-<h3 id="orgbe4a953"><span class="section-number-3">4.5.</span> Bitmap (One-hot) encoding</h3>
+<div id="outline-container-org747efa1" class="outline-3">
+<h3 id="org747efa1"><span class="section-number-3">4.5.</span> Bitmap (One-hot) encoding</h3>
 <div class="outline-text-3" id="text-4-5">
 <ul class="org-ul">
 <li>Only practical if the value cardinality is low.</li>
 </ul>
 
 
-<figure id="orgee3f9da">
+<figure id="org4d22f30">
 <img src="./static/db-bitmap-encoding-storage-model.png" alt="db-bitmap-encoding-storage-model.png" align="center" width="400px">
 
 <figcaption><span class="figure-number">Figure 6: </span>Bitmap encoding (<a href="https://15445.courses.cs.cmu.edu/fall2023/slides/05-storage3.pdf">Source</a>)</figcaption>
 </figure>
 </div>
 </div>
-<div id="outline-container-org5326409" class="outline-3">
-<h3 id="org5326409"><span class="section-number-3">4.6.</span> Delta encoding</h3>
+<div id="outline-container-org14bcf11" class="outline-3">
+<h3 id="org14bcf11"><span class="section-number-3">4.6.</span> Delta encoding</h3>
 <div class="outline-text-3" id="text-4-6">
 <ul class="org-ul">
 <li>Record the difference between values; the base value can be stored in-line or in a separate look-up table.</li>
@@ -820,15 +820,15 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul>
 
 
-<figure id="org3d6de6f">
+<figure id="orga9e25bd">
 <img src="./static/db-delta-encoding-storage-model.png" alt="db-delta-encoding-storage-model.png" align="center" width="500px">
 
 <figcaption><span class="figure-number">Figure 7: </span>Delta encoding (<a href="https://15445.courses.cs.cmu.edu/fall2023/slides/05-storage3.pdf">Source</a>)</figcaption>
 </figure>
 </div>
 </div>
-<div id="outline-container-orga45bfa5" class="outline-3">
-<h3 id="orga45bfa5"><span class="section-number-3">4.7.</span> Incremental encoding</h3>
+<div id="outline-container-orgc3a6508" class="outline-3">
+<h3 id="orgc3a6508"><span class="section-number-3">4.7.</span> Incremental encoding</h3>
 <div class="outline-text-3" id="text-4-7">
 <ul class="org-ul">
 <li>Common prefixes or suffixes and their lengths are recorded to avoid duplication.</li>
@@ -1677,26 +1677,27 @@ This is a personal note for the <a href="https://www.youtube.com/watch?v=uikbtpV
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org1c33d2c">1. Concurrency vs Parallelism</a></li>
-<li><a href="#orga651307">2. Use goroutines for states</a>
+<li><a href="#org953f06f">1. Concurrency vs Parallelism</a></li>
+<li><a href="#orgb2f2541">2. Use goroutines for states</a>
 <ul>
-<li><a href="#org98d2e6e">2.1. Matching a regex</a></li>
-<li><a href="#org2c0b401">2.2. When the state variable cannot be avoided</a></li>
+<li><a href="#orga1d508a">2.1. Matching a regex</a></li>
+<li><a href="#orge16a3ef">2.2. When the state variable cannot be avoided</a></li>
 </ul>
 </li>
-<li><a href="#org152569f">3. Pattern 1: publish/subscribe server</a>
+<li><a href="#orgd8d1a1d">3. Pattern 1: publish/subscribe server</a>
 <ul>
-<li><a href="#orgc720ace">3.1. Options for slow goroutines</a></li>
+<li><a href="#orgedda909">3.1. Options for slow goroutines</a></li>
 </ul>
 </li>
+<li><a href="#org1a3753d">4. Pattern 2: work scheduler</a></li>
 </ul>
 </div>
 </nav>
 <p>
 This a personal note for the <a href="https://www.youtube.com/watch?v=IdCbMO0Ey9I">Russ Cox guest lecture</a>.
 </p>
-<div id="outline-container-org1c33d2c" class="outline-2">
-<h2 id="org1c33d2c"><span class="section-number-2">1.</span> Concurrency vs Parallelism</h2>
+<div id="outline-container-org953f06f" class="outline-2">
+<h2 id="org953f06f"><span class="section-number-2">1.</span> Concurrency vs Parallelism</h2>
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
 <li>Concurrency: write a program to handle lot of things at once
@@ -1707,15 +1708,15 @@ This a personal note for the <a href="https://www.youtube.com/watch?v=IdCbMO0Ey9
 </ul>
 </div>
 </div>
-<div id="outline-container-orga651307" class="outline-2">
-<h2 id="orga651307"><span class="section-number-2">2.</span> Use goroutines for states</h2>
+<div id="outline-container-orgb2f2541" class="outline-2">
+<h2 id="orgb2f2541"><span class="section-number-2">2.</span> Use goroutines for states</h2>
 <div class="outline-text-2" id="text-2">
 </div>
-<div id="outline-container-org98d2e6e" class="outline-3">
-<h3 id="org98d2e6e"><span class="section-number-3">2.1.</span> Matching a regex</h3>
+<div id="outline-container-orga1d508a" class="outline-3">
+<h3 id="orga1d508a"><span class="section-number-3">2.1.</span> Matching a regex</h3>
 <div class="outline-text-3" id="text-2-1">
 <ul class="org-ul">
-<li>return if a given string matches a regex: start with <code>"</code>, contains arbitrary escape sequence and ends with <code>*</code></li>
+<li>return if a given string matches a regex: start with <code>"</code>, contains arbitrary escape sequence and ends with <code>"</code></li>
 <li><p>
 unclear logic: store states in the data
 </p>
@@ -1756,7 +1757,7 @@ clear logic: store states in the code
 <span class="linenr"> 2: </span><span style="color: #51afef;">if</span> <span style="color: #c678dd;">read</span>() != <span style="color: #98be65;">'"'</span> {
 <span class="linenr"> 3: </span>    <span style="color: #51afef;">return</span> <span style="color: #a9a1e1;">false</span>
 <span class="linenr"> 4: </span>}
-<span class="linenr"> 5: </span><span style="color: #51afef;">var</span> <span style="color: #dcaeea;">c</span> <span style="color: #ECBE7B;">rune</span> <span style="color: #5B6268;">// </span><span style="color: #5B6268;">c is a Unicode, alas to int32</span>
+<span class="linenr"> 5: </span><span style="color: #51afef;">var</span> <span style="color: #dcaeea;">c</span> <span style="color: #ECBE7B;">rune</span> <span style="color: #5B6268;">// </span><span style="color: #5B6268;">c is a Unicode, alias to int32</span>
 <span class="linenr"> 6: </span><span style="color: #51afef;">for</span> c != <span style="color: #98be65;">'"'</span> {
 <span class="linenr"> 7: </span>    c = <span style="color: #c678dd;">read</span>()
 <span class="linenr"> 8: </span>    <span style="color: #51afef;">if</span> c == <span style="color: #98be65;">'\\'</span> {
@@ -1769,8 +1770,8 @@ clear logic: store states in the code
 </ul>
 </div>
 </div>
-<div id="outline-container-org2c0b401" class="outline-3">
-<h3 id="org2c0b401"><span class="section-number-3">2.2.</span> When the state variable cannot be avoided</h3>
+<div id="outline-container-orge16a3ef" class="outline-3">
+<h3 id="orge16a3ef"><span class="section-number-3">2.2.</span> When the state variable cannot be avoided</h3>
 <div class="outline-text-3" id="text-2-2">
 <ul class="org-ul">
 <li><p>
@@ -1872,8 +1873,8 @@ use additional goroutines to hold states
 </div>
 </div>
 </div>
-<div id="outline-container-org152569f" class="outline-2">
-<h2 id="org152569f"><span class="section-number-2">3.</span> Pattern 1: publish/subscribe server</h2>
+<div id="outline-container-orgd8d1a1d" class="outline-2">
+<h2 id="orgd8d1a1d"><span class="section-number-2">3.</span> Pattern 1: publish/subscribe server</h2>
 <div class="outline-text-2" id="text-3">
 <ul class="org-ul">
 <li>the information goes one way: server -&gt; client</li>
@@ -1891,40 +1892,42 @@ prefer <code>defer</code> when unlocking the mutex
 <span class="linenr"> 7: </span>}
 <span class="linenr"> 8: </span><span style="color: #5B6268;">// </span><span style="color: #5B6268;">publish an event to all subscribed channel</span>
 <span class="linenr"> 9: </span><span style="color: #51afef;">func</span> (<span style="color: #dcaeea;">s</span> *<span style="color: #ECBE7B;">Server</span>) <span style="color: #c678dd;">Publish</span>(<span style="color: #dcaeea;">e</span> <span style="color: #ECBE7B;">Event</span>) {
-<span class="linenr">10: </span>    s.mu.<span style="color: #c678dd;">Lock</span>()  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">each method could be called many clients</span>
+<span class="linenr">10: </span>    s.mu.<span style="color: #c678dd;">Lock</span>()  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">each method could be called by many clients</span>
 <span class="linenr">11: </span>    <span style="color: #51afef;">defer</span> s.mu.<span style="color: #c678dd;">Unlock</span>()
-<span class="linenr">12: </span>    <span style="color: #51afef;">for</span> <span style="color: #dcaeea;">c</span> := <span style="color: #51afef;">range</span> s.sub {
-<span class="linenr">13: </span>        <span style="color: #5B6268;">// </span><span style="color: #5B6268;">if a goroutine consumes the channel events too slow</span>
-<span class="linenr">14: </span>        <span style="color: #5B6268;">// </span><span style="color: #5B6268;">then a new event publish has to wait before it can send to the channel</span>
-<span class="linenr">15: </span>        <span style="color: #5B6268;">// </span><span style="color: #5B6268;">can add channel buffer</span>
-<span class="linenr">16: </span>        c &lt;- e
-<span class="linenr">17: </span>    }
-<span class="linenr">18: </span>}
-<span class="linenr">19: </span><span style="color: #5B6268;">// </span><span style="color: #5B6268;">a channel starts to subscribe</span>
-<span class="linenr">20: </span><span style="color: #51afef;">func</span> (<span style="color: #dcaeea;">s</span> *<span style="color: #ECBE7B;">Server</span>) <span style="color: #c678dd;">Subscribe</span>(<span style="color: #dcaeea;">c</span> <span style="color: #51afef;">chan</span>&lt;- <span style="color: #ECBE7B;">Event</span>) {
-<span class="linenr">21: </span>    s.mu.<span style="color: #c678dd;">Lock</span>()
-<span class="linenr">22: </span>    <span style="color: #51afef;">defer</span> s.mu.<span style="color: #c678dd;">Unlock</span>()
-<span class="linenr">23: </span>    <span style="color: #51afef;">if</span> s.sub[c] {
-<span class="linenr">24: </span>        <span style="color: #c678dd;">panic</span>(<span style="color: #98be65;">"pubsub: already subscribed"</span>) <span style="color: #5B6268;">// </span><span style="color: #5B6268;">the mutex wil also be unlocked with defer</span>
-<span class="linenr">25: </span>    }
-<span class="linenr">26: </span>    s.sub[c] = <span style="color: #a9a1e1;">true</span>
-<span class="linenr">27: </span>}
-<span class="linenr">28: </span><span style="color: #5B6268;">// </span><span style="color: #5B6268;">a channel cancels the subscription</span>
-<span class="linenr">29: </span><span style="color: #51afef;">func</span> (<span style="color: #dcaeea;">s</span> *<span style="color: #ECBE7B;">Server</span>) <span style="color: #c678dd;">Cancel</span>(<span style="color: #dcaeea;">c</span> <span style="color: #51afef;">chan</span>&lt;- <span style="color: #ECBE7B;">Event</span>) {
-<span class="linenr">30: </span>    s.mu.<span style="color: #c678dd;">Lock</span>()
-<span class="linenr">31: </span>    <span style="color: #51afef;">defer</span> s.mu.<span style="color: #c678dd;">Unlock</span>()
-<span class="linenr">32: </span>    <span style="color: #51afef;">if</span> <span style="color: #51afef; font-weight: bold;">!</span>s.sub[c] {
-<span class="linenr">33: </span>        <span style="color: #c678dd;">panic</span>(<span style="color: #98be65;">"pubsub: not subscribed"</span>)
-<span class="linenr">34: </span>    }
-<span class="linenr">35: </span>    <span style="color: #c678dd;">close</span>(c)
-<span class="linenr">36: </span>    <span style="color: #c678dd;">delete</span>(s.sub, c)
-<span class="linenr">37: </span>}
+<span class="linenr">12: </span>    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">need mutex here since it needs to read s.sub state</span>
+<span class="linenr">13: </span>    <span style="color: #51afef;">for</span> <span style="color: #dcaeea;">c</span> := <span style="color: #51afef;">range</span> s.sub {
+<span class="linenr">14: </span>        <span style="color: #5B6268;">// </span><span style="color: #5B6268;">if a goroutine consumes the channel events too slow</span>
+<span class="linenr">15: </span>        <span style="color: #5B6268;">// </span><span style="color: #5B6268;">then a new event publish has to wait</span>
+<span class="linenr">16: </span>        <span style="color: #5B6268;">// </span><span style="color: #5B6268;">before it can send to the channel</span>
+<span class="linenr">17: </span>        <span style="color: #5B6268;">// </span><span style="color: #5B6268;">can add channel buffer to mitigate this</span>
+<span class="linenr">18: </span>        c &lt;- e
+<span class="linenr">19: </span>    }
+<span class="linenr">20: </span>}
+<span class="linenr">21: </span><span style="color: #5B6268;">// </span><span style="color: #5B6268;">a channel starts to subscribe</span>
+<span class="linenr">22: </span><span style="color: #51afef;">func</span> (<span style="color: #dcaeea;">s</span> *<span style="color: #ECBE7B;">Server</span>) <span style="color: #c678dd;">Subscribe</span>(<span style="color: #dcaeea;">c</span> <span style="color: #51afef;">chan</span>&lt;- <span style="color: #ECBE7B;">Event</span>) {
+<span class="linenr">23: </span>    s.mu.<span style="color: #c678dd;">Lock</span>()
+<span class="linenr">24: </span>    <span style="color: #51afef;">defer</span> s.mu.<span style="color: #c678dd;">Unlock</span>()
+<span class="linenr">25: </span>    <span style="color: #51afef;">if</span> s.sub[c] {
+<span class="linenr">26: </span>        <span style="color: #5B6268;">// </span><span style="color: #5B6268;">the mutex wil also be unlocked with defer</span>
+<span class="linenr">27: </span>        <span style="color: #c678dd;">panic</span>(<span style="color: #98be65;">"pubsub: already subscribed"</span>)     }
+<span class="linenr">28: </span>    s.sub[c] = <span style="color: #a9a1e1;">true</span>
+<span class="linenr">29: </span>}
+<span class="linenr">30: </span><span style="color: #5B6268;">// </span><span style="color: #5B6268;">a channel cancels the subscription</span>
+<span class="linenr">31: </span><span style="color: #51afef;">func</span> (<span style="color: #dcaeea;">s</span> *<span style="color: #ECBE7B;">Server</span>) <span style="color: #c678dd;">Cancel</span>(<span style="color: #dcaeea;">c</span> <span style="color: #51afef;">chan</span>&lt;- <span style="color: #ECBE7B;">Event</span>) {
+<span class="linenr">32: </span>    s.mu.<span style="color: #c678dd;">Lock</span>()
+<span class="linenr">33: </span>    <span style="color: #51afef;">defer</span> s.mu.<span style="color: #c678dd;">Unlock</span>()
+<span class="linenr">34: </span>    <span style="color: #51afef;">if</span> <span style="color: #51afef; font-weight: bold;">!</span>s.sub[c] {
+<span class="linenr">35: </span>        <span style="color: #c678dd;">panic</span>(<span style="color: #98be65;">"pubsub: not subscribed"</span>)
+<span class="linenr">36: </span>    }
+<span class="linenr">37: </span>    <span style="color: #c678dd;">close</span>(c)
+<span class="linenr">38: </span>    <span style="color: #c678dd;">delete</span>(s.sub, c)
+<span class="linenr">39: </span>}
 </pre>
 </div></li>
 </ul>
 </div>
-<div id="outline-container-orgc720ace" class="outline-3">
-<h3 id="orgc720ace"><span class="section-number-3">3.1.</span> Options for slow goroutines</h3>
+<div id="outline-container-orgedda909" class="outline-3">
+<h3 id="orgedda909"><span class="section-number-3">3.1.</span> Options for slow goroutines</h3>
 <div class="outline-text-3" id="text-3-1">
 <ul class="org-ul">
 <li>slow down event generation</li>
@@ -1967,7 +1970,7 @@ convert mutexes into goroutines, not suitable for Raft where state transition is
 <div class="org-src-container">
 <pre class="src src-go"><span class="linenr"> 1: </span><span style="color: #51afef;">type</span> <span style="color: #ECBE7B;">Server</span> <span style="color: #51afef;">struct</span> {
 <span class="linenr"> 2: </span>    publish   <span style="color: #51afef;">chan</span> <span style="color: #ECBE7B;">Event</span>
-<span class="linenr"> 3: </span>    subscribe <span style="color: #51afef;">chan</span> <span style="color: #ECBE7B;">subReq</span>
+<span class="linenr"> 3: </span>    subscribe <span style="color: #51afef;">chan</span> <span style="color: #ECBE7B;">subReq</span>  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">a channel to queue unhandled subscription</span>
 <span class="linenr"> 4: </span>    cancel    <span style="color: #51afef;">chan</span> <span style="color: #ECBE7B;">subReq</span>
 <span class="linenr"> 5: </span>}
 <span class="linenr"> 6: </span><span style="color: #51afef;">type</span> <span style="color: #ECBE7B;">subReq</span> <span style="color: #51afef;">struct</span> {
@@ -1983,59 +1986,208 @@ convert mutexes into goroutines, not suitable for Raft where state transition is
 <span class="linenr">16: </span>    <span style="color: #51afef;">go</span> s.<span style="color: #c678dd;">loop</span>()
 <span class="linenr">17: </span>}
 <span class="linenr">18: </span><span style="color: #51afef;">func</span> (<span style="color: #dcaeea;">s</span> *<span style="color: #ECBE7B;">Server</span>) <span style="color: #c678dd;">Publish</span>(<span style="color: #dcaeea;">e</span> <span style="color: #ECBE7B;">Event</span>) {
-<span class="linenr">19: </span>    s.publish &lt;- e
-<span class="linenr">20: </span>}
-<span class="linenr">21: </span><span style="color: #51afef;">func</span> (<span style="color: #dcaeea;">s</span> *<span style="color: #ECBE7B;">Server</span>) <span style="color: #c678dd;">Subscribe</span>(<span style="color: #dcaeea;">c</span> <span style="color: #51afef;">chan</span>&lt;- <span style="color: #ECBE7B;">Event</span>) {
-<span class="linenr">22: </span>    <span style="color: #dcaeea;">r</span> := <span style="color: #ECBE7B;">subReq</span>{<span style="color: #a9a1e1;">c</span>: c, <span style="color: #a9a1e1;">ok</span>: <span style="color: #c678dd;">make</span>(<span style="color: #51afef;">chan</span> <span style="color: #ECBE7B;">bool</span>)}
-<span class="linenr">23: </span>    s.subscribe &lt;- r
-<span class="linenr">24: </span>    <span style="color: #51afef;">if</span> <span style="color: #51afef; font-weight: bold;">!</span>&lt;-r.ok {
-<span class="linenr">25: </span>        <span style="color: #c678dd;">panic</span>(<span style="color: #98be65;">"pubsub: already subscribed"</span>)
-<span class="linenr">26: </span>    }
-<span class="linenr">27: </span>}
-<span class="linenr">28: </span><span style="color: #51afef;">func</span> (<span style="color: #dcaeea;">s</span> *<span style="color: #ECBE7B;">Server</span>) <span style="color: #c678dd;">Cancel</span>(<span style="color: #dcaeea;">c</span> <span style="color: #51afef;">chan</span>&lt;- <span style="color: #ECBE7B;">Event</span>) {
-<span class="linenr">29: </span>    <span style="color: #dcaeea;">r</span> := <span style="color: #ECBE7B;">subReq</span>{<span style="color: #a9a1e1;">c</span>: c, <span style="color: #a9a1e1;">ok</span>: <span style="color: #c678dd;">make</span>(<span style="color: #51afef;">chan</span> <span style="color: #ECBE7B;">bool</span>)}
-<span class="linenr">30: </span>    s.cancel &lt;- r
-<span class="linenr">31: </span>    <span style="color: #51afef;">if</span> <span style="color: #51afef; font-weight: bold;">!</span>&lt;-r.ok {
-<span class="linenr">32: </span>        <span style="color: #c678dd;">panic</span>(<span style="color: #98be65;">"pubusb: not subscribed"</span>)
-<span class="linenr">33: </span>    }
-<span class="linenr">34: </span>}
-<span class="linenr">35: </span><span style="color: #51afef;">func</span> (<span style="color: #dcaeea;">s</span> *<span style="color: #ECBE7B;">Server</span>) <span style="color: #c678dd;">loop</span>() {
-<span class="linenr">36: </span>    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">now sub is a local variable, no lock is needed</span>
-<span class="linenr">37: </span>    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">sub maps from a subscribed channel to a helper channel</span>
-<span class="linenr">38: </span>    <span style="color: #dcaeea;">sub</span> := <span style="color: #c678dd;">make</span>(<span style="color: #51afef;">map</span>[<span style="color: #51afef;">chan</span>&lt;- <span style="color: #ECBE7B;">Event</span>]<span style="color: #51afef;">chan</span>&lt;- <span style="color: #ECBE7B;">Event</span>)
-<span class="linenr">39: </span>    <span style="color: #51afef;">for</span> {
-<span class="linenr">40: </span>        <span style="color: #51afef;">select</span> {
-<span class="linenr">41: </span>        <span style="color: #51afef;">case</span> <span style="color: #dcaeea;">e</span> := &lt;-s.publish:
-<span class="linenr">42: </span>            <span style="color: #51afef;">for</span> <span style="color: #dcaeea;">_</span>, <span style="color: #dcaeea;">h</span> := <span style="color: #51afef;">range</span> sub {
-<span class="linenr">43: </span>                <span style="color: #5B6268;">// </span><span style="color: #5B6268;">the event is published to a helper channel</span>
-<span class="linenr">44: </span>                h &lt;- e
-<span class="linenr">45: </span>            }
-<span class="linenr">46: </span>        <span style="color: #51afef;">case</span> <span style="color: #dcaeea;">r</span> := &lt;-s.subscribe:
-<span class="linenr">47: </span>            <span style="color: #5B6268;">// </span><span style="color: #5B6268;">the helper channel exists</span>
-<span class="linenr">48: </span>            <span style="color: #51afef;">if</span> sub[r.c] != <span style="color: #a9a1e1;">nil</span> {
-<span class="linenr">49: </span>                r.ok &lt;- <span style="color: #a9a1e1;">false</span>
-<span class="linenr">50: </span>                <span style="color: #51afef;">break</span>
-<span class="linenr">51: </span>            }
-<span class="linenr">52: </span>            h = <span style="color: #c678dd;">make</span>(<span style="color: #51afef;">chan</span> <span style="color: #ECBE7B;">Event</span>)
-<span class="linenr">53: </span>            <span style="color: #51afef;">go</span> <span style="color: #c678dd;">helper</span>(h, r.c)
-<span class="linenr">54: </span>            sub[r.c] = h
-<span class="linenr">55: </span>            r.ok &lt;- <span style="color: #a9a1e1;">true</span>
-<span class="linenr">56: </span>        <span style="color: #51afef;">case</span> <span style="color: #dcaeea;">c</span> := &lt;-s.cancel:
-<span class="linenr">57: </span>            <span style="color: #51afef;">if</span> <span style="color: #51afef; font-weight: bold;">!</span>sub[r.c] == <span style="color: #a9a1e1;">nil</span>{
-<span class="linenr">58: </span>                r.ok &lt;- <span style="color: #a9a1e1;">false</span>
-<span class="linenr">59: </span>                <span style="color: #51afef;">break</span>
-<span class="linenr">60: </span>            }
-<span class="linenr">61: </span>            <span style="color: #5B6268;">// </span><span style="color: #5B6268;">close the helper channel</span>
-<span class="linenr">62: </span>            <span style="color: #c678dd;">close</span>(sub[r.c])
-<span class="linenr">63: </span>            <span style="color: #c678dd;">delete</span>(sub, r.c)
-<span class="linenr">64: </span>            r.ok &lt;- <span style="color: #a9a1e1;">true</span>
-<span class="linenr">65: </span>        }
-<span class="linenr">66: </span>    }
-<span class="linenr">67: </span>}
+<span class="linenr">19: </span>    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">no mutex is required here</span>
+<span class="linenr">20: </span>    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">as it does not read state</span>
+<span class="linenr">21: </span>    s.publish &lt;- e
+<span class="linenr">22: </span>}
+<span class="linenr">23: </span><span style="color: #51afef;">func</span> (<span style="color: #dcaeea;">s</span> *<span style="color: #ECBE7B;">Server</span>) <span style="color: #c678dd;">Subscribe</span>(<span style="color: #dcaeea;">c</span> <span style="color: #51afef;">chan</span>&lt;- <span style="color: #ECBE7B;">Event</span>) {
+<span class="linenr">24: </span>    <span style="color: #dcaeea;">r</span> := <span style="color: #ECBE7B;">subReq</span>{<span style="color: #a9a1e1;">c</span>: c, <span style="color: #a9a1e1;">ok</span>: <span style="color: #c678dd;">make</span>(<span style="color: #51afef;">chan</span> <span style="color: #ECBE7B;">bool</span>)}
+<span class="linenr">25: </span>    s.subscribe &lt;- r
+<span class="linenr">26: </span>    <span style="color: #51afef;">if</span> <span style="color: #51afef; font-weight: bold;">!</span>&lt;-r.ok {  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">wait for loop() handle result</span>
+<span class="linenr">27: </span>        <span style="color: #c678dd;">panic</span>(<span style="color: #98be65;">"pubsub: already subscribed"</span>)
+<span class="linenr">28: </span>    }
+<span class="linenr">29: </span>}
+<span class="linenr">30: </span><span style="color: #51afef;">func</span> (<span style="color: #dcaeea;">s</span> *<span style="color: #ECBE7B;">Server</span>) <span style="color: #c678dd;">Cancel</span>(<span style="color: #dcaeea;">c</span> <span style="color: #51afef;">chan</span>&lt;- <span style="color: #ECBE7B;">Event</span>) {
+<span class="linenr">31: </span>    <span style="color: #dcaeea;">r</span> := <span style="color: #ECBE7B;">subReq</span>{<span style="color: #a9a1e1;">c</span>: c, <span style="color: #a9a1e1;">ok</span>: <span style="color: #c678dd;">make</span>(<span style="color: #51afef;">chan</span> <span style="color: #ECBE7B;">bool</span>)}
+<span class="linenr">32: </span>    s.cancel &lt;- r
+<span class="linenr">33: </span>    <span style="color: #51afef;">if</span> <span style="color: #51afef; font-weight: bold;">!</span>&lt;-r.ok {
+<span class="linenr">34: </span>        <span style="color: #c678dd;">panic</span>(<span style="color: #98be65;">"pubusb: not subscribed"</span>)
+<span class="linenr">35: </span>    }
+<span class="linenr">36: </span>}
+<span class="linenr">37: </span><span style="color: #51afef;">func</span> (<span style="color: #dcaeea;">s</span> *<span style="color: #ECBE7B;">Server</span>) <span style="color: #c678dd;">loop</span>() {
+<span class="linenr">38: </span>    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">now sub is a local variable, no lock is needed</span>
+<span class="linenr">39: </span>    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">sub maps from a subscribed channel to a helper channel</span>
+<span class="linenr">40: </span>    <span style="color: #dcaeea;">sub</span> := <span style="color: #c678dd;">make</span>(<span style="color: #51afef;">map</span>[<span style="color: #51afef;">chan</span>&lt;- <span style="color: #ECBE7B;">Event</span>]<span style="color: #51afef;">chan</span>&lt;- <span style="color: #ECBE7B;">Event</span>)
+<span class="linenr">41: </span>    <span style="color: #51afef;">for</span> {
+<span class="linenr">42: </span>        <span style="color: #51afef;">select</span> {
+<span class="linenr">43: </span>        <span style="color: #51afef;">case</span> <span style="color: #dcaeea;">e</span> := &lt;-s.publish:
+<span class="linenr">44: </span>            <span style="color: #51afef;">for</span> <span style="color: #dcaeea;">_</span>, <span style="color: #dcaeea;">h</span> := <span style="color: #51afef;">range</span> sub {
+<span class="linenr">45: </span>                <span style="color: #5B6268;">// </span><span style="color: #5B6268;">the event is published to a helper channel</span>
+<span class="linenr">46: </span>                h &lt;- e
+<span class="linenr">47: </span>            }
+<span class="linenr">48: </span>        <span style="color: #51afef;">case</span> <span style="color: #dcaeea;">r</span> := &lt;-s.subscribe:
+<span class="linenr">49: </span>            <span style="color: #5B6268;">// </span><span style="color: #5B6268;">the helper channel exists</span>
+<span class="linenr">50: </span>            <span style="color: #5B6268;">// </span><span style="color: #5B6268;">meaning the subscriber has been handled before</span>
+<span class="linenr">51: </span>            <span style="color: #51afef;">if</span> sub[r.c] != <span style="color: #a9a1e1;">nil</span> {
+<span class="linenr">52: </span>                r.ok &lt;- <span style="color: #a9a1e1;">false</span>
+<span class="linenr">53: </span>                <span style="color: #51afef;">break</span>
+<span class="linenr">54: </span>            }
+<span class="linenr">55: </span>            h = <span style="color: #c678dd;">make</span>(<span style="color: #51afef;">chan</span> <span style="color: #ECBE7B;">Event</span>)
+<span class="linenr">56: </span>            <span style="color: #51afef;">go</span> <span style="color: #c678dd;">helper</span>(h, r.c)
+<span class="linenr">57: </span>            sub[r.c] = h
+<span class="linenr">58: </span>            r.ok &lt;- <span style="color: #a9a1e1;">true</span>
+<span class="linenr">59: </span>        <span style="color: #51afef;">case</span> <span style="color: #dcaeea;">c</span> := &lt;-s.cancel:
+<span class="linenr">60: </span>            <span style="color: #51afef;">if</span> <span style="color: #51afef; font-weight: bold;">!</span>sub[r.c] == <span style="color: #a9a1e1;">nil</span>{
+<span class="linenr">61: </span>                r.ok &lt;- <span style="color: #a9a1e1;">false</span>
+<span class="linenr">62: </span>                <span style="color: #51afef;">break</span>
+<span class="linenr">63: </span>            }
+<span class="linenr">64: </span>            <span style="color: #5B6268;">// </span><span style="color: #5B6268;">close the helper channel</span>
+<span class="linenr">65: </span>            <span style="color: #c678dd;">close</span>(sub[r.c])
+<span class="linenr">66: </span>            <span style="color: #c678dd;">delete</span>(sub, r.c)
+<span class="linenr">67: </span>            r.ok &lt;- <span style="color: #a9a1e1;">true</span>
+<span class="linenr">68: </span>        }
+<span class="linenr">69: </span>    }
+<span class="linenr">70: </span>}
 </pre>
 </div></li>
 </ul>
 </div>
+</div>
+</div>
+<div id="outline-container-org1a3753d" class="outline-2">
+<h2 id="org1a3753d"><span class="section-number-2">4.</span> Pattern 2: work scheduler</h2>
+<div class="outline-text-2" id="text-4">
+<ul class="org-ul">
+<li><p>
+\(M\) tasks assigned to \(N\) servers/workers, \( M >> N\).
+</p>
+
+<div class="org-src-container">
+<pre class="src src-go"><span class="linenr"> 1: </span><span style="color: #51afef;">func</span> <span style="color: #c678dd;">Schedule</span>(<span style="color: #dcaeea;">servers</span> []<span style="color: #ECBE7B;">string</span>, <span style="color: #dcaeea;">numTask</span> <span style="color: #ECBE7B;">int</span>,
+<span class="linenr"> 2: </span>    <span style="color: #dcaeea;">call</span> <span style="color: #51afef;">func</span>(<span style="color: #dcaeea;">srv</span> <span style="color: #ECBE7B;">string</span>, <span style="color: #dcaeea;">task</span> <span style="color: #ECBE7B;">int</span>)) {
+<span class="linenr"> 3: </span>
+<span class="linenr"> 4: </span>    <span style="color: #dcaeea;">idle</span> := <span style="color: #c678dd;">make</span>(<span style="color: #51afef;">chan</span> <span style="color: #ECBE7B;">string</span>, <span style="color: #c678dd;">len</span>(servers))
+<span class="linenr"> 5: </span>    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">initialize a channel of idle servers</span>
+<span class="linenr"> 6: </span>    <span style="color: #51afef;">for</span> <span style="color: #dcaeea;">_</span>, <span style="color: #dcaeea;">srv</span> := <span style="color: #51afef;">range</span> servers {
+<span class="linenr"> 7: </span>        idle &lt;- srv
+<span class="linenr"> 8: </span>    }
+<span class="linenr"> 9: </span>
+<span class="linenr">10: </span>    <span style="color: #51afef;">for</span> <span style="color: #dcaeea;">task</span> := <span style="color: #da8548; font-weight: bold;">0</span>, task &lt; numTask; task++ {
+<span class="linenr">11: </span>        <span style="color: #5B6268;">// </span><span style="color: #5B6268;">if using task in the for loop rather than a local task,</span>
+<span class="linenr">12: </span>        <span style="color: #5B6268;">// </span><span style="color: #5B6268;">there is a race: the loop goes on before the goroutinue starts,</span>
+<span class="linenr">13: </span>        <span style="color: #5B6268;">// </span><span style="color: #5B6268;">so that some tasks are skipped.</span>
+<span class="linenr">14: </span>        <span style="color: #dcaeea;">task</span> := task
+<span class="linenr">15: </span>        <span style="color: #5B6268;">// </span><span style="color: #5B6268;">if moving srv := &lt;- idle inside goroutine</span>
+<span class="linenr">16: </span>        <span style="color: #5B6268;">// </span><span style="color: #5B6268;">a lot of goroutines are created simoutaneously and hung</span>
+<span class="linenr">17: </span>        <span style="color: #5B6268;">// </span><span style="color: #5B6268;">due to non-idle server</span>
+<span class="linenr">18: </span>        <span style="color: #5B6268;">// </span><span style="color: #5B6268;">leaving it outside so that a goroutine is only created when</span>
+<span class="linenr">19: </span>        <span style="color: #5B6268;">// </span><span style="color: #5B6268;">there is an idle server (but it slows down the main loop)</span>
+<span class="linenr">20: </span>        <span style="color: #dcaeea;">srv</span> := &lt;-idle
+<span class="linenr">21: </span>        <span style="color: #51afef;">go</span> <span style="color: #51afef;">func</span>() {
+<span class="linenr">22: </span>            <span style="color: #c678dd;">call</span>(srv, task) <span style="color: #5B6268;">// </span><span style="color: #5B6268;">server does the task</span>
+<span class="linenr">23: </span>            <span style="color: #5B6268;">// </span><span style="color: #5B6268;">serve finishes the task and becomes idle again</span>
+<span class="linenr">24: </span>            idle &lt;- srv
+<span class="linenr">25: </span>        }()
+<span class="linenr">26: </span>    }
+<span class="linenr">27: </span>
+<span class="linenr">28: </span>    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">determine when all tasks are done / all servers are idle</span>
+<span class="linenr">29: </span>    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">this is used to prevent early exit when all tasks have been assigned</span>
+<span class="linenr">30: </span>    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">but the last servers have not finished</span>
+<span class="linenr">31: </span>    <span style="color: #51afef;">for</span> <span style="color: #dcaeea;">i</span> :=<span style="color: #da8548; font-weight: bold;">0</span>; i &lt; <span style="color: #c678dd;">len</span>(servers); i++ {
+<span class="linenr">32: </span>        &lt;-idle
+<span class="linenr">33: </span>    }
+<span class="linenr">34: </span>}
+</pre>
+</div></li>
+
+<li><p>
+Optimization for the above code: while the task loop creates goroutines \(M\) times, actually there are only at most \(N\) active goroutines at any time.
+</p>
+<ul class="org-ul">
+<li>Better to spin off a goroutine for each server.</li>
+<li>The number of servers can be dynamic.</li>
+</ul>
+
+<div class="org-src-container">
+<pre class="src src-go"><span class="linenr"> 1: </span><span style="color: #51afef;">func</span> <span style="color: #c678dd;">Schedule</span>(<span style="color: #dcaeea;">servers</span> <span style="color: #51afef;">chan</span> <span style="color: #ECBE7B;">string</span>, <span style="color: #dcaeea;">numTask</span> <span style="color: #ECBE7B;">int</span>,
+<span class="linenr"> 2: </span>    <span style="color: #dcaeea;">call</span> <span style="color: #51afef;">func</span>(<span style="color: #dcaeea;">srv</span> <span style="color: #ECBE7B;">string</span>, <span style="color: #dcaeea;">task</span> <span style="color: #ECBE7B;">int</span>)) {
+<span class="linenr"> 3: </span>
+<span class="linenr"> 4: </span>    <span style="color: #dcaeea;">work</span> := <span style="color: #c678dd;">make</span>(<span style="color: #51afef;">chan</span> <span style="color: #ECBE7B;">int</span>)  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">a queue of all works yet to be done</span>
+<span class="linenr"> 5: </span>    <span style="color: #dcaeea;">done</span> := <span style="color: #c678dd;">make</span>(<span style="color: #51afef;">chan</span> <span style="color: #ECBE7B;">bool</span>)  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">a queue of all done tasks</span>
+<span class="linenr"> 6: </span>    <span style="color: #dcaeea;">exit</span> := <span style="color: #c678dd;">make</span>(<span style="color: #51afef;">chan</span> <span style="color: #ECBE7B;">bool</span>) <span style="color: #5B6268;">// </span><span style="color: #5B6268;">signal when should not pull new servers</span>
+<span class="linenr"> 7: </span>
+<span class="linenr"> 8: </span>    <span style="color: #dcaeea;">runTasks</span> := <span style="color: #51afef;">func</span>(<span style="color: #dcaeea;">srv</span> <span style="color: #ECBE7B;">string</span>) {
+<span class="linenr"> 9: </span>        <span style="color: #5B6268;">// </span><span style="color: #5B6268;">keep polling until work is closed</span>
+<span class="linenr">10: </span>        <span style="color: #51afef;">for</span> <span style="color: #dcaeea;">task</span> := <span style="color: #51afef;">range</span> work {
+<span class="linenr">11: </span>            <span style="color: #51afef;">if</span> <span style="color: #c678dd;">call</span>(srv, task) {
+<span class="linenr">12: </span>                done &lt;- <span style="color: #a9a1e1;">true</span>
+<span class="linenr">13: </span>            } <span style="color: #51afef;">else</span> {
+<span class="linenr">14: </span>                <span style="color: #5B6268;">// </span><span style="color: #5B6268;">repush the task if it failed</span>
+<span class="linenr">15: </span>                work &lt;- task
+<span class="linenr">16: </span>            }
+<span class="linenr">17: </span>        }
+<span class="linenr">18: </span>    }
+<span class="linenr">19: </span>
+<span class="linenr">20: </span>    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">use a goroutine to avoid hanging when</span>
+<span class="linenr">21: </span>    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">no server is available</span>
+<span class="linenr">22: </span>    <span style="color: #51afef;">go</span> <span style="color: #51afef;">func</span>() {
+<span class="linenr">23: </span>        <span style="color: #51afef;">for</span> <span style="color: #dcaeea;">_</span>, <span style="color: #dcaeea;">srv</span> := <span style="color: #51afef;">range</span> servers {
+<span class="linenr">24: </span>            <span style="color: #51afef;">for</span> {
+<span class="linenr">25: </span>                <span style="color: #51afef;">select</span> {
+<span class="linenr">26: </span>                <span style="color: #51afef;">case</span> <span style="color: #dcaeea;">src</span> := &lt;-servers:
+<span class="linenr">27: </span>                        <span style="color: #51afef;">go</span> <span style="color: #c678dd;">runTasks</span>(srv)
+<span class="linenr">28: </span>                <span style="color: #51afef;">case</span> &lt;-exit:
+<span class="linenr">29: </span>                        <span style="color: #51afef;">return</span>
+<span class="linenr">30: </span>                }
+<span class="linenr">31: </span>            }
+<span class="linenr">32: </span>        }
+<span class="linenr">33: </span>    }()
+<span class="linenr">34: </span>
+<span class="linenr">35: </span>    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">The following code has a deadlock!</span>
+<span class="linenr">36: </span>    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">In the runTasks, the server pushes to done channel when a task is done.</span>
+<span class="linenr">37: </span>    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">However, the done channel is only pulled when the main routine has</span>
+<span class="linenr">38: </span>    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">pushed all tasks and close the work channel.</span>
+<span class="linenr">39: </span>    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">Therefore any server hangs when trying push the second done work.</span>
+<span class="linenr">40: </span>    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">for taks := 0; task &lt; numTask; task++ {</span>
+<span class="linenr">41: </span>    <span style="color: #5B6268;">//  </span><span style="color: #5B6268;">work &lt;- task</span>
+<span class="linenr">42: </span>    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">}</span>
+<span class="linenr">43: </span>    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">// signal no more task so that servers know</span>
+<span class="linenr">44: </span>    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">// when to termiante</span>
+<span class="linenr">45: </span>    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">close(work)</span>
+<span class="linenr">46: </span>
+<span class="linenr">47: </span>    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">// wait until all tasks are done</span>
+<span class="linenr">48: </span>    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">for i := 0; i &lt; numTask; i++ {</span>
+<span class="linenr">49: </span>    <span style="color: #5B6268;">//  </span><span style="color: #5B6268;">&lt;-done</span>
+<span class="linenr">50: </span>    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">}</span>
+<span class="linenr">51: </span>
+<span class="linenr">52: </span>    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">fix 1: one can switch between work and donw channel</span>
+<span class="linenr">53: </span>    <span style="color: #dcaeea;">i</span> := <span style="color: #da8548; font-weight: bold;">0</span>
+<span class="linenr">54: </span>    <span style="color: #a9a1e1;">WorkLoop</span>:
+<span class="linenr">55: </span>        <span style="color: #51afef;">for</span> <span style="color: #dcaeea;">task</span> := <span style="color: #da8548; font-weight: bold;">0</span>; task &lt; numTask; task++ {
+<span class="linenr">56: </span>            <span style="color: #51afef;">for</span> {
+<span class="linenr">57: </span>                <span style="color: #51afef;">select</span> {
+<span class="linenr">58: </span>                <span style="color: #51afef;">case</span> work &lt;- task:
+<span class="linenr">59: </span>                    <span style="color: #51afef;">continue</span> <span style="color: #a9a1e1;">WorkLoop</span>
+<span class="linenr">60: </span>                <span style="color: #51afef;">case</span> &lt;-done:
+<span class="linenr">61: </span>                    i++
+<span class="linenr">62: </span>                }
+<span class="linenr">63: </span>            }
+<span class="linenr">64: </span>        }
+<span class="linenr">65: </span>
+<span class="linenr">66: </span>        <span style="color: #5B6268;">// </span><span style="color: #5B6268;">wait for the last assigned tasks to be done</span>
+<span class="linenr">67: </span>        <span style="color: #51afef;">for</span> ; i &lt; numTask; i++ {
+<span class="linenr">68: </span>            &lt;-done
+<span class="linenr">69: </span>        }
+<span class="linenr">70: </span>
+<span class="linenr">71: </span>        <span style="color: #5B6268;">// </span><span style="color: #5B6268;">only close work channel in the end,</span>
+<span class="linenr">72: </span>        <span style="color: #5B6268;">// </span><span style="color: #5B6268;">in case some tasks failed and need to be redo</span>
+<span class="linenr">73: </span>        <span style="color: #c678dd;">close</span>(work)
+<span class="linenr">74: </span>        exit &lt;- <span style="color: #a9a1e1;">true</span>  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">stop pulling new servers</span>
+<span class="linenr">75: </span>
+<span class="linenr">76: </span>    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">fix 2: move the work assignment to a separate go routine</span>
+<span class="linenr">77: </span>    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">go func() {</span>
+<span class="linenr">78: </span>    <span style="color: #5B6268;">//  </span><span style="color: #5B6268;">for task := ; task &lt; numTask; task++ {</span>
+<span class="linenr">79: </span>    <span style="color: #5B6268;">//      </span><span style="color: #5B6268;">work &lt;- task</span>
+<span class="linenr">80: </span>    <span style="color: #5B6268;">//  </span><span style="color: #5B6268;">}</span>
+<span class="linenr">81: </span>    <span style="color: #5B6268;">//  </span><span style="color: #5B6268;">close(work)</span>
+<span class="linenr">82: </span>    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">}()</span>
+<span class="linenr">83: </span>
+<span class="linenr">84: </span>    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">fix 3: increase buffer for the work channel</span>
+<span class="linenr">85: </span>    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">work := make(chan int, numTask)</span>
+<span class="linenr">86: </span>}
+</pre>
+</div></li>
+</ul>
 </div>
 </div>
 <div class="taglist"><a href="https://chenyo.me/tags.html">Tags</a>: <a href="https://chenyo.me/tag-go.html">go</a> <a href="https://chenyo.me/tag-design-pattern.html">design-pattern</a> <a href="https://chenyo.me/tag-study.html">study</a> </div>

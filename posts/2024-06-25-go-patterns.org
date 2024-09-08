@@ -13,7 +13,7 @@ This a personal note for the [[https://www.youtube.com/watch?v=IdCbMO0Ey9I][Russ
 * Use goroutines for states
 
 ** Matching a regex
-- return if a given string matches a regex: start with ~"~, contains arbitrary escape sequence and ends with ~*~
+- return if a given string matches a regex: start with ~"~, contains arbitrary escape sequence and ends with ~"~
 - unclear logic: store states in the data
   #+begin_src go -n
 state := 0
@@ -49,7 +49,7 @@ for {
 if read() != '"' {
 	return false
 }
-var c rune // c is a Unicode, alas to int32
+var c rune // c is a Unicode, alias to int32
 for c != '"' {
 	c = read()
 	if c == '\\' {
@@ -163,12 +163,14 @@ func (s *Server) Init() {
 }
 // publish an event to all subscribed channel
 func (s *Server) Publish(e Event) {
-	s.mu.Lock()  // each method could be called many clients
+	s.mu.Lock()  // each method could be called by many clients
 	defer s.mu.Unlock()
+	// need mutex here since it needs to read s.sub state
 	for c := range s.sub {
 		// if a goroutine consumes the channel events too slow
-		// then a new event publish has to wait before it can send to the channel
-		// can add channel buffer
+		// then a new event publish has to wait
+		// before it can send to the channel
+		// can add channel buffer to mitigate this
 		c <- e
 	}
 }
@@ -177,8 +179,8 @@ func (s *Server) Subscribe(c chan<- Event) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	if s.sub[c] {
-		panic("pubsub: already subscribed") // the mutex wil also be unlocked with defer
-	}
+		// the mutex wil also be unlocked with defer
+		panic("pubsub: already subscribed") 	}
 	s.sub[c] = true
 }
 // a channel cancels the subscription
@@ -229,7 +231,7 @@ func helper(in <-chan Event, out chan<- Event) {
  #+begin_src go -n
 type Server struct {
 	publish   chan Event
-	subscribe chan subReq
+	subscribe chan subReq  // a channel to queue unhandled subscription
 	cancel    chan subReq
 }
 type subReq struct {
@@ -245,12 +247,14 @@ func (s *Server) Init() {
 	go s.loop()
 }
 func (s *Server) Publish(e Event) {
+	// no mutex is required here
+	// as it does not read state
 	s.publish <- e
 }
 func (s *Server) Subscribe(c chan<- Event) {
 	r := subReq{c: c, ok: make(chan bool)}
 	s.subscribe <- r
-	if !<-r.ok {
+	if !<-r.ok {  // wait for loop() handle result
 		panic("pubsub: already subscribed")
 	}
 }
@@ -274,6 +278,7 @@ func (s *Server) loop() {
 			}
 		case r := <-s.subscribe:
 			// the helper channel exists
+			// meaning the subscriber has been handled before
 			if sub[r.c] != nil {
 				r.ok <- false
 				break
@@ -293,5 +298,139 @@ func (s *Server) loop() {
 			r.ok <- true
 		}
 	}
+}
+ #+end_src
+
+
+* Pattern 2: work scheduler
+- \(M\) tasks assigned to \(N\) servers/workers, \( M >> N\).
+
+  #+begin_src go -n
+func Schedule(servers []string, numTask int,
+	call func(srv string, task int)) {
+
+	idle := make(chan string, len(servers))
+	// initialize a channel of idle servers
+	for _, srv := range servers {
+		idle <- srv
+	}
+
+	for task := 0, task < numTask; task++ {
+		// if using task in the for loop rather than a local task,
+		// there is a race: the loop goes on before the goroutinue starts,
+		// so that some tasks are skipped.
+		task := task
+		// if moving srv := <- idle inside goroutine
+		// a lot of goroutines are created simoutaneously and hung
+		// due to non-idle server
+		// leaving it outside so that a goroutine is only created when
+		// there is an idle server (but it slows down the main loop)
+		srv := <-idle
+		go func() {
+			call(srv, task) // server does the task
+			// serve finishes the task and becomes idle again
+			idle <- srv
+		}()
+	}
+
+	// determine when all tasks are done / all servers are idle
+	// this is used to prevent early exit when all tasks have been assigned
+	// but the last servers have not finished
+	for i :=0; i < len(servers); i++ {
+		<-idle
+	}
+}
+  #+end_src
+
+- Optimization for the above code: while the task loop creates goroutines \(M\) times, actually there are only at most \(N\) active goroutines at any time.
+  - Better to spin off a goroutine for each server.
+  - The number of servers can be dynamic.
+
+ #+begin_src go -n
+func Schedule(servers chan string, numTask int,
+	call func(srv string, task int)) {
+
+	work := make(chan int)  // a queue of all works yet to be done
+	done := make(chan bool)  // a queue of all done tasks
+	exit := make(chan bool) // signal when should not pull new servers
+
+	runTasks := func(srv string) {
+		// keep polling until work is closed
+		for task := range work {
+			if call(srv, task) {
+				done <- true
+			} else {
+				// repush the task if it failed
+				work <- task
+			}
+		}
+	}
+
+	// use a goroutine to avoid hanging when
+	// no server is available
+	go func() {
+		for _, srv := range servers {
+			for {
+				select {
+				case src := <-servers:
+						go runTasks(srv)
+				case <-exit:
+						return
+				}
+			}
+		}
+	}()
+
+	// The following code has a deadlock!
+	// In the runTasks, the server pushes to done channel when a task is done.
+	// However, the done channel is only pulled when the main routine has
+	// pushed all tasks and close the work channel.
+	// Therefore any server hangs when trying push the second done work.
+	// for taks := 0; task < numTask; task++ {
+	// 	work <- task
+	// }
+	// // signal no more task so that servers know
+	// // when to termiante
+	// close(work)
+
+	// // wait until all tasks are done
+	// for i := 0; i < numTask; i++ {
+	// 	<-done
+	// }
+
+	// fix 1: one can switch between work and donw channel
+	i := 0
+	WorkLoop:
+		for task := 0; task < numTask; task++ {
+			for {
+				select {
+				case work <- task:
+					continue WorkLoop
+				case <-done:
+					i++
+				}
+			}
+		}
+
+		// wait for the last assigned tasks to be done
+		for ; i < numTask; i++ {
+			<-done
+		}
+
+		// only close work channel in the end,
+		// in case some tasks failed and need to be redo
+		close(work)
+		exit <- true  // stop pulling new servers
+
+	// fix 2: move the work assignment to a separate go routine
+	// go func() {
+	// 	for task := ; task < numTask; task++ {
+	// 		work <- task
+	// 	}
+	// 	close(work)
+	// }()
+
+	// fix 3: increase buffer for the work channel
+	// work := make(chan int, numTask)
 }
  #+end_src
