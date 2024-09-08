@@ -36,6 +36,246 @@
       </header></div>
 <div id="content">
 <h1 class="title">Posts tagged "tool":</h1>
+<div class="post-date">08 Sep 2024</div><h1 class="post-title"><a href="https://chenyo.me/2024-09-08-build-a-free-telegram-sticker-bot.html">Build a free Telegram sticker tag bot</a></h1>
+<nav id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#orge182f78">1. What happened</a></li>
+<li><a href="#org860f0ba">2. What do I need</a></li>
+<li><a href="#org65562b1">3. How to build a bot</a>
+<ul>
+<li><a href="#org621b0eb">3.1. How to build a sticker tag bot</a></li>
+<li><a href="#org9490ac6">3.2. How to make the bot private</a></li>
+</ul>
+</li>
+<li><a href="#org0155f00">4. How to deploy the bot on Render</a></li>
+<li><a href="#org4e3ed6b">5. How to connect to the Firebase</a></li>
+<li><a href="#orged8cac2">6. How to configure UptimeRobot</a></li>
+<li><a href="#org9b04e73">7. Conclusion</a></li>
+</ul>
+</div>
+</nav>
+<div id="outline-container-orge182f78" class="outline-2">
+<h2 id="orge182f78"><span class="section-number-2">1.</span> What happened</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+When I started to use Telegram, I really missed being able to search stickers by text, like I can in WeChat.
+Sadly, Telegram only lets you search emojis by text, or find stickers using emojis.
+</p>
+
+<p>
+After digging around, I discovered the easiest way to add this cool feature was through Telegram bots.
+The idea? Store a tag-to-sticker map in the bot, then fetch all matching stickers when given a tag in the bot&rsquo;s <a href="https://core.telegram.org/bots/inline">inline mode</a>.
+There are a few sticker tag bots on Telegram already, but they&rsquo;re either dead or <a href="https://github.com/vitaly-rudenko/tag-sticker-bot">can&rsquo;t handle</a> Unicode input like Chinese characters.
+Plus, I&rsquo;m not super keen on trusting my data to someone else&rsquo;s database.
+Moreover, I might want to use a bot for other personal stuff later.
+</p>
+
+<p>
+So, I decided to build my own Telegram bot.
+</p>
+</div>
+</div>
+<div id="outline-container-org860f0ba" class="outline-2">
+<h2 id="org860f0ba"><span class="section-number-2">2.</span> What do I need</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+My goal was to create a bot using only free services, including cloud storage for key-value pairs and a hosting platform to keep the bot running.
+</p>
+
+<p>
+I stumbled upon <a href="https://render.com">Render</a> from an X recommendation which offers <a href="https://docs.render.com/free#monthly-usage-limits">750 hours per month</a> for free deployment (which equals 31 days), so I deployed my bot there once I got the bot running locally.
+But then I found out Render&rsquo;s free tier doesn&rsquo;t offer permanent storage and shuts down services after <a href="https://docs.render.com/free#spinning-down-on-idle">15 minutes of inactivity</a>.
+</p>
+
+<p>
+A sticker tag bot without memory isn&rsquo;t much use to anyone, so I went hunting for free cloud storage.
+With some help from Claude and Perplexity, I discovered <a href="https://firebase.google.com/products/realtime-database/">Firebase Realtime database</a>, which offers 1GB storage and 10GB throughput per month on its <a href="https://firebase.google.com/pricing">free tier</a>.
+</p>
+
+<p>
+Even with cloud storage, a bot that konks out every 15 minutes just won&rsquo;t cut it - I need my stickers now!
+So my next quest was finding a way to keep the bot awake, which led me to <a href="https://uptimerobot.com">UptimeRobot</a>.
+It&rsquo;s actually a web monitoring tool, but I can use it to ping the bot regularly, tricking it into staying &ldquo;active&rdquo; instead of dozing off.
+</p>
+
+<p>
+So, to sum it up, building this sticker tag bot required:
+</p>
+<ul class="org-ul">
+<li>a Telegram bot from <a href="https://t.me/botfather">BotFather</a>,</li>
+<li>a free Render deployment,</li>
+<li>a Firebase&rsquo;s free key-value storage, and</li>
+<li>an UptimeRobot&rsquo;s free monitoring service.</li>
+</ul>
+
+<p>
+However, these services do not work together automatically. Gluing them together required additional effort.
+</p>
+</div>
+</div>
+<div id="outline-container-org65562b1" class="outline-2">
+<h2 id="org65562b1"><span class="section-number-2">3.</span> How to build a bot</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+The first step in building any bot is asking BotFather for a new bot and keeping the bot token secure.
+Telegram offers a helpful <a href="https://core.telegram.org/bots/tutorial#executing-commands">tutorial</a> that explains the process using Java.
+Examples in other languages can be found in their <a href="https://gitlab.com/Athamaxy/telegram-bot-tutorial/-/blob/main/TutorialBot.go">Gitlab repo</a>.
+In my opinion, the most challenging part here is creating a unique bot username that is still available.
+</p>
+
+<p>
+The next step involves working with the <a href="https://core.telegram.org/bots/api">Telegram bot API</a> in the chosen programming language.
+This includes learning how to handle messages effectively.
+For example, I used <a href="https://github.com/go-telegram-bot-api/telegram-bot-api">tgbotapi(Golang)</a>.
+</p>
+</div>
+<div id="outline-container-org621b0eb" class="outline-3">
+<h3 id="org621b0eb"><span class="section-number-3">3.1.</span> How to build a sticker tag bot</h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
+A sticker tag bot needs two main functionalities:
+</p>
+<ul class="org-ul">
+<li>Handle direct messages to add new sticker tags.</li>
+<li>Handle inline queries to search for stickers using a given tag.</li>
+</ul>
+
+<p>
+To implement the first functionality, I created a simple state machine with two states:
+</p>
+<ol class="org-ol">
+<li>The initial state waits for a sticker input and then moves to the tag state.</li>
+<li>The tag state waits for any text input to use as the tag for the previous sticker.</li>
+</ol>
+
+<p>
+To implement the second functionality, one needs to use the <a href="https://core.telegram.org/bots/api#inlinequeryresultcachedsticker">InlineQueryResultCachedSticker</a> method.
+</p>
+
+<p>
+For local testing, one can use a lightweight local key-value storage to store and search sticker tags.
+I used <a href="https://github.com/dgraph-io/badger">BadgerDB(Golang)</a> for example.
+</p>
+
+<p>
+I noticed that the generated file ID for the same sticker is different each time, making it hard to check for duplicates when adding new tags.
+To address this, I added a <code>/delete</code> method to remove tags when needed.
+</p>
+</div>
+</div>
+<div id="outline-container-org9490ac6" class="outline-3">
+<h3 id="org9490ac6"><span class="section-number-3">3.2.</span> How to make the bot private</h3>
+<div class="outline-text-3" id="text-3-2">
+<p>
+I couldn&rsquo;t find an official way to make a bot visible only to me.
+Suggested by Claude, I predefined a list of authorized users.
+Then I performed a sanity check before handling any messages.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org0155f00" class="outline-2">
+<h2 id="org0155f00"><span class="section-number-2">4.</span> How to deploy the bot on Render</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+Deploying a service on Render with a free account is challenging due to the lack of shell access, disk access, and non-so-live logs.
+The process of making everything work at this stage was time-consuming and I even contacted Render&rsquo;s technical support although they only responded &ldquo;Ok I will close the ticket&rdquo; after the issue was self-resolved.
+</p>
+
+<p>
+Three main steps are required here:
+</p>
+<ol class="org-ol">
+<li>start an HTTP server with several endpoints at the bot, and</li>
+<li>configure the web service and environment variables on Render&rsquo;s dashboard,</li>
+<li>configure the <a href="https://blog.domotz.com/product-bytes/telegram-webhook-and-bot-api/">Telegram webhook</a> at the bot.</li>
+</ol>
+
+<p>
+In step 1, starting an HTTP server at <code>0.0.0.0:&lt;some-port&gt;</code> is necessary.
+One should also enable GET methods for the root and a health check endpoint to allow Render to scan the service regularly.
+</p>
+
+<p>
+In step 2, one needs to fill in the service configuration and environment variables in different boxes.
+This includes settings such as port, build command, and health check endpoint.
+The issue I encountered was Render could not scan any port even if I have triple-checked that everything worked fine locally.
+In the end, I solved this issue by adding the Golang build tag <code>-tags netgo</code> in the build command.
+Actually this flag was configured by default, but I initially replaced it with a simpler build command.
+</p>
+
+<p>
+In step 3, one needs to configure the webhook with the Bot API and to enable the POST method for the webhook at the HTTP server (this can also be handled by the Bot API).
+The webhook can be <code>https: //&lt;your project&gt;.onrender.com/&lt;your-token&gt;</code> (or another unique URL).
+This URL informs Telegram where to send and receive all messages for the bot.
+</p>
+</div>
+</div>
+<div id="outline-container-org4e3ed6b" class="outline-2">
+<h2 id="org4e3ed6b"><span class="section-number-2">5.</span> How to connect to the Firebase</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+The Firebase Realtime database stores key-value pairs in the JSON format.
+Connecting the bot with the database requires the following steps:
+</p>
+<ol class="org-ol">
+<li>Create the app and the database on Firebase&rsquo;s dashboard.
+Specifically, one needs to store the following 3 values for interaction:
+<ul class="org-ul">
+<li>The database URL, which looks like <code>https: //&lt;your-app&gt;-default-rtdb.*.firebasedatabase.app</code>.</li>
+<li>The credential file, which can be downloaded at <code>Project settings-&gt;Service accounts-&gt;Firebase Admin SDK</code> (and should also be added to Render).</li>
+</ul></li>
+<li>Import the language-specific Firebase API to configure the database in the bot.
+For example, I use <a href="https://pkg.go.dev/firebase.google.com/go/v4">firebase(Golang)</a>.</li>
+<li>Update the database rules in Firebase dashboard to only allow authorized writes for specific tags, e.g., one name/path to refer to those key-value pairs.</li>
+</ol>
+
+<p>
+It&rsquo;s worth noting that connecting to the database on Render may take some time after a fresh start.
+During this initialization period, the log may display a <code>502 Bad Gateway</code> error to the database.
+</p>
+</div>
+</div>
+<div id="outline-container-orged8cac2" class="outline-2">
+<h2 id="orged8cac2"><span class="section-number-2">6.</span> How to configure UptimeRobot</h2>
+<div class="outline-text-2" id="text-6">
+<p>
+Before configuring UptimeRobot, an attempt was made to ping the bot from within itself, but this approach did not function for Render.
+</p>
+
+<p>
+Using UptimeRobot to maintain the bot&rsquo;s active status involves two primary steps:
+</p>
+<ol class="org-ol">
+<li>Enable the HEAD method (the sole method available for a free account) for any endpoint on the HTTP server.</li>
+<li>Configure an HTTP(S) monitor for that endpoint, which appears as <code>&lt;you-project&gt;.onrender.com/&lt;endpoint&gt;</code>, and establish the monitoring interval to less than 15 minutes.</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-org9b04e73" class="outline-2">
+<h2 id="org9b04e73"><span class="section-number-2">7.</span> Conclusion</h2>
+<div class="outline-text-2" id="text-7">
+<p>
+This post isn&rsquo;t meant to be a step-by-step guide for building a Telegram bot.
+It skips some steps and doesn&rsquo;t include screenshots.
+But don&rsquo;t worry, most of the missing bits can be figured out using AI language models these days.
+The rest really depends on each specific situation.
+The main point here is to show how to set up a free small web service, even when there&rsquo;s no single platform that does it all.
+</p>
+
+<p>
+When I first wrote this, my bot had been up and running for 10 days.
+It only had 30 minutes of downtime, which I think happened because UptimeRobot couldn&rsquo;t reach Render&rsquo;s IP address during that time.
+</p>
+
+<p>
+Right now, the repository is private since I plan to add a second functionality to the bot soon.
+</p>
+</div>
+</div>
+<div class="taglist"><a href="https://chenyo.me/tags.html">Tags</a>: <a href="https://chenyo.me/tag-tool.html">tool</a> <a href="https://chenyo.me/tag-telegram.html">telegram</a> </div>
 <div class="post-date">07 Sep 2024</div><h1 class="post-title"><a href="https://chenyo.me/2024-09-07-install-doom-emacs-with-lisp-native-compiler-in-wsl2.html">Install Doom Emacs with Lisp native compilation in WSL2</a></h1>
 <nav id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>

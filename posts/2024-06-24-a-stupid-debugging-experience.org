@@ -3,7 +3,7 @@
 #+description: This post records how I debug a docker issue
 #+filetags: docker go linux alpine
 
-* What happended
+* What happened
 - Servers SA and SB have the same docker installation, and the same running container CA and CB.
 - A Go file G can be built on CA, but on CB it reports this error:
   #+begin_verse

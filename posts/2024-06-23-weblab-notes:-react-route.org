@@ -3,6 +3,8 @@
 #+description: This is a personal note for the [[https://docs.google.com/presentation/d/1hrTjcB8GU4hWPHzS5lI17WALogP4biZ1UAtyxXfafkI/edit#slide=id.p][web.lab lectures]].
 #+filetags: study web react mit
 
+This is a personal note for the [[https://docs.google.com/presentation/d/1hrTjcB8GU4hWPHzS5lI17WALogP4biZ1UAtyxXfafkI/edit#slide=id.p][web.lab lectures]].
+
 * Router
 - use the Reach [[https://reach.tech/router/][Reach Router]] library
 - URL -> Router -> render different components

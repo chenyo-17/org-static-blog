@@ -3,6 +3,8 @@
 #+description: This is a personal note for the [[https://docs.google.com/presentation/d/1n5RlpgBtXQ1OHvutx9TRLotWizyg2BPKv_780DD4-90/edit#slide=id.gb2bbafee77_1_66][web.lab lectures]].
 #+filetags: study web react mit
 
+This is a personal note for the [[https://docs.google.com/presentation/d/1n5RlpgBtXQ1OHvutx9TRLotWizyg2BPKv_780DD4-90/edit#slide=id.gb2bbafee77_1_66][web.lab lectures]].
+
 * What is a React hook
 - Special functions to access parts of the component lifestyle.
 - e.g., ~useState~

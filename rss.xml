@@ -4,7 +4,255 @@
 <title><![CDATA[Chenyo's Blog]]></title>
 <description><![CDATA[Chenyo's Blog]]></description>
 <link>https://chenyo.me</link>
-<lastBuildDate>Sun, 08 Sep 2024 16:54:41 +0200</lastBuildDate>
+<lastBuildDate>Sun, 08 Sep 2024 23:10:43 +0200</lastBuildDate>
+<item>
+  <title><![CDATA[Build a free Telegram sticker tag bot]]></title>
+  <description><![CDATA[
+<nav id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#orge182f78">1. What happened</a></li>
+<li><a href="#org860f0ba">2. What do I need</a></li>
+<li><a href="#org65562b1">3. How to build a bot</a>
+<ul>
+<li><a href="#org621b0eb">3.1. How to build a sticker tag bot</a></li>
+<li><a href="#org9490ac6">3.2. How to make the bot private</a></li>
+</ul>
+</li>
+<li><a href="#org0155f00">4. How to deploy the bot on Render</a></li>
+<li><a href="#org4e3ed6b">5. How to connect to the Firebase</a></li>
+<li><a href="#orged8cac2">6. How to configure UptimeRobot</a></li>
+<li><a href="#org9b04e73">7. Conclusion</a></li>
+</ul>
+</div>
+</nav>
+<div id="outline-container-orge182f78" class="outline-2">
+<h2 id="orge182f78"><span class="section-number-2">1.</span> What happened</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+When I started to use Telegram, I really missed being able to search stickers by text, like I can in WeChat.
+Sadly, Telegram only lets you search emojis by text, or find stickers using emojis.
+</p>
+
+<p>
+After digging around, I discovered the easiest way to add this cool feature was through Telegram bots.
+The idea? Store a tag-to-sticker map in the bot, then fetch all matching stickers when given a tag in the bot&rsquo;s <a href="https://core.telegram.org/bots/inline">inline mode</a>.
+There are a few sticker tag bots on Telegram already, but they&rsquo;re either dead or <a href="https://github.com/vitaly-rudenko/tag-sticker-bot">can&rsquo;t handle</a> Unicode input like Chinese characters.
+Plus, I&rsquo;m not super keen on trusting my data to someone else&rsquo;s database.
+Moreover, I might want to use a bot for other personal stuff later.
+</p>
+
+<p>
+So, I decided to build my own Telegram bot.
+</p>
+</div>
+</div>
+<div id="outline-container-org860f0ba" class="outline-2">
+<h2 id="org860f0ba"><span class="section-number-2">2.</span> What do I need</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+My goal was to create a bot using only free services, including cloud storage for key-value pairs and a hosting platform to keep the bot running.
+</p>
+
+<p>
+I stumbled upon <a href="https://render.com">Render</a> from an X recommendation which offers <a href="https://docs.render.com/free#monthly-usage-limits">750 hours per month</a> for free deployment (which equals 31 days), so I deployed my bot there once I got the bot running locally.
+But then I found out Render&rsquo;s free tier doesn&rsquo;t offer permanent storage and shuts down services after <a href="https://docs.render.com/free#spinning-down-on-idle">15 minutes of inactivity</a>.
+</p>
+
+<p>
+A sticker tag bot without memory isn&rsquo;t much use to anyone, so I went hunting for free cloud storage.
+With some help from Claude and Perplexity, I discovered <a href="https://firebase.google.com/products/realtime-database/">Firebase Realtime database</a>, which offers 1GB storage and 10GB throughput per month on its <a href="https://firebase.google.com/pricing">free tier</a>.
+</p>
+
+<p>
+Even with cloud storage, a bot that konks out every 15 minutes just won&rsquo;t cut it - I need my stickers now!
+So my next quest was finding a way to keep the bot awake, which led me to <a href="https://uptimerobot.com">UptimeRobot</a>.
+It&rsquo;s actually a web monitoring tool, but I can use it to ping the bot regularly, tricking it into staying &ldquo;active&rdquo; instead of dozing off.
+</p>
+
+<p>
+So, to sum it up, building this sticker tag bot required:
+</p>
+<ul class="org-ul">
+<li>a Telegram bot from <a href="https://t.me/botfather">BotFather</a>,</li>
+<li>a free Render deployment,</li>
+<li>a Firebase&rsquo;s free key-value storage, and</li>
+<li>an UptimeRobot&rsquo;s free monitoring service.</li>
+</ul>
+
+<p>
+However, these services do not work together automatically. Gluing them together required additional effort.
+</p>
+</div>
+</div>
+<div id="outline-container-org65562b1" class="outline-2">
+<h2 id="org65562b1"><span class="section-number-2">3.</span> How to build a bot</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+The first step in building any bot is asking BotFather for a new bot and keeping the bot token secure.
+Telegram offers a helpful <a href="https://core.telegram.org/bots/tutorial#executing-commands">tutorial</a> that explains the process using Java.
+Examples in other languages can be found in their <a href="https://gitlab.com/Athamaxy/telegram-bot-tutorial/-/blob/main/TutorialBot.go">Gitlab repo</a>.
+In my opinion, the most challenging part here is creating a unique bot username that is still available.
+</p>
+
+<p>
+The next step involves working with the <a href="https://core.telegram.org/bots/api">Telegram bot API</a> in the chosen programming language.
+This includes learning how to handle messages effectively.
+For example, I used <a href="https://github.com/go-telegram-bot-api/telegram-bot-api">tgbotapi(Golang)</a>.
+</p>
+</div>
+<div id="outline-container-org621b0eb" class="outline-3">
+<h3 id="org621b0eb"><span class="section-number-3">3.1.</span> How to build a sticker tag bot</h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
+A sticker tag bot needs two main functionalities:
+</p>
+<ul class="org-ul">
+<li>Handle direct messages to add new sticker tags.</li>
+<li>Handle inline queries to search for stickers using a given tag.</li>
+</ul>
+
+<p>
+To implement the first functionality, I created a simple state machine with two states:
+</p>
+<ol class="org-ol">
+<li>The initial state waits for a sticker input and then moves to the tag state.</li>
+<li>The tag state waits for any text input to use as the tag for the previous sticker.</li>
+</ol>
+
+<p>
+To implement the second functionality, one needs to use the <a href="https://core.telegram.org/bots/api#inlinequeryresultcachedsticker">InlineQueryResultCachedSticker</a> method.
+</p>
+
+<p>
+For local testing, one can use a lightweight local key-value storage to store and search sticker tags.
+I used <a href="https://github.com/dgraph-io/badger">BadgerDB(Golang)</a> for example.
+</p>
+
+<p>
+I noticed that the generated file ID for the same sticker is different each time, making it hard to check for duplicates when adding new tags.
+To address this, I added a <code>/delete</code> method to remove tags when needed.
+</p>
+</div>
+</div>
+<div id="outline-container-org9490ac6" class="outline-3">
+<h3 id="org9490ac6"><span class="section-number-3">3.2.</span> How to make the bot private</h3>
+<div class="outline-text-3" id="text-3-2">
+<p>
+I couldn&rsquo;t find an official way to make a bot visible only to me.
+Suggested by Claude, I predefined a list of authorized users.
+Then I performed a sanity check before handling any messages.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org0155f00" class="outline-2">
+<h2 id="org0155f00"><span class="section-number-2">4.</span> How to deploy the bot on Render</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+Deploying a service on Render with a free account is challenging due to the lack of shell access, disk access, and non-so-live logs.
+The process of making everything work at this stage was time-consuming and I even contacted Render&rsquo;s technical support although they only responded &ldquo;Ok I will close the ticket&rdquo; after the issue was self-resolved.
+</p>
+
+<p>
+Three main steps are required here:
+</p>
+<ol class="org-ol">
+<li>start an HTTP server with several endpoints at the bot, and</li>
+<li>configure the web service and environment variables on Render&rsquo;s dashboard,</li>
+<li>configure the <a href="https://blog.domotz.com/product-bytes/telegram-webhook-and-bot-api/">Telegram webhook</a> at the bot.</li>
+</ol>
+
+<p>
+In step 1, starting an HTTP server at <code>0.0.0.0:&lt;some-port&gt;</code> is necessary.
+One should also enable GET methods for the root and a health check endpoint to allow Render to scan the service regularly.
+</p>
+
+<p>
+In step 2, one needs to fill in the service configuration and environment variables in different boxes.
+This includes settings such as port, build command, and health check endpoint.
+The issue I encountered was Render could not scan any port even if I have triple-checked that everything worked fine locally.
+In the end, I solved this issue by adding the Golang build tag <code>-tags netgo</code> in the build command.
+Actually this flag was configured by default, but I initially replaced it with a simpler build command.
+</p>
+
+<p>
+In step 3, one needs to configure the webhook with the Bot API and to enable the POST method for the webhook at the HTTP server (this can also be handled by the Bot API).
+The webhook can be <code>https: //&lt;your project&gt;.onrender.com/&lt;your-token&gt;</code> (or another unique URL).
+This URL informs Telegram where to send and receive all messages for the bot.
+</p>
+</div>
+</div>
+<div id="outline-container-org4e3ed6b" class="outline-2">
+<h2 id="org4e3ed6b"><span class="section-number-2">5.</span> How to connect to the Firebase</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+The Firebase Realtime database stores key-value pairs in the JSON format.
+Connecting the bot with the database requires the following steps:
+</p>
+<ol class="org-ol">
+<li>Create the app and the database on Firebase&rsquo;s dashboard.
+Specifically, one needs to store the following 3 values for interaction:
+<ul class="org-ul">
+<li>The database URL, which looks like <code>https: //&lt;your-app&gt;-default-rtdb.*.firebasedatabase.app</code>.</li>
+<li>The credential file, which can be downloaded at <code>Project settings-&gt;Service accounts-&gt;Firebase Admin SDK</code> (and should also be added to Render).</li>
+</ul></li>
+<li>Import the language-specific Firebase API to configure the database in the bot.
+For example, I use <a href="https://pkg.go.dev/firebase.google.com/go/v4">firebase(Golang)</a>.</li>
+<li>Update the database rules in Firebase dashboard to only allow authorized writes for specific tags, e.g., one name/path to refer to those key-value pairs.</li>
+</ol>
+
+<p>
+It&rsquo;s worth noting that connecting to the database on Render may take some time after a fresh start.
+During this initialization period, the log may display a <code>502 Bad Gateway</code> error to the database.
+</p>
+</div>
+</div>
+<div id="outline-container-orged8cac2" class="outline-2">
+<h2 id="orged8cac2"><span class="section-number-2">6.</span> How to configure UptimeRobot</h2>
+<div class="outline-text-2" id="text-6">
+<p>
+Before configuring UptimeRobot, an attempt was made to ping the bot from within itself, but this approach did not function for Render.
+</p>
+
+<p>
+Using UptimeRobot to maintain the bot&rsquo;s active status involves two primary steps:
+</p>
+<ol class="org-ol">
+<li>Enable the HEAD method (the sole method available for a free account) for any endpoint on the HTTP server.</li>
+<li>Configure an HTTP(S) monitor for that endpoint, which appears as <code>&lt;you-project&gt;.onrender.com/&lt;endpoint&gt;</code>, and establish the monitoring interval to less than 15 minutes.</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-org9b04e73" class="outline-2">
+<h2 id="org9b04e73"><span class="section-number-2">7.</span> Conclusion</h2>
+<div class="outline-text-2" id="text-7">
+<p>
+This post isn&rsquo;t meant to be a step-by-step guide for building a Telegram bot.
+It skips some steps and doesn&rsquo;t include screenshots.
+But don&rsquo;t worry, most of the missing bits can be figured out using AI language models these days.
+The rest really depends on each specific situation.
+The main point here is to show how to set up a free small web service, even when there&rsquo;s no single platform that does it all.
+</p>
+
+<p>
+When I first wrote this, my bot had been up and running for 10 days.
+It only had 30 minutes of downtime, which I think happened because UptimeRobot couldn&rsquo;t reach Render&rsquo;s IP address during that time.
+</p>
+
+<p>
+Right now, the repository is private since I plan to add a second functionality to the bot soon.
+</p>
+</div>
+</div>
+<div class="taglist"><a href="https://chenyo.me/tags.html">Tags</a>: <a href="https://chenyo.me/tag-tool.html">tool</a> <a href="https://chenyo.me/tag-telegram.html">telegram</a> </div>]]></description>
+  <category><![CDATA[tool]]></category>
+  <category><![CDATA[telegram]]></category>
+  <link>https://chenyo.me/2024-09-08-build-a-free-telegram-sticker-bot.html</link>
+  <guid>https://chenyo.me/2024-09-08-build-a-free-telegram-sticker-bot.html</guid>
+  <pubDate>Sun, 08 Sep 2024 17:01:00 +0200</pubDate>
+</item>
 <item>
   <title><![CDATA[Install Doom Emacs with Lisp native compilation in WSL2]]></title>
   <description><![CDATA[
@@ -684,16 +932,16 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org0576ce6">1. What happens</a></li>
-<li><a href="#org69894db">2. What is not enough with existing search functions?</a></li>
-<li><a href="#orgb7274a3">3. What does the search function do in this blog?</a></li>
-<li><a href="#org7a9cd23">4. How is it implemented?</a></li>
-<li><a href="#org8278722">5. How can it be improved?</a></li>
+<li><a href="#org7fc7b84">1. What happened</a></li>
+<li><a href="#org4ace32e">2. What is not enough with existing search functions?</a></li>
+<li><a href="#orgaed31e8">3. What does the search function do in this blog?</a></li>
+<li><a href="#org0bc694f">4. How is it implemented?</a></li>
+<li><a href="#orgde7ac7c">5. How can it be improved?</a></li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-org0576ce6" class="outline-2">
-<h2 id="org0576ce6"><span class="section-number-2">1.</span> What happens</h2>
+<div id="outline-container-org7fc7b84" class="outline-2">
+<h2 id="org7fc7b84"><span class="section-number-2">1.</span> What happened</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 Two months ago, I started to use the current blog to keep track of my study and personal notes.
@@ -713,8 +961,8 @@ During this process, my husband made a feature request: a blog search function.
 </p>
 </div>
 </div>
-<div id="outline-container-org69894db" class="outline-2">
-<h2 id="org69894db"><span class="section-number-2">2.</span> What is not enough with existing search functions?</h2>
+<div id="outline-container-org4ace32e" class="outline-2">
+<h2 id="org4ace32e"><span class="section-number-2">2.</span> What is not enough with existing search functions?</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 Most default search tools provided by popular static website frameworks do not return complete search results and their context.
@@ -738,11 +986,11 @@ However, for a personal blog, we can achieve greater breadth.
 </p>
 </div>
 </div>
-<div id="outline-container-orgb7274a3" class="outline-2">
-<h2 id="orgb7274a3"><span class="section-number-2">3.</span> What does the search function do in this blog?</h2>
+<div id="outline-container-orgaed31e8" class="outline-2">
+<h2 id="orgaed31e8"><span class="section-number-2">3.</span> What does the search function do in this blog?</h2>
 <div class="outline-text-2" id="text-3">
 
-<figure id="orgb27dd29">
+<figure id="orgf40cc85">
 <img src="./static/blog-search.gif" alt="blog-search.gif" align="center" width="700px" style="border: 1px solid black;">
 
 <figcaption><span class="figure-number">Figure 1: </span>A blog search example</figcaption>
@@ -759,8 +1007,8 @@ In this way, I can immediately see all results and their context on one page, an
 </p>
 </div>
 </div>
-<div id="outline-container-org7a9cd23" class="outline-2">
-<h2 id="org7a9cd23"><span class="section-number-2">4.</span> How is it implemented?</h2>
+<div id="outline-container-org0bc694f" class="outline-2">
+<h2 id="org0bc694f"><span class="section-number-2">4.</span> How is it implemented?</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 I implemented the search function along with all styling with the help of Cursor.
@@ -775,8 +1023,8 @@ It then wraps the occurrence with certain context and prepares the link by appen
 </p>
 </div>
 </div>
-<div id="outline-container-org8278722" class="outline-2">
-<h2 id="org8278722"><span class="section-number-2">5.</span> How can it be improved?</h2>
+<div id="outline-container-orgde7ac7c" class="outline-2">
+<h2 id="orgde7ac7c"><span class="section-number-2">5.</span> How can it be improved?</h2>
 <div class="outline-text-2" id="text-5">
 <p>
 The current search function is simple and sub-optimal.
@@ -5304,14 +5552,14 @@ The mux maintains a channel to queue unsent requests and a channel to queue unse
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org54331e1">1. What happended</a></li>
-<li><a href="#orgcc86001">2. What did I do</a></li>
-<li><a href="#org8c78942">3. Another issue of running RPC in docker</a></li>
+<li><a href="#org7f8202e">1. What happened</a></li>
+<li><a href="#org196d9c0">2. What did I do</a></li>
+<li><a href="#org2a04b1e">3. Another issue of running RPC in docker</a></li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-org54331e1" class="outline-2">
-<h2 id="org54331e1"><span class="section-number-2">1.</span> What happended</h2>
+<div id="outline-container-org7f8202e" class="outline-2">
+<h2 id="org7f8202e"><span class="section-number-2">1.</span> What happened</h2>
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
 <li>Servers SA and SB have the same docker installation, and the same running container CA and CB.</li>
@@ -5326,8 +5574,8 @@ fatal error: newosproc<br>
 </ul>
 </div>
 </div>
-<div id="outline-container-orgcc86001" class="outline-2">
-<h2 id="orgcc86001"><span class="section-number-2">2.</span> What did I do</h2>
+<div id="outline-container-org196d9c0" class="outline-2">
+<h2 id="org196d9c0"><span class="section-number-2">2.</span> What did I do</h2>
 <div class="outline-text-2" id="text-2">
 <ol class="org-ol">
 <li>I compared any related configurations between SA and SB. and between CA and CB, e.g., <code class="src src-bash"><span style="color: #c678dd;">ulimit</span> -a</code>, <code class="src src-bash">/etc/security/limits.conf</code>. They all look the same.</li>
@@ -5344,8 +5592,8 @@ fatal error: newosproc<br>
 </ol>
 </div>
 </div>
-<div id="outline-container-org8c78942" class="outline-2">
-<h2 id="org8c78942"><span class="section-number-2">3.</span> Another issue of running RPC in docker</h2>
+<div id="outline-container-org2a04b1e" class="outline-2">
+<h2 id="org2a04b1e"><span class="section-number-2">3.</span> Another issue of running RPC in docker</h2>
 <div class="outline-text-2" id="text-3">
 <ul class="org-ul">
 <li>The other day, I also spent hours debugging a <code>route unreachable</code> error when I want to send a request from CA to SA.</li>
@@ -5514,21 +5762,24 @@ In the end, I need to append a new rule to make the RPC work.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgd65c560">1. Router</a></li>
-<li><a href="#org6a48dda">2. Link</a></li>
-<li><a href="#orgcbf2ab4">3. Workshop 3</a>
+<li><a href="#org4e3db74">1. Router</a></li>
+<li><a href="#orge5eb930">2. Link</a></li>
+<li><a href="#org632e312">3. Workshop 3</a>
 <ul>
-<li><a href="#orge01c1aa">3.1. Structure</a></li>
-<li><a href="#org9bf22d6">3.2. States</a></li>
-<li><a href="#orgdd04f10">3.3. Props</a></li>
-<li><a href="#org3e5e356">3.4. Why passing down the update function in props 1, 4, 6?</a></li>
+<li><a href="#org79e1d9b">3.1. Structure</a></li>
+<li><a href="#org50d9c4d">3.2. States</a></li>
+<li><a href="#orged81644">3.3. Props</a></li>
+<li><a href="#org50e992e">3.4. Why passing down the update function in props 1, 4, 6?</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-orgd65c560" class="outline-2">
-<h2 id="orgd65c560"><span class="section-number-2">1.</span> Router</h2>
+<p>
+This is a personal note for the <a href="https://docs.google.com/presentation/d/1hrTjcB8GU4hWPHzS5lI17WALogP4biZ1UAtyxXfafkI/edit#slide=id.p">web.lab lectures</a>.
+</p>
+<div id="outline-container-org4e3db74" class="outline-2">
+<h2 id="org4e3db74"><span class="section-number-2">1.</span> Router</h2>
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
 <li>use the Reach <a href="https://reach.tech/router/">Reach Router</a> library</li>
@@ -5550,8 +5801,8 @@ URL -&gt; Router -&gt; render different components
 </ul>
 </div>
 </div>
-<div id="outline-container-org6a48dda" class="outline-2">
-<h2 id="org6a48dda"><span class="section-number-2">2.</span> Link</h2>
+<div id="outline-container-orge5eb930" class="outline-2">
+<h2 id="orge5eb930"><span class="section-number-2">2.</span> Link</h2>
 <div class="outline-text-2" id="text-2">
 <ul class="org-ul">
 <li>relative: <code class="src src-js">&lt;Link to=<span style="color: #98be65;">"newpage"</span>&gt;Click me&lt;/Link&gt;</code></li>
@@ -5559,23 +5810,23 @@ URL -&gt; Router -&gt; render different components
 </ul>
 </div>
 </div>
-<div id="outline-container-orgcbf2ab4" class="outline-2">
-<h2 id="orgcbf2ab4"><span class="section-number-2">3.</span> Workshop 3</h2>
+<div id="outline-container-org632e312" class="outline-2">
+<h2 id="org632e312"><span class="section-number-2">3.</span> Workshop 3</h2>
 <div class="outline-text-2" id="text-3">
 </div>
-<div id="outline-container-orge01c1aa" class="outline-3">
-<h3 id="orge01c1aa"><span class="section-number-3">3.1.</span> Structure</h3>
+<div id="outline-container-org79e1d9b" class="outline-3">
+<h3 id="org79e1d9b"><span class="section-number-3">3.1.</span> Structure</h3>
 <div class="outline-text-3" id="text-3-1">
 
-<figure id="org5976f5a">
+<figure id="org9cf8e8a">
 <img src="./static/workshop-3-structure.png" alt="workshop-3-structure.png" align="center" width="600px">
 
 <figcaption><span class="figure-number">Figure 1: </span>The Catbook structure in workshop 3</figcaption>
 </figure>
 </div>
 </div>
-<div id="outline-container-org9bf22d6" class="outline-3">
-<h3 id="org9bf22d6"><span class="section-number-3">3.2.</span> States</h3>
+<div id="outline-container-org50d9c4d" class="outline-3">
+<h3 id="org50d9c4d"><span class="section-number-3">3.2.</span> States</h3>
 <div class="outline-text-3" id="text-3-2">
 <table>
 
@@ -5607,8 +5858,8 @@ URL -&gt; Router -&gt; render different components
 </table>
 </div>
 </div>
-<div id="outline-container-orgdd04f10" class="outline-3">
-<h3 id="orgdd04f10"><span class="section-number-3">3.3.</span> Props</h3>
+<div id="outline-container-orged81644" class="outline-3">
+<h3 id="orged81644"><span class="section-number-3">3.3.</span> Props</h3>
 <div class="outline-text-3" id="text-3-3">
 <table>
 
@@ -5660,8 +5911,8 @@ URL -&gt; Router -&gt; render different components
 </table>
 </div>
 </div>
-<div id="outline-container-org3e5e356" class="outline-3">
-<h3 id="org3e5e356"><span class="section-number-3">3.4.</span> Why passing down the update function in props 1, 4, 6?</h3>
+<div id="outline-container-org50e992e" class="outline-3">
+<h3 id="org50e992e"><span class="section-number-3">3.4.</span> Why passing down the update function in props 1, 4, 6?</h3>
 <div class="outline-text-3" id="text-3-4">
 <ul class="org-ul">
 <li>To share the parent states, i.e., <code>stories</code> and <code>comments</code> to child component. Since the post action happens in the child component, we need a way to automatically update the states to see new contents immediately.</li>
@@ -5685,34 +5936,37 @@ URL -&gt; Router -&gt; render different components
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org915331c">1. What is a React hook</a>
+<li><a href="#orga8c7ca9">1. What is a React hook</a>
 <ul>
-<li><a href="#org52d8924">1.1. <code>useState</code> is not enough</a></li>
-<li><a href="#orgb8767ef">1.2. <code>useEffect</code> runs after specific variable change</a></li>
+<li><a href="#org7146a36">1.1. <code>useState</code> is not enough</a></li>
+<li><a href="#org800f295">1.2. <code>useEffect</code> runs after specific variable change</a></li>
 </ul>
 </li>
-<li><a href="#org29c63d5">2. React hook patterns</a>
+<li><a href="#org1a4306a">2. React hook patterns</a>
 <ul>
-<li><a href="#org723e882">2.1. Fetch and send data</a></li>
-<li><a href="#org8e42c9c">2.2. Conditional rendering</a></li>
-<li><a href="#org2d8bd1d">2.3. Render an array of Data</a></li>
+<li><a href="#org6de65a1">2.1. Fetch and send data</a></li>
+<li><a href="#org0543254">2.2. Conditional rendering</a></li>
+<li><a href="#org8b46cf9">2.3. Render an array of Data</a></li>
 </ul>
 </li>
-<li><a href="#org927a626">3. Example: Stopwatch</a></li>
-<li><a href="#org12cbcee">4. DOM and component mounting</a></li>
+<li><a href="#org696a40e">3. Example: Stopwatch</a></li>
+<li><a href="#org047cf77">4. DOM and component mounting</a></li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-org915331c" class="outline-2">
-<h2 id="org915331c"><span class="section-number-2">1.</span> What is a React hook</h2>
+<p>
+This is a personal note for the <a href="https://docs.google.com/presentation/d/1n5RlpgBtXQ1OHvutx9TRLotWizyg2BPKv_780DD4-90/edit#slide=id.gb2bbafee77_1_66">web.lab lectures</a>.
+</p>
+<div id="outline-container-orga8c7ca9" class="outline-2">
+<h2 id="orga8c7ca9"><span class="section-number-2">1.</span> What is a React hook</h2>
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
 <li>Special functions to access parts of the component lifestyle.</li>
 <li>e.g., <code>useState</code></li>
 </ul>
 </div>
-<div id="outline-container-org52d8924" class="outline-3">
-<h3 id="org52d8924"><span class="section-number-3">1.1.</span> <code>useState</code> is not enough</h3>
+<div id="outline-container-org7146a36" class="outline-3">
+<h3 id="org7146a36"><span class="section-number-3">1.1.</span> <code>useState</code> is not enough</h3>
 <div class="outline-text-3" id="text-1-1">
 <div class="org-src-container">
 <pre class="src src-js"><span class="linenr">1: </span><span style="color: #51afef;">const</span> [<span style="color: #dcaeea;">persons</span>, <span style="color: #dcaeea;">setPersons</span>] = useState([]);
@@ -5731,8 +5985,8 @@ URL -&gt; Router -&gt; render different components
 </ul>
 </div>
 </div>
-<div id="outline-container-orgb8767ef" class="outline-3">
-<h3 id="orgb8767ef"><span class="section-number-3">1.2.</span> <code>useEffect</code> runs after specific variable change</h3>
+<div id="outline-container-org800f295" class="outline-3">
+<h3 id="org800f295"><span class="section-number-3">1.2.</span> <code>useEffect</code> runs after specific variable change</h3>
 <div class="outline-text-3" id="text-1-2">
 <div class="org-src-container">
 <pre class="src src-js"><span class="linenr">1: </span>useEffect(() =&gt; {
@@ -5760,12 +6014,12 @@ URL -&gt; Router -&gt; render different components
 </div>
 </div>
 </div>
-<div id="outline-container-org29c63d5" class="outline-2">
-<h2 id="org29c63d5"><span class="section-number-2">2.</span> React hook patterns</h2>
+<div id="outline-container-org1a4306a" class="outline-2">
+<h2 id="org1a4306a"><span class="section-number-2">2.</span> React hook patterns</h2>
 <div class="outline-text-2" id="text-2">
 </div>
-<div id="outline-container-org723e882" class="outline-3">
-<h3 id="org723e882"><span class="section-number-3">2.1.</span> Fetch and send data</h3>
+<div id="outline-container-org6de65a1" class="outline-3">
+<h3 id="org6de65a1"><span class="section-number-3">2.1.</span> Fetch and send data</h3>
 <div class="outline-text-3" id="text-2-1">
 <div class="org-src-container">
 <pre class="src src-js"><span class="linenr">1: </span><span style="color: #5B6268;">/* </span><span style="color: #5B6268;">fetch data on mount</span><span style="color: #5B6268;"> */</span>
@@ -5790,8 +6044,8 @@ URL -&gt; Router -&gt; render different components
 </div>
 </div>
 </div>
-<div id="outline-container-org8e42c9c" class="outline-3">
-<h3 id="org8e42c9c"><span class="section-number-3">2.2.</span> Conditional rendering</h3>
+<div id="outline-container-org0543254" class="outline-3">
+<h3 id="org0543254"><span class="section-number-3">2.2.</span> Conditional rendering</h3>
 <div class="outline-text-3" id="text-2-2">
 <div class="org-src-container">
 <pre class="src src-js"><span class="linenr">1: </span><span style="color: #5B6268;">// </span><span style="color: #5B6268;">JSX is a way of writing HTML in js</span>
@@ -5806,8 +6060,8 @@ URL -&gt; Router -&gt; render different components
 </div>
 </div>
 </div>
-<div id="outline-container-org2d8bd1d" class="outline-3">
-<h3 id="org2d8bd1d"><span class="section-number-3">2.3.</span> Render an array of Data</h3>
+<div id="outline-container-org8b46cf9" class="outline-3">
+<h3 id="org8b46cf9"><span class="section-number-3">2.3.</span> Render an array of Data</h3>
 <div class="outline-text-3" id="text-2-3">
 <div class="org-src-container">
 <pre class="src src-js"><span class="linenr">1: </span><span style="color: #51afef;">const</span> <span style="color: #dcaeea;">data</span> = [
@@ -5826,8 +6080,8 @@ URL -&gt; Router -&gt; render different components
 </div>
 </div>
 </div>
-<div id="outline-container-org927a626" class="outline-2">
-<h2 id="org927a626"><span class="section-number-2">3.</span> Example: Stopwatch</h2>
+<div id="outline-container-org696a40e" class="outline-2">
+<h2 id="org696a40e"><span class="section-number-2">3.</span> Example: Stopwatch</h2>
 <div class="outline-text-2" id="text-3">
 <div class="org-src-container">
 <pre class="src src-js"><span class="linenr"> 1: </span><span style="color: #51afef;">const</span> <span style="color: #dcaeea;">Stopwatch</span> = () =&gt; {
@@ -5848,8 +6102,8 @@ URL -&gt; Router -&gt; render different components
 </div>
 </div>
 </div>
-<div id="outline-container-org12cbcee" class="outline-2">
-<h2 id="org12cbcee"><span class="section-number-2">4.</span> DOM and component mounting</h2>
+<div id="outline-container-org047cf77" class="outline-2">
+<h2 id="org047cf77"><span class="section-number-2">4.</span> DOM and component mounting</h2>
 <div class="outline-text-2" id="text-4">
 <ul class="org-ul">
 <li>DOM (Document Object Model): a programming interface for web documents; represents the structure of a document, e.g., HTML, as a tree of objects, where each object corresponds to a part of the document; it dynamically updates the document contents

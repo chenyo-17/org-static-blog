@@ -41,14 +41,14 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org54331e1">1. What happended</a></li>
-<li><a href="#orgcc86001">2. What did I do</a></li>
-<li><a href="#org8c78942">3. Another issue of running RPC in docker</a></li>
+<li><a href="#org7f8202e">1. What happened</a></li>
+<li><a href="#org196d9c0">2. What did I do</a></li>
+<li><a href="#org2a04b1e">3. Another issue of running RPC in docker</a></li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-org54331e1" class="outline-2">
-<h2 id="org54331e1"><span class="section-number-2">1.</span> What happended</h2>
+<div id="outline-container-org7f8202e" class="outline-2">
+<h2 id="org7f8202e"><span class="section-number-2">1.</span> What happened</h2>
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
 <li>Servers SA and SB have the same docker installation, and the same running container CA and CB.</li>
@@ -63,8 +63,8 @@ fatal error: newosproc<br>
 </ul>
 </div>
 </div>
-<div id="outline-container-orgcc86001" class="outline-2">
-<h2 id="orgcc86001"><span class="section-number-2">2.</span> What did I do</h2>
+<div id="outline-container-org196d9c0" class="outline-2">
+<h2 id="org196d9c0"><span class="section-number-2">2.</span> What did I do</h2>
 <div class="outline-text-2" id="text-2">
 <ol class="org-ol">
 <li>I compared any related configurations between SA and SB. and between CA and CB, e.g., <code class="src src-bash"><span style="color: #c678dd;">ulimit</span> -a</code>, <code class="src src-bash">/etc/security/limits.conf</code>. They all look the same.</li>
@@ -81,8 +81,8 @@ fatal error: newosproc<br>
 </ol>
 </div>
 </div>
-<div id="outline-container-org8c78942" class="outline-2">
-<h2 id="org8c78942"><span class="section-number-2">3.</span> Another issue of running RPC in docker</h2>
+<div id="outline-container-org2a04b1e" class="outline-2">
+<h2 id="org2a04b1e"><span class="section-number-2">3.</span> Another issue of running RPC in docker</h2>
 <div class="outline-text-2" id="text-3">
 <ul class="org-ul">
 <li>The other day, I also spent hours debugging a <code>route unreachable</code> error when I want to send a request from CA to SA.</li>

@@ -3,7 +3,7 @@
 #+description: This post records why and how I made the current blog search function.
 #+filetags: personal blog
 
-* What happens
+* What happened
 
 Two months ago, I started to use the current blog to keep track of my study and personal notes.
 
