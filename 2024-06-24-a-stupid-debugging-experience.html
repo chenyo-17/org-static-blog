@@ -41,14 +41,14 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org7f8202e">1. What happened</a></li>
-<li><a href="#org196d9c0">2. What did I do</a></li>
-<li><a href="#org2a04b1e">3. Another issue of running RPC in docker</a></li>
+<li><a href="#org1083743">1. What happened</a></li>
+<li><a href="#org5110414">2. What did I do</a></li>
+<li><a href="#orgca2d88d">3. Another issue of running RPC in docker</a></li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-org7f8202e" class="outline-2">
-<h2 id="org7f8202e"><span class="section-number-2">1.</span> What happened</h2>
+<div id="outline-container-org1083743" class="outline-2">
+<h2 id="org1083743"><span class="section-number-2">1.</span> What happened</h2>
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
 <li>Servers SA and SB have the same docker installation, and the same running container CA and CB.</li>
@@ -63,8 +63,8 @@ fatal error: newosproc<br>
 </ul>
 </div>
 </div>
-<div id="outline-container-org196d9c0" class="outline-2">
-<h2 id="org196d9c0"><span class="section-number-2">2.</span> What did I do</h2>
+<div id="outline-container-org5110414" class="outline-2">
+<h2 id="org5110414"><span class="section-number-2">2.</span> What did I do</h2>
 <div class="outline-text-2" id="text-2">
 <ol class="org-ol">
 <li>I compared any related configurations between SA and SB. and between CA and CB, e.g., <code class="src src-bash"><span style="color: #c678dd;">ulimit</span> -a</code>, <code class="src src-bash">/etc/security/limits.conf</code>. They all look the same.</li>
@@ -81,8 +81,8 @@ fatal error: newosproc<br>
 </ol>
 </div>
 </div>
-<div id="outline-container-org2a04b1e" class="outline-2">
-<h2 id="org2a04b1e"><span class="section-number-2">3.</span> Another issue of running RPC in docker</h2>
+<div id="outline-container-orgca2d88d" class="outline-2">
+<h2 id="orgca2d88d"><span class="section-number-2">3.</span> Another issue of running RPC in docker</h2>
 <div class="outline-text-2" id="text-3">
 <ul class="org-ul">
 <li>The other day, I also spent hours debugging a <code>route unreachable</code> error when I want to send a request from CA to SA.</li>
@@ -118,7 +118,14 @@ In the end, I need to append a new rule to make the RPC work.
 <div class="taglist"><a href="https://chenyo.me/tags.html">Tags</a>: <a href="https://chenyo.me/tag-docker.html">docker</a> <a href="https://chenyo.me/tag-go.html">go</a> <a href="https://chenyo.me/tag-linux.html">linux</a> <a href="https://chenyo.me/tag-alpine.html">alpine</a> </div></div>
 <div id="postamble" class="status"><div id="search-results"></div>
       <footer>
+        <div class="footer-content">
+        <div class="footer-left">
         <p>© 2024 chenyo. Some rights reserved.</p>
+        <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">
+        <img alt="Creative Commons License" style="border-width: 0"
+        src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png"/>
+        </a>
+        </div>
         <div class="social-links">
           <a href="https://t.me/feihuadawangjiushiwo" target="_blank" rel="noopener noreferrer">
           <i class="fab fa-telegram"></i>

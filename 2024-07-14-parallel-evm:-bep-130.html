@@ -41,18 +41,18 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgd3f57aa">1. Blockchain fundamentals</a>
+<li><a href="#orgbe1d343">1. Blockchain fundamentals</a>
 <ul>
-<li><a href="#org21b22c5">1.1. System contract</a></li>
-<li><a href="#org8391b1b">1.2. Transaction execution phases</a></li>
+<li><a href="#orgc52bcf3">1.1. System contract</a></li>
+<li><a href="#orgebc5a36">1.2. Transaction execution phases</a></li>
 </ul>
 </li>
-<li><a href="#orgcc3219d">2. Design principle</a></li>
-<li><a href="#orgd84fbc0">3. Workflow</a>
+<li><a href="#org0d3d4e2">2. Design principle</a></li>
+<li><a href="#orgf28c6d7">3. Workflow</a>
 <ul>
-<li><a href="#orgb4eb357">3.1. Dispatch factors</a></li>
-<li><a href="#orgf62ed6b">3.2. Slot execution stages</a></li>
-<li><a href="#org5559d50">3.3. Conflict detection</a></li>
+<li><a href="#orgc58f593">3.1. Dispatch factors</a></li>
+<li><a href="#orgabb89a8">3.2. Slot execution stages</a></li>
+<li><a href="#orgd03b2dc">3.3. Conflict detection</a></li>
 </ul>
 </li>
 </ul>
@@ -62,12 +62,12 @@
 This is a personal note for <a href="https://github.com/bnb-chain/BEPs/blob/master/BEPs/BEP130.md">BEP-130</a>.
 BEP-130 is a proposal that introduces a parallel transaction execution mechanism on the BNB Smart Chain (BSC).
 </p>
-<div id="outline-container-orgd3f57aa" class="outline-2">
-<h2 id="orgd3f57aa"><span class="section-number-2">1.</span> Blockchain fundamentals</h2>
+<div id="outline-container-orgbe1d343" class="outline-2">
+<h2 id="orgbe1d343"><span class="section-number-2">1.</span> Blockchain fundamentals</h2>
 <div class="outline-text-2" id="text-1">
 </div>
-<div id="outline-container-org21b22c5" class="outline-3">
-<h3 id="org21b22c5"><span class="section-number-3">1.1.</span> System contract</h3>
+<div id="outline-container-orgc52bcf3" class="outline-3">
+<h3 id="orgc52bcf3"><span class="section-number-3">1.1.</span> System contract</h3>
 <div class="outline-text-3" id="text-1-1">
 <ul class="org-ul">
 <li>Built-in contracts to perform system level operations, e,g., gas fee reward, cross chain communication.</li>
@@ -75,8 +75,8 @@ BEP-130 is a proposal that introduces a parallel transaction execution mechanism
 </ul>
 </div>
 </div>
-<div id="outline-container-org8391b1b" class="outline-3">
-<h3 id="org8391b1b"><span class="section-number-3">1.2.</span> Transaction execution phases</h3>
+<div id="outline-container-orgebc5a36" class="outline-3">
+<h3 id="orgebc5a36"><span class="section-number-3">1.2.</span> Transaction execution phases</h3>
 <div class="outline-text-3" id="text-1-2">
 <ul class="org-ul">
 <li>Block mining phase: received from the P2P transaction pool, could contain invalid transactions.</li>
@@ -85,8 +85,8 @@ BEP-130 is a proposal that introduces a parallel transaction execution mechanism
 </div>
 </div>
 </div>
-<div id="outline-container-orgcc3219d" class="outline-2">
-<h2 id="orgcc3219d"><span class="section-number-2">2.</span> Design principle</h2>
+<div id="outline-container-org0d3d4e2" class="outline-2">
+<h2 id="org0d3d4e2"><span class="section-number-2">2.</span> Design principle</h2>
 <div class="outline-text-2" id="text-2">
 <ul class="org-ul">
 <li>Should always produce the same result as the current sequential execution.</li>
@@ -96,12 +96,12 @@ BEP-130 is a proposal that introduces a parallel transaction execution mechanism
 </ul>
 </div>
 </div>
-<div id="outline-container-orgd84fbc0" class="outline-2">
-<h2 id="orgd84fbc0"><span class="section-number-2">3.</span> Workflow</h2>
+<div id="outline-container-orgf28c6d7" class="outline-2">
+<h2 id="orgf28c6d7"><span class="section-number-2">3.</span> Workflow</h2>
 <div class="outline-text-2" id="text-3">
 </div>
-<div id="outline-container-orgb4eb357" class="outline-3">
-<h3 id="orgb4eb357"><span class="section-number-3">3.1.</span> Dispatch factors</h3>
+<div id="outline-container-orgc58f593" class="outline-3">
+<h3 id="orgc58f593"><span class="section-number-3">3.1.</span> Dispatch factors</h3>
 <div class="outline-text-3" id="text-3-1">
 <ul class="org-ul">
 <li>Is the slot idle or occupied?</li>
@@ -112,8 +112,8 @@ BEP-130 is a proposal that introduces a parallel transaction execution mechanism
 </ul>
 </div>
 </div>
-<div id="outline-container-orgf62ed6b" class="outline-3">
-<h3 id="orgf62ed6b"><span class="section-number-3">3.2.</span> Slot execution stages</h3>
+<div id="outline-container-orgabb89a8" class="outline-3">
+<h3 id="orgabb89a8"><span class="section-number-3">3.2.</span> Slot execution stages</h3>
 <div class="outline-text-3" id="text-3-2">
 <ol class="org-ol">
 <li>Execute the transaction \(Tx_i\)based on a specific worldstate, e.g., the state when the execution starts.</li>
@@ -128,8 +128,8 @@ BEP-130 is a proposal that introduces a parallel transaction execution mechanism
 </ol>
 </div>
 </div>
-<div id="outline-container-org5559d50" class="outline-3">
-<h3 id="org5559d50"><span class="section-number-3">3.3.</span> Conflict detection</h3>
+<div id="outline-container-orgd03b2dc" class="outline-3">
+<h3 id="orgd03b2dc"><span class="section-number-3">3.3.</span> Conflict detection</h3>
 <div class="outline-text-3" id="text-3-3">
 <ul class="org-ul">
 <li>Detection items: storage key/value pair; account balance; contract content and status.</li>
@@ -141,7 +141,14 @@ BEP-130 is a proposal that introduces a parallel transaction execution mechanism
 <div class="taglist"><a href="https://chenyo.me/tags.html">Tags</a>: <a href="https://chenyo.me/tag-evm.html">evm</a> <a href="https://chenyo.me/tag-parallel-evm.html">parallel-evm</a> <a href="https://chenyo.me/tag-bnb.html">bnb</a> </div></div>
 <div id="postamble" class="status"><div id="search-results"></div>
       <footer>
+        <div class="footer-content">
+        <div class="footer-left">
         <p>© 2024 chenyo. Some rights reserved.</p>
+        <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">
+        <img alt="Creative Commons License" style="border-width: 0"
+        src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png"/>
+        </a>
+        </div>
         <div class="social-links">
           <a href="https://t.me/feihuadawangjiushiwo" target="_blank" rel="noopener noreferrer">
           <i class="fab fa-telegram"></i>

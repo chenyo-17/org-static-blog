@@ -71,14 +71,33 @@ code {
 }
 
 footer {
-    margin-top: 30px;
-    border-top: 1px solid #eee;
-    padding-top: 10px;
-    font-size: 0.9em;
-    color: #666;
+    text-align: center;
+}
+
+footer .footer-content {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+footer .footer-left {
+    display: flex;
+    align-items: center;
+}
+
+footer p {
+    margin: 0;
+    margin-right: 10px; /* Adds some space between the text and the CC icon */
+}
+
+footer .social-links {
+    display: flex;
+    gap: 10px;
+}
+
+footer img {
+    height: 26px; /* Increased height for a slightly bigger image */
+    width: auto;
 }
 
 mark {

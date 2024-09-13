@@ -42,23 +42,23 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orge182f78">1. What happened</a></li>
-<li><a href="#org860f0ba">2. What do I need</a></li>
-<li><a href="#org65562b1">3. How to build a bot</a>
+<li><a href="#org21a4a9f">1. What happened</a></li>
+<li><a href="#orgf2c0943">2. What do I need</a></li>
+<li><a href="#orgdfcc447">3. How to build a bot</a>
 <ul>
-<li><a href="#org621b0eb">3.1. How to build a sticker tag bot</a></li>
-<li><a href="#org9490ac6">3.2. How to make the bot private</a></li>
+<li><a href="#org0d87cda">3.1. How to build a sticker tag bot</a></li>
+<li><a href="#org18850ae">3.2. How to make the bot private</a></li>
 </ul>
 </li>
-<li><a href="#org0155f00">4. How to deploy the bot on Render</a></li>
-<li><a href="#org4e3ed6b">5. How to connect to the Firebase</a></li>
-<li><a href="#orged8cac2">6. How to configure UptimeRobot</a></li>
-<li><a href="#org9b04e73">7. Conclusion</a></li>
+<li><a href="#org6f1df19">4. How to deploy the bot on Render</a></li>
+<li><a href="#org403b255">5. How to connect to the Firebase</a></li>
+<li><a href="#org827aa22">6. How to configure UptimeRobot</a></li>
+<li><a href="#org31171a0">7. Conclusion</a></li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-orge182f78" class="outline-2">
-<h2 id="orge182f78"><span class="section-number-2">1.</span> What happened</h2>
+<div id="outline-container-org21a4a9f" class="outline-2">
+<h2 id="org21a4a9f"><span class="section-number-2">1.</span> What happened</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 When I started to use Telegram, I really missed being able to search stickers by text, like I can in WeChat.
@@ -78,8 +78,8 @@ So, I decided to build my own Telegram bot.
 </p>
 </div>
 </div>
-<div id="outline-container-org860f0ba" class="outline-2">
-<h2 id="org860f0ba"><span class="section-number-2">2.</span> What do I need</h2>
+<div id="outline-container-orgf2c0943" class="outline-2">
+<h2 id="orgf2c0943"><span class="section-number-2">2.</span> What do I need</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 My goal was to create a bot using only free services, including cloud storage for key-value pairs and a hosting platform to keep the bot running.
@@ -116,8 +116,8 @@ However, these services do not work together automatically. Gluing them together
 </p>
 </div>
 </div>
-<div id="outline-container-org65562b1" class="outline-2">
-<h2 id="org65562b1"><span class="section-number-2">3.</span> How to build a bot</h2>
+<div id="outline-container-orgdfcc447" class="outline-2">
+<h2 id="orgdfcc447"><span class="section-number-2">3.</span> How to build a bot</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 The first step in building any bot is asking BotFather for a new bot and keeping the bot token secure.
@@ -132,8 +132,8 @@ This includes learning how to handle messages effectively.
 For example, I used <a href="https://github.com/go-telegram-bot-api/telegram-bot-api">tgbotapi(Golang)</a>.
 </p>
 </div>
-<div id="outline-container-org621b0eb" class="outline-3">
-<h3 id="org621b0eb"><span class="section-number-3">3.1.</span> How to build a sticker tag bot</h3>
+<div id="outline-container-org0d87cda" class="outline-3">
+<h3 id="org0d87cda"><span class="section-number-3">3.1.</span> How to build a sticker tag bot</h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
 A sticker tag bot needs two main functionalities:
@@ -166,8 +166,8 @@ To address this, I added a <code>/delete</code> method to remove tags when neede
 </p>
 </div>
 </div>
-<div id="outline-container-org9490ac6" class="outline-3">
-<h3 id="org9490ac6"><span class="section-number-3">3.2.</span> How to make the bot private</h3>
+<div id="outline-container-org18850ae" class="outline-3">
+<h3 id="org18850ae"><span class="section-number-3">3.2.</span> How to make the bot private</h3>
 <div class="outline-text-3" id="text-3-2">
 <p>
 I couldn&rsquo;t find an official way to make a bot visible only to me.
@@ -177,8 +177,8 @@ Then I performed a sanity check before handling any messages.
 </div>
 </div>
 </div>
-<div id="outline-container-org0155f00" class="outline-2">
-<h2 id="org0155f00"><span class="section-number-2">4.</span> How to deploy the bot on Render</h2>
+<div id="outline-container-org6f1df19" class="outline-2">
+<h2 id="org6f1df19"><span class="section-number-2">4.</span> How to deploy the bot on Render</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 Deploying a service on Render with a free account is challenging due to the lack of shell access, disk access, and non-so-live logs.
@@ -214,8 +214,8 @@ This URL informs Telegram where to send and receive all messages for the bot.
 </p>
 </div>
 </div>
-<div id="outline-container-org4e3ed6b" class="outline-2">
-<h2 id="org4e3ed6b"><span class="section-number-2">5.</span> How to connect to the Firebase</h2>
+<div id="outline-container-org403b255" class="outline-2">
+<h2 id="org403b255"><span class="section-number-2">5.</span> How to connect to the Firebase</h2>
 <div class="outline-text-2" id="text-5">
 <p>
 The Firebase Realtime database stores key-value pairs in the JSON format.
@@ -239,8 +239,8 @@ During this initialization period, the log may display a <code>502 Bad Gateway</
 </p>
 </div>
 </div>
-<div id="outline-container-orged8cac2" class="outline-2">
-<h2 id="orged8cac2"><span class="section-number-2">6.</span> How to configure UptimeRobot</h2>
+<div id="outline-container-org827aa22" class="outline-2">
+<h2 id="org827aa22"><span class="section-number-2">6.</span> How to configure UptimeRobot</h2>
 <div class="outline-text-2" id="text-6">
 <p>
 Before configuring UptimeRobot, an attempt was made to ping the bot from within itself, but this approach did not function for Render.
@@ -255,8 +255,8 @@ Using UptimeRobot to maintain the bot&rsquo;s active status involves two primary
 </ol>
 </div>
 </div>
-<div id="outline-container-org9b04e73" class="outline-2">
-<h2 id="org9b04e73"><span class="section-number-2">7.</span> Conclusion</h2>
+<div id="outline-container-org31171a0" class="outline-2">
+<h2 id="org31171a0"><span class="section-number-2">7.</span> Conclusion</h2>
 <div class="outline-text-2" id="text-7">
 <p>
 This post isn&rsquo;t meant to be a step-by-step guide for building a Telegram bot.
@@ -282,17 +282,17 @@ Right now, the repository is private since I plan to add a second functionality 
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org1c9ab46">1. Assumptions</a></li>
-<li><a href="#orga272317">2. Install prerequisite packages</a></li>
-<li><a href="#org364c109">3. Install Emacs 29.4</a>
+<li><a href="#org20a6d81">1. Assumptions</a></li>
+<li><a href="#orgcf6e55a">2. Install prerequisite packages</a></li>
+<li><a href="#org5075acb">3. Install Emacs 29.4</a>
 <ul>
-<li><a href="#org5da0b33">3.1. Before building</a></li>
-<li><a href="#org5a81b5a">3.2. Build Emacs 29.4 with native-comp</a></li>
+<li><a href="#org17f16c3">3.1. Before building</a></li>
+<li><a href="#orgd1dff12">3.2. Build Emacs 29.4 with native-comp</a></li>
 </ul>
 </li>
-<li><a href="#org59d5d98">4. Install <code>ripgrep</code></a></li>
-<li><a href="#org8008b50">5. Install Doom Emacs</a></li>
-<li><a href="#org6f03a33">6. Some issues with running Emacs in WSL2</a></li>
+<li><a href="#org569af17">4. Install <code>ripgrep</code></a></li>
+<li><a href="#org78e09db">5. Install Doom Emacs</a></li>
+<li><a href="#orgc56000a">6. Some issues with running Emacs in WSL2</a></li>
 </ul>
 </div>
 </nav>
@@ -301,16 +301,16 @@ Today I installed Doom Emacs for my husband on his WSL2.
 Although the entire process was guided by Claude, there were some back-and-forth during the interaction.
 Therefore I would like to record the full commands I have used here in sequence for any potential reference.
 </p>
-<div id="outline-container-org1c9ab46" class="outline-2">
-<h2 id="org1c9ab46"><span class="section-number-2">1.</span> Assumptions</h2>
+<div id="outline-container-org20a6d81" class="outline-2">
+<h2 id="org20a6d81"><span class="section-number-2">1.</span> Assumptions</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 This installation guide assumes a fresh installation of WSL2 Ubuntu 22.04 on Windows 11 in 2024 September.
 </p>
 </div>
 </div>
-<div id="outline-container-orga272317" class="outline-2">
-<h2 id="orga272317"><span class="section-number-2">2.</span> Install prerequisite packages</h2>
+<div id="outline-container-orgcf6e55a" class="outline-2">
+<h2 id="orgcf6e55a"><span class="section-number-2">2.</span> Install prerequisite packages</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 According to the Doom Emacs <a href="https://github.com/doomemacs/doomemacs#prerequisites">documentation</a>, the following packages are recommended:
@@ -324,12 +324,12 @@ According to the Doom Emacs <a href="https://github.com/doomemacs/doomemacs#prer
 </ul>
 </div>
 </div>
-<div id="outline-container-org364c109" class="outline-2">
-<h2 id="org364c109"><span class="section-number-2">3.</span> Install Emacs 29.4</h2>
+<div id="outline-container-org5075acb" class="outline-2">
+<h2 id="org5075acb"><span class="section-number-2">3.</span> Install Emacs 29.4</h2>
 <div class="outline-text-2" id="text-3">
 </div>
-<div id="outline-container-org5da0b33" class="outline-3">
-<h3 id="org5da0b33"><span class="section-number-3">3.1.</span> Before building</h3>
+<div id="outline-container-org17f16c3" class="outline-3">
+<h3 id="org17f16c3"><span class="section-number-3">3.1.</span> Before building</h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
 First, let&rsquo;s install some build dependencies:
@@ -392,8 +392,8 @@ tiff, gif, jpeg, png and xpm.
 </blockquote>
 </div>
 </div>
-<div id="outline-container-org5a81b5a" class="outline-3">
-<h3 id="org5a81b5a"><span class="section-number-3">3.2.</span> Build Emacs 29.4 with native-comp</h3>
+<div id="outline-container-orgd1dff12" class="outline-3">
+<h3 id="orgd1dff12"><span class="section-number-3">3.2.</span> Build Emacs 29.4 with native-comp</h3>
 <div class="outline-text-3" id="text-3-2">
 <p>
 At this moment, we can start to download Emacs source code:
@@ -481,8 +481,8 @@ Congratulations! You have now installed the latest and fastest Emacs on WSL2.
 </div>
 </div>
 </div>
-<div id="outline-container-org59d5d98" class="outline-2">
-<h2 id="org59d5d98"><span class="section-number-2">4.</span> Install <code>ripgrep</code></h2>
+<div id="outline-container-org569af17" class="outline-2">
+<h2 id="org569af17"><span class="section-number-2">4.</span> Install <code>ripgrep</code></h2>
 <div class="outline-text-2" id="text-4">
 <p>
 As mentioned in ripgrep <a href="https://github.com/BurntSushi/ripgrep?tab=readme-ov-file#installation">documentation</a>, for Debian/Ubuntu users, one should
@@ -506,8 +506,8 @@ The installed ripgrep binary was not built with support for PCRE lookaheads.
 </blockquote>
 </div>
 </div>
-<div id="outline-container-org8008b50" class="outline-2">
-<h2 id="org8008b50"><span class="section-number-2">5.</span> Install Doom Emacs</h2>
+<div id="outline-container-org78e09db" class="outline-2">
+<h2 id="org78e09db"><span class="section-number-2">5.</span> Install Doom Emacs</h2>
 <div class="outline-text-2" id="text-5">
 <p>
 Installing Doom Emacs is straightforward, but before that, one should first remove the default Emacs configuration folder:
@@ -551,8 +551,8 @@ To fix that, run <code>M-x nerd-icons-install-font</code> inside the Emacs, then
 </div>
 </div>
 </div>
-<div id="outline-container-org6f03a33" class="outline-2">
-<h2 id="org6f03a33"><span class="section-number-2">6.</span> Some issues with running Emacs in WSL2</h2>
+<div id="outline-container-orgc56000a" class="outline-2">
+<h2 id="orgc56000a"><span class="section-number-2">6.</span> Some issues with running Emacs in WSL2</h2>
 <div class="outline-text-2" id="text-6">
 <ul class="org-ul">
 <li><p>
@@ -576,13 +576,13 @@ The first thing is I cannot reload the configuration with <code>M-x doom/reload<
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgd567c4a">1. What happened?</a></li>
-<li><a href="#org36ea2ae">2. What now?</a></li>
+<li><a href="#orgf4aa4e2">1. What happened?</a></li>
+<li><a href="#org0248ff9">2. What now?</a></li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-orgd567c4a" class="outline-2">
-<h2 id="orgd567c4a"><span class="section-number-2">1.</span> What happened?</h2>
+<div id="outline-container-orgf4aa4e2" class="outline-2">
+<h2 id="orgf4aa4e2"><span class="section-number-2">1.</span> What happened?</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 About three weeks ago, I hiked Stoos and wrote a Redbook post.
@@ -608,71 +608,71 @@ Well played, Redbook!
 </p>
 </div>
 </div>
-<div id="outline-container-org36ea2ae" class="outline-2">
-<h2 id="org36ea2ae"><span class="section-number-2">2.</span> What now?</h2>
+<div id="outline-container-org0248ff9" class="outline-2">
+<h2 id="org0248ff9"><span class="section-number-2">2.</span> What now?</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 Anyway, given that I invested considerable effort in creating post figures, I will post them here instead.
 </p>
 
 
-<figure id="org3749092">
+<figure id="org94ae145">
 <img src="./static/stoos-2.png" alt="stoos-2.png" align="center" width="600px">
 
 <figcaption><span class="figure-number">Figure 1: </span>The Stoos roadmap</figcaption>
 </figure>
 
 
-<figure id="org74cef6c">
+<figure id="orgdc4eba9">
 <img src="./static/stoos-3.png" alt="stoos-3.png" align="center" width="600px">
 
 <figcaption><span class="figure-number">Figure 2: </span>The uphill view</figcaption>
 </figure>
 
 
-<figure id="org1a79473">
+<figure id="org2f3100d">
 <img src="./static/stoos-4.png" alt="stoos-4.png" align="center" width="600px">
 
 <figcaption><span class="figure-number">Figure 3: </span>The top view</figcaption>
 </figure>
 
 
-<figure id="org8b55657">
+<figure id="org487fc53">
 <img src="./static/stoos-5.png" alt="stoos-5.png" align="center" width="600px">
 
 <figcaption><span class="figure-number">Figure 4: </span>The ridge roadmap</figcaption>
 </figure>
 
 
-<figure id="org95d2338">
+<figure id="org7b79f0d">
 <img src="./static/stoos-6.png" alt="stoos-6.png" align="center" width="600px">
 
 <figcaption><span class="figure-number">Figure 5: </span>The ridge view</figcaption>
 </figure>
 
 
-<figure id="org44b48d6">
+<figure id="org86518ef">
 <img src="./static/stoos-7.png" alt="stoos-7.png" align="center" width="600px">
 
 <figcaption><span class="figure-number">Figure 6: </span>My trace</figcaption>
 </figure>
 
 
-<figure id="org37a95e2">
+<figure id="org95140a9">
 <img src="./static/stoos-8.png" alt="stoos-8.png" align="center" width="500px">
 
 <figcaption><span class="figure-number">Figure 7: </span>Recommended apps</figcaption>
 </figure>
 
 
-<figure id="org5b48a6a">
+<figure id="orgd82c428">
 <img src="./static/stoos-9.png" alt="stoos-9.png" align="center" width="600px">
 
 <figcaption><span class="figure-number">Figure 8: </span>My favorite hike shoots</figcaption>
 </figure>
 
 
-<figure id="orgb5b309a">
+<figure id="org169a428">
 <img src="./static/stoos-post.png" alt="stoos-post.png" align="center" width="700px">
 
 <figcaption><span class="figure-number">Figure 9: </span>The Redbook post</figcaption>
@@ -685,34 +685,34 @@ Anyway, given that I invested considerable effort in creating post figures, I wi
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgebfcfaf">1. DBMS data structure application</a>
+<li><a href="#orge2a012d">1. DBMS data structure application</a>
 <ul>
-<li><a href="#org49b2e07">1.1. Design decisions</a></li>
+<li><a href="#org333aa05">1.1. Design decisions</a></li>
 </ul>
 </li>
-<li><a href="#org8624d45">2. Hash tables</a>
+<li><a href="#org2574858">2. Hash tables</a>
 <ul>
-<li><a href="#org7070138">2.1. Where are hash tables used</a></li>
+<li><a href="#orgbc3822c">2.1. Where are hash tables used</a></li>
 </ul>
 </li>
-<li><a href="#orgd3f4888">3. Hash function</a></li>
-<li><a href="#orga4cb315">4. Hashing scheme</a></li>
-<li><a href="#orgf23f8e6">5. Static hashing scheme</a>
+<li><a href="#org5da90ec">3. Hash function</a></li>
+<li><a href="#org7bb0130">4. Hashing scheme</a></li>
+<li><a href="#orge875c08">5. Static hashing scheme</a>
 <ul>
-<li><a href="#org95143ed">5.1. Linear probe hashing</a>
+<li><a href="#org0ac53ad">5.1. Linear probe hashing</a>
 <ul>
-<li><a href="#org3d4f53f">5.1.1. Non-unique keys</a></li>
-<li><a href="#orge15fd5f">5.1.2. Optimization</a></li>
+<li><a href="#org662798c">5.1.1. Non-unique keys</a></li>
+<li><a href="#orgf0a838b">5.1.2. Optimization</a></li>
 </ul>
 </li>
-<li><a href="#orge51ce38">5.2. Cuckoo hashing</a></li>
+<li><a href="#orged19ff9">5.2. Cuckoo hashing</a></li>
 </ul>
 </li>
-<li><a href="#org7d34843">6. Dynamic hashing schemes</a>
+<li><a href="#org71a26ec">6. Dynamic hashing schemes</a>
 <ul>
-<li><a href="#orgcc4ccdb">6.1. Chained Hashing</a></li>
-<li><a href="#orgba66b11">6.2. Extendible hashing</a></li>
-<li><a href="#org3fbacf8">6.3. Linear hashing</a></li>
+<li><a href="#org0950a0f">6.1. Chained Hashing</a></li>
+<li><a href="#org4fa1718">6.2. Extendible hashing</a></li>
+<li><a href="#org22d2bd5">6.3. Linear hashing</a></li>
 </ul>
 </li>
 </ul>
@@ -721,8 +721,8 @@ Anyway, given that I invested considerable effort in creating post figures, I wi
 <p>
 This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall2023/notes/07-hashtables.pdf">CMU 15-445 L7 notes</a> as well as some explanation from Claude.ai.
 </p>
-<div id="outline-container-orgebfcfaf" class="outline-2">
-<h2 id="orgebfcfaf"><span class="section-number-2">1.</span> DBMS data structure application</h2>
+<div id="outline-container-orge2a012d" class="outline-2">
+<h2 id="orge2a012d"><span class="section-number-2">1.</span> DBMS data structure application</h2>
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
 <li>Internal meta-data: <a href="https://chenyo.me/2024-08-13-db-notes:-memory-management.html#org7a44495">page tables</a>, <a href="https://chenyo.me/2024-07-31-db-notes:-database-storage.html#org66626ef">page directories</a>.</li>
@@ -730,8 +730,8 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 <li>Table indices: easy to find specific tuples.</li>
 </ul>
 </div>
-<div id="outline-container-org49b2e07" class="outline-3">
-<h3 id="org49b2e07"><span class="section-number-3">1.1.</span> Design decisions</h3>
+<div id="outline-container-org333aa05" class="outline-3">
+<h3 id="org333aa05"><span class="section-number-3">1.1.</span> Design decisions</h3>
 <div class="outline-text-3" id="text-1-1">
 <ul class="org-ul">
 <li>Data layout for efficient access.</li>
@@ -740,8 +740,8 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </div>
 </div>
 </div>
-<div id="outline-container-org8624d45" class="outline-2">
-<h2 id="org8624d45"><span class="section-number-2">2.</span> Hash tables</h2>
+<div id="outline-container-org2574858" class="outline-2">
+<h2 id="org2574858"><span class="section-number-2">2.</span> Hash tables</h2>
 <div class="outline-text-2" id="text-2">
 <ul class="org-ul">
 <li>Implements an associative array that maps keys to values.</li>
@@ -751,8 +751,8 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul></li>
 </ul>
 </div>
-<div id="outline-container-org7070138" class="outline-3">
-<h3 id="org7070138"><span class="section-number-3">2.1.</span> Where are hash tables used</h3>
+<div id="outline-container-orgbc3822c" class="outline-3">
+<h3 id="orgbc3822c"><span class="section-number-3">2.1.</span> Where are hash tables used</h3>
 <div class="outline-text-3" id="text-2-1">
 <ul class="org-ul">
 <li>For tuple indexing. While tuples are stored on pages with NSM or DSM, during the <b><b>query</b></b> the DBMS needs to quickly locate the page that stores specific tuples. It can achieve this with separately-stored hash tables, where each key can be a hash of a tuple id, and the value points the location.</li>
@@ -760,8 +760,8 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </div>
 </div>
 </div>
-<div id="outline-container-orgd3f4888" class="outline-2">
-<h2 id="orgd3f4888"><span class="section-number-2">3.</span> Hash function</h2>
+<div id="outline-container-org5da90ec" class="outline-2">
+<h2 id="org5da90ec"><span class="section-number-2">3.</span> Hash function</h2>
 <div class="outline-text-2" id="text-3">
 <ul class="org-ul">
 <li>Maps a large key space into a smaller domain.</li>
@@ -774,8 +774,8 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul>
 </div>
 </div>
-<div id="outline-container-orga4cb315" class="outline-2">
-<h2 id="orga4cb315"><span class="section-number-2">4.</span> Hashing scheme</h2>
+<div id="outline-container-org7bb0130" class="outline-2">
+<h2 id="org7bb0130"><span class="section-number-2">4.</span> Hashing scheme</h2>
 <div class="outline-text-2" id="text-4">
 <ul class="org-ul">
 <li>Handles key collision after hashing.</li>
@@ -783,15 +783,15 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul>
 </div>
 </div>
-<div id="outline-container-orgf23f8e6" class="outline-2">
-<h2 id="orgf23f8e6"><span class="section-number-2">5.</span> Static hashing scheme</h2>
+<div id="outline-container-orge875c08" class="outline-2">
+<h2 id="orge875c08"><span class="section-number-2">5.</span> Static hashing scheme</h2>
 <div class="outline-text-2" id="text-5">
 <ul class="org-ul">
 <li>The hash table size is fixed; the DBMS has to rebuild a larger hash table (e.g., twice the size) from scratch when it runs out of space.</li>
 </ul>
 </div>
-<div id="outline-container-org95143ed" class="outline-3">
-<h3 id="org95143ed"><span class="section-number-3">5.1.</span> Linear probe hashing</h3>
+<div id="outline-container-org0ac53ad" class="outline-3">
+<h3 id="org0ac53ad"><span class="section-number-3">5.1.</span> Linear probe hashing</h3>
 <div class="outline-text-3" id="text-5-1">
 <ul class="org-ul">
 <li>Insertion: when a collision occurs, linearly search the adjacent slots in a circular buffer until a open one is found.</li>
@@ -810,8 +810,8 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 <li>The state-of-art linear probe hashing is Google <code>absl::flat_hash_map</code>.</li>
 </ul>
 </div>
-<div id="outline-container-org3d4f53f" class="outline-4">
-<h4 id="org3d4f53f"><span class="section-number-4">5.1.1.</span> Non-unique keys</h4>
+<div id="outline-container-org662798c" class="outline-4">
+<h4 id="org662798c"><span class="section-number-4">5.1.1.</span> Non-unique keys</h4>
 <div class="outline-text-4" id="text-5-1-1">
 <ul class="org-ul">
 <li>The same key may be associated with multiple different values.</li>
@@ -824,8 +824,8 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul>
 </div>
 </div>
-<div id="outline-container-orge15fd5f" class="outline-4">
-<h4 id="orge15fd5f"><span class="section-number-4">5.1.2.</span> Optimization</h4>
+<div id="outline-container-orgf0a838b" class="outline-4">
+<h4 id="orgf0a838b"><span class="section-number-4">5.1.2.</span> Optimization</h4>
 <div class="outline-text-4" id="text-5-1-2">
 <ul class="org-ul">
 <li>Specialized hash table based on key types and size; e.g., for long string keys, one can store the pointer or the hash of the long string in the hash table.</li>
@@ -835,8 +835,8 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </div>
 </div>
 </div>
-<div id="outline-container-orge51ce38" class="outline-3">
-<h3 id="orge51ce38"><span class="section-number-3">5.2.</span> Cuckoo hashing</h3>
+<div id="outline-container-orged19ff9" class="outline-3">
+<h3 id="orged19ff9"><span class="section-number-3">5.2.</span> Cuckoo hashing</h3>
 <div class="outline-text-3" id="text-5-2">
 <ul class="org-ul">
 <li>Maintains multiple hash tables with different hash functions to generate different hashes for the same key using different seeds.</li>
@@ -850,15 +850,15 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </div>
 </div>
 </div>
-<div id="outline-container-org7d34843" class="outline-2">
-<h2 id="org7d34843"><span class="section-number-2">6.</span> Dynamic hashing schemes</h2>
+<div id="outline-container-org71a26ec" class="outline-2">
+<h2 id="org71a26ec"><span class="section-number-2">6.</span> Dynamic hashing schemes</h2>
 <div class="outline-text-2" id="text-6">
 <ul class="org-ul">
 <li>Resize the hash table on demand without rebuilding the entire table.</li>
 </ul>
 </div>
-<div id="outline-container-orgcc4ccdb" class="outline-3">
-<h3 id="orgcc4ccdb"><span class="section-number-3">6.1.</span> Chained Hashing</h3>
+<div id="outline-container-org0950a0f" class="outline-3">
+<h3 id="org0950a0f"><span class="section-number-3">6.1.</span> Chained Hashing</h3>
 <div class="outline-text-3" id="text-6-1">
 <ul class="org-ul">
 <li>Maintains a linked list of buckets for each slot in the hash table; keys hashed to the same slot are inserted into the linked list.</li>
@@ -867,8 +867,8 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul>
 </div>
 </div>
-<div id="outline-container-orgba66b11" class="outline-3">
-<h3 id="orgba66b11"><span class="section-number-3">6.2.</span> Extendible hashing</h3>
+<div id="outline-container-org4fa1718" class="outline-3">
+<h3 id="org4fa1718"><span class="section-number-3">6.2.</span> Extendible hashing</h3>
 <div class="outline-text-3" id="text-6-2">
 <ul class="org-ul">
 <li>Improve chained hashing to avoid letting chains grow forever.</li>
@@ -876,22 +876,22 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul>
 
 
-<figure id="org37ed52f">
+<figure id="org5e45ad3">
 <img src="./static/db-extendible-hashing.png" alt="db-extendible-hashing.png" align="center" width="700px">
 
 <figcaption><span class="figure-number">Figure 1: </span>Extendible hashing example</figcaption>
 </figure>
 </div>
 </div>
-<div id="outline-container-org3fbacf8" class="outline-3">
-<h3 id="org3fbacf8"><span class="section-number-3">6.3.</span> Linear hashing</h3>
+<div id="outline-container-org22d2bd5" class="outline-3">
+<h3 id="org22d2bd5"><span class="section-number-3">6.3.</span> Linear hashing</h3>
 <div class="outline-text-3" id="text-6-3">
 <ul class="org-ul">
 <li>Maintains a split pointer to keep track of next bucket to split, even if the pointed bucket is not overflowed.</li>
 </ul>
 
 
-<figure id="org80e9b5d">
+<figure id="org65dafc7">
 <img src="./static/db-linear-hashing.png" alt="db-linear-hashing.png" align="center" width="750px">
 
 <figcaption><span class="figure-number">Figure 2: </span>Linear hashing example</figcaption>
@@ -902,7 +902,7 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul>
 
 
-<figure id="orgd6e1588">
+<figure id="org9b667db">
 <img src="./static/db-linear-hashing-deletion.png" alt="db-linear-hashing-deletion.png" align="center" width="750px">
 
 <figcaption><span class="figure-number">Figure 3: </span>Linear hashing deletion example</figcaption>
@@ -927,16 +927,16 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org7fc7b84">1. What happened</a></li>
-<li><a href="#org4ace32e">2. What is not enough with existing search functions?</a></li>
-<li><a href="#orgaed31e8">3. What does the search function do in this blog?</a></li>
-<li><a href="#org0bc694f">4. How is it implemented?</a></li>
-<li><a href="#orgde7ac7c">5. How can it be improved?</a></li>
+<li><a href="#orgc249c56">1. What happened</a></li>
+<li><a href="#orgbe27f2c">2. What is not enough with existing search functions?</a></li>
+<li><a href="#org1e47613">3. What does the search function do in this blog?</a></li>
+<li><a href="#org02c8428">4. How is it implemented?</a></li>
+<li><a href="#org73a83b8">5. How can it be improved?</a></li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-org7fc7b84" class="outline-2">
-<h2 id="org7fc7b84"><span class="section-number-2">1.</span> What happened</h2>
+<div id="outline-container-orgc249c56" class="outline-2">
+<h2 id="orgc249c56"><span class="section-number-2">1.</span> What happened</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 Two months ago, I started to use the current blog to keep track of my study and personal notes.
@@ -956,8 +956,8 @@ During this process, my husband made a feature request: a blog search function.
 </p>
 </div>
 </div>
-<div id="outline-container-org4ace32e" class="outline-2">
-<h2 id="org4ace32e"><span class="section-number-2">2.</span> What is not enough with existing search functions?</h2>
+<div id="outline-container-orgbe27f2c" class="outline-2">
+<h2 id="orgbe27f2c"><span class="section-number-2">2.</span> What is not enough with existing search functions?</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 Most default search tools provided by popular static website frameworks do not return complete search results and their context.
@@ -981,11 +981,11 @@ However, for a personal blog, we can achieve greater breadth.
 </p>
 </div>
 </div>
-<div id="outline-container-orgaed31e8" class="outline-2">
-<h2 id="orgaed31e8"><span class="section-number-2">3.</span> What does the search function do in this blog?</h2>
+<div id="outline-container-org1e47613" class="outline-2">
+<h2 id="org1e47613"><span class="section-number-2">3.</span> What does the search function do in this blog?</h2>
 <div class="outline-text-2" id="text-3">
 
-<figure id="orgf40cc85">
+<figure id="org7c33559">
 <img src="./static/blog-search.gif" alt="blog-search.gif" align="center" width="700px" style="border: 1px solid black;">
 
 <figcaption><span class="figure-number">Figure 1: </span>A blog search example</figcaption>
@@ -1002,8 +1002,8 @@ In this way, I can immediately see all results and their context on one page, an
 </p>
 </div>
 </div>
-<div id="outline-container-org0bc694f" class="outline-2">
-<h2 id="org0bc694f"><span class="section-number-2">4.</span> How is it implemented?</h2>
+<div id="outline-container-org02c8428" class="outline-2">
+<h2 id="org02c8428"><span class="section-number-2">4.</span> How is it implemented?</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 I implemented the search function along with all styling with the help of Cursor.
@@ -1018,8 +1018,8 @@ It then wraps the occurrence with certain context and prepares the link by appen
 </p>
 </div>
 </div>
-<div id="outline-container-orgde7ac7c" class="outline-2">
-<h2 id="orgde7ac7c"><span class="section-number-2">5.</span> How can it be improved?</h2>
+<div id="outline-container-org73a83b8" class="outline-2">
+<h2 id="org73a83b8"><span class="section-number-2">5.</span> How can it be improved?</h2>
 <div class="outline-text-2" id="text-5">
 <p>
 The current search function is simple and sub-optimal.
@@ -1042,7 +1042,14 @@ In addition, after I finished the implementation, my husband made another featur
 </div>
 <div id="postamble" class="status"><div id="search-results"></div>
       <footer>
+        <div class="footer-content">
+        <div class="footer-left">
         <p>© 2024 chenyo. Some rights reserved.</p>
+        <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">
+        <img alt="Creative Commons License" style="border-width: 0"
+        src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png"/>
+        </a>
+        </div>
         <div class="social-links">
           <a href="https://t.me/feihuadawangjiushiwo" target="_blank" rel="noopener noreferrer">
           <i class="fab fa-telegram"></i>
