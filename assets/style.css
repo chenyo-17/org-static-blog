@@ -317,6 +317,10 @@ tr:nth-child(even) {
     content: "bash";
 }
 
+.org-src-container pre.src-cpp::before {
+    content: "cpp";
+}
+
 .org-src-container pre.src-css::before {
     content: "css";
 }

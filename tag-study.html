@@ -36,6 +36,322 @@
       </header></div>
 <div id="content">
 <h1 class="title">Posts tagged "study":</h1>
+<div class="post-date">24 Sep 2024</div><h1 class="post-title"><a href="https://chenyo.me/2024-09-24-cpp-feature-introduction.html">C++ feature introduction</a></h1>
+<nav id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#org124e45c">1. Namespace</a></li>
+<li><a href="#org3dc8623">2. Wrapper class</a></li>
+<li><a href="#org3af0cb6">3. Iterator</a>
+<ul>
+<li><a href="#org42ddb40">3.1. A doubly linked list (DLL) iterator</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</nav>
+<p>
+This is a personal not for the <a href="https://github.com/cmu-db/15445-bootcamp">CMU 15-445 C++ bootcamp</a> along with some explanation from Claude.ai.
+</p>
+<div id="outline-container-org124e45c" class="outline-2">
+<h2 id="org124e45c"><span class="section-number-2">1.</span> Namespace</h2>
+<div class="outline-text-2" id="text-1">
+<ul class="org-ul">
+<li>Provides scopes to identifiers with <code>::</code>.</li>
+<li><p>
+Namespaces can be nested.
+</p>
+<div class="org-src-container">
+<pre class="src src-cpp"><span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;iostream&gt;</span>
+<span style="color: #51afef;">namespace</span> <span style="color: #a9a1e1;">ABC</span> {
+    <span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">spam</span>(<span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">a</span>) { <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"Hello from ABC::spam"</span> &lt;&lt; <span style="color: #a9a1e1;">std</span>::endl; }
+    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">declare a nested namespace</span>
+    <span style="color: #51afef;">namespace</span> <span style="color: #a9a1e1;">DEF</span> {
+    <span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">bar</span>(<span style="color: #ECBE7B;">float</span> <span style="color: #dcaeea;">a</span>) { <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"Hello from ABC::DEF::bar"</span> &lt;&lt; <span style="color: #a9a1e1;">std</span>::endl; }
+    <span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">use_spam</span>(<span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">a</span>) {
+    <span style="color: #a9a1e1;">ABC</span>::spam(a);
+    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">no difference with ABC::spam(a) if DEF</span>
+    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">does not have a spam function</span>
+    spam(a);
+    }
+} <span style="color: #5B6268;">// </span><span style="color: #5B6268;">namespace DEF</span>
+
+    <span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">use_DEF_bar</span>(<span style="color: #ECBE7B;">float</span> <span style="color: #dcaeea;">a</span>) {
+    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">if a namespace outside of DEF wants to use DEF::bar</span>
+    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">it must use the full namespace path ABC::DEF::bar</span>
+    <span style="color: #a9a1e1;">DEF</span>::bar(a);
+    }
+
+} <span style="color: #5B6268;">// </span><span style="color: #5B6268;">namespace ABC fs</span>
+</pre>
+</div></li>
+<li>Two namespaces can define functions with the same name and signatures.</li>
+<li>Name resolution rules: first check in the current scope, then enclosing scopes, finally going outward until it reaches the global scope.</li>
+<li>Can use <code>using namespace B</code> to use identifiers in <code>B</code> in the current scope without specifying <code>B::</code>, this is not a good practice.</li>
+<li>Can also only bring certain members of a namespace into the current scope, e.g., <code>using C::eggs</code>.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org3dc8623" class="outline-2">
+<h2 id="org3dc8623"><span class="section-number-2">2.</span> Wrapper class</h2>
+<div class="outline-text-2" id="text-2">
+<ul class="org-ul">
+<li><p>
+Used to manage a resource, e.g., memory, file sockets, network connections.
+</p>
+<div class="org-src-container">
+<pre class="src src-cpp"><span style="color: #51afef;">class</span> <span style="color: #ECBE7B;">IntPtrManager</span> {
+<span style="color: #51afef;">private</span>:
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">manages an int* to access the dynamic memory</span>
+  <span style="color: #ECBE7B;">int</span> *<span style="color: #dcaeea;">ptr_</span>;
+};
+</pre>
+</div></li>
+
+<li>Use the RAII (Resource Acquisition is Initialization) idea: tie the lifetime of a resource to the lifetime of an object.
+<ul class="org-ul">
+<li>Goal: ensure resources are released even if an exception occurs.</li>
+<li><p>
+Acquisition: resources are acquired in the constructor.
+</p>
+<div class="org-src-container">
+<pre class="src src-cpp"><span style="color: #51afef;">class</span> <span style="color: #ECBE7B;">IntPtrManager</span> {
+<span style="color: #51afef;">public</span>:
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">the constructor initializes a resource</span>
+  <span style="color: #c678dd;">IntPtrManager</span>() {
+    ptr_ = <span style="color: #51afef;">new</span> <span style="color: #ECBE7B;">int</span>;  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">allocate the memory</span>
+    *ptr_ = <span style="color: #da8548; font-weight: bold;">0</span>;  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">set the default value</span>
+  }
+
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">the second constructor takes an initial value</span>
+  <span style="color: #c678dd;">IntPtrManager</span>(<span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">val</span>) {
+    ptr_ = <span style="color: #51afef;">new</span> <span style="color: #ECBE7B;">int</span>;
+    *ptr_ = val;
+  }
+};
+</pre>
+</div></li>
+<li><p>
+Release: resources are released in the destructor.
+</p>
+<div class="org-src-container">
+<pre class="src src-cpp"><span style="color: #51afef;">class</span> <span style="color: #ECBE7B;">IntPtrManager</span> {
+<span style="color: #51afef;">public</span>:
+  ~<span style="color: #c678dd;">IntPtrManager</span>() {
+    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">ptr_ may be null after the move</span>
+    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">don't delete a null pointer</span>
+    <span style="color: #51afef;">if</span> (ptr_) {
+      <span style="color: #51afef;">delete</span> ptr_;
+    }
+  }
+};
+</pre>
+</div></li>
+</ul></li>
+
+<li><p>
+A wrapper class should not be copyable to avoid double deletion of the same resource in two destructors.
+</p>
+<div class="org-src-container">
+<pre class="src src-cpp"><span style="color: #51afef;">class</span> <span style="color: #ECBE7B;">IntPtrManager</span> {
+<span style="color: #51afef;">public</span>:
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">delete copy constructor</span>
+  <span style="color: #c678dd;">IntPtrManager</span>(<span style="color: #51afef;">const</span> <span style="color: #ECBE7B;">IntPtrManager</span> &amp;) = <span style="color: #51afef;">delete</span>;
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">delete copy assignment operator</span>
+  <span style="color: #ECBE7B;">IntPtrManager</span> &amp;<span style="color: #51afef;">operator</span><span style="color: #c678dd;">=</span>(<span style="color: #51afef;">const</span> <span style="color: #ECBE7B;">IntPtrManager</span> &amp;) = <span style="color: #51afef;">delete</span>;
+};
+</pre>
+</div></li>
+
+<li><p>
+A wrapper class is still moveable from different lvalues/owners.
+</p>
+<div class="org-src-container">
+<pre class="src src-cpp"><span style="color: #51afef;">class</span> <span style="color: #ECBE7B;">IntPtrManager</span> {
+<span style="color: #51afef;">public</span>:
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">a move constructor</span>
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">called by `IntPtrManager b(std::move(a))`</span>
+  <span style="color: #c678dd;">IntPtrManager</span>(<span style="color: #ECBE7B;">IntPtrManager</span> &amp;&amp;<span style="color: #dcaeea;">other</span>) {
+    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">while other is a rvalue reference, other.ptr_ is a lvalue</span>
+    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">therefroe a copy happens here, not a move</span>
+    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">in the constructor this.ptr_ has not pointed to anything</span>
+    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">so no need to delete ptr_</span>
+    ptr = other.ptr_;
+    other.ptr_ = <span style="color: #a9a1e1;">nullptr</span>;  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">other.ptr_ becomes invalud</span>
+  }
+
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">move assignment operator</span>
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">this function is used by c = std::move(b) operation</span>
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">note that calling std::move() does not require implementing this operator</span>
+  <span style="color: #ECBE7B;">IntPtrManager</span> &amp;<span style="color: #51afef;">operator</span><span style="color: #c678dd;">=</span>(<span style="color: #ECBE7B;">IntPtrManager</span> &amp;&amp;<span style="color: #dcaeea;">other</span>) {
+    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">a self assignment should not delete its ptr_</span>
+    <span style="color: #51afef;">if</span> (ptr_ == other.ptr_) {
+      <span style="color: #51afef;">return</span> *<span style="color: #51afef;">this</span>;
+    }
+    <span style="color: #51afef;">if</span> (ptr_) {
+      <span style="color: #51afef;">delete</span> ptr_; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">release old resource to avoid leak</span>
+    }
+    ptr_ = other.ptr_;
+    other.ptr_ = <span style="color: #a9a1e1;">nullptr</span>;  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">invalidate other.ptr_</span>
+    <span style="color: #51afef;">return</span> *<span style="color: #51afef;">this</span>;
+  }
+};
+</pre>
+</div></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org3af0cb6" class="outline-2">
+<h2 id="org3af0cb6"><span class="section-number-2">3.</span> Iterator</h2>
+<div class="outline-text-2" id="text-3">
+<ul class="org-ul">
+<li><p>
+Iterators, e.g., pointers, are objects that point to an element inside a container.
+</p>
+<div class="org-src-container">
+<pre class="src src-cpp"><span style="color: #ECBE7B;">int</span> *<span style="color: #dcaeea;">array</span> = malloc(<span style="color: #51afef;">sizeof</span>(<span style="color: #ECBE7B;">int</span>) * <span style="color: #da8548; font-weight: bold;">10</span>);
+<span style="color: #ECBE7B;">int</span> *<span style="color: #dcaeea;">iter</span> = array;
+<span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">zero_elem</span> = *iter;
+<span style="color: #5B6268;">// </span><span style="color: #5B6268;">use ++ to iterate through the C style array</span>
+iter++;
+<span style="color: #5B6268;">// </span><span style="color: #5B6268;">deference the operator to return the value at the iterator</span>
+<span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">first_elem</span> = *iter;
+</pre>
+</div></li>
+<li>Two main components of an iterator:
+<ul class="org-ul">
+<li>Dereference operator <code>*</code>: return the value of the element of the current iterator position.</li>
+<li>Increment <code>++</code>: increment the iterator&rsquo;s position by 1
+<ul class="org-ul">
+<li>Postfix <code>iter++</code>: return the iterator <b><b>before</b></b> the increment (<code>Iterator</code>).</li>
+<li>Prefix <code>++iter</code>: return the result of the increment (<code>Iterator&amp;</code>).</li>
+<li><code>++iter</code> is more efficient.</li>
+</ul></li>
+</ul></li>
+<li>Often used to access and modify elements in C++ STL containers.</li>
+</ul>
+</div>
+<div id="outline-container-org42ddb40" class="outline-3">
+<h3 id="org42ddb40"><span class="section-number-3">3.1.</span> A doubly linked list (DLL) iterator</h3>
+<div class="outline-text-3" id="text-3-1">
+<ul class="org-ul">
+<li><p>
+Define a link node:
+</p>
+<div class="org-src-container">
+<pre class="src src-cpp"><span style="color: #51afef;">struct</span> <span style="color: #ECBE7B;">Node</span> {
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">member initializer list, e.g., next_(nullptr) equals to next_ = nullptr</span>
+  <span style="color: #c678dd;">Node</span>(<span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">val</span>) : next_(<span style="color: #a9a1e1;">nullptr</span>), prev_(<span style="color: #a9a1e1;">nullptr</span>), value_(val) {}
+
+  <span style="color: #ECBE7B;">Node</span> *<span style="color: #dcaeea;">next_</span>;
+  <span style="color: #ECBE7B;">Node</span> *<span style="color: #dcaeea;">prev_</span>;
+  <span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">value_</span>;
+};
+</pre>
+</div></li>
+
+<li><p>
+Define the iterator for the DLL:
+</p>
+<div class="org-src-container">
+<pre class="src src-cpp"><span style="color: #51afef;">class</span> <span style="color: #ECBE7B;">DLLIterator</span> {
+<span style="color: #51afef;">public</span>:
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">takes in a node to mark the start of the iteration</span>
+  <span style="color: #c678dd;">DLLIterator</span>(<span style="color: #ECBE7B;">Node</span> *<span style="color: #dcaeea;">head</span>) : curr_(head) {}
+
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">prefix increment operator (++iter)</span>
+  <span style="color: #ECBE7B;">DLLIterator</span> &amp;<span style="color: #51afef;">operator</span><span style="color: #c678dd;">++</span>() {
+    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">must use -&gt; to access the member of a pointer!</span>
+    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">use . if accessing the object itself</span>
+    curr_ = curr_-&gt;next_;
+    <span style="color: #51afef;">return</span> *<span style="color: #51afef;">this</span>;
+  }
+
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">postfix increment operator (iter++)</span>
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">the (int) is a dummy parameter to differentiate</span>
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">the prefix and postfix increment</span>
+  <span style="color: #ECBE7B;">DLLIterator</span> <span style="color: #51afef;">operator</span><span style="color: #c678dd;">++</span>(<span style="color: #ECBE7B;">int</span>) {
+    <span style="color: #ECBE7B;">DLLIterator</span> <span style="color: #dcaeea;">temp</span> = *<span style="color: #51afef;">this</span>;
+    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">this is a pointer to the current object</span>
+    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">*this returns the iterator object</span>
+    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">++*this calls the prefix increment operator,</span>
+    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">which equals to `this-&gt;operator++()`</span>
+    ++*<span style="color: #51afef;">this</span>;
+    <span style="color: #51afef;">return</span> temp;
+  }
+
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">implement the equality operator</span>
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">an lvalue reference argument avoids the copy</span>
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">the const in the parameter means this function</span>
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">cannot modify the argument</span>
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">the `const` outside the parameter list means</span>
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">the function cannot modify `this`</span>
+  <span style="color: #ECBE7B;">bool</span> <span style="color: #51afef;">operator</span><span style="color: #c678dd;">==</span>(<span style="color: #51afef;">const</span> <span style="color: #ECBE7B;">DLLIterator</span> &amp;<span style="color: #dcaeea;">str</span>) <span style="color: #51afef;">const</span> {
+    <span style="color: #51afef;">return</span> itr.curr_ == <span style="color: #51afef;">this</span>-&gt;curr_;
+  }
+
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">implement the dereference operator to return the value</span>
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">at the current iterator position</span>
+  <span style="color: #ECBE7B;">int</span> <span style="color: #51afef;">operator</span><span style="color: #c678dd;">*</span>() { <span style="color: #51afef;">return</span> curr_-&gt;value_; }
+
+<span style="color: #51afef;">private</span>:
+  <span style="color: #ECBE7B;">Node</span> *<span style="color: #dcaeea;">curr_</span>;
+};
+</pre>
+</div></li>
+
+<li><p>
+Define DLL:
+</p>
+<div class="org-src-container">
+<pre class="src src-cpp"><span style="color: #51afef;">class</span> <span style="color: #ECBE7B;">DLL</span> {
+<span style="color: #51afef;">public</span>:
+  <span style="color: #c678dd;">DLL</span>() : head_(<span style="color: #a9a1e1;">nullptr</span>), size_(<span style="color: #da8548; font-weight: bold;">0</span>) {}
+
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">the destructor deletes nodes one by one</span>
+  ~<span style="color: #c678dd;">DLL</span>() {
+    <span style="color: #ECBE7B;">Node</span> *<span style="color: #dcaeea;">current</span> = head_;
+    <span style="color: #51afef;">while</span> (current != <span style="color: #a9a1e1;">nullptr</span>) {
+      <span style="color: #ECBE7B;">Node</span> *<span style="color: #dcaeea;">next</span> = current-&gt;next_;
+      <span style="color: #51afef;">delete</span> current;
+      current = next;
+    }
+    head_ = <span style="color: #a9a1e1;">nullptr</span>;
+  }
+
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">after the insertion `new_node` becomes the new head</span>
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">`head` is just a pointer to the node</span>
+  <span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">InsertAtHead</span>(<span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">val</span>) {
+    <span style="color: #ECBE7B;">Node</span> *<span style="color: #dcaeea;">new_node</span> = <span style="color: #51afef;">new</span> <span style="color: #ECBE7B;">Node</span>(val);
+    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">new_node-&gt;next points to the object pointed by head_</span>
+    new_node-&gt;next_ = head_;
+
+    <span style="color: #51afef;">if</span> (head_ != <span style="color: #a9a1e1;">nullptr</span>) {
+      head_-&gt;prev_ = new_node;
+    }
+
+    head_ = new_node;
+    size_ += <span style="color: #da8548; font-weight: bold;">1</span>;
+  }
+
+  <span style="color: #ECBE7B;">DLLIterator</span> <span style="color: #c678dd;">Begin</span>() { <span style="color: #51afef;">return</span> DLLIterator(head_); }
+
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">returns the pointer pointing one after the last element</span>
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">used in the loop to determine whether the iteration ends</span>
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">e.g., `for (DLLIterator iter = dll.Begin(); iter != dll.End(); ++iter)`</span>
+  <span style="color: #ECBE7B;">DLLIterator</span> <span style="color: #c678dd;">End</span>() { <span style="color: #51afef;">return</span> DLLIterator(<span style="color: #a9a1e1;">nullptr</span>); }
+
+  <span style="color: #ECBE7B;">Node</span> *<span style="color: #dcaeea;">head_</span>{<span style="color: #a9a1e1;">nullptr</span>};
+  <span style="color: #ECBE7B;">size_t</span> <span style="color: #dcaeea;">size_</span>;
+};
+</pre>
+</div></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="taglist"><a href="https://chenyo.me/tags.html">Tags</a>: <a href="https://chenyo.me/tag-c++.html">c++</a> <a href="https://chenyo.me/tag-study.html">study</a> <a href="https://chenyo.me/tag-cmu.html">cmu</a> </div>
 <div class="post-date">05 Sep 2024</div><h1 class="post-title"><a href="https://chenyo.me/2024-09-05-db-notes:-hash-tables.html">CMU 15-445 notes: Hash Tables</a></h1>
 <nav id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>

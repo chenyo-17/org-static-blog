@@ -1,0 +1,250 @@
+#+title: C++ feature introduction
+#+date: <2024-09-24 11:00>
+#+description: This is a personal not for the [[https://github.com/cmu-db/15445-bootcamp][CMU 15-445 C++ bootcamp]]
+#+filetags: c++ study cmu
+
+This is a personal not for the [[https://github.com/cmu-db/15445-bootcamp][CMU 15-445 C++ bootcamp]] along with some explanation from Claude.ai.
+
+* Namespace
+- Provides scopes to identifiers with ~::~.
+- Namespaces can be nested.
+  #+begin_src cpp
+#include <iostream>
+namespace ABC {
+    void spam(int a) { std::cout << "Hello from ABC::spam" << std::endl; }
+    // declare a nested namespace
+    namespace DEF {
+    void bar(float a) { std::cout << "Hello from ABC::DEF::bar" << std::endl; }
+    void use_spam(int a) {
+    ABC::spam(a);
+    // no difference with ABC::spam(a) if DEF
+    // does not have a spam function
+    spam(a);
+    }
+} // namespace DEF
+
+    void use_DEF_bar(float a) {
+    // if a namespace outside of DEF wants to use DEF::bar
+    // it must use the full namespace path ABC::DEF::bar
+    DEF::bar(a);
+    }
+
+} // namespace ABC fs
+  #+end_src
+- Two namespaces can define functions with the same name and signatures.
+- Name resolution rules: first check in the current scope, then enclosing scopes, finally going outward until it reaches the global scope.
+- Can use ~using namespace B~ to use identifiers in ~B~ in the current scope without specifying ~B::~, this is not a good practice.
+- Can also only bring certain members of a namespace into the current scope, e.g., ~using C::eggs~.
+
+* Wrapper class
+- Used to manage a resource, e.g., memory, file sockets, network connections.
+  #+begin_src cpp
+class IntPtrManager {
+private:
+  // manages an int* to access the dynamic memory
+  int *ptr_;
+};
+  #+end_src
+
+- Use the RAII (Resource Acquisition is Initialization) idea: tie the lifetime of a resource to the lifetime of an object.
+  - Goal: ensure resources are released even if an exception occurs.
+  - Acquisition: resources are acquired in the constructor.
+    #+begin_src cpp
+class IntPtrManager {
+public:
+  // the constructor initializes a resource
+  IntPtrManager() {
+    ptr_ = new int;  // allocate the memory
+    *ptr_ = 0;  // set the default value
+  }
+
+  // the second constructor takes an initial value
+  IntPtrManager(int val) {
+    ptr_ = new int;
+    *ptr_ = val;
+  }
+};
+    #+end_src
+  - Release: resources are released in the destructor.
+    #+begin_src cpp
+class IntPtrManager {
+public:
+  ~IntPtrManager() {
+    // ptr_ may be null after the move
+    // don't delete a null pointer
+    if (ptr_) {
+      delete ptr_;
+    }
+  }
+};
+    #+end_src
+
+- A wrapper class should not be copyable to avoid double deletion of the same resource in two destructors.
+  #+begin_src cpp
+class IntPtrManager {
+public:
+  // delete copy constructor
+  IntPtrManager(const IntPtrManager &) = delete;
+  // delete copy assignment operator
+  IntPtrManager &operator=(const IntPtrManager &) = delete;
+};
+  #+end_src
+
+- A wrapper class is still moveable from different lvalues/owners.
+  #+begin_src cpp
+class IntPtrManager {
+public:
+  // a move constructor
+  // called by `IntPtrManager b(std::move(a))`
+  IntPtrManager(IntPtrManager &&other) {
+    // while other is a rvalue reference, other.ptr_ is a lvalue
+    // therefroe a copy happens here, not a move
+    // in the constructor this.ptr_ has not pointed to anything
+    // so no need to delete ptr_
+    ptr = other.ptr_;
+    other.ptr_ = nullptr;  // other.ptr_ becomes invalud
+  }
+
+  // move assignment operator
+  // this function is used by c = std::move(b) operation
+  // note that calling std::move() does not require implementing this operator
+  IntPtrManager &operator=(IntPtrManager &&other) {
+    // a self assignment should not delete its ptr_
+    if (ptr_ == other.ptr_) {
+      return *this;
+    }
+    if (ptr_) {
+      delete ptr_; // release old resource to avoid leak
+    }
+    ptr_ = other.ptr_;
+    other.ptr_ = nullptr;  // invalidate other.ptr_
+    return *this;
+  }
+};
+  #+end_src
+
+
+
+* Iterator
+- Iterators, e.g., pointers, are objects that point to an element inside a container.
+  #+begin_src cpp
+int *array = malloc(sizeof(int) * 10);
+int *iter = array;
+int zero_elem = *iter;
+// use ++ to iterate through the C style array
+iter++;
+// deference the operator to return the value at the iterator
+int first_elem = *iter;
+  #+end_src
+- Two main components of an iterator:
+  - Dereference operator ~*~: return the value of the element of the current iterator position.
+  - Increment ~++~: increment the iterator's position by 1
+        - Postfix ~iter++~: return the iterator **before** the increment (~Iterator~).
+        - Prefix ~++iter~: return the result of the increment (~Iterator&~).
+        - ~++iter~ is more efficient.
+- Often used to access and modify elements in C++ STL containers.
+
+** A doubly linked list (DLL) iterator
+
+- Define a link node:
+  #+begin_src cpp
+struct Node {
+  // member initializer list, e.g., next_(nullptr) equals to next_ = nullptr
+  Node(int val) : next_(nullptr), prev_(nullptr), value_(val) {}
+
+  Node *next_;
+  Node *prev_;
+  int value_;
+};
+  #+end_src
+
+- Define the iterator for the DLL:
+  #+begin_src cpp
+class DLLIterator {
+public:
+  // takes in a node to mark the start of the iteration
+  DLLIterator(Node *head) : curr_(head) {}
+
+  // prefix increment operator (++iter)
+  DLLIterator &operator++() {
+    // must use -> to access the member of a pointer!
+    // use . if accessing the object itself
+    curr_ = curr_->next_;
+    return *this;
+  }
+
+  // postfix increment operator (iter++)
+  // the (int) is a dummy parameter to differentiate
+  // the prefix and postfix increment
+  DLLIterator operator++(int) {
+    DLLIterator temp = *this;
+    // this is a pointer to the current object
+    // *this returns the iterator object
+    // ++*this calls the prefix increment operator,
+    // which equals to `this->operator++()`
+    ++*this;
+    return temp;
+  }
+
+  // implement the equality operator
+  // an lvalue reference argument avoids the copy
+  // the const in the parameter means this function
+  // cannot modify the argument
+  // the `const` outside the parameter list means
+  // the function cannot modify `this`
+  bool operator==(const DLLIterator &str) const {
+    return itr.curr_ == this->curr_;
+  }
+
+  // implement the dereference operator to return the value
+  // at the current iterator position
+  int operator*() { return curr_->value_; }
+
+private:
+  Node *curr_;
+};
+  #+end_src
+
+- Define DLL:
+  #+begin_src cpp
+class DLL {
+public:
+  DLL() : head_(nullptr), size_(0) {}
+
+  // the destructor deletes nodes one by one
+  ~DLL() {
+    Node *current = head_;
+    while (current != nullptr) {
+      Node *next = current->next_;
+      delete current;
+      current = next;
+    }
+    head_ = nullptr;
+  }
+
+  // after the insertion `new_node` becomes the new head
+  // `head` is just a pointer to the node
+  void InsertAtHead(int val) {
+    Node *new_node = new Node(val);
+    // new_node->next points to the object pointed by head_
+    new_node->next_ = head_;
+
+    if (head_ != nullptr) {
+      head_->prev_ = new_node;
+    }
+
+    head_ = new_node;
+    size_ += 1;
+  }
+
+  DLLIterator Begin() { return DLLIterator(head_); }
+
+  // returns the pointer pointing one after the last element
+  // used in the loop to determine whether the iteration ends
+  // e.g., `for (DLLIterator iter = dll.Begin(); iter != dll.End(); ++iter)`
+  DLLIterator End() { return DLLIterator(nullptr); }
+
+  Node *head_{nullptr};
+  size_t size_;
+};
+  #+end_src
