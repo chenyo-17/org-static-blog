@@ -1,0 +1,74 @@
+#+title: Build a free Telegram Mensa bot
+#+date: <2024-09-25 20:30>
+#+description: This post records the process of building a Telegram Mensa bot
+#+filetags: tool telegram
+
+* Previously on my Telegram bot
+
+In the post [[https://chenyo.me/2024-09-08-build-a-free-telegram-sticker-bot.html][Build a free Telegram sticker tag bot]], I detailed the process of integrating various online services to create a sticker tag bot.
+After using it for a month, I encountered an intriguing production issue: on one occasion, the inline query result was incomplete.
+Interestingly, restarting the Render deployment resolved the problem, though I never fully understood the root cause.
+
+Despite this minor hiccup, the sticker tag bot has proven to be reliable most of the time.
+However, I found myself not utilizing it as frequently as anticipated.
+This was primarily because sending a recent sticker directly is often more convenient than invoking the bot by name.
+
+At the conclusion of that post, I hinted at a second functionality I had in mind for the bot: a Mensa bot designed to inform me about the daily offerings at each Mensa (university cafeteria).
+
+* Why do I need a Mensa bot
+
+One mobile app I frequently use on weekdays is [[https://github.com/famoser/Mensa][Mensa]], which lists daily menus for each Zürich Mensa to help people make their most important decision of the day.
+However, it was merely an inconvenience for myself that the app lacked images of the meals.
+I found it difficult to imagine the dishes based solely on the menu descriptions.
+To fix this, I decide to add the meal images myself.
+
+* How to get the data
+I couldn't find an official API for this, so I decided to scrape the webpage myself.
+Here's where things got tricky: the Mensa web pages use JavaScript to render content.
+This meant I couldn't just grab the page - I needed a browser to run the JavaScript first.
+
+** Scrape menus locally
+On a local machine, it's pretty straightforward.
+You just grab a scraper library like [[https://github.com/go-rod/rod][go-rod]] and figure out the right API calls.
+After you've snagged the page, you can use an HTML parser like [[https://github.com/PuerkitoBio/goquery][goquery]] to pull out all the menus.
+
+** Scrape menus on Render
+The only snag with ~go-rod~ is it's too bulky for a Render free account.
+It needs to install Chromium first, but Render's [[https://render.com/pricing][512M RAM]] can't handle that.
+I didn't want to hunt for another free host, so ~go-rod~ had to go.
+
+Claude then pitched the idea of online scraping services.
+Most I found were expensive, aimed at heavy-duty scraping.
+But I lucked out with [[https://app.abstractapi.com/api/scrape/pricing][AbstractAPI]], offering 1000 total requests for free.
+If I'm smart, that could last me about half a year.
+[[https://docs.scraperapi.com/v/faq/plans-and-billing/free-plan-and-7-day-free-trial][ScraperAPI]] seemed promising with 1000 monthly free requests.
+But it choked on Javascript rendering for my targeted pages even with ~render=true~.
+
+AbstractAPI has its quirks too.
+The scraped result comes out messy, full of ~\n~ and ~\&#34~.
+So I had to clean it up before ~goquery~ can make sense of it.
+
+* Performance
+AbstractAPI's free plan only lets you make one request per second.
+That's kinda slow when you factor in page rendering and parsing time.
+The full HTML page is a whopping 3M, so I've gotta wait a bit for each bot request.
+
+I thought about caching results to cut down on requests.
+But here's the thing: menu images usually update right before meal times.
+If I didn't catch the image last time, I need the latest scoop.
+So, I end up scraping fresh data for each Mensa every single time.
+
+* Conclusion
+Here's a quick look at what the bot can do now: it tags stickers and scrapes Mensa menus.
+Keep in mind the GIF is sped up to twice the normal speed.
+
+#+CAPTION: The current Telegram bot
+#+ATTR_HTML: :align center
+#+ATTR_HTML: :width 700px :style border: 1px solid black;
+[[./static/telegram.gif]]
+
+As in the previous post, I aim to demonstrate that while Internet services can be costly, there often remain free solutions for building hobby projects.
+This may require more extensive research and additional processing, but it's still feasible.
+I hope this continues to be the case in the years to come.
+
+The [[https://github.com/chenyo-17/pbaobot][repository]] is also public now.

@@ -4,7 +4,153 @@
 <title><![CDATA[Chenyo's Blog]]></title>
 <description><![CDATA[Chenyo's Blog]]></description>
 <link>https://chenyo.me</link>
-<lastBuildDate>Tue, 24 Sep 2024 13:36:23 +0200</lastBuildDate>
+<lastBuildDate>Wed, 25 Sep 2024 22:51:33 +0200</lastBuildDate>
+<item>
+  <title><![CDATA[Build a free Telegram Mensa bot]]></title>
+  <description><![CDATA[
+<nav id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#org2ff20ef">1. Previously on my Telegram bot</a></li>
+<li><a href="#orgad23e30">2. Why do I need a Mensa bot</a></li>
+<li><a href="#orgca97636">3. How to get the data</a>
+<ul>
+<li><a href="#org161a012">3.1. Scrape menus locally</a></li>
+<li><a href="#orgbafd268">3.2. Scrape menus on Render</a></li>
+</ul>
+</li>
+<li><a href="#org26ab351">4. Performance</a></li>
+<li><a href="#org49a031a">5. Conclusion</a></li>
+</ul>
+</div>
+</nav>
+<div id="outline-container-org2ff20ef" class="outline-2">
+<h2 id="org2ff20ef"><span class="section-number-2">1.</span> Previously on my Telegram bot</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+In the post <a href="https://chenyo.me/2024-09-08-build-a-free-telegram-sticker-bot.html">Build a free Telegram sticker tag bot</a>, I detailed the process of integrating various online services to create a sticker tag bot.
+After using it for a month, I encountered an intriguing production issue: on one occasion, the inline query result was incomplete.
+Interestingly, restarting the Render deployment resolved the problem, though I never fully understood the root cause.
+</p>
+
+<p>
+Despite this minor hiccup, the sticker tag bot has proven to be reliable most of the time.
+However, I found myself not utilizing it as frequently as anticipated.
+This was primarily because sending a recent sticker directly is often more convenient than invoking the bot by name.
+</p>
+
+<p>
+At the conclusion of that post, I hinted at a second functionality I had in mind for the bot: a Mensa bot designed to inform me about the daily offerings at each Mensa (university cafeteria).
+</p>
+</div>
+</div>
+<div id="outline-container-orgad23e30" class="outline-2">
+<h2 id="orgad23e30"><span class="section-number-2">2.</span> Why do I need a Mensa bot</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+One mobile app I frequently use on weekdays is <a href="https://github.com/famoser/Mensa">Mensa</a>, which lists daily menus for each Zürich Mensa to help people make their most important decision of the day.
+However, it was merely an inconvenience for myself that the app lacked images of the meals.
+I found it difficult to imagine the dishes based solely on the menu descriptions.
+To fix this, I decide to add the meal images myself.
+</p>
+</div>
+</div>
+<div id="outline-container-orgca97636" class="outline-2">
+<h2 id="orgca97636"><span class="section-number-2">3.</span> How to get the data</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+I couldn&rsquo;t find an official API for this, so I decided to scrape the webpage myself.
+Here&rsquo;s where things got tricky: the Mensa web pages use JavaScript to render content.
+This meant I couldn&rsquo;t just grab the page - I needed a browser to run the JavaScript first.
+</p>
+</div>
+<div id="outline-container-org161a012" class="outline-3">
+<h3 id="org161a012"><span class="section-number-3">3.1.</span> Scrape menus locally</h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
+On a local machine, it&rsquo;s pretty straightforward.
+You just grab a scraper library like <a href="https://github.com/go-rod/rod">go-rod</a> and figure out the right API calls.
+After you&rsquo;ve snagged the page, you can use an HTML parser like <a href="https://github.com/PuerkitoBio/goquery">goquery</a> to pull out all the menus.
+</p>
+</div>
+</div>
+<div id="outline-container-orgbafd268" class="outline-3">
+<h3 id="orgbafd268"><span class="section-number-3">3.2.</span> Scrape menus on Render</h3>
+<div class="outline-text-3" id="text-3-2">
+<p>
+The only snag with <code>go-rod</code> is it&rsquo;s too bulky for a Render free account.
+It needs to install Chromium first, but Render&rsquo;s <a href="https://render.com/pricing">512M RAM</a> can&rsquo;t handle that.
+I didn&rsquo;t want to hunt for another free host, so <code>go-rod</code> had to go.
+</p>
+
+<p>
+Claude then pitched the idea of online scraping services.
+Most I found were expensive, aimed at heavy-duty scraping.
+But I lucked out with <a href="https://app.abstractapi.com/api/scrape/pricing">AbstractAPI</a>, offering 1000 total requests for free.
+If I&rsquo;m smart, that could last me about half a year.
+<a href="https://docs.scraperapi.com/v/faq/plans-and-billing/free-plan-and-7-day-free-trial">ScraperAPI</a> seemed promising with 1000 monthly free requests.
+But it choked on Javascript rendering for my targeted pages even with <code>render=true</code>.
+</p>
+
+<p>
+AbstractAPI has its quirks too.
+The scraped result comes out messy, full of <code>\n</code> and <code>\&amp;#34</code>.
+So I had to clean it up before <code>goquery</code> can make sense of it.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org26ab351" class="outline-2">
+<h2 id="org26ab351"><span class="section-number-2">4.</span> Performance</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+AbstractAPI&rsquo;s free plan only lets you make one request per second.
+That&rsquo;s kinda slow when you factor in page rendering and parsing time.
+The full HTML page is a whopping 3M, so I&rsquo;ve gotta wait a bit for each bot request.
+</p>
+
+<p>
+I thought about caching results to cut down on requests.
+But here&rsquo;s the thing: menu images usually update right before meal times.
+If I didn&rsquo;t catch the image last time, I need the latest scoop.
+So, I end up scraping fresh data for each Mensa every single time.
+</p>
+</div>
+</div>
+<div id="outline-container-org49a031a" class="outline-2">
+<h2 id="org49a031a"><span class="section-number-2">5.</span> Conclusion</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+Here&rsquo;s a quick look at what the bot can do now: it tags stickers and scrapes Mensa menus.
+Keep in mind the GIF is sped up to twice the normal speed.
+</p>
+
+
+<figure id="orgb59eaa3">
+<img src="./static/telegram.gif" alt="telegram.gif" align="center" width="700px" style="border: 1px solid black;">
+
+<figcaption><span class="figure-number">Figure 1: </span>The current Telegram bot</figcaption>
+</figure>
+
+<p>
+As in the previous post, I aim to demonstrate that while Internet services can be costly, there often remain free solutions for building hobby projects.
+This may require more extensive research and additional processing, but it&rsquo;s still feasible.
+I hope this continues to be the case in the years to come.
+</p>
+
+<p>
+The <a href="https://github.com/chenyo-17/pbaobot">repository</a> is also public now.
+</p>
+</div>
+</div>
+<div class="taglist"><a href="https://chenyo.me/tags.html">Tags</a>: <a href="https://chenyo.me/tag-tool.html">tool</a> <a href="https://chenyo.me/tag-telegram.html">telegram</a> </div>]]></description>
+  <category><![CDATA[tool]]></category>
+  <category><![CDATA[telegram]]></category>
+  <link>https://chenyo.me/2024-09-25-build-a-free-telegram-mensa-bot.html</link>
+  <guid>https://chenyo.me/2024-09-25-build-a-free-telegram-mensa-bot.html</guid>
+  <pubDate>Wed, 25 Sep 2024 20:30:00 +0200</pubDate>
+</item>
 <item>
   <title><![CDATA[C++ feature introduction]]></title>
   <description><![CDATA[
