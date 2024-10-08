@@ -41,38 +41,38 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orga4af0d0">1. Blockchain fundamentals</a>
+<li><a href="#org9e99d3a">1. Blockchain fundamentals</a>
 <ul>
-<li><a href="#org0466afa">1.1. Conduit chain</a></li>
-<li><a href="#orgca02b9a">1.2. Gas per second</a></li>
-<li><a href="#org9536659">1.3. Target gas per block</a></li>
-<li><a href="#org1eeb656">1.4. Current blockchain scalability</a></li>
-<li><a href="#org6e36126">1.5. Blockchain node hardware requirements</a></li>
-<li><a href="#org4e24a8c">1.6. L1 and L2 nodes</a></li>
-<li><a href="#org24814d5">1.7. Verifying a block</a></li>
-<li><a href="#orgccd58e4">1.8. Maximum extractable value (MEV)</a></li>
-<li><a href="#org923b957">1.9. Proposer-builder separation (PBS)</a></li>
-<li><a href="#org41d0238">1.10. Live and historical sync</a></li>
-<li><a href="#orgade4b88">1.11. Portal Network</a></li>
-<li><a href="#org8112b7d">1.12. Verkle tree</a></li>
-<li><a href="#org1eacc52">1.13. Node storage</a>
+<li><a href="#org818b1e5">1.1. Conduit chain</a></li>
+<li><a href="#org61fac75">1.2. Gas per second</a></li>
+<li><a href="#orgcf006aa">1.3. Target gas per block</a></li>
+<li><a href="#orgafe64cc">1.4. Current blockchain scalability</a></li>
+<li><a href="#org0588eb1">1.5. Blockchain node hardware requirements</a></li>
+<li><a href="#orgf2aadab">1.6. L1 and L2 nodes</a></li>
+<li><a href="#org8e224b5">1.7. Verifying a block</a></li>
+<li><a href="#orgfc6f496">1.8. Maximum extractable value (MEV)</a></li>
+<li><a href="#orgc7b0b39">1.9. Proposer-builder separation (PBS)</a></li>
+<li><a href="#orgc48f850">1.10. Live and historical sync</a></li>
+<li><a href="#org828a882">1.11. Portal Network</a></li>
+<li><a href="#org8caa3fa">1.12. Verkle tree</a></li>
+<li><a href="#org874e0a3">1.13. Node storage</a>
 <ul>
-<li><a href="#org554dfec">1.13.1. History expiry</a></li>
-<li><a href="#org9fe6a23">1.13.2. State expiry</a></li>
-<li><a href="#orgcc71202">1.13.3. Statelessness</a></li>
+<li><a href="#orge91cca5">1.13.1. History expiry</a></li>
+<li><a href="#org4fad4d5">1.13.2. State expiry</a></li>
+<li><a href="#org4f48281">1.13.3. Statelessness</a></li>
 </ul>
 </li>
-<li><a href="#org1a1fb48">1.14. Software transactional memory (STM)</a></li>
-<li><a href="#org5a5ebc9">1.15. Block-STM</a></li>
+<li><a href="#orgc1128ac">1.14. Software transactional memory (STM)</a></li>
+<li><a href="#org7ce2c93">1.15. Block-STM</a></li>
 </ul>
 </li>
-<li><a href="#org0603568">2. What is MagaETH</a>
+<li><a href="#org74556bf">2. What is MagaETH</a>
 <ul>
-<li><a href="#org16dfd0b">2.1. Node specialization</a></li>
-<li><a href="#org61f1ba3">2.2. Design philosophy</a></li>
+<li><a href="#org71014a6">2.1. Node specialization</a></li>
+<li><a href="#org4417424">2.2. Design philosophy</a></li>
 </ul>
 </li>
-<li><a href="#org5d130e9">3. MegaETH challenges</a></li>
+<li><a href="#orge430787">3. MegaETH challenges</a></li>
 </ul>
 </div>
 </nav>
@@ -83,20 +83,20 @@ This is a personal note for <a href="https://megaeth.systems/research">MegaETH-b
 <p>
 In summary, this blog proposes many challenges when designing a high-performance EVM chain, but does not include any design details of MegaETH itself.
 </p>
-<div id="outline-container-orga4af0d0" class="outline-2">
-<h2 id="orga4af0d0"><span class="section-number-2">1.</span> Blockchain fundamentals</h2>
+<div id="outline-container-org9e99d3a" class="outline-2">
+<h2 id="org9e99d3a"><span class="section-number-2">1.</span> Blockchain fundamentals</h2>
 <div class="outline-text-2" id="text-1">
 </div>
-<div id="outline-container-org0466afa" class="outline-3">
-<h3 id="org0466afa"><span class="section-number-3">1.1.</span> <a href="https://docs.conduit.xyz/">Conduit chain</a></h3>
+<div id="outline-container-org818b1e5" class="outline-3">
+<h3 id="org818b1e5"><span class="section-number-3">1.1.</span> <a href="https://docs.conduit.xyz/">Conduit chain</a></h3>
 <div class="outline-text-3" id="text-1-1">
 <ul class="org-ul">
 <li>Allows one to deploy a rollup through its Rollups-as-a-service platform within in minutes.</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-orgca02b9a" class="outline-3">
-<h3 id="orgca02b9a"><span class="section-number-3">1.2.</span> Gas per second</h3>
+<div id="outline-container-org61fac75" class="outline-3">
+<h3 id="org61fac75"><span class="section-number-3">1.2.</span> Gas per second</h3>
 <div class="outline-text-3" id="text-1-2">
 <ul class="org-ul">
 <li>Reflects the amount of computation the blockchain can handle per second.</li>
@@ -105,8 +105,8 @@ In summary, this blog proposes many challenges when designing a high-performance
 </ul>
 </div>
 </div>
-<div id="outline-container-org9536659" class="outline-3">
-<h3 id="org9536659"><span class="section-number-3">1.3.</span> Target gas per block</h3>
+<div id="outline-container-orgcf006aa" class="outline-3">
+<h3 id="orgcf006aa"><span class="section-number-3">1.3.</span> Target gas per block</h3>
 <div class="outline-text-3" id="text-1-3">
 <ul class="org-ul">
 <li>Dynamically regulate the amount of computation a block can include.</li>
@@ -114,11 +114,11 @@ In summary, this blog proposes many challenges when designing a high-performance
 </ul>
 </div>
 </div>
-<div id="outline-container-org1eeb656" class="outline-3">
-<h3 id="org1eeb656"><span class="section-number-3">1.4.</span> Current blockchain scalability</h3>
+<div id="outline-container-orgafe64cc" class="outline-3">
+<h3 id="orgafe64cc"><span class="section-number-3">1.4.</span> Current blockchain scalability</h3>
 <div class="outline-text-3" id="text-1-4">
 
-<figure id="org15ce7c8">
+<figure id="orgb6a52bd">
 <img src="https://hackmd.io/_uploads/rkHVB0iHR.png" alt="rkHVB0iHR.png" align="center" width="500px">
 
 <figcaption><span class="figure-number">Figure 1: </span>2024 blockchain scalability comparison</figcaption>
@@ -131,8 +131,8 @@ In summary, this blog proposes many challenges when designing a high-performance
 </ul>
 </div>
 </div>
-<div id="outline-container-org6e36126" class="outline-3">
-<h3 id="org6e36126"><span class="section-number-3">1.5.</span> Blockchain node hardware requirements</h3>
+<div id="outline-container-org0588eb1" class="outline-3">
+<h3 id="org0588eb1"><span class="section-number-3">1.5.</span> Blockchain node hardware requirements</h3>
 <div class="outline-text-3" id="text-1-5">
 <ul class="org-ul">
 <li>Lower hardware requirements for full nodes increase decentralization.</li>
@@ -140,8 +140,8 @@ In summary, this blog proposes many challenges when designing a high-performance
 </ul>
 </div>
 </div>
-<div id="outline-container-org4e24a8c" class="outline-3">
-<h3 id="org4e24a8c"><span class="section-number-3">1.6.</span> L1 and L2 nodes</h3>
+<div id="outline-container-orgf2aadab" class="outline-3">
+<h3 id="orgf2aadab"><span class="section-number-3">1.6.</span> L1 and L2 nodes</h3>
 <div class="outline-text-3" id="text-1-6">
 <ul class="org-ul">
 <li>L1 nodes are homogeneous; each node performs identical tasks, i.e., transaction consensus and execution without specialization.</li>
@@ -149,8 +149,8 @@ In summary, this blog proposes many challenges when designing a high-performance
 </ul>
 </div>
 </div>
-<div id="outline-container-org24814d5" class="outline-3">
-<h3 id="org24814d5"><span class="section-number-3">1.7.</span> Verifying a block</h3>
+<div id="outline-container-org8e224b5" class="outline-3">
+<h3 id="org8e224b5"><span class="section-number-3">1.7.</span> Verifying a block</h3>
 <div class="outline-text-3" id="text-1-7">
 <ul class="org-ul">
 <li>Re-execute the transactions in the block.</li>
@@ -159,16 +159,16 @@ In summary, this blog proposes many challenges when designing a high-performance
 </ul>
 </div>
 </div>
-<div id="outline-container-orgccd58e4" class="outline-3">
-<h3 id="orgccd58e4"><span class="section-number-3">1.8.</span> Maximum extractable value (MEV)</h3>
+<div id="outline-container-orgfc6f496" class="outline-3">
+<h3 id="orgfc6f496"><span class="section-number-3">1.8.</span> Maximum extractable value (MEV)</h3>
 <div class="outline-text-3" id="text-1-8">
 <ul class="org-ul">
 <li>Validators maximize their profitability by favorably ordering transactions.</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org923b957" class="outline-3">
-<h3 id="org923b957"><span class="section-number-3">1.9.</span> Proposer-builder separation (PBS)</h3>
+<div id="outline-container-orgc7b0b39" class="outline-3">
+<h3 id="orgc7b0b39"><span class="section-number-3">1.9.</span> Proposer-builder separation (PBS)</h3>
 <div class="outline-text-3" id="text-1-9">
 <ul class="org-ul">
 <li>Block builders are responsible for creating blocks and offering them to the block proposer in each slot.</li>
@@ -177,8 +177,8 @@ In summary, this blog proposes many challenges when designing a high-performance
 </ul>
 </div>
 </div>
-<div id="outline-container-org41d0238" class="outline-3">
-<h3 id="org41d0238"><span class="section-number-3">1.10.</span> Live and historical sync</h3>
+<div id="outline-container-orgc48f850" class="outline-3">
+<h3 id="orgc48f850"><span class="section-number-3">1.10.</span> Live and historical sync</h3>
 <div class="outline-text-3" id="text-1-10">
 <ul class="org-ul">
 <li>Live (online): continuously update a node with the latest data.</li>
@@ -187,8 +187,8 @@ In summary, this blog proposes many challenges when designing a high-performance
 </ul>
 </div>
 </div>
-<div id="outline-container-orgade4b88" class="outline-3">
-<h3 id="orgade4b88"><span class="section-number-3">1.11.</span> <a href="https://ethereum.org/en/developers/docs/networking-layer/portal-network/">Portal Network</a></h3>
+<div id="outline-container-org828a882" class="outline-3">
+<h3 id="org828a882"><span class="section-number-3">1.11.</span> <a href="https://ethereum.org/en/developers/docs/networking-layer/portal-network/">Portal Network</a></h3>
 <div class="outline-text-3" id="text-1-11">
 <ul class="org-ul">
 <li>An in-development p2p network for serving historical data where each node stores a small piece of Ethereum&rsquo;s history.</li>
@@ -197,8 +197,8 @@ In summary, this blog proposes many challenges when designing a high-performance
 </ul>
 </div>
 </div>
-<div id="outline-container-org8112b7d" class="outline-3">
-<h3 id="org8112b7d"><span class="section-number-3">1.12.</span> <a href="https://ethereum.org/en/roadmap/verkle-trees/">Verkle tree</a></h3>
+<div id="outline-container-org8caa3fa" class="outline-3">
+<h3 id="org8caa3fa"><span class="section-number-3">1.12.</span> <a href="https://ethereum.org/en/roadmap/verkle-trees/">Verkle tree</a></h3>
 <div class="outline-text-3" id="text-1-12">
 <ul class="org-ul">
 <li>Stateless clients rely on a witness that arrives with the block for PoI rather on maintaining own local trie.</li>
@@ -211,8 +211,8 @@ In summary, this blog proposes many challenges when designing a high-performance
 </ul>
 </div>
 </div>
-<div id="outline-container-org1eacc52" class="outline-3">
-<h3 id="org1eacc52"><span class="section-number-3">1.13.</span> Node storage</h3>
+<div id="outline-container-org874e0a3" class="outline-3">
+<h3 id="org874e0a3"><span class="section-number-3">1.13.</span> Node storage</h3>
 <div class="outline-text-3" id="text-1-13">
 <ul class="org-ul">
 <li>High disk space is the main barrier to a full node access, due to the need to store large chunks of Ethereum state data to process new transactions.</li>
@@ -220,8 +220,8 @@ In summary, this blog proposes many challenges when designing a high-performance
 <li>Clients should find new ways to verify transactions without relying on looking up local databases.</li>
 </ul>
 </div>
-<div id="outline-container-org554dfec" class="outline-4">
-<h4 id="org554dfec"><span class="section-number-4">1.13.1.</span> History expiry</h4>
+<div id="outline-container-orge91cca5" class="outline-4">
+<h4 id="orge91cca5"><span class="section-number-4">1.13.1.</span> History expiry</h4>
 <div class="outline-text-4" id="text-1-13-1">
 <ul class="org-ul">
 <li>Nodes discard state data older than X blocks with weak subjectivity checkpoints, i.e., a genesis block close to the present.</li>
@@ -232,8 +232,8 @@ In summary, this blog proposes many challenges when designing a high-performance
 </ul>
 </div>
 </div>
-<div id="outline-container-org9fe6a23" class="outline-4">
-<h4 id="org9fe6a23"><span class="section-number-4">1.13.2.</span> State expiry</h4>
+<div id="outline-container-org4fad4d5" class="outline-4">
+<h4 id="org4fad4d5"><span class="section-number-4">1.13.2.</span> State expiry</h4>
 <div class="outline-text-4" id="text-1-13-2">
 <ul class="org-ul">
 <li>Remove state from individual nodes if it has not been accessed recently.</li>
@@ -243,8 +243,8 @@ In summary, this blog proposes many challenges when designing a high-performance
 </ul>
 </div>
 </div>
-<div id="outline-container-orgcc71202" class="outline-4">
-<h4 id="orgcc71202"><span class="section-number-4">1.13.3.</span> Statelessness</h4>
+<div id="outline-container-org4f48281" class="outline-4">
+<h4 id="org4f48281"><span class="section-number-4">1.13.3.</span> Statelessness</h4>
 <div class="outline-text-4" id="text-1-13-3">
 <ul class="org-ul">
 <li>weak statelessness: only block producers need access to full state data.</li>
@@ -255,8 +255,8 @@ In summary, this blog proposes many challenges when designing a high-performance
 </div>
 </div>
 </div>
-<div id="outline-container-org1a1fb48" class="outline-3">
-<h3 id="org1a1fb48"><span class="section-number-3">1.14.</span> Software transactional memory (STM)</h3>
+<div id="outline-container-orgc1128ac" class="outline-3">
+<h3 id="orgc1128ac"><span class="section-number-3">1.14.</span> Software transactional memory (STM)</h3>
 <div class="outline-text-3" id="text-1-14">
 <ul class="org-ul">
 <li>A concurrency control mechanism to control access to shares memory in software.</li>
@@ -266,8 +266,8 @@ In summary, this blog proposes many challenges when designing a high-performance
 </ul>
 </div>
 </div>
-<div id="outline-container-org5a5ebc9" class="outline-3">
-<h3 id="org5a5ebc9"><span class="section-number-3">1.15.</span> Block-STM</h3>
+<div id="outline-container-org7ce2c93" class="outline-3">
+<h3 id="org7ce2c93"><span class="section-number-3">1.15.</span> Block-STM</h3>
 <div class="outline-text-3" id="text-1-15">
 <ul class="org-ul">
 <li>A parallel execution engine to schedule smart contract transactions based on STM.</li>
@@ -276,16 +276,16 @@ In summary, this blog proposes many challenges when designing a high-performance
 </div>
 </div>
 </div>
-<div id="outline-container-org0603568" class="outline-2">
-<h2 id="org0603568"><span class="section-number-2">2.</span> What is MagaETH</h2>
+<div id="outline-container-org74556bf" class="outline-2">
+<h2 id="org74556bf"><span class="section-number-2">2.</span> What is MagaETH</h2>
 <div class="outline-text-2" id="text-2">
 <ul class="org-ul">
 <li>An EVM-compatible L2 blockchain with Web2-level real-time processing and publishing, i.e., millisecond-level response times under heavy load.</li>
 <li>Main idea: delegate security and censorship resistance to base layers, e.g., Ethereum to make room for L2 optimization.</li>
 </ul>
 </div>
-<div id="outline-container-org16dfd0b" class="outline-3">
-<h3 id="org16dfd0b"><span class="section-number-3">2.1.</span> Node specialization</h3>
+<div id="outline-container-org71014a6" class="outline-3">
+<h3 id="org71014a6"><span class="section-number-3">2.1.</span> Node specialization</h3>
 <div class="outline-text-3" id="text-2-1">
 <ul class="org-ul">
 <li>sequencer: only one active sequencer at any time to <b><b>eliminate the consensus overhead</b></b>.</li>
@@ -295,8 +295,8 @@ In summary, this blog proposes many challenges when designing a high-performance
 </ul>
 </div>
 </div>
-<div id="outline-container-org61f1ba3" class="outline-3">
-<h3 id="org61f1ba3"><span class="section-number-3">2.2.</span> Design philosophy</h3>
+<div id="outline-container-org4417424" class="outline-3">
+<h3 id="org4417424"><span class="section-number-3">2.2.</span> Design philosophy</h3>
 <div class="outline-text-3" id="text-2-2">
 <ul class="org-ul">
 <li>Reth (Rust implementation of the Ethereum protocol) is bottlenecked by the MPT update in a live sync setup, even with a powerful sequencer.</li>
@@ -306,11 +306,11 @@ In summary, this blog proposes many challenges when designing a high-performance
 </div>
 </div>
 </div>
-<div id="outline-container-org5d130e9" class="outline-2">
-<h2 id="org5d130e9"><span class="section-number-2">3.</span> MegaETH challenges</h2>
+<div id="outline-container-orge430787" class="outline-2">
+<h2 id="orge430787"><span class="section-number-2">3.</span> MegaETH challenges</h2>
 <div class="outline-text-2" id="text-3">
 
-<figure id="org0526558">
+<figure id="orge4974ea">
 <img src="https://hackmd.io/_uploads/BJW2EG4L0.png" alt="BJW2EG4L0.png" align="center" width="600px">
 
 <figcaption><span class="figure-number">Figure 2: </span>A transaction life-cycle.</figcaption>
@@ -338,7 +338,7 @@ In summary, this blog proposes many challenges when designing a high-performance
         </a>
         </div>
         <div class="social-links">
-          <a href="https://t.me/feihuadawangjiushiwo" target="_blank" rel="noopener noreferrer">
+          <a href="https://t.me/chenyo17" target="_blank" rel="noopener noreferrer">
           <i class="fab fa-telegram"></i>
           </a>
           <a href="https://github.com/chenyo-17" target="_blank" rel="noopener noreferrer">

@@ -41,17 +41,17 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org20a6d81">1. Assumptions</a></li>
-<li><a href="#orgcf6e55a">2. Install prerequisite packages</a></li>
-<li><a href="#org5075acb">3. Install Emacs 29.4</a>
+<li><a href="#org967b036">1. Assumptions</a></li>
+<li><a href="#org9d97c4c">2. Install prerequisite packages</a></li>
+<li><a href="#org98ff32c">3. Install Emacs 29.4</a>
 <ul>
-<li><a href="#org17f16c3">3.1. Before building</a></li>
-<li><a href="#orgd1dff12">3.2. Build Emacs 29.4 with native-comp</a></li>
+<li><a href="#org140f84e">3.1. Before building</a></li>
+<li><a href="#org702e974">3.2. Build Emacs 29.4 with native-comp</a></li>
 </ul>
 </li>
-<li><a href="#org569af17">4. Install <code>ripgrep</code></a></li>
-<li><a href="#org78e09db">5. Install Doom Emacs</a></li>
-<li><a href="#orgc56000a">6. Some issues with running Emacs in WSL2</a></li>
+<li><a href="#orge6212e6">4. Install <code>ripgrep</code></a></li>
+<li><a href="#org5750277">5. Install Doom Emacs</a></li>
+<li><a href="#org219c7a4">6. Some issues with running Emacs in WSL2</a></li>
 </ul>
 </div>
 </nav>
@@ -60,16 +60,16 @@ Today I installed Doom Emacs for my husband on his WSL2.
 Although the entire process was guided by Claude, there were some back-and-forth during the interaction.
 Therefore I would like to record the full commands I have used here in sequence for any potential reference.
 </p>
-<div id="outline-container-org20a6d81" class="outline-2">
-<h2 id="org20a6d81"><span class="section-number-2">1.</span> Assumptions</h2>
+<div id="outline-container-org967b036" class="outline-2">
+<h2 id="org967b036"><span class="section-number-2">1.</span> Assumptions</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 This installation guide assumes a fresh installation of WSL2 Ubuntu 22.04 on Windows 11 in 2024 September.
 </p>
 </div>
 </div>
-<div id="outline-container-orgcf6e55a" class="outline-2">
-<h2 id="orgcf6e55a"><span class="section-number-2">2.</span> Install prerequisite packages</h2>
+<div id="outline-container-org9d97c4c" class="outline-2">
+<h2 id="org9d97c4c"><span class="section-number-2">2.</span> Install prerequisite packages</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 According to the Doom Emacs <a href="https://github.com/doomemacs/doomemacs#prerequisites">documentation</a>, the following packages are recommended:
@@ -83,12 +83,12 @@ According to the Doom Emacs <a href="https://github.com/doomemacs/doomemacs#prer
 </ul>
 </div>
 </div>
-<div id="outline-container-org5075acb" class="outline-2">
-<h2 id="org5075acb"><span class="section-number-2">3.</span> Install Emacs 29.4</h2>
+<div id="outline-container-org98ff32c" class="outline-2">
+<h2 id="org98ff32c"><span class="section-number-2">3.</span> Install Emacs 29.4</h2>
 <div class="outline-text-2" id="text-3">
 </div>
-<div id="outline-container-org17f16c3" class="outline-3">
-<h3 id="org17f16c3"><span class="section-number-3">3.1.</span> Before building</h3>
+<div id="outline-container-org140f84e" class="outline-3">
+<h3 id="org140f84e"><span class="section-number-3">3.1.</span> Before building</h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
 First, let&rsquo;s install some build dependencies:
@@ -109,7 +109,7 @@ The rest packages install pre-compiled libraries.
 </p>
 
 <p>
-Besides these packages, there are two important packages to support List native compilation:
+Besides these packages, there are two important packages to support Lisp native compilation:
 </p>
 
 <div class="org-src-container">
@@ -151,8 +151,8 @@ tiff, gif, jpeg, png and xpm.
 </blockquote>
 </div>
 </div>
-<div id="outline-container-orgd1dff12" class="outline-3">
-<h3 id="orgd1dff12"><span class="section-number-3">3.2.</span> Build Emacs 29.4 with native-comp</h3>
+<div id="outline-container-org702e974" class="outline-3">
+<h3 id="org702e974"><span class="section-number-3">3.2.</span> Build Emacs 29.4 with native-comp</h3>
 <div class="outline-text-3" id="text-3-2">
 <p>
 At this moment, we can start to download Emacs source code:
@@ -240,8 +240,8 @@ Congratulations! You have now installed the latest and fastest Emacs on WSL2.
 </div>
 </div>
 </div>
-<div id="outline-container-org569af17" class="outline-2">
-<h2 id="org569af17"><span class="section-number-2">4.</span> Install <code>ripgrep</code></h2>
+<div id="outline-container-orge6212e6" class="outline-2">
+<h2 id="orge6212e6"><span class="section-number-2">4.</span> Install <code>ripgrep</code></h2>
 <div class="outline-text-2" id="text-4">
 <p>
 As mentioned in ripgrep <a href="https://github.com/BurntSushi/ripgrep?tab=readme-ov-file#installation">documentation</a>, for Debian/Ubuntu users, one should
@@ -265,8 +265,8 @@ The installed ripgrep binary was not built with support for PCRE lookaheads.
 </blockquote>
 </div>
 </div>
-<div id="outline-container-org78e09db" class="outline-2">
-<h2 id="org78e09db"><span class="section-number-2">5.</span> Install Doom Emacs</h2>
+<div id="outline-container-org5750277" class="outline-2">
+<h2 id="org5750277"><span class="section-number-2">5.</span> Install Doom Emacs</h2>
 <div class="outline-text-2" id="text-5">
 <p>
 Installing Doom Emacs is straightforward, but before that, one should first remove the default Emacs configuration folder:
@@ -310,8 +310,8 @@ To fix that, run <code>M-x nerd-icons-install-font</code> inside the Emacs, then
 </div>
 </div>
 </div>
-<div id="outline-container-orgc56000a" class="outline-2">
-<h2 id="orgc56000a"><span class="section-number-2">6.</span> Some issues with running Emacs in WSL2</h2>
+<div id="outline-container-org219c7a4" class="outline-2">
+<h2 id="org219c7a4"><span class="section-number-2">6.</span> Some issues with running Emacs in WSL2</h2>
 <div class="outline-text-2" id="text-6">
 <ul class="org-ul">
 <li><p>
@@ -335,14 +335,14 @@ The first thing is I cannot reload the configuration with <code>M-x doom/reload<
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org1083743">1. What happened</a></li>
-<li><a href="#org5110414">2. What did I do</a></li>
-<li><a href="#orgca2d88d">3. Another issue of running RPC in docker</a></li>
+<li><a href="#orgb8fb5fc">1. What happened</a></li>
+<li><a href="#orgebf733a">2. What did I do</a></li>
+<li><a href="#org98115f4">3. Another issue of running RPC in docker</a></li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-org1083743" class="outline-2">
-<h2 id="org1083743"><span class="section-number-2">1.</span> What happened</h2>
+<div id="outline-container-orgb8fb5fc" class="outline-2">
+<h2 id="orgb8fb5fc"><span class="section-number-2">1.</span> What happened</h2>
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
 <li>Servers SA and SB have the same docker installation, and the same running container CA and CB.</li>
@@ -357,8 +357,8 @@ fatal error: newosproc<br>
 </ul>
 </div>
 </div>
-<div id="outline-container-org5110414" class="outline-2">
-<h2 id="org5110414"><span class="section-number-2">2.</span> What did I do</h2>
+<div id="outline-container-orgebf733a" class="outline-2">
+<h2 id="orgebf733a"><span class="section-number-2">2.</span> What did I do</h2>
 <div class="outline-text-2" id="text-2">
 <ol class="org-ol">
 <li>I compared any related configurations between SA and SB. and between CA and CB, e.g., <code class="src src-bash"><span style="color: #c678dd;">ulimit</span> -a</code>, <code class="src src-bash">/etc/security/limits.conf</code>. They all look the same.</li>
@@ -375,8 +375,8 @@ fatal error: newosproc<br>
 </ol>
 </div>
 </div>
-<div id="outline-container-orgca2d88d" class="outline-2">
-<h2 id="orgca2d88d"><span class="section-number-2">3.</span> Another issue of running RPC in docker</h2>
+<div id="outline-container-org98115f4" class="outline-2">
+<h2 id="org98115f4"><span class="section-number-2">3.</span> Another issue of running RPC in docker</h2>
 <div class="outline-text-2" id="text-3">
 <ul class="org-ul">
 <li>The other day, I also spent hours debugging a <code>route unreachable</code> error when I want to send a request from CA to SA.</li>
@@ -415,41 +415,41 @@ In the end, I need to append a new rule to make the RPC work.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org739ec81">1. i3</a>
+<li><a href="#org37fc08e">1. i3</a>
 <ul>
-<li><a href="#orgc70cae3">1.1. Move specific workspaces between different monitors (ref)</a></li>
+<li><a href="#org4045976">1.1. Move specific workspaces between different monitors (ref)</a></li>
 </ul>
 </li>
-<li><a href="#org6df5cf5">2. Org</a>
+<li><a href="#orgea6949f">2. Org</a>
 <ul>
-<li><a href="#org6302636">2.1. Format code blocks</a></li>
+<li><a href="#orgb3984b6">2.1. Format code blocks</a></li>
 </ul>
 </li>
-<li><a href="#org12cf03a">3. Emacs</a>
+<li><a href="#orgb39b55f">3. Emacs</a>
 <ul>
-<li><a href="#org7e3ae7b">3.1. Prefix argument</a></li>
-<li><a href="#org1bc86aa">3.2. Help functions</a></li>
+<li><a href="#org86284de">3.1. Prefix argument</a></li>
+<li><a href="#org6be7689">3.2. Help functions</a></li>
 </ul>
 </li>
-<li><a href="#org63412c3">4. Vim</a>
+<li><a href="#org2c7ccba">4. Vim</a>
 <ul>
-<li><a href="#orgdf6203c">4.1. Delete a word backwards</a></li>
+<li><a href="#org807aae2">4.1. Delete a word backwards</a></li>
 </ul>
 </li>
-<li><a href="#org178fd44">5. Firefox</a>
+<li><a href="#org2426f93">5. Firefox</a>
 <ul>
-<li><a href="#org0753dcf">5.1. Cache bypass refresh</a></li>
+<li><a href="#orgebec975">5.1. Cache bypass refresh</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-org739ec81" class="outline-2">
-<h2 id="org739ec81"><span class="section-number-2">1.</span> i3</h2>
+<div id="outline-container-org37fc08e" class="outline-2">
+<h2 id="org37fc08e"><span class="section-number-2">1.</span> i3</h2>
 <div class="outline-text-2" id="text-1">
 </div>
-<div id="outline-container-orgc70cae3" class="outline-3">
-<h3 id="orgc70cae3"><span class="section-number-3">1.1.</span> Move specific workspaces between different monitors <a href="https://i3wm.org/docs/user-contributed/swapping-workspaces.html">(ref)</a></h3>
+<div id="outline-container-org4045976" class="outline-3">
+<h3 id="org4045976"><span class="section-number-3">1.1.</span> Move specific workspaces between different monitors <a href="https://i3wm.org/docs/user-contributed/swapping-workspaces.html">(ref)</a></h3>
 <div class="outline-text-3" id="text-1-1">
 <ol class="org-ol">
 <li>Adjust the monitor relative positions.</li>
@@ -458,12 +458,12 @@ In the end, I need to append a new rule to make the RPC work.
 </div>
 </div>
 </div>
-<div id="outline-container-org6df5cf5" class="outline-2">
-<h2 id="org6df5cf5"><span class="section-number-2">2.</span> Org</h2>
+<div id="outline-container-orgea6949f" class="outline-2">
+<h2 id="orgea6949f"><span class="section-number-2">2.</span> Org</h2>
 <div class="outline-text-2" id="text-2">
 </div>
-<div id="outline-container-org6302636" class="outline-3">
-<h3 id="org6302636"><span class="section-number-3">2.1.</span> Format code blocks</h3>
+<div id="outline-container-orgb3984b6" class="outline-3">
+<h3 id="orgb3984b6"><span class="section-number-3">2.1.</span> Format code blocks</h3>
 <div class="outline-text-3" id="text-2-1">
 <ul class="org-ul">
 <li>Use the shortcut <code>&lt; s &lt;TAB&gt;</code> to create a code block.</li>
@@ -472,20 +472,20 @@ In the end, I need to append a new rule to make the RPC work.
 </div>
 </div>
 </div>
-<div id="outline-container-org12cf03a" class="outline-2">
-<h2 id="org12cf03a"><span class="section-number-2">3.</span> Emacs</h2>
+<div id="outline-container-orgb39b55f" class="outline-2">
+<h2 id="orgb39b55f"><span class="section-number-2">3.</span> Emacs</h2>
 <div class="outline-text-2" id="text-3">
 </div>
-<div id="outline-container-org7e3ae7b" class="outline-3">
-<h3 id="org7e3ae7b"><span class="section-number-3">3.1.</span> Prefix argument</h3>
+<div id="outline-container-org86284de" class="outline-3">
+<h3 id="org86284de"><span class="section-number-3">3.1.</span> Prefix argument</h3>
 <div class="outline-text-3" id="text-3-1">
 <ul class="org-ul">
 <li>When the function includes <code>(interactive "P")</code>, it means one can add a prefix argument <code>C-u 1</code> (or any integer) to trigger some effect.</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org1bc86aa" class="outline-3">
-<h3 id="org1bc86aa"><span class="section-number-3">3.2.</span> Help functions</h3>
+<div id="outline-container-org6be7689" class="outline-3">
+<h3 id="org6be7689"><span class="section-number-3">3.2.</span> Help functions</h3>
 <div class="outline-text-3" id="text-3-2">
 <ul class="org-ul">
 <li><code>Ctrl-h K</code> get the function name given a shortcut</li>
@@ -493,12 +493,12 @@ In the end, I need to append a new rule to make the RPC work.
 </div>
 </div>
 </div>
-<div id="outline-container-org63412c3" class="outline-2">
-<h2 id="org63412c3"><span class="section-number-2">4.</span> Vim</h2>
+<div id="outline-container-org2c7ccba" class="outline-2">
+<h2 id="org2c7ccba"><span class="section-number-2">4.</span> Vim</h2>
 <div class="outline-text-2" id="text-4">
 </div>
-<div id="outline-container-orgdf6203c" class="outline-3">
-<h3 id="orgdf6203c"><span class="section-number-3">4.1.</span> Delete a word backwards</h3>
+<div id="outline-container-org807aae2" class="outline-3">
+<h3 id="org807aae2"><span class="section-number-3">4.1.</span> Delete a word backwards</h3>
 <div class="outline-text-3" id="text-4-1">
 <ul class="org-ul">
 <li><code>diw</code> or <code>daw</code></li>
@@ -506,12 +506,12 @@ In the end, I need to append a new rule to make the RPC work.
 </div>
 </div>
 </div>
-<div id="outline-container-org178fd44" class="outline-2">
-<h2 id="org178fd44"><span class="section-number-2">5.</span> Firefox</h2>
+<div id="outline-container-org2426f93" class="outline-2">
+<h2 id="org2426f93"><span class="section-number-2">5.</span> Firefox</h2>
 <div class="outline-text-2" id="text-5">
 </div>
-<div id="outline-container-org0753dcf" class="outline-3">
-<h3 id="org0753dcf"><span class="section-number-3">5.1.</span> Cache bypass refresh</h3>
+<div id="outline-container-orgebec975" class="outline-3">
+<h3 id="orgebec975"><span class="section-number-3">5.1.</span> Cache bypass refresh</h3>
 <div class="outline-text-3" id="text-5-1">
 <ul class="org-ul">
 <li><code>Ctrl+Shift+R</code></li>
@@ -534,7 +534,7 @@ In the end, I need to append a new rule to make the RPC work.
         </a>
         </div>
         <div class="social-links">
-          <a href="https://t.me/feihuadawangjiushiwo" target="_blank" rel="noopener noreferrer">
+          <a href="https://t.me/chenyo17" target="_blank" rel="noopener noreferrer">
           <i class="fab fa-telegram"></i>
           </a>
           <a href="https://github.com/chenyo-17" target="_blank" rel="noopener noreferrer">

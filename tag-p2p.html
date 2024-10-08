@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="alternate"
+      type="application/rss+xml"
+      href="https://chenyo.me/rss.xml"
+      title="RSS feed for https://chenyo.me">
+<title>Chenyo's Blog</title>
+<script type="text/javascript"
+             src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+       </script>
+       <script type="text/x-mathjax-config">
+             MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'],['\\(','\\)']]}});
+       </script>
+       <meta name="author" content="chenyo">
+      <meta name="referrer" content="no-referrer">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="stylesheet" href="assets/style.css" type="text/css"/>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+      <link rel="favicon" type="image/x-icon" href="favicon.ico">
+      <script src="assets/search.js"></script></head>
+<body>
+<div id="preamble" class="status">
+      <header>
+      <h1><a href="https://chenyo.me">Chenyo's org-static-blog</a></h1>
+      <nav>
+      <a href="https://chenyo.me">Home</a>
+      <a href="archive.html">Archive</a>
+      <a href="tags.html">Tags</a>
+      <div id="search-container">
+        <input type="text" id="search-input" placeholder="Search anywhere...">
+        <i class="fas fa-search search-icon"></i>
+      </div>
+      </nav>
+      </header></div>
+<div id="content">
+<h1 class="title">Posts tagged "p2p":</h1>
+<div class="post-date">04 Oct 2024</div><h1 class="post-title"><a href="https://chenyo.me/2024-10-04-dfinity-networking-layer.html">Learning Dfinity P2P layer</a></h1>
+<nav id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#org2f9bacb">1. Terminology</a>
+<ul>
+<li><a href="#orge61e168">1.1. IC design principle</a></li>
+<li><a href="#org3bb5e65">1.2. IC protocol stack</a>
+<ul>
+<li><a href="#orgf4bbfe9">1.2.1. Execution layer</a></li>
+<li><a href="#orgefb086d">1.2.2. Message routing layer</a></li>
+<li><a href="#orgc008fd4">1.2.3. Consensus layer</a></li>
+<li><a href="#org1202791">1.2.4. P2P layer</a></li>
+</ul>
+</li>
+<li><a href="#org8078573">1.3. State sync</a></li>
+<li><a href="#org3a05ca3">1.4. QUIC protocol</a></li>
+<li><a href="#org18b65c6">1.5. Backpressure in blockchain</a></li>
+</ul>
+</li>
+<li><a href="#org829e630">2. P2P layer</a>
+<ul>
+<li><a href="#org571c9f3">2.1. Gossip protocol</a></li>
+<li><a href="#org722f0c7">2.2. Artifacts</a></li>
+<li><a href="#orgb1b4646">2.3. Constraints</a></li>
+<li><a href="#org3b96b60">2.4. Adverts</a>
+<ul>
+<li><a href="#org2ea3d9b">2.4.1. Advert priority</a></li>
+</ul>
+</li>
+<li><a href="#org804eeb4">2.5. Artifact pool</a></li>
+<li><a href="#org2f8f707">2.6. Peer context</a></li>
+<li><a href="#org6dbbbb1">2.7. Gossip protocol events</a>
+<ul>
+<li><a href="#orgc11963e">2.7.1. Process a new advert received from peer \(i\)</a></li>
+<li><a href="#org5466c45">2.7.2. Process a new received artifact from peer \(i\)</a></li>
+</ul>
+</li>
+<li><a href="#orgee01a65">2.8. Common attacks</a>
+<ul>
+<li><a href="#org962b49f">2.8.1. Sybil attack</a></li>
+<li><a href="#org150081f">2.8.2. Eclipse attack</a></li>
+<li><a href="#org9da9cee">2.8.3. Routing table poisoning</a></li>
+<li><a href="#orgec2eb1a">2.8.4. Bandwidth hogging</a></li>
+</ul>
+</li>
+<li><a href="#org71a026f">2.9. Security</a></li>
+</ul>
+</li>
+<li><a href="#orgd35eb30">3. Transport component</a>
+<ul>
+<li><a href="#org7547aab">3.1. Transient connection disturbances</a></li>
+<li><a href="#org9a38d6d">3.2. Long disconnection with full TX queue</a></li>
+</ul>
+</li>
+<li><a href="#org2301ac7">4. State sync protocol</a>
+<ul>
+<li><a href="#orgeb4205a">4.1. Monolithic P2P layer not suitable for the state sync</a></li>
+</ul>
+</li>
+<li><a href="#orgef1fedd">5. Fully QUIC-based P2P layer</a>
+<ul>
+<li><a href="#org6b246b2">5.1. Properties for consensus-related clients</a></li>
+<li><a href="#org9be0596">5.2. Slot table</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</nav>
+<p>
+This is a personal note for learning DFINITY Internet Computer (IC) P2P layer.
+</p>
+
+<p>
+The learning resources include:
+</p>
+
+<ul class="org-ul">
+<li><a href="https://internetcomputer.org/how-it-works/peer-to-peer-p2p/">IC wiki: How P2P works</a>;</li>
+<li><a href="https://www.youtube.com/watch?v=HOQb0lKIy9I">Youtube: Inside the IC | P2P (July 2021)</a>;</li>
+<li><a href="https://medium.com/dfinity/secure-scalability-the-internet-computers-peer-to-peer-layer-6662d451f2cc">Medium: IC P2P layer&rsquo;s secure scalability (Oct 2021)</a>;</li>
+<li><a href="https://medium.com/dfinity/new-p2p-layer-of-the-internet-computer-introduces-quic-for-state-sync-984764fe9976">Medium: QUIC for state sync to simplify P2P (Sep 2023)</a>;</li>
+<li><a href="https://www.youtube.com/watch?v=31J8PoLW9iM">Youtube: QUIC Tutorial (SIGCOMM 2020)</a>;</li>
+<li><a href="https://medium.com/dfinity/a-new-p2p-layer-is-coming-to-the-internet-computer-772ac2a29484">Medium: Fully asynchronous IC P2P layer (Jan 2024)</a>.</li>
+</ul>
+<div id="outline-container-org2f9bacb" class="outline-2">
+<h2 id="org2f9bacb"><span class="section-number-2">1.</span> Terminology</h2>
+<div class="outline-text-2" id="text-1">
+</div>
+<div id="outline-container-orge61e168" class="outline-3">
+<h3 id="orge61e168"><span class="section-number-3">1.1.</span> IC design principle</h3>
+<div class="outline-text-3" id="text-1-1">
+<ul class="org-ul">
+<li>Secure, reliable and scalable.</li>
+<li>Scalability relies on the network message distribution efficiency; hence the IC network is divided into subnets.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org3bb5e65" class="outline-3">
+<h3 id="org3bb5e65"><span class="section-number-3">1.2.</span> IC protocol stack</h3>
+<div class="outline-text-3" id="text-1-2">
+<ul class="org-ul">
+<li>From top to down: execution, message routing, consensus, P2P.</li>
+</ul>
+</div>
+<div id="outline-container-orgf4bbfe9" class="outline-4">
+<h4 id="orgf4bbfe9"><span class="section-number-4">1.2.1.</span> Execution layer</h4>
+<div class="outline-text-4" id="text-1-2-1">
+<ul class="org-ul">
+<li>Manages a safe environment for deterministic execution of software messages.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgefb086d" class="outline-4">
+<h4 id="orgefb086d"><span class="section-number-4">1.2.2.</span> Message routing layer</h4>
+<div class="outline-text-4" id="text-1-2-2">
+<ul class="org-ul">
+<li>Routes user and system-generated messages between subnets.</li>
+<li>Manages the input and output queues for applications.</li>
+<li>Schedules messages for execution.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgc008fd4" class="outline-4">
+<h4 id="orgc008fd4"><span class="section-number-4">1.2.3.</span> Consensus layer</h4>
+<div class="outline-text-4" id="text-1-2-3">
+<ul class="org-ul">
+<li>Arranges messages received from users and different subnets into blocks before delivering them to the message routing layer.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org1202791" class="outline-4">
+<h4 id="org1202791"><span class="section-number-4">1.2.4.</span> P2P layer</h4>
+<div class="outline-text-4" id="text-1-2-4">
+<ul class="org-ul">
+<li>Collects and advertises messages from users and other nodes in the same subnet, e.g., IC consensus protocol, the state sync protocol.</li>
+<li>Main challenges: security, performance and scalability.</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-org8078573" class="outline-3">
+<h3 id="org8078573"><span class="section-number-3">1.3.</span> State sync</h3>
+<div class="outline-text-3" id="text-1-3">
+<ul class="org-ul">
+<li>Enables nodes to synchronize the replicated state of the subnet by downloading the required state and verify its authenticity relative to the subnet&rsquo;s chain key with the state sync protocol.</li>
+<li>Up-to-date nodes create a <b><b>checkpoint</b></b> regularly by writing the replicated state to disk, computing the state hash, the consensus layer tries to agree on the state by including the hash in the catch-up packages (CUPs).
+<ul class="org-ul">
+<li>A state recorded on the CUP implies the majority of nodes agree on the state and a majority of nodes can serve this state.</li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org3a05ca3" class="outline-3">
+<h3 id="org3a05ca3"><span class="section-number-3">1.4.</span> QUIC protocol</h3>
+<div class="outline-text-3" id="text-1-4">
+<ul class="org-ul">
+<li>A new transport protocol with TLS 1.3, new handshake, new packet structure, encryption, uni/bi-directional streams, etc.</li>
+<li>Low latency: zero-handshake latency for recently visited sites, no head-of-line (HOL) blocking.
+<ul class="org-ul">
+<li>HOL blocking: the delivery of subsequent packets in a data stream is delayed due to the need to process or retransmit an earlier packet.</li>
+</ul></li>
+<li>Encrypted transport: encrypt most of the packet header by using the connection IDs.
+<ul class="org-ul">
+<li>The connection IDs also tracks migrated connections securely.</li>
+<li>Packet numbers are also encrypted to avoid cross-network correlation.</li>
+</ul></li>
+<li>Packetization: support multiple stream frames in a single packet.
+<ul class="org-ul">
+<li>Allow unaffected streams to continue processing even if one stream has packet loss.</li>
+<li>Enable multiplexing of different data streams over a single connection.</li>
+</ul></li>
+<li>Stateless design: each QUIC packets contain enough information to be processed independently  and has built-in mechanism to match responses to requests.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org18b65c6" class="outline-3">
+<h3 id="org18b65c6"><span class="section-number-3">1.5.</span> Backpressure in blockchain</h3>
+<div class="outline-text-3" id="text-1-5">
+<ul class="org-ul">
+<li>If the receiver slows down the message consumption, the sender&rsquo;s buffer fills up and the sender&rsquo;s networking layer must take one of the three paths:
+<ul class="org-ul">
+<li>Propagate the backpressure to the application layer to slow down data production; would be a DoS attack vector.</li>
+<li>Buffer messages (indefinitely); also an attack vector.</li>
+<li>Drop egress messages; risks the liveness, i.e., no delivery guarantee.</li>
+</ul></li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-org829e630" class="outline-2">
+<h2 id="org829e630"><span class="section-number-2">2.</span> P2P layer</h2>
+<div class="outline-text-2" id="text-2">
+<ul class="org-ul">
+<li>Send out artifacts created by the above layers.</li>
+<li>Receive, validate and distribute artifacts from users and other nodes.</li>
+<li>Guarantees the secure <b>eventual</b> broadcast delivery to all nodes.
+<ul class="org-ul">
+<li><b><b>asynchronous</b></b> communication network assumption provides no time upper bound.</li>
+<li>Provide <b><b>bounded time delivery</b></b> under some network assumptions.</li>
+</ul></li>
+</ul>
+</div>
+<div id="outline-container-org571c9f3" class="outline-3">
+<h3 id="org571c9f3"><span class="section-number-3">2.1.</span> Gossip protocol</h3>
+<div class="outline-text-3" id="text-2-1">
+<ul class="org-ul">
+<li>When a subnet node creates an artifact or receives it from its peer, it gossips this artifact to all its peers, i.e., other connected subnet nodes.
+<ul class="org-ul">
+<li>Each artifact eventually propagates through the whole subnet.</li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org722f0c7" class="outline-3">
+<h3 id="org722f0c7"><span class="section-number-3">2.2.</span> Artifacts</h3>
+<div class="outline-text-3" id="text-2-2">
+<ul class="org-ul">
+<li>Network messages to be broadcast in the subnet, e.g.,
+<ul class="org-ul">
+<li>Users input to canister smart contracts;</li>
+<li>Protocol-originating messages, e.g., blocks produced by the consensus layer or state synchronization certification.</li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgb1b4646" class="outline-3">
+<h3 id="orgb1b4646"><span class="section-number-3">2.3.</span> Constraints</h3>
+<div class="outline-text-3" id="text-2-3">
+<ul class="org-ul">
+<li>P2P layer should provide the above guarantee under the following constraints:
+<ul class="org-ul">
+<li>Bounded-time delivery or eventual (under weaker assumptions) delivery.</li>
+<li>Tolerate up to a certain threshold of dropped artifacts or byzantine nodes (1/3).</li>
+<li>Each peer has its own share of the resources available at other peers and the resource usage by each peer is bounded.</li>
+<li>Should be able to prioritize different artifacts.</li>
+<li>Provide high throughput (rather than low latency) and avoid data duplication to utilize the network.</li>
+<li>Resilient to DoS/Spam and enable encryption, authenticity and integrity.</li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org3b96b60" class="outline-3">
+<h3 id="org3b96b60"><span class="section-number-3">2.4.</span> Adverts</h3>
+<div class="outline-text-3" id="text-2-4">
+<ul class="org-ul">
+<li>Simply flooding all artifacts consumes unnecessary network bandwidth, instead artifacts previews called adverts are sent first.</li>
+<li>An advert includes fields used by the gossip protocol and its application components (which process the messages) for integrity verification and decision-making (e.g., which artifacts to prioritize)</li>
+<li>Other nodes may request the corresponding artifact from one or more of its peers who send the adverts.</li>
+<li>In the new P2P layer, if the artifact is small enough (&lt; 1KB), adverts are not used.</li>
+</ul>
+</div>
+<div id="outline-container-org2ea3d9b" class="outline-4">
+<h4 id="org2ea3d9b"><span class="section-number-4">2.4.1.</span> Advert priority</h4>
+<div class="outline-text-4" id="text-2-4-1">
+<ul class="org-ul">
+<li>Consensus provides the gossip protocol with a priority function, which takes an advert and its attributes and returns a priority value.</li>
+<li>Each P2P client decide how to request the artifact (e.g.,drop or fetch immediately).</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-org804eeb4" class="outline-3">
+<h3 id="org804eeb4"><span class="section-number-3">2.5.</span> Artifact pool</h3>
+<div class="outline-text-3" id="text-2-5">
+<ul class="org-ul">
+<li>A data structure maintained by the gossip protocol.</li>
+<li>Contain all available artifacts for each application component.</li>
+<li>P2P informs consensus and other client components about the pool changes by calling <code>on_state_change()</code>, each component determines its next action, e.g., validation.
+<ul class="org-ul">
+<li>Each call returns a set of <code>ChangeActions</code> corresponding to the addition and deletion of artifacts from the validated pool of a client; the corresponding adverts are then broadcasted.</li>
+</ul></li>
+<li>The artifacts can be persistent to non-volatile storage.</li>
+<li>Separated into validated and unvalidated sections; the size of each unvalidated section for each peer is bounded to prevent bad peers from filling up the pool.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org2f8f707" class="outline-3">
+<h3 id="org2f8f707"><span class="section-number-3">2.6.</span> Peer context</h3>
+<div class="outline-text-3" id="text-2-6">
+<ul class="org-ul">
+<li>Advert queue: a priority queue of all adverts the peer has received from another peer, ordered by their priority.</li>
+<li>Requested set: contains all adverts whose artifacts have been requested.</li>
+<li>Received check cache: used to prevent duplicated artifact requests.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org6dbbbb1" class="outline-3">
+<h3 id="org6dbbbb1"><span class="section-number-3">2.7.</span> Gossip protocol events</h3>
+<div class="outline-text-3" id="text-2-7">
+<ul class="org-ul">
+<li>Create a new advert for a new artifact added by application component locally and sends to all peers;</li>
+<li>Process a new advert.</li>
+<li>Process a new artifact.</li>
+<li>Handle recovery and reconnection.</li>
+</ul>
+</div>
+<div id="outline-container-orgc11963e" class="outline-4">
+<h4 id="orgc11963e"><span class="section-number-4">2.7.1.</span> Process a new advert received from peer \(i\)</h4>
+<div class="outline-text-4" id="text-2-7-1">
+<ul class="org-ul">
+<li>If the advert is already in peer \(i\)&rsquo;s received check cache, or the priority is &ldquo;drop&rdquo;, ignore;</li>
+<li>If the advert is not in the pool, adds to the advert queue for peer \(i\);</li>
+<li>If enough space for peer \(i\)&rsquo;s unvalidated section in the artifact pool, call <code>download_next(i)</code> (with a timeout) to ask for the next artifact with the highest priority (not necessarily corresponds to the last received advert).</li>
+<li><code>download_next(i)</code> sends the request to peer \(i\) and moves the advert with the highest priority from advert queue to the requested set of peer \(i\);</li>
+<li>If <code>download_next(i)</code> is timeout, check whether the advert is also received from other advert queue and try to fetch it from them before retrying with peer \(i\) (as peer \(i\) may be misbehaving).</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org5466c45" class="outline-4">
+<h4 id="org5466c45"><span class="section-number-4">2.7.2.</span> Process a new received artifact from peer \(i\)</h4>
+<div class="outline-text-4" id="text-2-7-2">
+<ul class="org-ul">
+<li>First check the received artifact has been requested and verify its integrity;</li>
+<li>Remove all corresponding adverts from all advert queues and requested sets;</li>
+<li>Add the artifact to peer \(i\)&rsquo;s unvalidated pool and wait for the client component to validate;</li>
+<li>Add the artifact hash to peer \(i\)&rsquo;s received check cache for a grace period to ignore further adverts for the same artifact;
+<ul class="org-ul">
+<li>If the artifact is removed from the unvalidated section later (e.g., the artifact is invalid), the application component may request it again from peer \(i\), with the received cache mechanism the gossip protocol does not send out the request again in a short time.</li>
+</ul></li>
+<li>If enough space for peer \(i\)&rsquo;s unvalidated section, call <code>download_next(i)</code>.</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-orgee01a65" class="outline-3">
+<h3 id="orgee01a65"><span class="section-number-3">2.8.</span> Common attacks</h3>
+<div class="outline-text-3" id="text-2-8">
+</div>
+<div id="outline-container-org962b49f" class="outline-4">
+<h4 id="org962b49f"><span class="section-number-4">2.8.1.</span> Sybil attack</h4>
+<div class="outline-text-4" id="text-2-8-1">
+<ul class="org-ul">
+<li>An attack creates multiple nodes to gain influences.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org150081f" class="outline-4">
+<h4 id="org150081f"><span class="section-number-4">2.8.2.</span> Eclipse attack</h4>
+<div class="outline-text-4" id="text-2-8-2">
+<ul class="org-ul">
+<li>All peers of a correct node are byzantine nodes to disconnect the correct node from the subnet (though they cannot send spoofed artifacts due to artifact authentication).</li>
+<li>Mitigation: use overlays with large min cut and expansion so that at least one peer is correct for each node.
+<ul class="org-ul">
+<li>Each node uses a different overlap.</li>
+<li>Small enough subnets can be a complete graph, large subnets use more sparse overlays.</li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org9da9cee" class="outline-4">
+<h4 id="org9da9cee"><span class="section-number-4">2.8.3.</span> Routing table poisoning</h4>
+<div class="outline-text-4" id="text-2-8-3">
+<ul class="org-ul">
+<li>Malicious nodes provide false routing information to disrupt network topology.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgec2eb1a" class="outline-4">
+<h4 id="orgec2eb1a"><span class="section-number-4">2.8.4.</span> Bandwidth hogging</h4>
+<div class="outline-text-4" id="text-2-8-4">
+<ul class="org-ul">
+<li>Attackers consume excessive network resources.</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-org71a026f" class="outline-3">
+<h3 id="org71a026f"><span class="section-number-3">2.9.</span> Security</h3>
+<div class="outline-text-3" id="text-2-9">
+<ul class="org-ul">
+<li>NNS manages the subnet membership, each node only requests and accepts connections with nodes in the same subnet to prevent DoS attack.</li>
+<li>NNS canisters guarantee that all communication between two nodes are encrypted and authenticated by TLS.</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-orgd35eb30" class="outline-2">
+<h2 id="orgd35eb30"><span class="section-number-2">3.</span> Transport component</h2>
+<div class="outline-text-2" id="text-3">
+<ul class="org-ul">
+<li>Below the P2P component to main the actual network connections between peers.</li>
+<li>Have its own send buffers and internal heartbeat mechanism, which are important for bounded time delivery.</li>
+<li>Frame gossip message with its own 7 headers.</li>
+</ul>
+</div>
+<div id="outline-container-org7547aab" class="outline-3">
+<h3 id="org7547aab"><span class="section-number-3">3.1.</span> Transient connection disturbances</h3>
+<div class="outline-text-3" id="text-3-1">
+<ul class="org-ul">
+<li>Transport keeps buffering ongoing messages in TX queues;</li>
+<li>When the connection works again, transmit all buffered messages and empty TX queues.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org9a38d6d" class="outline-3">
+<h3 id="org9a38d6d"><span class="section-number-3">3.2.</span> Long disconnection with full TX queue</h3>
+<div class="outline-text-3" id="text-3-2">
+<ul class="org-ul">
+<li>Transport notifies the receiver gossip protocol, sends retransmission request with artifact filter to tell the sender the latest advert the receiver has seen;
+<ul class="org-ul">
+<li>The receiver may not need to catch up all artifacts since they may have received the same adverts from other peers before sending the retransmission.</li>
+</ul></li>
+<li>When receiving a retransmission request, the sender sends all relevant adverts according to the filter through the TX queue.</li>
+<li>If the TX queue becomes full again, another retransmission takes place.</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-org2301ac7" class="outline-2">
+<h2 id="org2301ac7"><span class="section-number-2">4.</span> State sync protocol</h2>
+<div class="outline-text-2" id="text-4">
+<ul class="org-ul">
+<li>Nodes periodically advertise all locally available state versions with adverts;
+<ul class="org-ul">
+<li>A version is the block height to which the state corresponds, and the state hash.</li>
+</ul></li>
+<li>If a node sees a more recent CUP, it can conclude it has fallen behind and can request the state from the peer which sends the CUP;
+<ul class="org-ul">
+<li>The protocol ensures unchanged pieces of a state are not re-downloaded, as the state can be viewed as a file tree and each file is split into chunks.</li>
+<li>A node can simultaneously request chunks from multiple peers like BitTorrent.</li>
+</ul></li>
+<li>The resuming node starts by requesting the manifest chunk, which contains a list of all files and chunks as well as their hashes the state contains;
+<ul class="org-ul">
+<li>The manifest is peer-agnostic and the manifest hash is included in the CUP.</li>
+<li>Once the manifest hash is verified, one can conclude all file and chunk hashes are authentic.</li>
+</ul></li>
+<li>The node then request missing chunks from multiple peers.</li>
+</ul>
+</div>
+<div id="outline-container-orgeb4205a" class="outline-3">
+<h3 id="orgeb4205a"><span class="section-number-3">4.1.</span> Monolithic P2P layer not suitable for the state sync</h3>
+<div class="outline-text-3" id="text-4-1">
+<ul class="org-ul">
+<li>P2P layer is designed to distribute small messages, which is not the case for the state sync protocol.</li>
+<li>To simplify the P2P layer, it is separated into 2: one for state sync and the other for the rest clients.</li>
+<li>The P2P layer uses a new transport component to support two <b><b>async</b></b> APIs: <code>push(message, peer_id)</code> and <code>rpc(message, peer_id) -&gt; response</code>.
+<ul class="org-ul">
+<li>P2P periodically calls <code>push()</code> with the current states to advertise own current state to all peers.</li>
+<li>When noticing itself is behind, it calls <code>rpc()</code> to request specific chunks</li>
+</ul></li>
+<li>Using a single TCP steam is impossible to relate requests to responses without tracking states, therefore QUIC protocol is used to <b><b>multiplex</b></b> multiple streams in one connection.
+<ul class="org-ul">
+<li>P2P layer can be completely asynchronous to better utilize CPU and bandwidth resources, e.g., congestion on state synchronization does not necessarily affect other adverts.</li>
+<li>Every response is tied to a corresponding request without having to maintain states.</li>
+<li>Can help dynamically prioritize traffic of different clients.</li>
+</ul></li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-orgef1fedd" class="outline-2">
+<h2 id="orgef1fedd"><span class="section-number-2">5.</span> Fully QUIC-based P2P layer</h2>
+<div class="outline-text-2" id="text-5">
+<ul class="org-ul">
+<li>IC&rsquo;s P2P layer stops using TCP altogether, which means a shift to a fully asynchronous implementation of the P2P layer.
+<ul class="org-ul">
+<li>Each request is sent as a new QUIC stream and handled independently from other requests.</li>
+<li>Each client (e.g., consensus,state sync, key distribution) uses a separate instance of the P2P layer (state sync uses the specific one).</li>
+</ul></li>
+<li>Uses a new abstract data structure slot table to track the content of the validated artifact pool and the process of updating the peers.</li>
+<li>Reduces the block rate under heavy load.</li>
+<li>Will eventually shift all clients to use the new P2P layer.</li>
+</ul>
+</div>
+<div id="outline-container-org6b246b2" class="outline-3">
+<h3 id="org6b246b2"><span class="section-number-3">5.1.</span> Properties for consensus-related clients</h3>
+<div class="outline-text-3" id="text-5-1">
+<ul class="org-ul">
+<li>Bounded number of active artifacts in the validated artifact pool; the consensus protocol uses checkpoints to purge artifacts periodically, hence a maximal pool size \(C\).</li>
+<li>Explicit expiry of artifacts; if an artifact is purged from a pool, it is no longer disseminated to peers; if no peer of a node has an artifact, the node is guaranteed to not need that artifact even if it failed to receive it.
+<ul class="org-ul">
+<li>During state synchronization, nodes use artifacts to update own states, once states are updated, artifacts can be safely purged after some time, e.g., to help other nodes to synchronize states.</li>
+<li>Newly joined nodes use CUP for offline state sync.</li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org9be0596" class="outline-3">
+<h3 id="org9be0596"><span class="section-number-3">5.2.</span> Slot table</h3>
+<div class="outline-text-3" id="text-5-2">
+<ul class="org-ul">
+<li>Maintained on the sender side and inferred on the receiver side.</li>
+<li>The table size corresponds to the number of active artifacts in the validated pool.</li>
+<li>Whenever an artifact is added to the validated pool, it is added in the slot table on the sender side.
+<ul class="org-ul">
+<li>The sender sends out a slot update message to all peers.</li>
+<li>Receivers infer the slot table state based on the arrived slot update messages.</li>
+<li>Deletions are implicitly propagated by new artifact reusing the slot.</li>
+<li>Allows nodes to notice when an artifact no longer exists in any peer&rsquo;s slot tables and can remove it from the unvalidated pool.</li>
+</ul></li>
+<li>Each slot maintains a version number for the slot artifact; receivers only accept update messages with higher version numbers than the one it already has.</li>
+<li>A lightweight thread is spawn for each slot per peer to reliably push the slot update message.</li>
+<li>The approach combines buffering messages and dropping messages in handling the backpressure to achieve resilience and liveness.</li>
+<li>Bounds on the unvalidated pool: \(C\) artifacts from an honest peer and \(2C\) from a malicious peer.</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="taglist"><a href="https://chenyo.me/tags.html">Tags</a>: <a href="https://chenyo.me/tag-dfinity.html">dfinity</a> <a href="https://chenyo.me/tag-network.html">network</a> <a href="https://chenyo.me/tag-p2p.html">p2p</a> </div><div id="archive">
+<a href="https://chenyo.me/archive.html">Other posts</a>
+</div>
+</div>
+<div id="postamble" class="status"><div id="search-results"></div>
+      <footer>
+        <div class="footer-content">
+        <div class="footer-left">
+        <p>© 2024 chenyo. Some rights reserved.</p>
+        <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">
+        <img alt="Creative Commons License" style="border-width: 0"
+        src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png"/>
+        </a>
+        </div>
+        <div class="social-links">
+          <a href="https://t.me/chenyo17" target="_blank" rel="noopener noreferrer">
+          <i class="fab fa-telegram"></i>
+          </a>
+          <a href="https://github.com/chenyo-17" target="_blank" rel="noopener noreferrer">
+            <i class="fab fa-github"></i>
+      </a>
+      </div>
+      </footer></div>
+</body>
+</html>

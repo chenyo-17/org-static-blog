@@ -41,29 +41,29 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org3da6ca5">1. Concurrency vs Parallelism</a></li>
-<li><a href="#orgec44e31">2. Use goroutines for states</a>
+<li><a href="#org9576a2c">1. Concurrency vs Parallelism</a></li>
+<li><a href="#org8f67138">2. Use goroutines for states</a>
 <ul>
-<li><a href="#org6365396">2.1. Matching a regex</a></li>
-<li><a href="#org134fbdf">2.2. When the state variable cannot be avoided</a></li>
+<li><a href="#org7a554b2">2.1. Matching a regex</a></li>
+<li><a href="#org4a64cda">2.2. When the state variable cannot be avoided</a></li>
 </ul>
 </li>
-<li><a href="#org7a43aab">3. Pattern 1: publish/subscribe server</a>
+<li><a href="#orgcf04cb6">3. Pattern 1: publish/subscribe server</a>
 <ul>
-<li><a href="#org6a0be8e">3.1. Options for slow goroutines</a></li>
+<li><a href="#org67bf6ba">3.1. Options for slow goroutines</a></li>
 </ul>
 </li>
-<li><a href="#orga53536b">4. Pattern 2: work scheduler</a></li>
-<li><a href="#org6868eed">5. Pattern 3: replicated service client</a></li>
-<li><a href="#org29de31a">6. Pattern 4: Protocol multiplexer</a></li>
+<li><a href="#orgbfbac1b">4. Pattern 2: work scheduler</a></li>
+<li><a href="#orgcce2727">5. Pattern 3: replicated service client</a></li>
+<li><a href="#orga057c7a">6. Pattern 4: Protocol multiplexer</a></li>
 </ul>
 </div>
 </nav>
 <p>
 This a personal note for the <a href="https://www.youtube.com/watch?v=IdCbMO0Ey9I">Russ Cox guest lecture</a>.
 </p>
-<div id="outline-container-org3da6ca5" class="outline-2">
-<h2 id="org3da6ca5"><span class="section-number-2">1.</span> Concurrency vs Parallelism</h2>
+<div id="outline-container-org9576a2c" class="outline-2">
+<h2 id="org9576a2c"><span class="section-number-2">1.</span> Concurrency vs Parallelism</h2>
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
 <li>Concurrency: write a program to handle lot of things at once
@@ -74,12 +74,12 @@ This a personal note for the <a href="https://www.youtube.com/watch?v=IdCbMO0Ey9
 </ul>
 </div>
 </div>
-<div id="outline-container-orgec44e31" class="outline-2">
-<h2 id="orgec44e31"><span class="section-number-2">2.</span> Use goroutines for states</h2>
+<div id="outline-container-org8f67138" class="outline-2">
+<h2 id="org8f67138"><span class="section-number-2">2.</span> Use goroutines for states</h2>
 <div class="outline-text-2" id="text-2">
 </div>
-<div id="outline-container-org6365396" class="outline-3">
-<h3 id="org6365396"><span class="section-number-3">2.1.</span> Matching a regex</h3>
+<div id="outline-container-org7a554b2" class="outline-3">
+<h3 id="org7a554b2"><span class="section-number-3">2.1.</span> Matching a regex</h3>
 <div class="outline-text-3" id="text-2-1">
 <ul class="org-ul">
 <li>return if a given string matches a regex: start with <code>"</code>, contains arbitrary escape sequence and ends with <code>"</code></li>
@@ -136,8 +136,8 @@ clear logic: store states in the code
 </ul>
 </div>
 </div>
-<div id="outline-container-org134fbdf" class="outline-3">
-<h3 id="org134fbdf"><span class="section-number-3">2.2.</span> When the state variable cannot be avoided</h3>
+<div id="outline-container-org4a64cda" class="outline-3">
+<h3 id="org4a64cda"><span class="section-number-3">2.2.</span> When the state variable cannot be avoided</h3>
 <div class="outline-text-3" id="text-2-2">
 <ul class="org-ul">
 <li><p>
@@ -239,8 +239,8 @@ use additional goroutines to hold states
 </div>
 </div>
 </div>
-<div id="outline-container-org7a43aab" class="outline-2">
-<h2 id="org7a43aab"><span class="section-number-2">3.</span> Pattern 1: publish/subscribe server</h2>
+<div id="outline-container-orgcf04cb6" class="outline-2">
+<h2 id="orgcf04cb6"><span class="section-number-2">3.</span> Pattern 1: publish/subscribe server</h2>
 <div class="outline-text-2" id="text-3">
 <ul class="org-ul">
 <li>the information goes one way: server -&gt; client</li>
@@ -292,8 +292,8 @@ prefer <code>defer</code> when unlocking the mutex
 </div></li>
 </ul>
 </div>
-<div id="outline-container-org6a0be8e" class="outline-3">
-<h3 id="org6a0be8e"><span class="section-number-3">3.1.</span> Options for slow goroutines</h3>
+<div id="outline-container-org67bf6ba" class="outline-3">
+<h3 id="org67bf6ba"><span class="section-number-3">3.1.</span> Options for slow goroutines</h3>
 <div class="outline-text-3" id="text-3-1">
 <ul class="org-ul">
 <li>slow down event generation</li>
@@ -410,8 +410,8 @@ convert mutexes into goroutines, not suitable for Raft where state transition is
 </div>
 </div>
 </div>
-<div id="outline-container-orga53536b" class="outline-2">
-<h2 id="orga53536b"><span class="section-number-2">4.</span> Pattern 2: work scheduler</h2>
+<div id="outline-container-orgbfbac1b" class="outline-2">
+<h2 id="orgbfbac1b"><span class="section-number-2">4.</span> Pattern 2: work scheduler</h2>
 <div class="outline-text-2" id="text-4">
 <ul class="org-ul">
 <li><p>
@@ -556,8 +556,8 @@ Optimization for the above code: while the task loop creates goroutines \(M\) ti
 </ul>
 </div>
 </div>
-<div id="outline-container-org6868eed" class="outline-2">
-<h2 id="org6868eed"><span class="section-number-2">5.</span> Pattern 3: replicated service client</h2>
+<div id="outline-container-orgcce2727" class="outline-2">
+<h2 id="orgcce2727"><span class="section-number-2">5.</span> Pattern 3: replicated service client</h2>
 <div class="outline-text-2" id="text-5">
 <ul class="org-ul">
 <li><p>
@@ -618,8 +618,8 @@ A client replicates its requests to multiple servers, waits for the first reply 
 </ul>
 </div>
 </div>
-<div id="outline-container-org29de31a" class="outline-2">
-<h2 id="org29de31a"><span class="section-number-2">6.</span> Pattern 4: Protocol multiplexer</h2>
+<div id="outline-container-orga057c7a" class="outline-2">
+<h2 id="orga057c7a"><span class="section-number-2">6.</span> Pattern 4: Protocol multiplexer</h2>
 <div class="outline-text-2" id="text-6">
 <ul class="org-ul">
 <li><p>
@@ -730,14 +730,14 @@ The mux maintains a channel to queue unsent requests and a channel to queue unse
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org1083743">1. What happened</a></li>
-<li><a href="#org5110414">2. What did I do</a></li>
-<li><a href="#orgca2d88d">3. Another issue of running RPC in docker</a></li>
+<li><a href="#orgb8fb5fc">1. What happened</a></li>
+<li><a href="#orgebf733a">2. What did I do</a></li>
+<li><a href="#org98115f4">3. Another issue of running RPC in docker</a></li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-org1083743" class="outline-2">
-<h2 id="org1083743"><span class="section-number-2">1.</span> What happened</h2>
+<div id="outline-container-orgb8fb5fc" class="outline-2">
+<h2 id="orgb8fb5fc"><span class="section-number-2">1.</span> What happened</h2>
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
 <li>Servers SA and SB have the same docker installation, and the same running container CA and CB.</li>
@@ -752,8 +752,8 @@ fatal error: newosproc<br>
 </ul>
 </div>
 </div>
-<div id="outline-container-org5110414" class="outline-2">
-<h2 id="org5110414"><span class="section-number-2">2.</span> What did I do</h2>
+<div id="outline-container-orgebf733a" class="outline-2">
+<h2 id="orgebf733a"><span class="section-number-2">2.</span> What did I do</h2>
 <div class="outline-text-2" id="text-2">
 <ol class="org-ol">
 <li>I compared any related configurations between SA and SB. and between CA and CB, e.g., <code class="src src-bash"><span style="color: #c678dd;">ulimit</span> -a</code>, <code class="src src-bash">/etc/security/limits.conf</code>. They all look the same.</li>
@@ -770,8 +770,8 @@ fatal error: newosproc<br>
 </ol>
 </div>
 </div>
-<div id="outline-container-orgca2d88d" class="outline-2">
-<h2 id="orgca2d88d"><span class="section-number-2">3.</span> Another issue of running RPC in docker</h2>
+<div id="outline-container-org98115f4" class="outline-2">
+<h2 id="org98115f4"><span class="section-number-2">3.</span> Another issue of running RPC in docker</h2>
 <div class="outline-text-2" id="text-3">
 <ul class="org-ul">
 <li>The other day, I also spent hours debugging a <code>route unreachable</code> error when I want to send a request from CA to SA.</li>
@@ -819,7 +819,7 @@ In the end, I need to append a new rule to make the RPC work.
         </a>
         </div>
         <div class="social-links">
-          <a href="https://t.me/feihuadawangjiushiwo" target="_blank" rel="noopener noreferrer">
+          <a href="https://t.me/chenyo17" target="_blank" rel="noopener noreferrer">
           <i class="fab fa-telegram"></i>
           </a>
           <a href="https://github.com/chenyo-17" target="_blank" rel="noopener noreferrer">

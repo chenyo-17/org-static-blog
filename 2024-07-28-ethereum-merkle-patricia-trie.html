@@ -40,29 +40,29 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgf7b6299">1. Blockchain fundamentals</a>
+<li><a href="#orgb2329cb">1. Blockchain fundamentals</a>
 <ul>
-<li><a href="#org3573270">1.1. RLP (Recursive Length Prefix)</a></li>
-<li><a href="#orgfd89f34">1.2. Merkle tree</a>
+<li><a href="#orgf17bc83">1.1. RLP (Recursive Length Prefix)</a></li>
+<li><a href="#org27a0a3e">1.2. Merkle tree</a>
 <ul>
-<li><a href="#org542effc">1.2.1. Complexity for \(N\) items.</a></li>
+<li><a href="#orgf850705">1.2.1. Complexity for \(N\) items.</a></li>
 </ul>
 </li>
-<li><a href="#org86ff4d1">1.3. Patricia tree</a></li>
-<li><a href="#orgbec115c">1.4. Merkle Patricia Tree (MPT)</a>
+<li><a href="#org5e3dd63">1.3. Patricia tree</a></li>
+<li><a href="#org9107efb">1.4. Merkle Patricia Tree (MPT)</a>
 <ul>
-<li><a href="#org65736cd">1.4.1. Prefix byte</a></li>
-<li><a href="#orgee98561">1.4.2. Complexity for \(N\) items and key length \(K\)</a></li>
+<li><a href="#org5dcd242">1.4.1. Prefix byte</a></li>
+<li><a href="#orgca46a9c">1.4.2. Complexity for \(N\) items and key length \(K\)</a></li>
 </ul>
 </li>
-<li><a href="#org8911502">1.5. Rollup state tree</a></li>
-<li><a href="#org1d61d64">1.6. PoI for Verkle tree (see MegaETH post for details)</a></li>
-<li><a href="#orge92ca5d">1.7. Polynomial/KZG commitment</a></li>
+<li><a href="#orgb7d70ab">1.5. Rollup state tree</a></li>
+<li><a href="#org0ee0da9">1.6. PoI for Verkle tree (see MegaETH post for details)</a></li>
+<li><a href="#orgc18a9a3">1.7. Polynomial/KZG commitment</a></li>
 </ul>
 </li>
-<li><a href="#org13490d9">2. Ethereum MPT data structure</a></li>
-<li><a href="#orgacd8268">3. Ethereum MPT Functionality</a></li>
-<li><a href="#orge26ea95">4. Proof of inclusion</a></li>
+<li><a href="#org1e1c405">2. Ethereum MPT data structure</a></li>
+<li><a href="#org5aa1dbc">3. Ethereum MPT Functionality</a></li>
+<li><a href="#org9020fde">4. Proof of inclusion</a></li>
 </ul>
 </div>
 </nav>
@@ -74,12 +74,12 @@ This is a personal note of Ethereum Merkle Patricia Trie (MPT), resources are fr
 <li><a href="https://www.youtube.com/watch?v=Qn6sFmo8xGo">Blockchain trees Youtube (2022)</a></li>
 <li><a href="https://claude.ai/chat/a3ee5b1f-4d83-46c1-b681-d2d7b170c7e1">Claude.ai</a></li>
 </ul>
-<div id="outline-container-orgf7b6299" class="outline-2">
-<h2 id="orgf7b6299"><span class="section-number-2">1.</span> Blockchain fundamentals</h2>
+<div id="outline-container-orgb2329cb" class="outline-2">
+<h2 id="orgb2329cb"><span class="section-number-2">1.</span> Blockchain fundamentals</h2>
 <div class="outline-text-2" id="text-1">
 </div>
-<div id="outline-container-org3573270" class="outline-3">
-<h3 id="org3573270"><span class="section-number-3">1.1.</span> RLP (Recursive Length Prefix)</h3>
+<div id="outline-container-orgf17bc83" class="outline-3">
+<h3 id="orgf17bc83"><span class="section-number-3">1.1.</span> RLP (Recursive Length Prefix)</h3>
 <div class="outline-text-3" id="text-1-1">
 <ul class="org-ul">
 <li>A serialization method to encode arbitrarily nested arrays of binary data.</li>
@@ -87,8 +87,8 @@ This is a personal note of Ethereum Merkle Patricia Trie (MPT), resources are fr
 </ul>
 </div>
 </div>
-<div id="outline-container-orgfd89f34" class="outline-3">
-<h3 id="orgfd89f34"><span class="section-number-3">1.2.</span> Merkle tree</h3>
+<div id="outline-container-org27a0a3e" class="outline-3">
+<h3 id="org27a0a3e"><span class="section-number-3">1.2.</span> Merkle tree</h3>
 <div class="outline-text-3" id="text-1-2">
 <ul class="org-ul">
 <li>Used in Bitcoin to simplify proof of inclusion (PoI) of a transaction.</li>
@@ -99,8 +99,8 @@ This is a personal note of Ethereum Merkle Patricia Trie (MPT), resources are fr
 </ul></li>
 </ul>
 </div>
-<div id="outline-container-org542effc" class="outline-4">
-<h4 id="org542effc"><span class="section-number-4">1.2.1.</span> Complexity for \(N\) items.</h4>
+<div id="outline-container-orgf850705" class="outline-4">
+<h4 id="orgf850705"><span class="section-number-4">1.2.1.</span> Complexity for \(N\) items.</h4>
 <div class="outline-text-4" id="text-1-2-1">
 <ul class="org-ul">
 <li>Construction: \(O(2n)\) time and space.</li>
@@ -112,7 +112,7 @@ This is a personal note of Ethereum Merkle Patricia Trie (MPT), resources are fr
 </ul>
 
 
-<figure id="orgaa09efe">
+<figure id="org9c04db4">
 <img src="https://blockonomi.com/wp-content/uploads/2018/06/merkle-tree.jpg" alt="merkle-tree.jpg" align="center" width="500px">
 
 <figcaption><span class="figure-number">Figure 1: </span>Bitcoin Merkle Tree (<a href="https://blockonomi.com/wp-content/uploads/2018/06/merkle-tree.jpg">source</a>)</figcaption>
@@ -120,8 +120,8 @@ This is a personal note of Ethereum Merkle Patricia Trie (MPT), resources are fr
 </div>
 </div>
 </div>
-<div id="outline-container-org86ff4d1" class="outline-3">
-<h3 id="org86ff4d1"><span class="section-number-3">1.3.</span> Patricia tree</h3>
+<div id="outline-container-org5e3dd63" class="outline-3">
+<h3 id="org5e3dd63"><span class="section-number-3">1.3.</span> Patricia tree</h3>
 <div class="outline-text-3" id="text-1-3">
 <ul class="org-ul">
 <li>Trie: a data structure that stores key-value pair in a key&rsquo;s prefix tree.</li>
@@ -131,15 +131,15 @@ This is a personal note of Ethereum Merkle Patricia Trie (MPT), resources are fr
 </ul>
 
 
-<figure id="org6547c20">
+<figure id="orgff0a970">
 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Patricia_trie.svg/525px-Patricia_trie.svg.png" alt="525px-Patricia_trie.svg.png" align="center" width="400px">
 
 <figcaption><span class="figure-number">Figure 2: </span>Patricia Tree (<a href="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Patricia_trie.svg/525px-Patricia_trie.svg.png">source</a>)</figcaption>
 </figure>
 </div>
 </div>
-<div id="outline-container-orgbec115c" class="outline-3">
-<h3 id="orgbec115c"><span class="section-number-3">1.4.</span> Merkle Patricia Tree (MPT)</h3>
+<div id="outline-container-org9107efb" class="outline-3">
+<h3 id="org9107efb"><span class="section-number-3">1.4.</span> Merkle Patricia Tree (MPT)</h3>
 <div class="outline-text-3" id="text-1-4">
 <ul class="org-ul">
 <li>MPT is a hex-ary Merkle tree with an additional DB for hash lookup.</li>
@@ -156,14 +156,14 @@ This is a personal note of Ethereum Merkle Patricia Trie (MPT), resources are fr
 </ul>
 
 
-<figure id="org66b7a36">
+<figure id="org350f98e">
 <img src="https://github.com/zhangchiqing/merkle-patricia-trie/raw/master/diagrams/4_add_4th_tx_kv.png" alt="4_add_4th_tx_kv.png" align="center" width="400px">
 
 <figcaption><span class="figure-number">Figure 3: </span>MPT DB storage (<a href="https://github.com/zhangchiqing/merkle-patricia-trie/raw/master/diagrams/4_add_4th_tx_kv.png">source</a>)</figcaption>
 </figure>
 </div>
-<div id="outline-container-org65736cd" class="outline-4">
-<h4 id="org65736cd"><span class="section-number-4">1.4.1.</span> Prefix byte</h4>
+<div id="outline-container-org5dcd242" class="outline-4">
+<h4 id="org5dcd242"><span class="section-number-4">1.4.1.</span> Prefix byte</h4>
 <div class="outline-text-4" id="text-1-4-1">
 <ul class="org-ul">
 <li>Identify both the node type and the parity of the stored nibbles.</li>
@@ -172,8 +172,8 @@ This is a personal note of Ethereum Merkle Patricia Trie (MPT), resources are fr
 </ul>
 </div>
 </div>
-<div id="outline-container-orgee98561" class="outline-4">
-<h4 id="orgee98561"><span class="section-number-4">1.4.2.</span> Complexity for \(N\) items and key length \(K\)</h4>
+<div id="outline-container-orgca46a9c" class="outline-4">
+<h4 id="orgca46a9c"><span class="section-number-4">1.4.2.</span> Complexity for \(N\) items and key length \(K\)</h4>
 <div class="outline-text-4" id="text-1-4-2">
 <ul class="org-ul">
 <li>Construction:
@@ -192,7 +192,7 @@ This is a personal note of Ethereum Merkle Patricia Trie (MPT), resources are fr
 </ul>
 
 
-<figure id="org3a2eae6">
+<figure id="org652adc3">
 <img src="https://i.sstatic.net/YZGxe.png" alt="YZGxe.png" align="center" width="600px">
 
 <figcaption><span class="figure-number">Figure 4: </span>Merkle Patricia Tree (<a href="https://i.sstatic.net/YZGxe.png">source</a>)</figcaption>
@@ -200,8 +200,8 @@ This is a personal note of Ethereum Merkle Patricia Trie (MPT), resources are fr
 </div>
 </div>
 </div>
-<div id="outline-container-org8911502" class="outline-3">
-<h3 id="org8911502"><span class="section-number-3">1.5.</span> Rollup state tree</h3>
+<div id="outline-container-orgb7d70ab" class="outline-3">
+<h3 id="orgb7d70ab"><span class="section-number-3">1.5.</span> Rollup state tree</h3>
 <div class="outline-text-3" id="text-1-5">
 <ul class="org-ul">
 <li>Rollup has a higher performance requirement for PoI.</li>
@@ -215,8 +215,8 @@ This is a personal note of Ethereum Merkle Patricia Trie (MPT), resources are fr
 </ul>
 </div>
 </div>
-<div id="outline-container-org1d61d64" class="outline-3">
-<h3 id="org1d61d64"><span class="section-number-3">1.6.</span> PoI for Verkle tree (see <a href="https://chenyo-17.github.io/org-static-blog/2024-07-04-parallel-evm:-megaeth.html">MegaETH post</a> for details)</h3>
+<div id="outline-container-org0ee0da9" class="outline-3">
+<h3 id="org0ee0da9"><span class="section-number-3">1.6.</span> PoI for Verkle tree (see <a href="https://chenyo-17.github.io/org-static-blog/2024-07-04-parallel-evm:-megaeth.html">MegaETH post</a> for details)</h3>
 <div class="outline-text-3" id="text-1-6">
 <ul class="org-ul">
 <li>Stateless light nodes get a witness along with the new block, the witness is a PoI for the state change in the block.</li>
@@ -224,8 +224,8 @@ This is a personal note of Ethereum Merkle Patricia Trie (MPT), resources are fr
 </ul>
 </div>
 </div>
-<div id="outline-container-orge92ca5d" class="outline-3">
-<h3 id="orge92ca5d"><span class="section-number-3">1.7.</span> Polynomial/KZG commitment</h3>
+<div id="outline-container-orgc18a9a3" class="outline-3">
+<h3 id="orgc18a9a3"><span class="section-number-3">1.7.</span> Polynomial/KZG commitment</h3>
 <div class="outline-text-3" id="text-1-7">
 <ul class="org-ul">
 <li>In MPT, PoI for a branch node requires the hash values of all branches.</li>
@@ -235,8 +235,8 @@ This is a personal note of Ethereum Merkle Patricia Trie (MPT), resources are fr
 </div>
 </div>
 </div>
-<div id="outline-container-org13490d9" class="outline-2">
-<h2 id="org13490d9"><span class="section-number-2">2.</span> Ethereum MPT data structure</h2>
+<div id="outline-container-org1e1c405" class="outline-2">
+<h2 id="org1e1c405"><span class="section-number-2">2.</span> Ethereum MPT data structure</h2>
 <div class="outline-text-2" id="text-2">
 <ul class="org-ul">
 <li>Essentially is a key-value mapping; it provides <code>Get</code>, <code>Put</code> and <code>Del</code> functions.</li>
@@ -253,8 +253,8 @@ This is a personal note of Ethereum Merkle Patricia Trie (MPT), resources are fr
 </ul>
 </div>
 </div>
-<div id="outline-container-orgacd8268" class="outline-2">
-<h2 id="orgacd8268"><span class="section-number-2">3.</span> Ethereum MPT Functionality</h2>
+<div id="outline-container-org5aa1dbc" class="outline-2">
+<h2 id="org5aa1dbc"><span class="section-number-2">3.</span> Ethereum MPT Functionality</h2>
 <div class="outline-text-2" id="text-3">
 <ul class="org-ul">
 <li>Allows to verify <b><b>data integrity</b></b> with the <code>Hash</code> function to compute the Merkle root hash.</li>
@@ -267,8 +267,8 @@ This is a personal note of Ethereum Merkle Patricia Trie (MPT), resources are fr
 </ul>
 </div>
 </div>
-<div id="outline-container-orge26ea95" class="outline-2">
-<h2 id="orge26ea95"><span class="section-number-2">4.</span> Proof of inclusion</h2>
+<div id="outline-container-org9020fde" class="outline-2">
+<h2 id="org9020fde"><span class="section-number-2">4.</span> Proof of inclusion</h2>
 <div class="outline-text-2" id="text-4">
 <ul class="org-ul">
 <li>Proof: the path from the root to the leaf node.</li>
@@ -288,7 +288,7 @@ This is a personal note of Ethereum Merkle Patricia Trie (MPT), resources are fr
         </a>
         </div>
         <div class="social-links">
-          <a href="https://t.me/feihuadawangjiushiwo" target="_blank" rel="noopener noreferrer">
+          <a href="https://t.me/chenyo17" target="_blank" rel="noopener noreferrer">
           <i class="fab fa-telegram"></i>
           </a>
           <a href="https://github.com/chenyo-17" target="_blank" rel="noopener noreferrer">

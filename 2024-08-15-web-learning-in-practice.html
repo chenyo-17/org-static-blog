@@ -41,14 +41,14 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orga7c38c3">1. Basic html structure</a></li>
-<li><a href="#org9e25311">2. Tags</a></li>
-<li><a href="#orge8209ad">3. Attributes</a></li>
-<li><a href="#org96122be">4. Javascript</a>
+<li><a href="#orgf558189">1. Basic html structure</a></li>
+<li><a href="#orgff93d8f">2. Tags</a></li>
+<li><a href="#org1ff13b7">3. Attributes</a></li>
+<li><a href="#org46f484f">4. Javascript</a>
 <ul>
-<li><a href="#org33bbd79">4.1. Fetch from an HTML URL</a></li>
-<li><a href="#orgf0fbc64">4.2. Modify a DOM</a></li>
-<li><a href="#orgb2f591c">4.3. Syntax</a></li>
+<li><a href="#org0413058">4.1. Fetch from an HTML URL</a></li>
+<li><a href="#org0a89abe">4.2. Modify a DOM</a></li>
+<li><a href="#org83b7583">4.3. Syntax</a></li>
 </ul>
 </li>
 </ul>
@@ -57,8 +57,8 @@
 <p>
 This post records the basic web development knowledge I have learned in practice.
 </p>
-<div id="outline-container-orga7c38c3" class="outline-2">
-<h2 id="orga7c38c3"><span class="section-number-2">1.</span> Basic html structure</h2>
+<div id="outline-container-orgf558189" class="outline-2">
+<h2 id="orgf558189"><span class="section-number-2">1.</span> Basic html structure</h2>
 <div class="outline-text-2" id="text-1">
 <div class="org-src-container">
 <pre class="src src-html">&lt;<span style="color: #51afef;">!DOCTYPE</span> html&gt;
@@ -108,8 +108,8 @@ This post records the basic web development knowledge I have learned in practice
 </div>
 </div>
 </div>
-<div id="outline-container-org9e25311" class="outline-2">
-<h2 id="org9e25311"><span class="section-number-2">2.</span> Tags</h2>
+<div id="outline-container-orgff93d8f" class="outline-2">
+<h2 id="orgff93d8f"><span class="section-number-2">2.</span> Tags</h2>
 <div class="outline-text-2" id="text-2">
 <ul class="org-ul">
 <li><code class="src src-html">&lt;<span style="color: #c678dd;">a</span>&gt;</code>: contain links; have following attributes:
@@ -122,8 +122,8 @@ This post records the basic web development knowledge I have learned in practice
 </ul>
 </div>
 </div>
-<div id="outline-container-orge8209ad" class="outline-2">
-<h2 id="orge8209ad"><span class="section-number-2">3.</span> Attributes</h2>
+<div id="outline-container-org1ff13b7" class="outline-2">
+<h2 id="org1ff13b7"><span class="section-number-2">3.</span> Attributes</h2>
 <div class="outline-text-2" id="text-3">
 <ul class="org-ul">
 <li><code class="src src-html"><span style="color: #dcaeea;">id</span>="home"</code>:
@@ -133,12 +133,12 @@ This post records the basic web development knowledge I have learned in practice
 </ul>
 </div>
 </div>
-<div id="outline-container-org96122be" class="outline-2">
-<h2 id="org96122be"><span class="section-number-2">4.</span> Javascript</h2>
+<div id="outline-container-org46f484f" class="outline-2">
+<h2 id="org46f484f"><span class="section-number-2">4.</span> Javascript</h2>
 <div class="outline-text-2" id="text-4">
 </div>
-<div id="outline-container-org33bbd79" class="outline-3">
-<h3 id="org33bbd79"><span class="section-number-3">4.1.</span> Fetch from an HTML URL</h3>
+<div id="outline-container-org0413058" class="outline-3">
+<h3 id="org0413058"><span class="section-number-3">4.1.</span> Fetch from an HTML URL</h3>
 <div class="outline-text-3" id="text-4-1">
 <ol class="org-ol">
 <li><code class="src src-js"><span style="color: #51afef;">await</span> fetch(url)</code>: returns a <code class="src src-js">Response</code> object.
@@ -155,16 +155,16 @@ This post records the basic web development knowledge I have learned in practice
 </ol>
 </div>
 </div>
-<div id="outline-container-orgf0fbc64" class="outline-3">
-<h3 id="orgf0fbc64"><span class="section-number-3">4.2.</span> Modify a DOM</h3>
+<div id="outline-container-org0a89abe" class="outline-3">
+<h3 id="org0a89abe"><span class="section-number-3">4.2.</span> Modify a DOM</h3>
 <div class="outline-text-3" id="text-4-2">
 <ul class="org-ul">
 <li><code class="src src-js">content.querySelector(<span style="color: #98be65;">".taglist"</span>).remove()</code>: removes the element from the DOM, i.e., it modifies <code class="src src-js">content</code>.</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-orgb2f591c" class="outline-3">
-<h3 id="orgb2f591c"><span class="section-number-3">4.3.</span> Syntax</h3>
+<div id="outline-container-org83b7583" class="outline-3">
+<h3 id="org83b7583"><span class="section-number-3">4.3.</span> Syntax</h3>
 <div class="outline-text-3" id="text-4-3">
 <ul class="org-ul">
 <li><code class="src src-js"><span style="color: #51afef;">const</span> <span style="color: #dcaeea;">escapedQuery</span> = query.replace(<span style="color: #98be65;">/[.*+?^${}()|[\]\\]/</span>g, <span style="color: #98be65;">"\\$&amp;"</span>)</code>: add a backslash to any special character in the query; <code>$&amp;</code> is a special pattern used in Javascript&rsquo;s <code class="src src-js">replacement</code> method.</li>
@@ -184,7 +184,7 @@ This post records the basic web development knowledge I have learned in practice
         </a>
         </div>
         <div class="social-links">
-          <a href="https://t.me/feihuadawangjiushiwo" target="_blank" rel="noopener noreferrer">
+          <a href="https://t.me/chenyo17" target="_blank" rel="noopener noreferrer">
           <i class="fab fa-telegram"></i>
           </a>
           <a href="https://github.com/chenyo-17" target="_blank" rel="noopener noreferrer">

@@ -41,17 +41,17 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org20a6d81">1. Assumptions</a></li>
-<li><a href="#orgcf6e55a">2. Install prerequisite packages</a></li>
-<li><a href="#org5075acb">3. Install Emacs 29.4</a>
+<li><a href="#org967b036">1. Assumptions</a></li>
+<li><a href="#org9d97c4c">2. Install prerequisite packages</a></li>
+<li><a href="#org98ff32c">3. Install Emacs 29.4</a>
 <ul>
-<li><a href="#org17f16c3">3.1. Before building</a></li>
-<li><a href="#orgd1dff12">3.2. Build Emacs 29.4 with native-comp</a></li>
+<li><a href="#org140f84e">3.1. Before building</a></li>
+<li><a href="#org702e974">3.2. Build Emacs 29.4 with native-comp</a></li>
 </ul>
 </li>
-<li><a href="#org569af17">4. Install <code>ripgrep</code></a></li>
-<li><a href="#org78e09db">5. Install Doom Emacs</a></li>
-<li><a href="#orgc56000a">6. Some issues with running Emacs in WSL2</a></li>
+<li><a href="#orge6212e6">4. Install <code>ripgrep</code></a></li>
+<li><a href="#org5750277">5. Install Doom Emacs</a></li>
+<li><a href="#org219c7a4">6. Some issues with running Emacs in WSL2</a></li>
 </ul>
 </div>
 </nav>
@@ -60,16 +60,16 @@ Today I installed Doom Emacs for my husband on his WSL2.
 Although the entire process was guided by Claude, there were some back-and-forth during the interaction.
 Therefore I would like to record the full commands I have used here in sequence for any potential reference.
 </p>
-<div id="outline-container-org20a6d81" class="outline-2">
-<h2 id="org20a6d81"><span class="section-number-2">1.</span> Assumptions</h2>
+<div id="outline-container-org967b036" class="outline-2">
+<h2 id="org967b036"><span class="section-number-2">1.</span> Assumptions</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 This installation guide assumes a fresh installation of WSL2 Ubuntu 22.04 on Windows 11 in 2024 September.
 </p>
 </div>
 </div>
-<div id="outline-container-orgcf6e55a" class="outline-2">
-<h2 id="orgcf6e55a"><span class="section-number-2">2.</span> Install prerequisite packages</h2>
+<div id="outline-container-org9d97c4c" class="outline-2">
+<h2 id="org9d97c4c"><span class="section-number-2">2.</span> Install prerequisite packages</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 According to the Doom Emacs <a href="https://github.com/doomemacs/doomemacs#prerequisites">documentation</a>, the following packages are recommended:
@@ -83,12 +83,12 @@ According to the Doom Emacs <a href="https://github.com/doomemacs/doomemacs#prer
 </ul>
 </div>
 </div>
-<div id="outline-container-org5075acb" class="outline-2">
-<h2 id="org5075acb"><span class="section-number-2">3.</span> Install Emacs 29.4</h2>
+<div id="outline-container-org98ff32c" class="outline-2">
+<h2 id="org98ff32c"><span class="section-number-2">3.</span> Install Emacs 29.4</h2>
 <div class="outline-text-2" id="text-3">
 </div>
-<div id="outline-container-org17f16c3" class="outline-3">
-<h3 id="org17f16c3"><span class="section-number-3">3.1.</span> Before building</h3>
+<div id="outline-container-org140f84e" class="outline-3">
+<h3 id="org140f84e"><span class="section-number-3">3.1.</span> Before building</h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
 First, let&rsquo;s install some build dependencies:
@@ -109,7 +109,7 @@ The rest packages install pre-compiled libraries.
 </p>
 
 <p>
-Besides these packages, there are two important packages to support List native compilation:
+Besides these packages, there are two important packages to support Lisp native compilation:
 </p>
 
 <div class="org-src-container">
@@ -151,8 +151,8 @@ tiff, gif, jpeg, png and xpm.
 </blockquote>
 </div>
 </div>
-<div id="outline-container-orgd1dff12" class="outline-3">
-<h3 id="orgd1dff12"><span class="section-number-3">3.2.</span> Build Emacs 29.4 with native-comp</h3>
+<div id="outline-container-org702e974" class="outline-3">
+<h3 id="org702e974"><span class="section-number-3">3.2.</span> Build Emacs 29.4 with native-comp</h3>
 <div class="outline-text-3" id="text-3-2">
 <p>
 At this moment, we can start to download Emacs source code:
@@ -240,8 +240,8 @@ Congratulations! You have now installed the latest and fastest Emacs on WSL2.
 </div>
 </div>
 </div>
-<div id="outline-container-org569af17" class="outline-2">
-<h2 id="org569af17"><span class="section-number-2">4.</span> Install <code>ripgrep</code></h2>
+<div id="outline-container-orge6212e6" class="outline-2">
+<h2 id="orge6212e6"><span class="section-number-2">4.</span> Install <code>ripgrep</code></h2>
 <div class="outline-text-2" id="text-4">
 <p>
 As mentioned in ripgrep <a href="https://github.com/BurntSushi/ripgrep?tab=readme-ov-file#installation">documentation</a>, for Debian/Ubuntu users, one should
@@ -265,8 +265,8 @@ The installed ripgrep binary was not built with support for PCRE lookaheads.
 </blockquote>
 </div>
 </div>
-<div id="outline-container-org78e09db" class="outline-2">
-<h2 id="org78e09db"><span class="section-number-2">5.</span> Install Doom Emacs</h2>
+<div id="outline-container-org5750277" class="outline-2">
+<h2 id="org5750277"><span class="section-number-2">5.</span> Install Doom Emacs</h2>
 <div class="outline-text-2" id="text-5">
 <p>
 Installing Doom Emacs is straightforward, but before that, one should first remove the default Emacs configuration folder:
@@ -310,8 +310,8 @@ To fix that, run <code>M-x nerd-icons-install-font</code> inside the Emacs, then
 </div>
 </div>
 </div>
-<div id="outline-container-orgc56000a" class="outline-2">
-<h2 id="orgc56000a"><span class="section-number-2">6.</span> Some issues with running Emacs in WSL2</h2>
+<div id="outline-container-org219c7a4" class="outline-2">
+<h2 id="org219c7a4"><span class="section-number-2">6.</span> Some issues with running Emacs in WSL2</h2>
 <div class="outline-text-2" id="text-6">
 <ul class="org-ul">
 <li><p>
@@ -344,7 +344,7 @@ The first thing is I cannot reload the configuration with <code>M-x doom/reload<
         </a>
         </div>
         <div class="social-links">
-          <a href="https://t.me/feihuadawangjiushiwo" target="_blank" rel="noopener noreferrer">
+          <a href="https://t.me/chenyo17" target="_blank" rel="noopener noreferrer">
           <i class="fab fa-telegram"></i>
           </a>
           <a href="https://github.com/chenyo-17" target="_blank" rel="noopener noreferrer">

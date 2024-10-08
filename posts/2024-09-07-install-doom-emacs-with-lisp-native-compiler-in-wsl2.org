@@ -33,7 +33,7 @@ sudo apt install texinfo  # to generate documentation
 ~build-essnetial~ should install necessary tools to build C/C++ programs such as gcc, g++, make, gdb and dpkg.
 The rest packages install pre-compiled libraries.
 
-Besides these packages, there are two important packages to support List native compilation:
+Besides these packages, there are two important packages to support Lisp native compilation:
 
 #+begin_src bash
 sudo apt install ibgccjit0 libgccjit-11-dev  # 11 is my gcc version

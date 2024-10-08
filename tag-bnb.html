@@ -41,18 +41,18 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgbe1d343">1. Blockchain fundamentals</a>
+<li><a href="#orge2771bc">1. Blockchain fundamentals</a>
 <ul>
-<li><a href="#orgc52bcf3">1.1. System contract</a></li>
-<li><a href="#orgebc5a36">1.2. Transaction execution phases</a></li>
+<li><a href="#org69c633d">1.1. System contract</a></li>
+<li><a href="#org9e40074">1.2. Transaction execution phases</a></li>
 </ul>
 </li>
-<li><a href="#org0d3d4e2">2. Design principle</a></li>
-<li><a href="#orgf28c6d7">3. Workflow</a>
+<li><a href="#org87059dc">2. Design principle</a></li>
+<li><a href="#org3917a6e">3. Workflow</a>
 <ul>
-<li><a href="#orgc58f593">3.1. Dispatch factors</a></li>
-<li><a href="#orgabb89a8">3.2. Slot execution stages</a></li>
-<li><a href="#orgd03b2dc">3.3. Conflict detection</a></li>
+<li><a href="#orgc2b83c6">3.1. Dispatch factors</a></li>
+<li><a href="#orge09585a">3.2. Slot execution stages</a></li>
+<li><a href="#org01ea43d">3.3. Conflict detection</a></li>
 </ul>
 </li>
 </ul>
@@ -62,12 +62,12 @@
 This is a personal note for <a href="https://github.com/bnb-chain/BEPs/blob/master/BEPs/BEP130.md">BEP-130</a>.
 BEP-130 is a proposal that introduces a parallel transaction execution mechanism on the BNB Smart Chain (BSC).
 </p>
-<div id="outline-container-orgbe1d343" class="outline-2">
-<h2 id="orgbe1d343"><span class="section-number-2">1.</span> Blockchain fundamentals</h2>
+<div id="outline-container-orge2771bc" class="outline-2">
+<h2 id="orge2771bc"><span class="section-number-2">1.</span> Blockchain fundamentals</h2>
 <div class="outline-text-2" id="text-1">
 </div>
-<div id="outline-container-orgc52bcf3" class="outline-3">
-<h3 id="orgc52bcf3"><span class="section-number-3">1.1.</span> System contract</h3>
+<div id="outline-container-org69c633d" class="outline-3">
+<h3 id="org69c633d"><span class="section-number-3">1.1.</span> System contract</h3>
 <div class="outline-text-3" id="text-1-1">
 <ul class="org-ul">
 <li>Built-in contracts to perform system level operations, e,g., gas fee reward, cross chain communication.</li>
@@ -75,8 +75,8 @@ BEP-130 is a proposal that introduces a parallel transaction execution mechanism
 </ul>
 </div>
 </div>
-<div id="outline-container-orgebc5a36" class="outline-3">
-<h3 id="orgebc5a36"><span class="section-number-3">1.2.</span> Transaction execution phases</h3>
+<div id="outline-container-org9e40074" class="outline-3">
+<h3 id="org9e40074"><span class="section-number-3">1.2.</span> Transaction execution phases</h3>
 <div class="outline-text-3" id="text-1-2">
 <ul class="org-ul">
 <li>Block mining phase: received from the P2P transaction pool, could contain invalid transactions.</li>
@@ -85,8 +85,8 @@ BEP-130 is a proposal that introduces a parallel transaction execution mechanism
 </div>
 </div>
 </div>
-<div id="outline-container-org0d3d4e2" class="outline-2">
-<h2 id="org0d3d4e2"><span class="section-number-2">2.</span> Design principle</h2>
+<div id="outline-container-org87059dc" class="outline-2">
+<h2 id="org87059dc"><span class="section-number-2">2.</span> Design principle</h2>
 <div class="outline-text-2" id="text-2">
 <ul class="org-ul">
 <li>Should always produce the same result as the current sequential execution.</li>
@@ -96,12 +96,12 @@ BEP-130 is a proposal that introduces a parallel transaction execution mechanism
 </ul>
 </div>
 </div>
-<div id="outline-container-orgf28c6d7" class="outline-2">
-<h2 id="orgf28c6d7"><span class="section-number-2">3.</span> Workflow</h2>
+<div id="outline-container-org3917a6e" class="outline-2">
+<h2 id="org3917a6e"><span class="section-number-2">3.</span> Workflow</h2>
 <div class="outline-text-2" id="text-3">
 </div>
-<div id="outline-container-orgc58f593" class="outline-3">
-<h3 id="orgc58f593"><span class="section-number-3">3.1.</span> Dispatch factors</h3>
+<div id="outline-container-orgc2b83c6" class="outline-3">
+<h3 id="orgc2b83c6"><span class="section-number-3">3.1.</span> Dispatch factors</h3>
 <div class="outline-text-3" id="text-3-1">
 <ul class="org-ul">
 <li>Is the slot idle or occupied?</li>
@@ -112,8 +112,8 @@ BEP-130 is a proposal that introduces a parallel transaction execution mechanism
 </ul>
 </div>
 </div>
-<div id="outline-container-orgabb89a8" class="outline-3">
-<h3 id="orgabb89a8"><span class="section-number-3">3.2.</span> Slot execution stages</h3>
+<div id="outline-container-orge09585a" class="outline-3">
+<h3 id="orge09585a"><span class="section-number-3">3.2.</span> Slot execution stages</h3>
 <div class="outline-text-3" id="text-3-2">
 <ol class="org-ol">
 <li>Execute the transaction \(Tx_i\)based on a specific worldstate, e.g., the state when the execution starts.</li>
@@ -128,8 +128,8 @@ BEP-130 is a proposal that introduces a parallel transaction execution mechanism
 </ol>
 </div>
 </div>
-<div id="outline-container-orgd03b2dc" class="outline-3">
-<h3 id="orgd03b2dc"><span class="section-number-3">3.3.</span> Conflict detection</h3>
+<div id="outline-container-org01ea43d" class="outline-3">
+<h3 id="org01ea43d"><span class="section-number-3">3.3.</span> Conflict detection</h3>
 <div class="outline-text-3" id="text-3-3">
 <ul class="org-ul">
 <li>Detection items: storage key/value pair; account balance; contract content and status.</li>
@@ -144,35 +144,35 @@ BEP-130 is a proposal that introduces a parallel transaction execution mechanism
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org93338d2">1. Blockchain fundamentals</a>
+<li><a href="#org3cfd85a">1. Blockchain fundamentals</a>
 <ul>
-<li><a href="#org13a2e0e">1.1. Why is parallel EVM not easy</a></li>
-<li><a href="#orgca8cc87">1.2. A Parallel EVM ideas</a></li>
-<li><a href="#orgabd0e88">1.3. Block STM algorithm</a></li>
+<li><a href="#org9489617">1.1. Why is parallel EVM not easy</a></li>
+<li><a href="#org91459cc">1.2. A Parallel EVM ideas</a></li>
+<li><a href="#orgac74760">1.3. Block STM algorithm</a></li>
 </ul>
 </li>
-<li><a href="#orgfd2f8b3">2. BNB Parallel EVM 1.0: Infrastructure</a></li>
-<li><a href="#org92f1f33">3. BNB Parallel EVM 2.0: Performance enhancement</a></li>
-<li><a href="#orgcec61c8">4. BNB Parallel EVM 3.0: Production</a>
+<li><a href="#org89b3b0e">2. BNB Parallel EVM 1.0: Infrastructure</a></li>
+<li><a href="#orgc6e3320">3. BNB Parallel EVM 2.0: Performance enhancement</a></li>
+<li><a href="#org3031326">4. BNB Parallel EVM 3.0: Production</a>
 <ul>
-<li><a href="#org0aa5ec8">4.1. Hint-based dispatcher</a></li>
-<li><a href="#orgf7dc139">4.2. Seamless BNB chain ecosystem integration</a></li>
+<li><a href="#org41dcabc">4.1. Hint-based dispatcher</a></li>
+<li><a href="#orgbf38fde">4.2. Seamless BNB chain ecosystem integration</a></li>
 </ul>
 </li>
-<li><a href="#orgf8c4e42">5. Comparison with other solutions</a></li>
-<li><a href="#org0a86b63">6. Other optimizations</a></li>
+<li><a href="#org0a50e59">5. Comparison with other solutions</a></li>
+<li><a href="#org48a8333">6. Other optimizations</a></li>
 </ul>
 </div>
 </nav>
 <p>
 This is a personal note for <a href="https://www.bnbchain.org/zh-CN/blog/road-to-high-performance-parallel-evm-for-bnb-chain">BNB chain-blog</a>.
 </p>
-<div id="outline-container-org93338d2" class="outline-2">
-<h2 id="org93338d2"><span class="section-number-2">1.</span> Blockchain fundamentals</h2>
+<div id="outline-container-org3cfd85a" class="outline-2">
+<h2 id="org3cfd85a"><span class="section-number-2">1.</span> Blockchain fundamentals</h2>
 <div class="outline-text-2" id="text-1">
 </div>
-<div id="outline-container-org13a2e0e" class="outline-3">
-<h3 id="org13a2e0e"><span class="section-number-3">1.1.</span> Why is parallel EVM not easy</h3>
+<div id="outline-container-org9489617" class="outline-3">
+<h3 id="org9489617"><span class="section-number-3">1.1.</span> Why is parallel EVM not easy</h3>
 <div class="outline-text-3" id="text-1-1">
 <ul class="org-ul">
 <li>Lack of visibility of potential transaction conflict.</li>
@@ -180,8 +180,8 @@ This is a personal note for <a href="https://www.bnbchain.org/zh-CN/blog/road-to
 </ul>
 </div>
 </div>
-<div id="outline-container-orgca8cc87" class="outline-3">
-<h3 id="orgca8cc87"><span class="section-number-3">1.2.</span> A Parallel EVM ideas</h3>
+<div id="outline-container-org91459cc" class="outline-3">
+<h3 id="org91459cc"><span class="section-number-3">1.2.</span> A Parallel EVM ideas</h3>
 <div class="outline-text-3" id="text-1-2">
 <ul class="org-ul">
 <li>Run multiple EVM instances concurrently on different threads.</li>
@@ -190,8 +190,8 @@ This is a personal note for <a href="https://www.bnbchain.org/zh-CN/blog/road-to
 </ul>
 </div>
 </div>
-<div id="outline-container-orgabd0e88" class="outline-3">
-<h3 id="orgabd0e88"><span class="section-number-3">1.3.</span> Block STM algorithm</h3>
+<div id="outline-container-orgac74760" class="outline-3">
+<h3 id="orgac74760"><span class="section-number-3">1.3.</span> Block STM algorithm</h3>
 <div class="outline-text-3" id="text-1-3">
 <ul class="org-ul">
 <li>Optimistic parallelism: assigns transactions to various threads.</li>
@@ -201,8 +201,8 @@ This is a personal note for <a href="https://www.bnbchain.org/zh-CN/blog/road-to
 </div>
 </div>
 </div>
-<div id="outline-container-orgfd2f8b3" class="outline-2">
-<h2 id="orgfd2f8b3"><span class="section-number-2">2.</span> BNB Parallel EVM 1.0: Infrastructure</h2>
+<div id="outline-container-org89b3b0e" class="outline-2">
+<h2 id="org89b3b0e"><span class="section-number-2">2.</span> BNB Parallel EVM 1.0: Infrastructure</h2>
 <div class="outline-text-2" id="text-2">
 <ul class="org-ul">
 <li>Proposal: <a href="https://github.com/bnb-chain/BEPs/pull/130?ref=bnbchain.ghost.io">BEP-130 (2022)</a></li>
@@ -214,8 +214,8 @@ This is a personal note for <a href="https://www.bnbchain.org/zh-CN/blog/road-to
 </ul>
 </div>
 </div>
-<div id="outline-container-org92f1f33" class="outline-2">
-<h2 id="org92f1f33"><span class="section-number-2">3.</span> BNB Parallel EVM 2.0: Performance enhancement</h2>
+<div id="outline-container-orgc6e3320" class="outline-2">
+<h2 id="orgc6e3320"><span class="section-number-2">3.</span> BNB Parallel EVM 2.0: Performance enhancement</h2>
 <div class="outline-text-2" id="text-3">
 <ul class="org-ul">
 <li>Dispatcher: combine both static and dynamic dispatch strategies.</li>
@@ -226,12 +226,12 @@ This is a personal note for <a href="https://www.bnbchain.org/zh-CN/blog/road-to
 </ul>
 </div>
 </div>
-<div id="outline-container-orgcec61c8" class="outline-2">
-<h2 id="orgcec61c8"><span class="section-number-2">4.</span> BNB Parallel EVM 3.0: Production</h2>
+<div id="outline-container-org3031326" class="outline-2">
+<h2 id="org3031326"><span class="section-number-2">4.</span> BNB Parallel EVM 3.0: Production</h2>
 <div class="outline-text-2" id="text-4">
 </div>
-<div id="outline-container-org0aa5ec8" class="outline-3">
-<h3 id="org0aa5ec8"><span class="section-number-3">4.1.</span> Hint-based dispatcher</h3>
+<div id="outline-container-org41dcabc" class="outline-3">
+<h3 id="org41dcabc"><span class="section-number-3">4.1.</span> Hint-based dispatcher</h3>
 <div class="outline-text-3" id="text-4-1">
 <ul class="org-ul">
 <li>leverages external hint providers to analyze transactions and generate predictions about potential state access conflicts.</li>
@@ -242,8 +242,8 @@ This is a personal note for <a href="https://www.bnbchain.org/zh-CN/blog/road-to
 </ul>
 </div>
 </div>
-<div id="outline-container-orgf7dc139" class="outline-3">
-<h3 id="orgf7dc139"><span class="section-number-3">4.2.</span> Seamless BNB chain ecosystem integration</h3>
+<div id="outline-container-orgbf38fde" class="outline-3">
+<h3 id="orgbf38fde"><span class="section-number-3">4.2.</span> Seamless BNB chain ecosystem integration</h3>
 <div class="outline-text-3" id="text-4-2">
 <ul class="org-ul">
 <li>Modularization and reconstructing.</li>
@@ -252,8 +252,8 @@ This is a personal note for <a href="https://www.bnbchain.org/zh-CN/blog/road-to
 </div>
 </div>
 </div>
-<div id="outline-container-orgf8c4e42" class="outline-2">
-<h2 id="orgf8c4e42"><span class="section-number-2">5.</span> Comparison with other solutions</h2>
+<div id="outline-container-org0a50e59" class="outline-2">
+<h2 id="org0a50e59"><span class="section-number-2">5.</span> Comparison with other solutions</h2>
 <div class="outline-text-2" id="text-5">
 <table>
 
@@ -321,8 +321,8 @@ This is a personal note for <a href="https://www.bnbchain.org/zh-CN/blog/road-to
 </table>
 </div>
 </div>
-<div id="outline-container-org0a86b63" class="outline-2">
-<h2 id="org0a86b63"><span class="section-number-2">6.</span> Other optimizations</h2>
+<div id="outline-container-org48a8333" class="outline-2">
+<h2 id="org48a8333"><span class="section-number-2">6.</span> Other optimizations</h2>
 <div class="outline-text-2" id="text-6">
 <ul class="org-ul">
 <li>Opcode-level optimization: fine-tuning individual EVM instructions for maximum efficiency.</li>
@@ -347,7 +347,7 @@ This is a personal note for <a href="https://www.bnbchain.org/zh-CN/blog/road-to
         </a>
         </div>
         <div class="social-links">
-          <a href="https://t.me/feihuadawangjiushiwo" target="_blank" rel="noopener noreferrer">
+          <a href="https://t.me/chenyo17" target="_blank" rel="noopener noreferrer">
           <i class="fab fa-telegram"></i>
           </a>
           <a href="https://github.com/chenyo-17" target="_blank" rel="noopener noreferrer">
