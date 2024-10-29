@@ -37,6 +37,258 @@
 <div id="content">
 <h2>Welcome!</h2>
       <p>Take a look if you are bored.</p>
+<div class="post-date">23 Oct 2024</div><h1 class="post-title"><a href="https://chenyo.me/2024-10-23-book-notes:-a-philosophy-of-software-design-.html">Book notes: A Philosophy of Software Design</a></h1>
+<nav id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#orgf51a42c">1. Introduction</a></li>
+<li><a href="#orgfec3b97">2. Complexity</a>
+<ul>
+<li><a href="#org225e9d2">2.1. Definition</a></li>
+<li><a href="#org04bb83b">2.2. Symptoms</a></li>
+<li><a href="#orgf762040">2.3. Causes</a></li>
+</ul>
+</li>
+<li><a href="#org2666f3d">3. Programming mindsets</a>
+<ul>
+<li><a href="#orgefc344a">3.1. Strategic programming</a></li>
+</ul>
+</li>
+<li><a href="#orgb9edfa6">4. Modular design</a>
+<ul>
+<li><a href="#orgd1910b4">4.1. Interface</a></li>
+<li><a href="#org01d8985">4.2. Abstraction</a></li>
+</ul>
+</li>
+<li><a href="#orgf3f1c51">5. Information hiding</a>
+<ul>
+<li><a href="#orgfdb98e9">5.1. Information leakage</a></li>
+<li><a href="#org13a635c">5.2. Temporal decomposition</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</nav>
+<p>
+This is a personal note for the book &ldquo;A Philosophy of Software Design&rdquo; (2018) by John Ousterhout.
+</p>
+<div id="outline-container-orgf51a42c" class="outline-2">
+<h2 id="orgf51a42c"><span class="section-number-2">1.</span> Introduction</h2>
+<div class="outline-text-2" id="text-1">
+<ul class="org-ul">
+<li>The most fundamental problem in CS is <b><b>problem decomposition</b></b>: how to divide a complex problem into pieces that can be solved independently.</li>
+<li>Complexity increases <b><b>inevitably</b></b> over the life of the program, but simpler designs allow to build larger systems before complexity becomes overwhelming.</li>
+<li>Two general approaches:
+<ul class="org-ul">
+<li>Making code more obvious, e.g., eliminating special cases, using identifiers in a consistent fashion.</li>
+<li>Encapsulate the complexity, i.e., divide a system into independent modules.</li>
+</ul></li>
+<li>Waterfall model: each phase of a project e.g., requirement, design, coding, testing, completes before the next phase starts, such that the entire system is designed once.
+<ul class="org-ul">
+<li>Does not work for software since the problem of the initial design do not become apparent until implementation is well underway; then the developers need to patch around the problems, resulting in an explosion of complexity.</li>
+</ul></li>
+<li>Agile/Incremental development: in each iteration the design focuses on a small subset of the overall functionality, so that problems can be fixed when the system is small and later features benefit from previous experience.
+<ul class="org-ul">
+<li>Developers should always think about design issues and complexity, and use complexity to guide the design.</li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgfec3b97" class="outline-2">
+<h2 id="orgfec3b97"><span class="section-number-2">2.</span> Complexity</h2>
+<div class="outline-text-2" id="text-2">
+<ul class="org-ul">
+<li>Complexity is <b><b>incremental</b></b>.</li>
+<li>Developers must adopt a <b><b>zero tolerance</b></b> philosophy.</li>
+</ul>
+</div>
+<div id="outline-container-org225e9d2" class="outline-3">
+<h3 id="org225e9d2"><span class="section-number-3">2.1.</span> Definition</h3>
+<div class="outline-text-3" id="text-2-1">
+<ul class="org-ul">
+<li>Complexity is anything related to the structure of a software system that makes it hard to understand and modify the system.</li>
+<li>\(C = \sum_p(c_pt_p)\): The overall complexity  is determined by the complexity of each part \(p\) weighted by the fraction of time developers working on that part.
+<ul class="org-ul">
+<li>Isolating complexity in a place where it will never be seen is as good as eliminating the complexity.</li>
+</ul></li>
+<li>Complexity is more apparent to readers than writers: if you write a piece of code that seems simple to you, but others think it is complex, then it is complex.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org04bb83b" class="outline-3">
+<h3 id="org04bb83b"><span class="section-number-3">2.2.</span> Symptoms</h3>
+<div class="outline-text-3" id="text-2-2">
+<ul class="org-ul">
+<li>Change amplification: a seemingly simple change requires code modifications in many different places.</li>
+<li>Cognitive load: developers have to spend more time learning the required information to complete a task, which leads to greater risk of bugs.
+<ul class="org-ul">
+<li>E.g., a function allocates memory and returns a pointer to the memory, but assumes the caller should free the memory.</li>
+<li>Sometimes an approach that requires more lines of code is actually simpler as it reduces cognitive load.</li>
+</ul></li>
+<li>Unknown unknowns (the worst!): it is not obvious which pieces of code must be modified or which information must have to complete the task.</li>
+<li>The goal of a good design is for a system to be <b><b>obvious</b></b>: a developer can make a quick guess about what to do and yet to be confident that the guess is correct.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgf762040" class="outline-3">
+<h3 id="orgf762040"><span class="section-number-3">2.3.</span> Causes</h3>
+<div class="outline-text-3" id="text-2-3">
+<ul class="org-ul">
+<li>Complexity is caused by two things: <b><b>dependencies</b></b> and <b><b>obscurity</b></b>.</li>
+<li>A dependency exists when a code cannot be understood and modified in isolation.
+<ul class="org-ul">
+<li>E.g., in network protocols both senders and receivers must conform to the protocol, changing code for the sender almost always requires corresponding changes at the receiver.</li>
+<li>Dependencies are fundamental and cannot be completely eliminated, the goal is to make the dependencies remain simple and obvious (e.g., variable renaming are detected by compilers).</li>
+</ul></li>
+<li>Obscurity occurs when important information is not obvious, e.g., a variable is too generic or the documentation is inadequate.
+<ul class="org-ul">
+<li>Obscurity is often associated with non-obvious dependencies.</li>
+<li>Inconsistency is also a major contributor, e.g., the same variable name is used for two different purposes.</li>
+<li>The need for extensive documentation is often a red flag that the design is complex.</li>
+</ul></li>
+<li>Dependencies lead to change amplification and cognitive load; obscurity creates unknown unknowns and cognitive load.</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-org2666f3d" class="outline-2">
+<h2 id="org2666f3d"><span class="section-number-2">3.</span> Programming mindsets</h2>
+<div class="outline-text-2" id="text-3">
+<ul class="org-ul">
+<li>Tactical programming: the main focus is to get something working, e.g., a new feature or a bug fix.</li>
+<li>Tactical programming is short-sighted, e.g., each task contributes a reasonable compromise to finish the current task quickly.</li>
+<li>Once a code base turns to spaghetti, it is nearly impossible to fix.</li>
+</ul>
+</div>
+<div id="outline-container-orgefc344a" class="outline-3">
+<h3 id="orgefc344a"><span class="section-number-3">3.1.</span> Strategic programming</h3>
+<div class="outline-text-3" id="text-3-1">
+<ul class="org-ul">
+<li>Requires an investment mindset to improve the system design rather than taking the fastest path to finish the current task.</li>
+<li>Proactive investment: try a couple of alternative designs and pick the cleanest one; imagine a few ways in which the system might need to be changed in the future; write documentation.</li>
+<li>Reactive investments: continuously make small improvements to the system design when a design problem becomes obvious rather than patching around it.</li>
+<li>The ideal design tends to emerge in bits and pieces, thus the best approach is to make lots of <b><b>small</b></b> investments on a <b><b>continual</b></b> basis, e.g., 10-20% of total development time on investments.</li>
+</ul>
+
+
+<figure id="orga21dc9e">
+<img src="https://csruiliu.github.io/blog/images/strategic-tactical.jpeg" alt="strategic-tactical.jpeg" align="center" width="400px">
+
+<figcaption><span class="figure-number">Figure 1: </span>Strategic vs Tactical programming (<a href="https://csruiliu.github.io/blog/images/strategic-tactical.jpeg">Source</a>)</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div id="outline-container-orgb9edfa6" class="outline-2">
+<h2 id="orgb9edfa6"><span class="section-number-2">4.</span> Modular design</h2>
+<div class="outline-text-2" id="text-4">
+<ul class="org-ul">
+<li>The goal of modular design is to minimize the dependencies between modules.</li>
+<li>Each module consists of two parts: interface and implementation. The interface describes what the module does, the implementation specifies how it does.
+<ul class="org-ul">
+<li>The interface consists of everything that a developer working on a different module must know in order to use the given module.</li>
+<li>The implementation consists of the code that carries out the promises made by the interface.</li>
+</ul></li>
+<li>The best modules are <b><b>deep</b></b>, i.e., those whose interfaces are much simpler than their implementations.
+<ul class="org-ul">
+<li>In such cases the modification in the implementation is less likely to affect other modules.</li>
+</ul></li>
+<li>Small modules tend to be shallow, because the benefit they provide is negated by the cost of learning and using their interfaces.</li>
+<li>Classitis refers to a mistaken view that developers should minimize the amount of functionality in each new class.
+<ul class="org-ul">
+<li>It may result in classes that are individually simple, but increases the overall complexity.</li>
+</ul></li>
+</ul>
+</div>
+<div id="outline-container-orgd1910b4" class="outline-3">
+<h3 id="orgd1910b4"><span class="section-number-3">4.1.</span> Interface</h3>
+<div class="outline-text-3" id="text-4-1">
+<ul class="org-ul">
+<li>A module interface contains two information: formal and informal.</li>
+<li>The formal part for a method is its signature; The formal interface for a class consists of the signatures for all public methods and variables.</li>
+<li>The informal part includes its high-level behavior and usage constraints; they can only be described using comments and cannot be ensured by the programming languages.
+<ul class="org-ul">
+<li>Informal aspects are larger and more complex than the formal aspects for most interfaces.</li>
+</ul></li>
+<li>While providing choice is good, interfaces should be designed to make the <b><b>common case</b></b> as simple as possible (c.f. \(C = \sum_p(c_pt_p)\)).</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org01d8985" class="outline-3">
+<h3 id="org01d8985"><span class="section-number-3">4.2.</span> Abstraction</h3>
+<div class="outline-text-3" id="text-4-2">
+<ul class="org-ul">
+<li>An abstraction is a simplified view of an entity, which omits unimportant details.
+<ul class="org-ul">
+<li>The more unimportant details that are omitted from an abstraction, the better, otherwise the abstraction increases the cognitive load.</li>
+<li>A detail can only be omitted if it is unimportant, otherwise obscurity occurs.</li>
+</ul></li>
+<li>In modular programming, each module provides an abstraction in form of its interface.</li>
+<li>The key to designing abstractions is to understand what is important and to look for designs that minimize the amount of important information.
+<ul class="org-ul">
+<li>E.g., how to choose storage blocks for a file is unimportant to users, but the rules for flushing data to secondary storage is important for databases, hence it must be visible in the file system interface.</li>
+<li>Garbage collectors in Go and Java do not have interface at all.</li>
+</ul></li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-orgf3f1c51" class="outline-2">
+<h2 id="orgf3f1c51"><span class="section-number-2">5.</span> Information hiding</h2>
+<div class="outline-text-2" id="text-5">
+<ul class="org-ul">
+<li>Information hiding is the most important technique for achieving deep modules.</li>
+<li>Each module should encapsulate a few design information (e.g., data structures, low-level details) in the module implementation but not appear in its interface.</li>
+<li>Information hiding simplifies the module interface and makes it easier to evolve the system as a design change related a hidden information only affects that module.</li>
+<li>Making an item <code>private</code> is not the same as information hiding, as the information about the private items can still be exposed through public methods such as <code>getter</code> and <code>setter</code>.</li>
+<li>If a particular information is only needed by a few of a class&rsquo;s users, it can be <b><b>partially</b></b> hidden if it is accessed through separate methods, so that it is still invisible in the most common use cases.
+<ul class="org-ul">
+<li>E.g., modules should provide adequate <b><b>defaults</b></b> and only callers that want to override the default need to be aware of the parameter.</li>
+</ul></li>
+</ul>
+</div>
+<div id="outline-container-orgfdb98e9" class="outline-3">
+<h3 id="orgfdb98e9"><span class="section-number-3">5.1.</span> Information leakage</h3>
+<div class="outline-text-3" id="text-5-1">
+<ul class="org-ul">
+<li>The leakage occurs when a design decision is reflected in multiple modules. thus creating dependencies between the modules.
+<ul class="org-ul">
+<li>Interface information is by definition has been leaked.</li>
+</ul></li>
+<li>Information can be leaked even if it does not appear in the interface, i.e., back-door leakage.
+<ul class="org-ul">
+<li>E.g., two classes read and write the same file format, then if the format changes, both classes need to be modified; such leakage is more pernicious than interface leakage as it is not obvious.</li>
+</ul></li>
+<li>If affected classes are relatively small and closely tied to the leaked information, they may need to be <b><b>merged</b></b> into a single class.
+<ul class="org-ul">
+<li>The bigger class is deeper as the entire computation is easier to be abstracted in the interface compared to separate sub-computations.</li>
+</ul></li>
+<li>One may also pull the leaked information out of all affected classes and create a new class to encapsulate the information, i.e., replace back-door leakage with interface leakage.</li>
+<li>One should avoid exposing internal data structures (e.g., return by reference) as such approach makes more work for callers, and make the module shallow.
+<ul class="org-ul">
+<li>E.g., instead of writing <code>getParams()</code> which returns a map of all parameters, one should have <code>getParameter(String name)</code> and <code>getIntParameter(String name)</code> to return a specific parameter and throw an exception if the name does not exist or cannot be converted.</li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org13a635c" class="outline-3">
+<h3 id="org13a635c"><span class="section-number-3">5.2.</span> Temporal decomposition</h3>
+<div class="outline-text-3" id="text-5-2">
+<ul class="org-ul">
+<li>Temporal decomposition is a common cause of information leakage.</li>
+<li>It decompose the system into operations corresponding to the execution order.
+<ul class="org-ul">
+<li>E.g., A file-reading application is broken into 3 classes: read, modify and write, then both reading and writing steps have knowledge about the file format.</li>
+<li>The solution is to combine the core mechanisms for reading and writing into a single class.</li>
+</ul></li>
+<li>Orders should not be reflected in the module structure unless different stages use totally different information.</li>
+<li>One should focus on the <b><b>knowledge</b></b> needed to perform each task, not the order in which tasks occur.</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="taglist"><a href="https://chenyo.me/tags.html">Tags</a>: <a href="https://chenyo.me/tag-book.html">book</a> <a href="https://chenyo.me/tag-software.html">software</a> <a href="https://chenyo.me/tag-design.html">design</a> </div>
 <div class="post-date">04 Oct 2024</div><h1 class="post-title"><a href="https://chenyo.me/2024-10-04-dfinity-networking-layer.html">Learning Dfinity P2P layer</a></h1>
 <nav id="table-of-contents" role="doc-toc">
 <h2>Table of Contents</h2>
@@ -1231,301 +1483,7 @@ Right now, the repository is private since I plan to add a second functionality 
 </p>
 </div>
 </div>
-<div class="taglist"><a href="https://chenyo.me/tags.html">Tags</a>: <a href="https://chenyo.me/tag-tool.html">tool</a> <a href="https://chenyo.me/tag-telegram.html">telegram</a> </div>
-<div class="post-date">07 Sep 2024</div><h1 class="post-title"><a href="https://chenyo.me/2024-09-07-install-doom-emacs-with-lisp-native-compiler-in-wsl2.html">Install Doom Emacs with Lisp native compilation in WSL2</a></h1>
-<nav id="table-of-contents" role="doc-toc">
-<h2>Table of Contents</h2>
-<div id="text-table-of-contents" role="doc-toc">
-<ul>
-<li><a href="#org967b036">1. Assumptions</a></li>
-<li><a href="#org9d97c4c">2. Install prerequisite packages</a></li>
-<li><a href="#org98ff32c">3. Install Emacs 29.4</a>
-<ul>
-<li><a href="#org140f84e">3.1. Before building</a></li>
-<li><a href="#org702e974">3.2. Build Emacs 29.4 with native-comp</a></li>
-</ul>
-</li>
-<li><a href="#orge6212e6">4. Install <code>ripgrep</code></a></li>
-<li><a href="#org5750277">5. Install Doom Emacs</a></li>
-<li><a href="#org219c7a4">6. Some issues with running Emacs in WSL2</a></li>
-</ul>
-</div>
-</nav>
-<p>
-Today I installed Doom Emacs for my husband on his WSL2.
-Although the entire process was guided by Claude, there were some back-and-forth during the interaction.
-Therefore I would like to record the full commands I have used here in sequence for any potential reference.
-</p>
-<div id="outline-container-org967b036" class="outline-2">
-<h2 id="org967b036"><span class="section-number-2">1.</span> Assumptions</h2>
-<div class="outline-text-2" id="text-1">
-<p>
-This installation guide assumes a fresh installation of WSL2 Ubuntu 22.04 on Windows 11 in 2024 September.
-</p>
-</div>
-</div>
-<div id="outline-container-org9d97c4c" class="outline-2">
-<h2 id="org9d97c4c"><span class="section-number-2">2.</span> Install prerequisite packages</h2>
-<div class="outline-text-2" id="text-2">
-<p>
-According to the Doom Emacs <a href="https://github.com/doomemacs/doomemacs#prerequisites">documentation</a>, the following packages are recommended:
-</p>
-<ul class="org-ul">
-<li>Git 2.23+: this is already installed by default.</li>
-<li>Emacs 29.4 with <a href="https://www.emacswiki.org/emacs/GccEmacs">Lisp native compilation</a>: this is finicky and will be elaborated later.</li>
-<li>ripgrep 14.0+: the documentation says 11.0+ suffices, but <code>doom doctor</code> still complains the latest version (13.0) installed from <code>apt</code> is not advanced, so we need to install it from its Github released package later.</li>
-<li>GNU find: also installed already.</li>
-<li>fd: <code>sudo apt install fd-find</code> suffices.</li>
-</ul>
-</div>
-</div>
-<div id="outline-container-org98ff32c" class="outline-2">
-<h2 id="org98ff32c"><span class="section-number-2">3.</span> Install Emacs 29.4</h2>
-<div class="outline-text-2" id="text-3">
-</div>
-<div id="outline-container-org140f84e" class="outline-3">
-<h3 id="org140f84e"><span class="section-number-3">3.1.</span> Before building</h3>
-<div class="outline-text-3" id="text-3-1">
-<p>
-First, let&rsquo;s install some build dependencies:
-</p>
-
-<div class="org-src-container">
-<pre class="src src-bash"><span style="color: #ECBE7B;">sudo</span> apt update
-<span style="color: #ECBE7B;">sudo</span> apt upgrade  <span style="color: #5B6268;"># </span><span style="color: #5B6268;">update packages</span>
-<span style="color: #ECBE7B;">sudo</span> apt install build-essential libjansson4 libjansson-dev <span style="color: #98be65;">\</span>
-    libgnutls28-dev libtree-sitter-dev libsqlite3-dev
-<span style="color: #ECBE7B;">sudo</span> apt install texinfo  <span style="color: #5B6268;"># </span><span style="color: #5B6268;">to generate documentation</span>
-</pre>
-</div>
-
-<p>
-<code>build-essnetial</code> should install necessary tools to build C/C++ programs such as gcc, g++, make, gdb and dpkg.
-The rest packages install pre-compiled libraries.
-</p>
-
-<p>
-Besides these packages, there are two important packages to support Lisp native compilation:
-</p>
-
-<div class="org-src-container">
-<pre class="src src-bash"><span style="color: #ECBE7B;">sudo</span> apt install ibgccjit0 libgccjit-11-dev  <span style="color: #5B6268;"># </span><span style="color: #5B6268;">11 is my gcc version</span>
-</pre>
-</div>
-
-<p>
-After installing them, make sure to export the path in the current session, otherwise the compiler will not realize it.
-</p>
-
-<div class="org-src-container">
-<pre class="src src-bash"><span style="color: #c678dd;">export</span> <span style="color: #dcaeea;">LD_LIBRARY_PATH</span>=/usr/lib/gcc/x86_64-linux-gnu/11:$<span style="color: #dcaeea;">LD_LIBRARY_PATH</span>
-</pre>
-</div>
-
-<p>
-The last thing to do is install a bunch of X and GTK-3 development libraries for Emacs GUI, and another bunch of image processing libraries.
-</p>
-
-<div class="org-src-container">
-<pre class="src src-bash"><span style="color: #ECBE7B;">sudo</span> apt install libx11-dev libtiff-dev libgtk-3-dev libncurses-dev
-<span style="color: #ECBE7B;">sudo</span> apt install libtiff5-dev libgif-dev libjpeg-dev libpng-dev libxpm-dev
-</pre>
-</div>
-
-<p>
-Without the above packages, one may encounter the following error when configuring the Emacs build:
-</p>
-
-<blockquote>
-<p>
-You seem to be running X, but no X development libraries
-were found.  You should install the relevant development files for X
-and for the toolkit you want, such as Gtk+ or Motif. Also make
-sure you have development files for image handling, i.e.
-tiff, gif, jpeg, png and xpm.
-</p>
-</blockquote>
-</div>
-</div>
-<div id="outline-container-org702e974" class="outline-3">
-<h3 id="org702e974"><span class="section-number-3">3.2.</span> Build Emacs 29.4 with native-comp</h3>
-<div class="outline-text-3" id="text-3-2">
-<p>
-At this moment, we can start to download Emacs source code:
-</p>
-
-<div class="org-src-container">
-<pre class="src src-bash">wget https://ftp.gnu.org/gnu/emacs/emacs-29.4.tar.xz
-tar xvf emacs-29.4.tar.xz
-<span style="color: #ECBE7B;">cd</span> emacs-29.4
-</pre>
-</div>
-
-<p>
-Then we can configure the build (i.e., generate Makefile) with the following command.
-</p>
-
-<div class="org-src-container">
-<pre class="src src-bash">./configure --with-native-compilation --with-x-toolkit=gtk3 --without-pop
-</pre>
-</div>
-
-<ul class="org-ul">
-<li><code>--with-native-compilation</code>: with this flag the Emacs source code is compiled to native machine code to achieve better performance.
-<ul class="org-ul">
-<li>Otherwise it is compiled to bytecode and then interpreted by Emacs virtual machine during runtime.</li>
-</ul></li>
-<li><code>--with-x-toolkit=gtk3</code>: this is recommended by Claude.</li>
-<li><code>--without-pop</code>: if we are not using Emacs as the email client, we don&rsquo;t need to bother configure the protocol.</li>
-</ul>
-
-<p>
-If everything goes well, one should see the following line in the output.
-If not, make sure <code>libgccjit</code> has been installed and exported.
-</p>
-
-<blockquote>
-<p>
-Does Emacs have native lisp compiler? yes
-</p>
-</blockquote>
-
-<p>
-Now we can finally start compiling the Emacs:
-</p>
-
-<div class="org-src-container">
-<pre class="src src-bash"><span style="color: #ECBE7B;">make</span> -j$<span style="color: #51afef;">(</span>nproc<span style="color: #51afef;">)</span>
-</pre>
-</div>
-
-<p>
-If some error occurs, we may want to start again, to do this:
-</p>
-
-<div class="org-src-container">
-<pre class="src src-bash"><span style="color: #ECBE7B;">sudo</span> apt install autoconf automake
-<span style="color: #ECBE7B;">rm</span> -f Makefile
-./autogen.sh  <span style="color: #5B6268;"># </span><span style="color: #5B6268;">regenerate the configuration file</span>
-<span style="color: #5B6268;"># </span><span style="color: #5B6268;">then rebuild</span>
-<span style="color: #ECBE7B;">make</span> -j$<span style="color: #51afef;">(</span>nproc<span style="color: #51afef;">)</span>
-</pre>
-</div>
-
-<p>
-Finally, install Emacs globally:
-</p>
-
-<div class="org-src-container">
-<pre class="src src-bash"><span style="color: #ECBE7B;">sudo</span> <span style="color: #ECBE7B;">make</span> install
-</pre>
-</div>
-
-<p>
-To confirm the Emacs indeed used the native Lisp compiler, one can evaluate inside the vanilla Emacs with <code>M-:</code> (<code>M</code> is <code>Alt</code> in WSL2):
-</p>
-
-<div class="org-src-container">
-<pre class="src src-lisp">(native-comp-available-p) <span style="color: #5B6268;">;; </span><span style="color: #5B6268;">should return t</span>
-</pre>
-</div>
-
-<p>
-Congratulations! You have now installed the latest and fastest Emacs on WSL2.
-</p>
-</div>
-</div>
-</div>
-<div id="outline-container-orge6212e6" class="outline-2">
-<h2 id="orge6212e6"><span class="section-number-2">4.</span> Install <code>ripgrep</code></h2>
-<div class="outline-text-2" id="text-4">
-<p>
-As mentioned in ripgrep <a href="https://github.com/BurntSushi/ripgrep?tab=readme-ov-file#installation">documentation</a>, for Debian/Ubuntu users, one should
-install the latest ripgrep 14.0+ with the following commands.
-</p>
-
-<div class="org-src-container">
-<pre class="src src-bash"><span style="color: #ECBE7B;">curl</span> -LO https://github.com/BurntSushi/ripgrep/releases/download/14.1.0/ripgrep_14.1.0-1_amd64.deb  <span style="color: #5B6268;"># </span><span style="color: #5B6268;">check the latest version on its documentation</span>
-<span style="color: #ECBE7B;">sudo</span> dpkg -i ripgrep_14.1.0-1_amd64.deb  <span style="color: #5B6268;"># </span><span style="color: #5B6268;">dpkg has been installed before</span>
-</pre>
-</div>
-
-<p>
-Instead, if one installs it with <code>apt</code>, a 13.0+ version is installed and running <code>doom doctor</code> later returns the warning:
-</p>
-
-<blockquote>
-<p>
-The installed ripgrep binary was not built with support for PCRE lookaheads.
-</p>
-</blockquote>
-</div>
-</div>
-<div id="outline-container-org5750277" class="outline-2">
-<h2 id="org5750277"><span class="section-number-2">5.</span> Install Doom Emacs</h2>
-<div class="outline-text-2" id="text-5">
-<p>
-Installing Doom Emacs is straightforward, but before that, one should first remove the default Emacs configuration folder:
-</p>
-
-<div class="org-src-container">
-<pre class="src src-bash"><span style="color: #ECBE7B;">rm</span> -rf ~/.emacs.d
-</pre>
-</div>
-
-<p>
-Then, clone and install Doom Emacs, it could take a while.
-</p>
-
-<div class="org-src-container">
-<pre class="src src-bash"><span style="color: #ECBE7B;">git</span> clone --depth <span style="color: #da8548; font-weight: bold;">1</span> https://github.com/doomemacs/doomemacs ~/.config/emacs
-~/.config/emacs/bin/doom install
-</pre>
-</div>
-
-<p>
-Don&rsquo;t forget to export <code>~/.config/emacs/bin</code> to <code>PATH</code>:
-</p>
-
-<div class="org-src-container">
-<pre class="src src-bash"><span style="color: #ECBE7B;">echo</span> <span style="color: #98be65;">'export PATH="$HOME/.config/emacs/bin:$PATH"'</span> &gt;&gt; ~/.bashrc
-<span style="color: #c678dd;">source</span> ~/.bashrc
-</pre>
-</div>
-
-<p>
-Now one can run <code>doom doctor</code> to check any missing dependencies, e.g., <code>shellcheck</code>.
-One common issue is the Nerd font is not installed by default so that some icons are not properly displayed.
-To fix that, run <code>M-x nerd-icons-install-font</code> inside the Emacs, then update the font cache with:
-</p>
-
-<div class="org-src-container">
-<pre class="src src-bash">fc-cache -fv
-<span style="color: #5B6268;"># </span><span style="color: #5B6268;">fc-list | </span><span style="color: #5B6268;">grep</span><span style="color: #5B6268;"> Nerd  # to verify the font is installed</span>
-</pre>
-</div>
-</div>
-</div>
-<div id="outline-container-org219c7a4" class="outline-2">
-<h2 id="org219c7a4"><span class="section-number-2">6.</span> Some issues with running Emacs in WSL2</h2>
-<div class="outline-text-2" id="text-6">
-<ul class="org-ul">
-<li><p>
-The first thing is I cannot reload the configuration with <code>M-x doom/reload</code> as running this command always gives me the following error message so that I need to restart the Emacs every time the configuration is changed.
-</p>
-
-<blockquote>
-<p>
-%s sync -B -e
-/bin/bash: line 1: fg: no job control
-</p>
-</blockquote></li>
-
-<li>I really dislike the <a href="https://www.reddit.com/r/wsl2/comments/16b4skx/wsl_softwares_with_white_window_borders/">white border</a> that surrounds any application launched by WSL!</li>
-</ul>
-</div>
-</div>
-<div class="taglist"><a href="https://chenyo.me/tags.html">Tags</a>: <a href="https://chenyo.me/tag-linux.html">linux</a> <a href="https://chenyo.me/tag-emacs.html">emacs</a> <a href="https://chenyo.me/tag-tool.html">tool</a> </div><div id="archive">
+<div class="taglist"><a href="https://chenyo.me/tags.html">Tags</a>: <a href="https://chenyo.me/tag-tool.html">tool</a> <a href="https://chenyo.me/tag-telegram.html">telegram</a> </div><div id="archive">
 <a href="https://chenyo.me/archive.html">Other posts</a>
 </div>
 </div>

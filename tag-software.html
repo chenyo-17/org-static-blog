@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="alternate"
+      type="application/rss+xml"
+      href="https://chenyo.me/rss.xml"
+      title="RSS feed for https://chenyo.me">
+<title>Chenyo's Blog</title>
+<script type="text/javascript"
+             src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+       </script>
+       <script type="text/x-mathjax-config">
+             MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'],['\\(','\\)']]}});
+       </script>
+       <meta name="author" content="chenyo">
+      <meta name="referrer" content="no-referrer">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="stylesheet" href="assets/style.css" type="text/css"/>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+      <link rel="favicon" type="image/x-icon" href="favicon.ico">
+      <script src="assets/search.js"></script></head>
+<body>
+<div id="preamble" class="status">
+      <header>
+      <h1><a href="https://chenyo.me">Chenyo's org-static-blog</a></h1>
+      <nav>
+      <a href="https://chenyo.me">Home</a>
+      <a href="archive.html">Archive</a>
+      <a href="tags.html">Tags</a>
+      <div id="search-container">
+        <input type="text" id="search-input" placeholder="Search anywhere...">
+        <i class="fas fa-search search-icon"></i>
+      </div>
+      </nav>
+      </header></div>
+<div id="content">
+<h1 class="title">Posts tagged "software":</h1>
+<div class="post-date">23 Oct 2024</div><h1 class="post-title"><a href="https://chenyo.me/2024-10-23-book-notes:-a-philosophy-of-software-design-.html">Book notes: A Philosophy of Software Design</a></h1>
+<nav id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#orgf51a42c">1. Introduction</a></li>
+<li><a href="#orgfec3b97">2. Complexity</a>
+<ul>
+<li><a href="#org225e9d2">2.1. Definition</a></li>
+<li><a href="#org04bb83b">2.2. Symptoms</a></li>
+<li><a href="#orgf762040">2.3. Causes</a></li>
+</ul>
+</li>
+<li><a href="#org2666f3d">3. Programming mindsets</a>
+<ul>
+<li><a href="#orgefc344a">3.1. Strategic programming</a></li>
+</ul>
+</li>
+<li><a href="#orgb9edfa6">4. Modular design</a>
+<ul>
+<li><a href="#orgd1910b4">4.1. Interface</a></li>
+<li><a href="#org01d8985">4.2. Abstraction</a></li>
+</ul>
+</li>
+<li><a href="#orgf3f1c51">5. Information hiding</a>
+<ul>
+<li><a href="#orgfdb98e9">5.1. Information leakage</a></li>
+<li><a href="#org13a635c">5.2. Temporal decomposition</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</nav>
+<p>
+This is a personal note for the book &ldquo;A Philosophy of Software Design&rdquo; (2018) by John Ousterhout.
+</p>
+<div id="outline-container-orgf51a42c" class="outline-2">
+<h2 id="orgf51a42c"><span class="section-number-2">1.</span> Introduction</h2>
+<div class="outline-text-2" id="text-1">
+<ul class="org-ul">
+<li>The most fundamental problem in CS is <b><b>problem decomposition</b></b>: how to divide a complex problem into pieces that can be solved independently.</li>
+<li>Complexity increases <b><b>inevitably</b></b> over the life of the program, but simpler designs allow to build larger systems before complexity becomes overwhelming.</li>
+<li>Two general approaches:
+<ul class="org-ul">
+<li>Making code more obvious, e.g., eliminating special cases, using identifiers in a consistent fashion.</li>
+<li>Encapsulate the complexity, i.e., divide a system into independent modules.</li>
+</ul></li>
+<li>Waterfall model: each phase of a project e.g., requirement, design, coding, testing, completes before the next phase starts, such that the entire system is designed once.
+<ul class="org-ul">
+<li>Does not work for software since the problem of the initial design do not become apparent until implementation is well underway; then the developers need to patch around the problems, resulting in an explosion of complexity.</li>
+</ul></li>
+<li>Agile/Incremental development: in each iteration the design focuses on a small subset of the overall functionality, so that problems can be fixed when the system is small and later features benefit from previous experience.
+<ul class="org-ul">
+<li>Developers should always think about design issues and complexity, and use complexity to guide the design.</li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgfec3b97" class="outline-2">
+<h2 id="orgfec3b97"><span class="section-number-2">2.</span> Complexity</h2>
+<div class="outline-text-2" id="text-2">
+<ul class="org-ul">
+<li>Complexity is <b><b>incremental</b></b>.</li>
+<li>Developers must adopt a <b><b>zero tolerance</b></b> philosophy.</li>
+</ul>
+</div>
+<div id="outline-container-org225e9d2" class="outline-3">
+<h3 id="org225e9d2"><span class="section-number-3">2.1.</span> Definition</h3>
+<div class="outline-text-3" id="text-2-1">
+<ul class="org-ul">
+<li>Complexity is anything related to the structure of a software system that makes it hard to understand and modify the system.</li>
+<li>\(C = \sum_p(c_pt_p)\): The overall complexity  is determined by the complexity of each part \(p\) weighted by the fraction of time developers working on that part.
+<ul class="org-ul">
+<li>Isolating complexity in a place where it will never be seen is as good as eliminating the complexity.</li>
+</ul></li>
+<li>Complexity is more apparent to readers than writers: if you write a piece of code that seems simple to you, but others think it is complex, then it is complex.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org04bb83b" class="outline-3">
+<h3 id="org04bb83b"><span class="section-number-3">2.2.</span> Symptoms</h3>
+<div class="outline-text-3" id="text-2-2">
+<ul class="org-ul">
+<li>Change amplification: a seemingly simple change requires code modifications in many different places.</li>
+<li>Cognitive load: developers have to spend more time learning the required information to complete a task, which leads to greater risk of bugs.
+<ul class="org-ul">
+<li>E.g., a function allocates memory and returns a pointer to the memory, but assumes the caller should free the memory.</li>
+<li>Sometimes an approach that requires more lines of code is actually simpler as it reduces cognitive load.</li>
+</ul></li>
+<li>Unknown unknowns (the worst!): it is not obvious which pieces of code must be modified or which information must have to complete the task.</li>
+<li>The goal of a good design is for a system to be <b><b>obvious</b></b>: a developer can make a quick guess about what to do and yet to be confident that the guess is correct.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgf762040" class="outline-3">
+<h3 id="orgf762040"><span class="section-number-3">2.3.</span> Causes</h3>
+<div class="outline-text-3" id="text-2-3">
+<ul class="org-ul">
+<li>Complexity is caused by two things: <b><b>dependencies</b></b> and <b><b>obscurity</b></b>.</li>
+<li>A dependency exists when a code cannot be understood and modified in isolation.
+<ul class="org-ul">
+<li>E.g., in network protocols both senders and receivers must conform to the protocol, changing code for the sender almost always requires corresponding changes at the receiver.</li>
+<li>Dependencies are fundamental and cannot be completely eliminated, the goal is to make the dependencies remain simple and obvious (e.g., variable renaming are detected by compilers).</li>
+</ul></li>
+<li>Obscurity occurs when important information is not obvious, e.g., a variable is too generic or the documentation is inadequate.
+<ul class="org-ul">
+<li>Obscurity is often associated with non-obvious dependencies.</li>
+<li>Inconsistency is also a major contributor, e.g., the same variable name is used for two different purposes.</li>
+<li>The need for extensive documentation is often a red flag that the design is complex.</li>
+</ul></li>
+<li>Dependencies lead to change amplification and cognitive load; obscurity creates unknown unknowns and cognitive load.</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-org2666f3d" class="outline-2">
+<h2 id="org2666f3d"><span class="section-number-2">3.</span> Programming mindsets</h2>
+<div class="outline-text-2" id="text-3">
+<ul class="org-ul">
+<li>Tactical programming: the main focus is to get something working, e.g., a new feature or a bug fix.</li>
+<li>Tactical programming is short-sighted, e.g., each task contributes a reasonable compromise to finish the current task quickly.</li>
+<li>Once a code base turns to spaghetti, it is nearly impossible to fix.</li>
+</ul>
+</div>
+<div id="outline-container-orgefc344a" class="outline-3">
+<h3 id="orgefc344a"><span class="section-number-3">3.1.</span> Strategic programming</h3>
+<div class="outline-text-3" id="text-3-1">
+<ul class="org-ul">
+<li>Requires an investment mindset to improve the system design rather than taking the fastest path to finish the current task.</li>
+<li>Proactive investment: try a couple of alternative designs and pick the cleanest one; imagine a few ways in which the system might need to be changed in the future; write documentation.</li>
+<li>Reactive investments: continuously make small improvements to the system design when a design problem becomes obvious rather than patching around it.</li>
+<li>The ideal design tends to emerge in bits and pieces, thus the best approach is to make lots of <b><b>small</b></b> investments on a <b><b>continual</b></b> basis, e.g., 10-20% of total development time on investments.</li>
+</ul>
+
+
+<figure id="orga21dc9e">
+<img src="https://csruiliu.github.io/blog/images/strategic-tactical.jpeg" alt="strategic-tactical.jpeg" align="center" width="400px">
+
+<figcaption><span class="figure-number">Figure 1: </span>Strategic vs Tactical programming (<a href="https://csruiliu.github.io/blog/images/strategic-tactical.jpeg">Source</a>)</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div id="outline-container-orgb9edfa6" class="outline-2">
+<h2 id="orgb9edfa6"><span class="section-number-2">4.</span> Modular design</h2>
+<div class="outline-text-2" id="text-4">
+<ul class="org-ul">
+<li>The goal of modular design is to minimize the dependencies between modules.</li>
+<li>Each module consists of two parts: interface and implementation. The interface describes what the module does, the implementation specifies how it does.
+<ul class="org-ul">
+<li>The interface consists of everything that a developer working on a different module must know in order to use the given module.</li>
+<li>The implementation consists of the code that carries out the promises made by the interface.</li>
+</ul></li>
+<li>The best modules are <b><b>deep</b></b>, i.e., those whose interfaces are much simpler than their implementations.
+<ul class="org-ul">
+<li>In such cases the modification in the implementation is less likely to affect other modules.</li>
+</ul></li>
+<li>Small modules tend to be shallow, because the benefit they provide is negated by the cost of learning and using their interfaces.</li>
+<li>Classitis refers to a mistaken view that developers should minimize the amount of functionality in each new class.
+<ul class="org-ul">
+<li>It may result in classes that are individually simple, but increases the overall complexity.</li>
+</ul></li>
+</ul>
+</div>
+<div id="outline-container-orgd1910b4" class="outline-3">
+<h3 id="orgd1910b4"><span class="section-number-3">4.1.</span> Interface</h3>
+<div class="outline-text-3" id="text-4-1">
+<ul class="org-ul">
+<li>A module interface contains two information: formal and informal.</li>
+<li>The formal part for a method is its signature; The formal interface for a class consists of the signatures for all public methods and variables.</li>
+<li>The informal part includes its high-level behavior and usage constraints; they can only be described using comments and cannot be ensured by the programming languages.
+<ul class="org-ul">
+<li>Informal aspects are larger and more complex than the formal aspects for most interfaces.</li>
+</ul></li>
+<li>While providing choice is good, interfaces should be designed to make the <b><b>common case</b></b> as simple as possible (c.f. \(C = \sum_p(c_pt_p)\)).</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org01d8985" class="outline-3">
+<h3 id="org01d8985"><span class="section-number-3">4.2.</span> Abstraction</h3>
+<div class="outline-text-3" id="text-4-2">
+<ul class="org-ul">
+<li>An abstraction is a simplified view of an entity, which omits unimportant details.
+<ul class="org-ul">
+<li>The more unimportant details that are omitted from an abstraction, the better, otherwise the abstraction increases the cognitive load.</li>
+<li>A detail can only be omitted if it is unimportant, otherwise obscurity occurs.</li>
+</ul></li>
+<li>In modular programming, each module provides an abstraction in form of its interface.</li>
+<li>The key to designing abstractions is to understand what is important and to look for designs that minimize the amount of important information.
+<ul class="org-ul">
+<li>E.g., how to choose storage blocks for a file is unimportant to users, but the rules for flushing data to secondary storage is important for databases, hence it must be visible in the file system interface.</li>
+<li>Garbage collectors in Go and Java do not have interface at all.</li>
+</ul></li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-orgf3f1c51" class="outline-2">
+<h2 id="orgf3f1c51"><span class="section-number-2">5.</span> Information hiding</h2>
+<div class="outline-text-2" id="text-5">
+<ul class="org-ul">
+<li>Information hiding is the most important technique for achieving deep modules.</li>
+<li>Each module should encapsulate a few design information (e.g., data structures, low-level details) in the module implementation but not appear in its interface.</li>
+<li>Information hiding simplifies the module interface and makes it easier to evolve the system as a design change related a hidden information only affects that module.</li>
+<li>Making an item <code>private</code> is not the same as information hiding, as the information about the private items can still be exposed through public methods such as <code>getter</code> and <code>setter</code>.</li>
+<li>If a particular information is only needed by a few of a class&rsquo;s users, it can be <b><b>partially</b></b> hidden if it is accessed through separate methods, so that it is still invisible in the most common use cases.
+<ul class="org-ul">
+<li>E.g., modules should provide adequate <b><b>defaults</b></b> and only callers that want to override the default need to be aware of the parameter.</li>
+</ul></li>
+</ul>
+</div>
+<div id="outline-container-orgfdb98e9" class="outline-3">
+<h3 id="orgfdb98e9"><span class="section-number-3">5.1.</span> Information leakage</h3>
+<div class="outline-text-3" id="text-5-1">
+<ul class="org-ul">
+<li>The leakage occurs when a design decision is reflected in multiple modules. thus creating dependencies between the modules.
+<ul class="org-ul">
+<li>Interface information is by definition has been leaked.</li>
+</ul></li>
+<li>Information can be leaked even if it does not appear in the interface, i.e., back-door leakage.
+<ul class="org-ul">
+<li>E.g., two classes read and write the same file format, then if the format changes, both classes need to be modified; such leakage is more pernicious than interface leakage as it is not obvious.</li>
+</ul></li>
+<li>If affected classes are relatively small and closely tied to the leaked information, they may need to be <b><b>merged</b></b> into a single class.
+<ul class="org-ul">
+<li>The bigger class is deeper as the entire computation is easier to be abstracted in the interface compared to separate sub-computations.</li>
+</ul></li>
+<li>One may also pull the leaked information out of all affected classes and create a new class to encapsulate the information, i.e., replace back-door leakage with interface leakage.</li>
+<li>One should avoid exposing internal data structures (e.g., return by reference) as such approach makes more work for callers, and make the module shallow.
+<ul class="org-ul">
+<li>E.g., instead of writing <code>getParams()</code> which returns a map of all parameters, one should have <code>getParameter(String name)</code> and <code>getIntParameter(String name)</code> to return a specific parameter and throw an exception if the name does not exist or cannot be converted.</li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org13a635c" class="outline-3">
+<h3 id="org13a635c"><span class="section-number-3">5.2.</span> Temporal decomposition</h3>
+<div class="outline-text-3" id="text-5-2">
+<ul class="org-ul">
+<li>Temporal decomposition is a common cause of information leakage.</li>
+<li>It decompose the system into operations corresponding to the execution order.
+<ul class="org-ul">
+<li>E.g., A file-reading application is broken into 3 classes: read, modify and write, then both reading and writing steps have knowledge about the file format.</li>
+<li>The solution is to combine the core mechanisms for reading and writing into a single class.</li>
+</ul></li>
+<li>Orders should not be reflected in the module structure unless different stages use totally different information.</li>
+<li>One should focus on the <b><b>knowledge</b></b> needed to perform each task, not the order in which tasks occur.</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="taglist"><a href="https://chenyo.me/tags.html">Tags</a>: <a href="https://chenyo.me/tag-book.html">book</a> <a href="https://chenyo.me/tag-software.html">software</a> <a href="https://chenyo.me/tag-design.html">design</a> </div><div id="archive">
+<a href="https://chenyo.me/archive.html">Other posts</a>
+</div>
+</div>
+<div id="postamble" class="status"><div id="search-results"></div>
+      <footer>
+        <div class="footer-content">
+        <div class="footer-left">
+        <p>© 2024 chenyo. Some rights reserved.</p>
+        <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">
+        <img alt="Creative Commons License" style="border-width: 0"
+        src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png"/>
+        </a>
+        </div>
+        <div class="social-links">
+          <a href="https://t.me/chenyo17" target="_blank" rel="noopener noreferrer">
+          <i class="fab fa-telegram"></i>
+          </a>
+          <a href="https://github.com/chenyo-17" target="_blank" rel="noopener noreferrer">
+            <i class="fab fa-github"></i>
+      </a>
+      </div>
+      </footer></div>
+</body>
+</html>

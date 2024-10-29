@@ -1,0 +1,116 @@
+#+title: Book notes: A Philosophy of Software Design
+#+date: <2024-10-23 20:17>
+#+description: This is a personal note for the book "A Philosophy of Software Design" (2018) by John Ousterhout
+#+filetags: book software design
+
+This is a personal note for the book "A Philosophy of Software Design" (2018) by John Ousterhout.
+
+* Introduction
+- The most fundamental problem in CS is **problem decomposition**: how to divide a complex problem into pieces that can be solved independently.
+- Complexity increases **inevitably** over the life of the program, but simpler designs allow to build larger systems before complexity becomes overwhelming.
+- Two general approaches:
+  - Making code more obvious, e.g., eliminating special cases, using identifiers in a consistent fashion.
+  - Encapsulate the complexity, i.e., divide a system into independent modules.
+- Waterfall model: each phase of a project e.g., requirement, design, coding, testing, completes before the next phase starts, such that the entire system is designed once.
+  - Does not work for software since the problem of the initial design do not become apparent until implementation is well underway; then the developers need to patch around the problems, resulting in an explosion of complexity.
+- Agile/Incremental development: in each iteration the design focuses on a small subset of the overall functionality, so that problems can be fixed when the system is small and later features benefit from previous experience.
+  - Developers should always think about design issues and complexity, and use complexity to guide the design.
+
+* Complexity
+- Complexity is **incremental**.
+- Developers must adopt a **zero tolerance** philosophy.
+
+** Definition
+- Complexity is anything related to the structure of a software system that makes it hard to understand and modify the system.
+- \(C = \sum_p(c_pt_p)\): The overall complexity  is determined by the complexity of each part \(p\) weighted by the fraction of time developers working on that part.
+  - Isolating complexity in a place where it will never be seen is as good as eliminating the complexity.
+- Complexity is more apparent to readers than writers: if you write a piece of code that seems simple to you, but others think it is complex, then it is complex.
+
+** Symptoms
+- Change amplification: a seemingly simple change requires code modifications in many different places.
+- Cognitive load: developers have to spend more time learning the required information to complete a task, which leads to greater risk of bugs.
+  - E.g., a function allocates memory and returns a pointer to the memory, but assumes the caller should free the memory.
+  - Sometimes an approach that requires more lines of code is actually simpler as it reduces cognitive load.
+- Unknown unknowns (the worst!): it is not obvious which pieces of code must be modified or which information must have to complete the task.
+- The goal of a good design is for a system to be **obvious**: a developer can make a quick guess about what to do and yet to be confident that the guess is correct.
+
+** Causes
+- Complexity is caused by two things: **dependencies** and **obscurity**.
+- A dependency exists when a code cannot be understood and modified in isolation.
+  - E.g., in network protocols both senders and receivers must conform to the protocol, changing code for the sender almost always requires corresponding changes at the receiver.
+  - Dependencies are fundamental and cannot be completely eliminated, the goal is to make the dependencies remain simple and obvious (e.g., variable renaming are detected by compilers).
+- Obscurity occurs when important information is not obvious, e.g., a variable is too generic or the documentation is inadequate.
+  - Obscurity is often associated with non-obvious dependencies.
+  - Inconsistency is also a major contributor, e.g., the same variable name is used for two different purposes.
+  - The need for extensive documentation is often a red flag that the design is complex.
+- Dependencies lead to change amplification and cognitive load; obscurity creates unknown unknowns and cognitive load.
+
+* Programming mindsets
+- Tactical programming: the main focus is to get something working, e.g., a new feature or a bug fix.
+- Tactical programming is short-sighted, e.g., each task contributes a reasonable compromise to finish the current task quickly.
+- Once a code base turns to spaghetti, it is nearly impossible to fix.
+
+** Strategic programming
+- Requires an investment mindset to improve the system design rather than taking the fastest path to finish the current task.
+- Proactive investment: try a couple of alternative designs and pick the cleanest one; imagine a few ways in which the system might need to be changed in the future; write documentation.
+- Reactive investments: continuously make small improvements to the system design when a design problem becomes obvious rather than patching around it.
+- The ideal design tends to emerge in bits and pieces, thus the best approach is to make lots of **small** investments on a **continual** basis, e.g., 10-20% of total development time on investments.
+
+#+CAPTION: Strategic vs Tactical programming ([[https://csruiliu.github.io/blog/images/strategic-tactical.jpeg][Source]])
+#+ATTR_HTML: :align center
+#+ATTR_HTML: :width 400px
+[[https://csruiliu.github.io/blog/images/strategic-tactical.jpeg]]
+
+* Modular design
+- The goal of modular design is to minimize the dependencies between modules.
+- Each module consists of two parts: interface and implementation. The interface describes what the module does, the implementation specifies how it does.
+  - The interface consists of everything that a developer working on a different module must know in order to use the given module.
+  - The implementation consists of the code that carries out the promises made by the interface.
+- The best modules are **deep**, i.e., those whose interfaces are much simpler than their implementations.
+  - In such cases the modification in the implementation is less likely to affect other modules.
+- Small modules tend to be shallow, because the benefit they provide is negated by the cost of learning and using their interfaces.
+- Classitis refers to a mistaken view that developers should minimize the amount of functionality in each new class.
+  - It may result in classes that are individually simple, but increases the overall complexity.
+
+** Interface
+- A module interface contains two information: formal and informal.
+- The formal part for a method is its signature; The formal interface for a class consists of the signatures for all public methods and variables.
+- The informal part includes its high-level behavior and usage constraints; they can only be described using comments and cannot be ensured by the programming languages.
+  - Informal aspects are larger and more complex than the formal aspects for most interfaces.
+- While providing choice is good, interfaces should be designed to make the **common case** as simple as possible (c.f. \(C = \sum_p(c_pt_p)\)).
+
+** Abstraction
+- An abstraction is a simplified view of an entity, which omits unimportant details.
+  - The more unimportant details that are omitted from an abstraction, the better, otherwise the abstraction increases the cognitive load.
+  - A detail can only be omitted if it is unimportant, otherwise obscurity occurs.
+- In modular programming, each module provides an abstraction in form of its interface.
+- The key to designing abstractions is to understand what is important and to look for designs that minimize the amount of important information.
+  - E.g., how to choose storage blocks for a file is unimportant to users, but the rules for flushing data to secondary storage is important for databases, hence it must be visible in the file system interface.
+  - Garbage collectors in Go and Java do not have interface at all.
+
+* Information hiding
+- Information hiding is the most important technique for achieving deep modules.
+- Each module should encapsulate a few design information (e.g., data structures, low-level details) in the module implementation but not appear in its interface.
+- Information hiding simplifies the module interface and makes it easier to evolve the system as a design change related a hidden information only affects that module.
+- Making an item ~private~ is not the same as information hiding, as the information about the private items can still be exposed through public methods such as ~getter~ and ~setter~.
+- If a particular information is only needed by a few of a class's users, it can be **partially** hidden if it is accessed through separate methods, so that it is still invisible in the most common use cases.
+  - E.g., modules should provide adequate **defaults** and only callers that want to override the default need to be aware of the parameter.
+
+** Information leakage
+- The leakage occurs when a design decision is reflected in multiple modules. thus creating dependencies between the modules.
+  - Interface information is by definition has been leaked.
+- Information can be leaked even if it does not appear in the interface, i.e., back-door leakage.
+  - E.g., two classes read and write the same file format, then if the format changes, both classes need to be modified; such leakage is more pernicious than interface leakage as it is not obvious.
+- If affected classes are relatively small and closely tied to the leaked information, they may need to be **merged** into a single class.
+  - The bigger class is deeper as the entire computation is easier to be abstracted in the interface compared to separate sub-computations.
+- One may also pull the leaked information out of all affected classes and create a new class to encapsulate the information, i.e., replace back-door leakage with interface leakage.
+- One should avoid exposing internal data structures (e.g., return by reference) as such approach makes more work for callers, and make the module shallow.
+  - E.g., instead of writing ~getParams()~ which returns a map of all parameters, one should have ~getParameter(String name)~ and ~getIntParameter(String name)~ to return a specific parameter and throw an exception if the name does not exist or cannot be converted.
+
+** Temporal decomposition
+- Temporal decomposition is a common cause of information leakage.
+- It decompose the system into operations corresponding to the execution order.
+  - E.g., A file-reading application is broken into 3 classes: read, modify and write, then both reading and writing steps have knowledge about the file format.
+  - The solution is to combine the core mechanisms for reading and writing into a single class.
+- Orders should not be reflected in the module structure unless different stages use totally different information.
+- One should focus on the **knowledge** needed to perform each task, not the order in which tasks occur.
