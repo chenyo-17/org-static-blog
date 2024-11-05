@@ -41,39 +41,51 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgf51a42c">1. Introduction</a></li>
-<li><a href="#orgfec3b97">2. Complexity</a>
+<li><a href="#orgec1b47d">1. Introduction</a></li>
+<li><a href="#org7519599">2. Complexity</a>
 <ul>
-<li><a href="#org225e9d2">2.1. Definition</a></li>
-<li><a href="#org04bb83b">2.2. Symptoms</a></li>
-<li><a href="#orgf762040">2.3. Causes</a></li>
+<li><a href="#orgd3392d7">2.1. Definition</a></li>
+<li><a href="#orgde206ff">2.2. Symptoms</a></li>
+<li><a href="#orgac1ba57">2.3. Causes</a></li>
 </ul>
 </li>
-<li><a href="#org2666f3d">3. Programming mindsets</a>
+<li><a href="#org1dd84ad">3. Programming mindsets</a>
 <ul>
-<li><a href="#orgefc344a">3.1. Strategic programming</a></li>
+<li><a href="#org40ced22">3.1. Strategic programming</a></li>
 </ul>
 </li>
-<li><a href="#orgb9edfa6">4. Modular design</a>
+<li><a href="#org0c61a13">4. Modular design</a>
 <ul>
-<li><a href="#orgd1910b4">4.1. Interface</a></li>
-<li><a href="#org01d8985">4.2. Abstraction</a></li>
+<li><a href="#org9e438fe">4.1. Interface</a></li>
+<li><a href="#orgb460524">4.2. Abstraction</a></li>
 </ul>
 </li>
-<li><a href="#orgf3f1c51">5. Information hiding</a>
+<li><a href="#org6fd4f2d">5. Information hiding</a>
 <ul>
-<li><a href="#orgfdb98e9">5.1. Information leakage</a></li>
-<li><a href="#org13a635c">5.2. Temporal decomposition</a></li>
+<li><a href="#org1a7ff92">5.1. Information leakage</a></li>
+<li><a href="#orgeeaca4b">5.2. Temporal decomposition</a></li>
+</ul>
+</li>
+<li><a href="#org982b32c">6. General-Purpose modules</a>
+<ul>
+<li><a href="#org90c718a">6.1. Example: GUI text editor design</a></li>
+</ul>
+</li>
+<li><a href="#orgdc302bd">7. Layers of abstractions</a>
+<ul>
+<li><a href="#orgb2ed9ea">7.1. Pass-through methods</a></li>
+<li><a href="#org91e31d4">7.2. Pass-through variables</a></li>
+<li><a href="#org616c794">7.3. Acceptable interface duplication</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </nav>
 <p>
-This is a personal note for the book &ldquo;A Philosophy of Software Design&rdquo; (2018) by John Ousterhout.
+This is a personal note for the book &ldquo;A Philosophy of Software Design&rdquo; (2018, John Ousterhout).
 </p>
-<div id="outline-container-orgf51a42c" class="outline-2">
-<h2 id="orgf51a42c"><span class="section-number-2">1.</span> Introduction</h2>
+<div id="outline-container-orgec1b47d" class="outline-2">
+<h2 id="orgec1b47d"><span class="section-number-2">1.</span> Introduction</h2>
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
 <li>The most fundamental problem in CS is <b><b>problem decomposition</b></b>: how to divide a complex problem into pieces that can be solved independently.</li>
@@ -94,16 +106,16 @@ This is a personal note for the book &ldquo;A Philosophy of Software Design&rdqu
 </ul>
 </div>
 </div>
-<div id="outline-container-orgfec3b97" class="outline-2">
-<h2 id="orgfec3b97"><span class="section-number-2">2.</span> Complexity</h2>
+<div id="outline-container-org7519599" class="outline-2">
+<h2 id="org7519599"><span class="section-number-2">2.</span> Complexity</h2>
 <div class="outline-text-2" id="text-2">
 <ul class="org-ul">
 <li>Complexity is <b><b>incremental</b></b>.</li>
 <li>Developers must adopt a <b><b>zero tolerance</b></b> philosophy.</li>
 </ul>
 </div>
-<div id="outline-container-org225e9d2" class="outline-3">
-<h3 id="org225e9d2"><span class="section-number-3">2.1.</span> Definition</h3>
+<div id="outline-container-orgd3392d7" class="outline-3">
+<h3 id="orgd3392d7"><span class="section-number-3">2.1.</span> Definition</h3>
 <div class="outline-text-3" id="text-2-1">
 <ul class="org-ul">
 <li>Complexity is anything related to the structure of a software system that makes it hard to understand and modify the system.</li>
@@ -115,8 +127,8 @@ This is a personal note for the book &ldquo;A Philosophy of Software Design&rdqu
 </ul>
 </div>
 </div>
-<div id="outline-container-org04bb83b" class="outline-3">
-<h3 id="org04bb83b"><span class="section-number-3">2.2.</span> Symptoms</h3>
+<div id="outline-container-orgde206ff" class="outline-3">
+<h3 id="orgde206ff"><span class="section-number-3">2.2.</span> Symptoms</h3>
 <div class="outline-text-3" id="text-2-2">
 <ul class="org-ul">
 <li>Change amplification: a seemingly simple change requires code modifications in many different places.</li>
@@ -130,8 +142,8 @@ This is a personal note for the book &ldquo;A Philosophy of Software Design&rdqu
 </ul>
 </div>
 </div>
-<div id="outline-container-orgf762040" class="outline-3">
-<h3 id="orgf762040"><span class="section-number-3">2.3.</span> Causes</h3>
+<div id="outline-container-orgac1ba57" class="outline-3">
+<h3 id="orgac1ba57"><span class="section-number-3">2.3.</span> Causes</h3>
 <div class="outline-text-3" id="text-2-3">
 <ul class="org-ul">
 <li>Complexity is caused by two things: <b><b>dependencies</b></b> and <b><b>obscurity</b></b>.</li>
@@ -151,8 +163,8 @@ This is a personal note for the book &ldquo;A Philosophy of Software Design&rdqu
 </div>
 </div>
 </div>
-<div id="outline-container-org2666f3d" class="outline-2">
-<h2 id="org2666f3d"><span class="section-number-2">3.</span> Programming mindsets</h2>
+<div id="outline-container-org1dd84ad" class="outline-2">
+<h2 id="org1dd84ad"><span class="section-number-2">3.</span> Programming mindsets</h2>
 <div class="outline-text-2" id="text-3">
 <ul class="org-ul">
 <li>Tactical programming: the main focus is to get something working, e.g., a new feature or a bug fix.</li>
@@ -160,8 +172,8 @@ This is a personal note for the book &ldquo;A Philosophy of Software Design&rdqu
 <li>Once a code base turns to spaghetti, it is nearly impossible to fix.</li>
 </ul>
 </div>
-<div id="outline-container-orgefc344a" class="outline-3">
-<h3 id="orgefc344a"><span class="section-number-3">3.1.</span> Strategic programming</h3>
+<div id="outline-container-org40ced22" class="outline-3">
+<h3 id="org40ced22"><span class="section-number-3">3.1.</span> Strategic programming</h3>
 <div class="outline-text-3" id="text-3-1">
 <ul class="org-ul">
 <li>Requires an investment mindset to improve the system design rather than taking the fastest path to finish the current task.</li>
@@ -171,7 +183,7 @@ This is a personal note for the book &ldquo;A Philosophy of Software Design&rdqu
 </ul>
 
 
-<figure id="orga21dc9e">
+<figure id="org33415c5">
 <img src="https://csruiliu.github.io/blog/images/strategic-tactical.jpeg" alt="strategic-tactical.jpeg" align="center" width="400px">
 
 <figcaption><span class="figure-number">Figure 1: </span>Strategic vs Tactical programming (<a href="https://csruiliu.github.io/blog/images/strategic-tactical.jpeg">Source</a>)</figcaption>
@@ -179,8 +191,8 @@ This is a personal note for the book &ldquo;A Philosophy of Software Design&rdqu
 </div>
 </div>
 </div>
-<div id="outline-container-orgb9edfa6" class="outline-2">
-<h2 id="orgb9edfa6"><span class="section-number-2">4.</span> Modular design</h2>
+<div id="outline-container-org0c61a13" class="outline-2">
+<h2 id="org0c61a13"><span class="section-number-2">4.</span> Modular design</h2>
 <div class="outline-text-2" id="text-4">
 <ul class="org-ul">
 <li>The goal of modular design is to minimize the dependencies between modules.</li>
@@ -200,8 +212,8 @@ This is a personal note for the book &ldquo;A Philosophy of Software Design&rdqu
 </ul></li>
 </ul>
 </div>
-<div id="outline-container-orgd1910b4" class="outline-3">
-<h3 id="orgd1910b4"><span class="section-number-3">4.1.</span> Interface</h3>
+<div id="outline-container-org9e438fe" class="outline-3">
+<h3 id="org9e438fe"><span class="section-number-3">4.1.</span> Interface</h3>
 <div class="outline-text-3" id="text-4-1">
 <ul class="org-ul">
 <li>A module interface contains two information: formal and informal.</li>
@@ -214,8 +226,8 @@ This is a personal note for the book &ldquo;A Philosophy of Software Design&rdqu
 </ul>
 </div>
 </div>
-<div id="outline-container-org01d8985" class="outline-3">
-<h3 id="org01d8985"><span class="section-number-3">4.2.</span> Abstraction</h3>
+<div id="outline-container-orgb460524" class="outline-3">
+<h3 id="orgb460524"><span class="section-number-3">4.2.</span> Abstraction</h3>
 <div class="outline-text-3" id="text-4-2">
 <ul class="org-ul">
 <li>An abstraction is a simplified view of an entity, which omits unimportant details.
@@ -224,7 +236,7 @@ This is a personal note for the book &ldquo;A Philosophy of Software Design&rdqu
 <li>A detail can only be omitted if it is unimportant, otherwise obscurity occurs.</li>
 </ul></li>
 <li>In modular programming, each module provides an abstraction in form of its interface.</li>
-<li>The key to designing abstractions is to understand what is important and to look for designs that minimize the amount of important information.
+<li>The key to designing abstractions is to understand what is important.
 <ul class="org-ul">
 <li>E.g., how to choose storage blocks for a file is unimportant to users, but the rules for flushing data to secondary storage is important for databases, hence it must be visible in the file system interface.</li>
 <li>Garbage collectors in Go and Java do not have interface at all.</li>
@@ -233,8 +245,8 @@ This is a personal note for the book &ldquo;A Philosophy of Software Design&rdqu
 </div>
 </div>
 </div>
-<div id="outline-container-orgf3f1c51" class="outline-2">
-<h2 id="orgf3f1c51"><span class="section-number-2">5.</span> Information hiding</h2>
+<div id="outline-container-org6fd4f2d" class="outline-2">
+<h2 id="org6fd4f2d"><span class="section-number-2">5.</span> Information hiding</h2>
 <div class="outline-text-2" id="text-5">
 <ul class="org-ul">
 <li>Information hiding is the most important technique for achieving deep modules.</li>
@@ -247,8 +259,8 @@ This is a personal note for the book &ldquo;A Philosophy of Software Design&rdqu
 </ul></li>
 </ul>
 </div>
-<div id="outline-container-orgfdb98e9" class="outline-3">
-<h3 id="orgfdb98e9"><span class="section-number-3">5.1.</span> Information leakage</h3>
+<div id="outline-container-org1a7ff92" class="outline-3">
+<h3 id="org1a7ff92"><span class="section-number-3">5.1.</span> Information leakage</h3>
 <div class="outline-text-3" id="text-5-1">
 <ul class="org-ul">
 <li>The leakage occurs when a design decision is reflected in multiple modules. thus creating dependencies between the modules.
@@ -271,8 +283,8 @@ This is a personal note for the book &ldquo;A Philosophy of Software Design&rdqu
 </ul>
 </div>
 </div>
-<div id="outline-container-org13a635c" class="outline-3">
-<h3 id="org13a635c"><span class="section-number-3">5.2.</span> Temporal decomposition</h3>
+<div id="outline-container-orgeeaca4b" class="outline-3">
+<h3 id="orgeeaca4b"><span class="section-number-3">5.2.</span> Temporal decomposition</h3>
 <div class="outline-text-3" id="text-5-2">
 <ul class="org-ul">
 <li>Temporal decomposition is a common cause of information leakage.</li>
@@ -283,6 +295,110 @@ This is a personal note for the book &ldquo;A Philosophy of Software Design&rdqu
 </ul></li>
 <li>Orders should not be reflected in the module structure unless different stages use totally different information.</li>
 <li>One should focus on the <b><b>knowledge</b></b> needed to perform each task, not the order in which tasks occur.</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-org982b32c" class="outline-2">
+<h2 id="org982b32c"><span class="section-number-2">6.</span> General-Purpose modules</h2>
+<div class="outline-text-2" id="text-6">
+<ul class="org-ul">
+<li>General-purpose modules can be used to address a broad range of problems such that it may find unanticipated uses in the future (cf. investment mindset).</li>
+<li>Special-purpose modules are specialized for today&rsquo;s needs, and can be refactored to make it general-purpose when additional uses are required (cf. incremental software development).</li>
+<li>The author recommends a &ldquo;somewhat general-purpose&rdquo; fashion: the functionality should reflect the current needs, but the interface should be general enough to support multiple uses.</li>
+<li>The following questions can be asked to find the balance between general-purpose and special-purpose approach:
+<ul class="org-ul">
+<li>What is the simplest interface that will cover all current needs?</li>
+<li>How many situations will a method be used?</li>
+<li>Is the API easy to use for the current needs (not go too far)?</li>
+</ul></li>
+</ul>
+</div>
+<div id="outline-container-org90c718a" class="outline-3">
+<h3 id="org90c718a"><span class="section-number-3">6.1.</span> Example: GUI text editor design</h3>
+<div class="outline-text-3" id="text-6-1">
+<ul class="org-ul">
+<li>Specialized design: use individual method in the text class to support each high-level features, e.g., <code>backspace(Cursor cursor)</code> deletes the character before the cursor; <code>delete(Cursor cursor)</code> deletes the character after the cursor; <code>deleteSelection(Selection selection)</code> deletes the selected section.</li>
+<li>The specialized design creates a high cognitive load for the UI developers: the implementation ends up with a large number of shallow methods so a UI developer had to learn all of them.
+<ul class="org-ul">
+<li>E.g., <code>backspace</code> provides a false abstraction as it does not hide the information about which character to delete.</li>
+</ul></li>
+<li>The specialized design also creates information leakage: abstractions related to the UI such as backspace key and selection, are reflected in the text class, increasing the cognitive load for the text class developers.</li>
+<li>General-purpose design define API only in terms of <b><b>basic</b></b> text features without reflecting the higher-level operations.
+<ul class="org-ul">
+<li>Only three methods are needed to modify a text: <code>insert(Position position, String newText)</code>,  <code>delete(Position start, Position end)</code> and <code>changePosition(Position position, int numChars)</code>.
+<ul class="org-ul">
+<li>The new API uses a more generic <code>Position</code> to replace a specific user interface <code>Cursor</code>.</li>
+<li>The delete key can be implemented as <code>text.delete(cursor, text.ChangePosition(cursor, 1))</code>, the backspace key can be implemented as <code>text.delete(cursor, text.ChangePosition(cursor, -1))</code>.</li>
+</ul></li>
+</ul></li>
+<li>The new design is more obvious, e.g., the UI developer knows which character to delete from the interface, and also has less code overall.</li>
+<li>The general-purpose methods can also be used for new feature, e.g., search and replace text.</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-orgdc302bd" class="outline-2">
+<h2 id="orgdc302bd"><span class="section-number-2">7.</span> Layers of abstractions</h2>
+<div class="outline-text-2" id="text-7">
+<ul class="org-ul">
+<li>Software systems are composed into layers, where higher layers use the facilities provided by lower layers; each layer provides an abstraction different from the layers above or below it.
+<ul class="org-ul">
+<li>E.g., a file in the uppermost layer is an array of bytes and is a memory cache of fixed-size disk blocks in the next lower layer.</li>
+</ul></li>
+<li>A system contains adjacent layers with similar abstractions is a red flag of class decomposition problem.</li>
+<li>The internal representations should be different from the abstractions that appear in the interface; if the interface and the implementation have similar abstractions, the class is shallow.</li>
+</ul>
+</div>
+<div id="outline-container-orgb2ed9ea" class="outline-3">
+<h3 id="orgb2ed9ea"><span class="section-number-3">7.1.</span> Pass-through methods</h3>
+<div class="outline-text-3" id="text-7-1">
+<ul class="org-ul">
+<li>A pass-through method is a method that does little except invoke another method, whose signature is similar or identical to the callee function.</li>
+<li>Pass-through methods usually indicates there is not a clean <b><b>division of responsibility</b></b> between classes.</li>
+<li>Pass-through methods also create dependencies between classes.</li>
+<li>The solution is to refactor the classes, e.g., expose the lower level class directly to the higher level (b), redistribute the functionality (c) or merge them (d):</li>
+</ul>
+
+
+<figure id="org098b889">
+<img src="./static/pass-through-methods.png" alt="pass-through-methods.png" align="center" width="400px">
+
+<figcaption><span class="figure-number">Figure 2: </span>Refactor pass-through methods</figcaption>
+</figure>
+</div>
+</div>
+<div id="outline-container-org91e31d4" class="outline-3">
+<h3 id="org91e31d4"><span class="section-number-3">7.2.</span> Pass-through variables</h3>
+<div class="outline-text-3" id="text-7-2">
+<ul class="org-ul">
+<li>A pass-through variable is a variable that is passed down through a long chain of methods.</li>
+<li>Pass-through variables add complexity as all intermediate methods must be aware of the existence and need to be modified when a new variable is used.</li>
+<li>The author&rsquo;s solution is to introduce a <b><b>context</b></b> object which stores all application&rsquo;s global states, e.g., configuration options and timeout value, and there is one context object per system instance.</li>
+<li>To avoid passing through the context variable, a reference to the context can be saved in other objects.
+<ul class="org-ul">
+<li>When a new object is created, the context reference is passed to the constructor.</li>
+</ul></li>
+<li>Contexts should be immutable to avoid thread-safety issues and may create non-obvious dependencies.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org616c794" class="outline-3">
+<h3 id="org616c794"><span class="section-number-3">7.3.</span> Acceptable interface duplication</h3>
+<div class="outline-text-3" id="text-7-3">
+<ul class="org-ul">
+<li>Dispatcher: a method that uses its arguments to select a specific method to invoke and passes most of its arguments.
+<ul class="org-ul">
+<li>E.g., when a web server receives an HTTP request, it invokes a dispatcher to examine the URL and selects a specific method to handle the request.</li>
+</ul></li>
+<li>Polymorphous methods, e.g., <code>len(string)</code> and <code>len(array)</code> reduces cognitive load; they are usally in the same layer and do not invoke each other.</li>
+<li>Decorator: a wrapper that takes an existing object and extends its functionality.</li>
+<li>Decorators are often shallow and contain pass-through methods, one should consider following alternatives before using them:
+<ul class="org-ul">
+<li>Add the new functionality directly to the class if it is relatively general-purpose; or merge it with the specific use case if it is specialized.</li>
+<li>Merge the new functionality with an existing decorator to make the existing decorator deeper.</li>
+<li>Implement it as a stand-alone class independent of the base class, e.g., <code>Window</code> and <code>ScrollableWindow</code>.</li>
+</ul></li>
 </ul>
 </div>
 </div>

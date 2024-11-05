@@ -3,7 +3,7 @@
 #+description: This is a personal note for the book "A Philosophy of Software Design" (2018) by John Ousterhout
 #+filetags: book software design
 
-This is a personal note for the book "A Philosophy of Software Design" (2018) by John Ousterhout.
+This is a personal note for the book "A Philosophy of Software Design" (2018, John Ousterhout).
 
 * Introduction
 - The most fundamental problem in CS is **problem decomposition**: how to divide a complex problem into pieces that can be solved independently.
@@ -84,7 +84,7 @@ This is a personal note for the book "A Philosophy of Software Design" (2018) by
   - The more unimportant details that are omitted from an abstraction, the better, otherwise the abstraction increases the cognitive load.
   - A detail can only be omitted if it is unimportant, otherwise obscurity occurs.
 - In modular programming, each module provides an abstraction in form of its interface.
-- The key to designing abstractions is to understand what is important and to look for designs that minimize the amount of important information.
+- The key to designing abstractions is to understand what is important.
   - E.g., how to choose storage blocks for a file is unimportant to users, but the rules for flushing data to secondary storage is important for databases, hence it must be visible in the file system interface.
   - Garbage collectors in Go and Java do not have interface at all.
 
@@ -114,3 +114,60 @@ This is a personal note for the book "A Philosophy of Software Design" (2018) by
   - The solution is to combine the core mechanisms for reading and writing into a single class.
 - Orders should not be reflected in the module structure unless different stages use totally different information.
 - One should focus on the **knowledge** needed to perform each task, not the order in which tasks occur.
+
+* General-Purpose modules
+- General-purpose modules can be used to address a broad range of problems such that it may find unanticipated uses in the future (cf. investment mindset).
+- Special-purpose modules are specialized for today's needs, and can be refactored to make it general-purpose when additional uses are required (cf. incremental software development).
+- The author recommends a "somewhat general-purpose" fashion: the functionality should reflect the current needs, but the interface should be general enough to support multiple uses.
+- The following questions can be asked to find the balance between general-purpose and special-purpose approach:
+  - What is the simplest interface that will cover all current needs?
+  - How many situations will a method be used?
+  - Is the API easy to use for the current needs (not go too far)?
+
+** Example: GUI text editor design
+- Specialized design: use individual method in the text class to support each high-level features, e.g., ~backspace(Cursor cursor)~ deletes the character before the cursor; ~delete(Cursor cursor)~ deletes the character after the cursor; ~deleteSelection(Selection selection)~ deletes the selected section.
+- The specialized design creates a high cognitive load for the UI developers: the implementation ends up with a large number of shallow methods so a UI developer had to learn all of them.
+  - E.g., ~backspace~ provides a false abstraction as it does not hide the information about which character to delete.
+- The specialized design also creates information leakage: abstractions related to the UI such as backspace key and selection, are reflected in the text class, increasing the cognitive load for the text class developers.
+- General-purpose design define API only in terms of **basic** text features without reflecting the higher-level operations.
+  - Only three methods are needed to modify a text: ~insert(Position position, String newText)~,  ~delete(Position start, Position end)~ and ~changePosition(Position position, int numChars)~.
+    - The new API uses a more generic ~Position~ to replace a specific user interface ~Cursor~.
+    - The delete key can be implemented as ~text.delete(cursor, text.ChangePosition(cursor, 1))~, the backspace key can be implemented as ~text.delete(cursor, text.ChangePosition(cursor, -1))~.
+- The new design is more obvious, e.g., the UI developer knows which character to delete from the interface, and also has less code overall.
+- The general-purpose methods can also be used for new feature, e.g., search and replace text.
+
+
+* Layers of abstractions
+- Software systems are composed into layers, where higher layers use the facilities provided by lower layers; each layer provides an abstraction different from the layers above or below it.
+  - E.g., a file in the uppermost layer is an array of bytes and is a memory cache of fixed-size disk blocks in the next lower layer.
+- A system contains adjacent layers with similar abstractions is a red flag of class decomposition problem.
+- The internal representations should be different from the abstractions that appear in the interface; if the interface and the implementation have similar abstractions, the class is shallow.
+
+** Pass-through methods
+- A pass-through method is a method that does little except invoke another method, whose signature is similar or identical to the callee function.
+- Pass-through methods usually indicates there is not a clean **division of responsibility** between classes.
+- Pass-through methods also create dependencies between classes.
+- The solution is to refactor the classes, e.g., expose the lower level class directly to the higher level (b), redistribute the functionality (c) or merge them (d):
+
+#+CAPTION: Refactor pass-through methods
+#+ATTR_HTML: :align center
+#+ATTR_HTML: :width 400px
+[[./static/pass-through-methods.png]]
+
+** Pass-through variables
+- A pass-through variable is a variable that is passed down through a long chain of methods.
+- Pass-through variables add complexity as all intermediate methods must be aware of the existence and need to be modified when a new variable is used.
+- The author's solution is to introduce a **context** object which stores all application's global states, e.g., configuration options and timeout value, and there is one context object per system instance.
+- To avoid passing through the context variable, a reference to the context can be saved in other objects.
+  - When a new object is created, the context reference is passed to the constructor.
+- Contexts should be immutable to avoid thread-safety issues and may create non-obvious dependencies.
+
+** Acceptable interface duplication
+- Dispatcher: a method that uses its arguments to select a specific method to invoke and passes most of its arguments.
+  - E.g., when a web server receives an HTTP request, it invokes a dispatcher to examine the URL and selects a specific method to handle the request.
+- Polymorphous methods, e.g., ~len(string)~ and ~len(array)~ reduces cognitive load; they are usally in the same layer and do not invoke each other.
+- Decorator: a wrapper that takes an existing object and extends its functionality.
+- Decorators are often shallow and contain pass-through methods, one should consider following alternatives before using them:
+  - Add the new functionality directly to the class if it is relatively general-purpose; or merge it with the specific use case if it is specialized.
+  - Merge the new functionality with an existing decorator to make the existing decorator deeper.
+  - Implement it as a stand-alone class independent of the base class, e.g., ~Window~ and ~ScrollableWindow~.
