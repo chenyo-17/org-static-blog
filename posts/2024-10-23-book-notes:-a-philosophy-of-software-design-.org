@@ -136,12 +136,14 @@ This is a personal note for the book "A Philosophy of Software Design" (2018, Jo
 - The new design is more obvious, e.g., the UI developer knows which character to delete from the interface, and also has less code overall.
 - The general-purpose methods can also be used for new feature, e.g., search and replace text.
 
-
 * Layers of abstractions
 - Software systems are composed into layers, where higher layers use the facilities provided by lower layers; each layer provides an abstraction different from the layers above or below it.
   - E.g., a file in the uppermost layer is an array of bytes and is a memory cache of fixed-size disk blocks in the next lower layer.
 - A system contains adjacent layers with similar abstractions is a red flag of class decomposition problem.
 - The internal representations should be different from the abstractions that appear in the interface; if the interface and the implementation have similar abstractions, the class is shallow.
+- It is more important for a module to have a simple interface than a simple implementation to benefit more user.
+  - Simple implementation example: throw an exception when don't know how to handle the condition; define configuration parameters (developers should compute reasonable defaults automatically for configuration parameters).
+  - Simple interface example: make a text editor GUI character-oriented rather on line-oriented so users can insert and delete arbitrary ranges of text.
 
 ** Pass-through methods
 - A pass-through method is a method that does little except invoke another method, whose signature is similar or identical to the callee function.
@@ -171,3 +173,19 @@ This is a personal note for the book "A Philosophy of Software Design" (2018, Jo
   - Add the new functionality directly to the class if it is relatively general-purpose; or merge it with the specific use case if it is specialized.
   - Merge the new functionality with an existing decorator to make the existing decorator deeper.
   - Implement it as a stand-alone class independent of the base class, e.g., ~Window~ and ~ScrollableWindow~.
+
+* Combine or separate functionality
+- The goal is to reduce the system complexity as a **whole** and improve its modularity.
+  - Subdividing components create additional complexity, e.g. additional code.
+  - Developers should separate one general-purpose code from special-purpose code, each special-purpose code should go in a different module, e.g., pull the special-purpose code into higher layers.
+    - A general-purpose mechanism provides **interfaces** for special-purpose code to override.
+    - Each special-purpose code implements particular logic which is unaware by other code, including the general-purpose mechanism.
+  - Combining codes is most beneficial if they are closely related:
+    - They share information, e.g., HTTP request reader and parser.
+    - They share repeated pattern, e.g., may ~goto~ same cleanup code.
+    - The combination simplifies the interface, e.g., each code implement a part of the solution.
+    - They are used together bi-directionally, e.g., a specific error message which is only invoked by one method.
+    - They overlap conceptually in that there is single higher-level category including both code.
+  - Each method should do one thing and do it **completely**.
+    - The length itself is rarely a good reason for splitting up methods.
+    - If a method is subdivided, users should be able to understand the child method independently, which typically means the child method is relatively general-purpose, otherwise conjoined methods are created.

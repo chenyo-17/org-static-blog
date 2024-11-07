@@ -42,51 +42,52 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgec1b47d">1. Introduction</a></li>
-<li><a href="#org7519599">2. Complexity</a>
+<li><a href="#org5f07db3">1. Introduction</a></li>
+<li><a href="#orga0995c7">2. Complexity</a>
 <ul>
-<li><a href="#orgd3392d7">2.1. Definition</a></li>
-<li><a href="#orgde206ff">2.2. Symptoms</a></li>
-<li><a href="#orgac1ba57">2.3. Causes</a></li>
+<li><a href="#orgafabfcc">2.1. Definition</a></li>
+<li><a href="#orge696c8e">2.2. Symptoms</a></li>
+<li><a href="#orgf7fb069">2.3. Causes</a></li>
 </ul>
 </li>
-<li><a href="#org1dd84ad">3. Programming mindsets</a>
+<li><a href="#org1d71922">3. Programming mindsets</a>
 <ul>
-<li><a href="#org40ced22">3.1. Strategic programming</a></li>
+<li><a href="#orgf1e769f">3.1. Strategic programming</a></li>
 </ul>
 </li>
-<li><a href="#org0c61a13">4. Modular design</a>
+<li><a href="#org447a65a">4. Modular design</a>
 <ul>
-<li><a href="#org9e438fe">4.1. Interface</a></li>
-<li><a href="#orgb460524">4.2. Abstraction</a></li>
+<li><a href="#org8eb4bb6">4.1. Interface</a></li>
+<li><a href="#orgf32c40f">4.2. Abstraction</a></li>
 </ul>
 </li>
-<li><a href="#org6fd4f2d">5. Information hiding</a>
+<li><a href="#orgc9d1398">5. Information hiding</a>
 <ul>
-<li><a href="#org1a7ff92">5.1. Information leakage</a></li>
-<li><a href="#orgeeaca4b">5.2. Temporal decomposition</a></li>
+<li><a href="#org53cd874">5.1. Information leakage</a></li>
+<li><a href="#org235508e">5.2. Temporal decomposition</a></li>
 </ul>
 </li>
-<li><a href="#org982b32c">6. General-Purpose modules</a>
+<li><a href="#orgca1cba1">6. General-Purpose modules</a>
 <ul>
-<li><a href="#org90c718a">6.1. Example: GUI text editor design</a></li>
+<li><a href="#org7c2b244">6.1. Example: GUI text editor design</a></li>
 </ul>
 </li>
-<li><a href="#orgdc302bd">7. Layers of abstractions</a>
+<li><a href="#org6562446">7. Layers of abstractions</a>
 <ul>
-<li><a href="#orgb2ed9ea">7.1. Pass-through methods</a></li>
-<li><a href="#org91e31d4">7.2. Pass-through variables</a></li>
-<li><a href="#org616c794">7.3. Acceptable interface duplication</a></li>
+<li><a href="#org152a295">7.1. Pass-through methods</a></li>
+<li><a href="#org546a1e2">7.2. Pass-through variables</a></li>
+<li><a href="#orgdd5ee12">7.3. Acceptable interface duplication</a></li>
 </ul>
 </li>
+<li><a href="#org651d8d0">8. Combine or separate functionality</a></li>
 </ul>
 </div>
 </nav>
 <p>
 This is a personal note for the book &ldquo;A Philosophy of Software Design&rdquo; (2018, John Ousterhout).
 </p>
-<div id="outline-container-orgec1b47d" class="outline-2">
-<h2 id="orgec1b47d"><span class="section-number-2">1.</span> Introduction</h2>
+<div id="outline-container-org5f07db3" class="outline-2">
+<h2 id="org5f07db3"><span class="section-number-2">1.</span> Introduction</h2>
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
 <li>The most fundamental problem in CS is <b><b>problem decomposition</b></b>: how to divide a complex problem into pieces that can be solved independently.</li>
@@ -107,16 +108,16 @@ This is a personal note for the book &ldquo;A Philosophy of Software Design&rdqu
 </ul>
 </div>
 </div>
-<div id="outline-container-org7519599" class="outline-2">
-<h2 id="org7519599"><span class="section-number-2">2.</span> Complexity</h2>
+<div id="outline-container-orga0995c7" class="outline-2">
+<h2 id="orga0995c7"><span class="section-number-2">2.</span> Complexity</h2>
 <div class="outline-text-2" id="text-2">
 <ul class="org-ul">
 <li>Complexity is <b><b>incremental</b></b>.</li>
 <li>Developers must adopt a <b><b>zero tolerance</b></b> philosophy.</li>
 </ul>
 </div>
-<div id="outline-container-orgd3392d7" class="outline-3">
-<h3 id="orgd3392d7"><span class="section-number-3">2.1.</span> Definition</h3>
+<div id="outline-container-orgafabfcc" class="outline-3">
+<h3 id="orgafabfcc"><span class="section-number-3">2.1.</span> Definition</h3>
 <div class="outline-text-3" id="text-2-1">
 <ul class="org-ul">
 <li>Complexity is anything related to the structure of a software system that makes it hard to understand and modify the system.</li>
@@ -128,8 +129,8 @@ This is a personal note for the book &ldquo;A Philosophy of Software Design&rdqu
 </ul>
 </div>
 </div>
-<div id="outline-container-orgde206ff" class="outline-3">
-<h3 id="orgde206ff"><span class="section-number-3">2.2.</span> Symptoms</h3>
+<div id="outline-container-orge696c8e" class="outline-3">
+<h3 id="orge696c8e"><span class="section-number-3">2.2.</span> Symptoms</h3>
 <div class="outline-text-3" id="text-2-2">
 <ul class="org-ul">
 <li>Change amplification: a seemingly simple change requires code modifications in many different places.</li>
@@ -143,8 +144,8 @@ This is a personal note for the book &ldquo;A Philosophy of Software Design&rdqu
 </ul>
 </div>
 </div>
-<div id="outline-container-orgac1ba57" class="outline-3">
-<h3 id="orgac1ba57"><span class="section-number-3">2.3.</span> Causes</h3>
+<div id="outline-container-orgf7fb069" class="outline-3">
+<h3 id="orgf7fb069"><span class="section-number-3">2.3.</span> Causes</h3>
 <div class="outline-text-3" id="text-2-3">
 <ul class="org-ul">
 <li>Complexity is caused by two things: <b><b>dependencies</b></b> and <b><b>obscurity</b></b>.</li>
@@ -164,8 +165,8 @@ This is a personal note for the book &ldquo;A Philosophy of Software Design&rdqu
 </div>
 </div>
 </div>
-<div id="outline-container-org1dd84ad" class="outline-2">
-<h2 id="org1dd84ad"><span class="section-number-2">3.</span> Programming mindsets</h2>
+<div id="outline-container-org1d71922" class="outline-2">
+<h2 id="org1d71922"><span class="section-number-2">3.</span> Programming mindsets</h2>
 <div class="outline-text-2" id="text-3">
 <ul class="org-ul">
 <li>Tactical programming: the main focus is to get something working, e.g., a new feature or a bug fix.</li>
@@ -173,8 +174,8 @@ This is a personal note for the book &ldquo;A Philosophy of Software Design&rdqu
 <li>Once a code base turns to spaghetti, it is nearly impossible to fix.</li>
 </ul>
 </div>
-<div id="outline-container-org40ced22" class="outline-3">
-<h3 id="org40ced22"><span class="section-number-3">3.1.</span> Strategic programming</h3>
+<div id="outline-container-orgf1e769f" class="outline-3">
+<h3 id="orgf1e769f"><span class="section-number-3">3.1.</span> Strategic programming</h3>
 <div class="outline-text-3" id="text-3-1">
 <ul class="org-ul">
 <li>Requires an investment mindset to improve the system design rather than taking the fastest path to finish the current task.</li>
@@ -184,7 +185,7 @@ This is a personal note for the book &ldquo;A Philosophy of Software Design&rdqu
 </ul>
 
 
-<figure id="org33415c5">
+<figure id="org591e714">
 <img src="https://csruiliu.github.io/blog/images/strategic-tactical.jpeg" alt="strategic-tactical.jpeg" align="center" width="400px">
 
 <figcaption><span class="figure-number">Figure 1: </span>Strategic vs Tactical programming (<a href="https://csruiliu.github.io/blog/images/strategic-tactical.jpeg">Source</a>)</figcaption>
@@ -192,8 +193,8 @@ This is a personal note for the book &ldquo;A Philosophy of Software Design&rdqu
 </div>
 </div>
 </div>
-<div id="outline-container-org0c61a13" class="outline-2">
-<h2 id="org0c61a13"><span class="section-number-2">4.</span> Modular design</h2>
+<div id="outline-container-org447a65a" class="outline-2">
+<h2 id="org447a65a"><span class="section-number-2">4.</span> Modular design</h2>
 <div class="outline-text-2" id="text-4">
 <ul class="org-ul">
 <li>The goal of modular design is to minimize the dependencies between modules.</li>
@@ -213,8 +214,8 @@ This is a personal note for the book &ldquo;A Philosophy of Software Design&rdqu
 </ul></li>
 </ul>
 </div>
-<div id="outline-container-org9e438fe" class="outline-3">
-<h3 id="org9e438fe"><span class="section-number-3">4.1.</span> Interface</h3>
+<div id="outline-container-org8eb4bb6" class="outline-3">
+<h3 id="org8eb4bb6"><span class="section-number-3">4.1.</span> Interface</h3>
 <div class="outline-text-3" id="text-4-1">
 <ul class="org-ul">
 <li>A module interface contains two information: formal and informal.</li>
@@ -227,8 +228,8 @@ This is a personal note for the book &ldquo;A Philosophy of Software Design&rdqu
 </ul>
 </div>
 </div>
-<div id="outline-container-orgb460524" class="outline-3">
-<h3 id="orgb460524"><span class="section-number-3">4.2.</span> Abstraction</h3>
+<div id="outline-container-orgf32c40f" class="outline-3">
+<h3 id="orgf32c40f"><span class="section-number-3">4.2.</span> Abstraction</h3>
 <div class="outline-text-3" id="text-4-2">
 <ul class="org-ul">
 <li>An abstraction is a simplified view of an entity, which omits unimportant details.
@@ -246,8 +247,8 @@ This is a personal note for the book &ldquo;A Philosophy of Software Design&rdqu
 </div>
 </div>
 </div>
-<div id="outline-container-org6fd4f2d" class="outline-2">
-<h2 id="org6fd4f2d"><span class="section-number-2">5.</span> Information hiding</h2>
+<div id="outline-container-orgc9d1398" class="outline-2">
+<h2 id="orgc9d1398"><span class="section-number-2">5.</span> Information hiding</h2>
 <div class="outline-text-2" id="text-5">
 <ul class="org-ul">
 <li>Information hiding is the most important technique for achieving deep modules.</li>
@@ -260,8 +261,8 @@ This is a personal note for the book &ldquo;A Philosophy of Software Design&rdqu
 </ul></li>
 </ul>
 </div>
-<div id="outline-container-org1a7ff92" class="outline-3">
-<h3 id="org1a7ff92"><span class="section-number-3">5.1.</span> Information leakage</h3>
+<div id="outline-container-org53cd874" class="outline-3">
+<h3 id="org53cd874"><span class="section-number-3">5.1.</span> Information leakage</h3>
 <div class="outline-text-3" id="text-5-1">
 <ul class="org-ul">
 <li>The leakage occurs when a design decision is reflected in multiple modules. thus creating dependencies between the modules.
@@ -284,8 +285,8 @@ This is a personal note for the book &ldquo;A Philosophy of Software Design&rdqu
 </ul>
 </div>
 </div>
-<div id="outline-container-orgeeaca4b" class="outline-3">
-<h3 id="orgeeaca4b"><span class="section-number-3">5.2.</span> Temporal decomposition</h3>
+<div id="outline-container-org235508e" class="outline-3">
+<h3 id="org235508e"><span class="section-number-3">5.2.</span> Temporal decomposition</h3>
 <div class="outline-text-3" id="text-5-2">
 <ul class="org-ul">
 <li>Temporal decomposition is a common cause of information leakage.</li>
@@ -300,8 +301,8 @@ This is a personal note for the book &ldquo;A Philosophy of Software Design&rdqu
 </div>
 </div>
 </div>
-<div id="outline-container-org982b32c" class="outline-2">
-<h2 id="org982b32c"><span class="section-number-2">6.</span> General-Purpose modules</h2>
+<div id="outline-container-orgca1cba1" class="outline-2">
+<h2 id="orgca1cba1"><span class="section-number-2">6.</span> General-Purpose modules</h2>
 <div class="outline-text-2" id="text-6">
 <ul class="org-ul">
 <li>General-purpose modules can be used to address a broad range of problems such that it may find unanticipated uses in the future (cf. investment mindset).</li>
@@ -315,8 +316,8 @@ This is a personal note for the book &ldquo;A Philosophy of Software Design&rdqu
 </ul></li>
 </ul>
 </div>
-<div id="outline-container-org90c718a" class="outline-3">
-<h3 id="org90c718a"><span class="section-number-3">6.1.</span> Example: GUI text editor design</h3>
+<div id="outline-container-org7c2b244" class="outline-3">
+<h3 id="org7c2b244"><span class="section-number-3">6.1.</span> Example: GUI text editor design</h3>
 <div class="outline-text-3" id="text-6-1">
 <ul class="org-ul">
 <li>Specialized design: use individual method in the text class to support each high-level features, e.g., <code>backspace(Cursor cursor)</code> deletes the character before the cursor; <code>delete(Cursor cursor)</code> deletes the character after the cursor; <code>deleteSelection(Selection selection)</code> deletes the selected section.</li>
@@ -339,8 +340,8 @@ This is a personal note for the book &ldquo;A Philosophy of Software Design&rdqu
 </div>
 </div>
 </div>
-<div id="outline-container-orgdc302bd" class="outline-2">
-<h2 id="orgdc302bd"><span class="section-number-2">7.</span> Layers of abstractions</h2>
+<div id="outline-container-org6562446" class="outline-2">
+<h2 id="org6562446"><span class="section-number-2">7.</span> Layers of abstractions</h2>
 <div class="outline-text-2" id="text-7">
 <ul class="org-ul">
 <li>Software systems are composed into layers, where higher layers use the facilities provided by lower layers; each layer provides an abstraction different from the layers above or below it.
@@ -349,10 +350,15 @@ This is a personal note for the book &ldquo;A Philosophy of Software Design&rdqu
 </ul></li>
 <li>A system contains adjacent layers with similar abstractions is a red flag of class decomposition problem.</li>
 <li>The internal representations should be different from the abstractions that appear in the interface; if the interface and the implementation have similar abstractions, the class is shallow.</li>
+<li>It is more important for a module to have a simple interface than a simple implementation to benefit more user.
+<ul class="org-ul">
+<li>Simple implementation example: throw an exception when don&rsquo;t know how to handle the condition; define configuration parameters (developers should compute reasonable defaults automatically for configuration parameters).</li>
+<li>Simple interface example: make a text editor GUI character-oriented rather on line-oriented so users can insert and delete arbitrary ranges of text.</li>
+</ul></li>
 </ul>
 </div>
-<div id="outline-container-orgb2ed9ea" class="outline-3">
-<h3 id="orgb2ed9ea"><span class="section-number-3">7.1.</span> Pass-through methods</h3>
+<div id="outline-container-org152a295" class="outline-3">
+<h3 id="org152a295"><span class="section-number-3">7.1.</span> Pass-through methods</h3>
 <div class="outline-text-3" id="text-7-1">
 <ul class="org-ul">
 <li>A pass-through method is a method that does little except invoke another method, whose signature is similar or identical to the callee function.</li>
@@ -362,15 +368,15 @@ This is a personal note for the book &ldquo;A Philosophy of Software Design&rdqu
 </ul>
 
 
-<figure id="org098b889">
+<figure id="orgfaf47c4">
 <img src="./static/pass-through-methods.png" alt="pass-through-methods.png" align="center" width="400px">
 
 <figcaption><span class="figure-number">Figure 2: </span>Refactor pass-through methods</figcaption>
 </figure>
 </div>
 </div>
-<div id="outline-container-org91e31d4" class="outline-3">
-<h3 id="org91e31d4"><span class="section-number-3">7.2.</span> Pass-through variables</h3>
+<div id="outline-container-org546a1e2" class="outline-3">
+<h3 id="org546a1e2"><span class="section-number-3">7.2.</span> Pass-through variables</h3>
 <div class="outline-text-3" id="text-7-2">
 <ul class="org-ul">
 <li>A pass-through variable is a variable that is passed down through a long chain of methods.</li>
@@ -384,8 +390,8 @@ This is a personal note for the book &ldquo;A Philosophy of Software Design&rdqu
 </ul>
 </div>
 </div>
-<div id="outline-container-org616c794" class="outline-3">
-<h3 id="org616c794"><span class="section-number-3">7.3.</span> Acceptable interface duplication</h3>
+<div id="outline-container-orgdd5ee12" class="outline-3">
+<h3 id="orgdd5ee12"><span class="section-number-3">7.3.</span> Acceptable interface duplication</h3>
 <div class="outline-text-3" id="text-7-3">
 <ul class="org-ul">
 <li>Dispatcher: a method that uses its arguments to select a specific method to invoke and passes most of its arguments.
@@ -402,6 +408,35 @@ This is a personal note for the book &ldquo;A Philosophy of Software Design&rdqu
 </ul></li>
 </ul>
 </div>
+</div>
+</div>
+<div id="outline-container-org651d8d0" class="outline-2">
+<h2 id="org651d8d0"><span class="section-number-2">8.</span> Combine or separate functionality</h2>
+<div class="outline-text-2" id="text-8">
+<ul class="org-ul">
+<li>The goal is to reduce the system complexity as a <b><b>whole</b></b> and improve its modularity.
+<ul class="org-ul">
+<li>Subdividing components create additional complexity, e.g. additional code.</li>
+<li>Developers should separate one general-purpose code from special-purpose code, each special-purpose code should go in a different module, e.g., pull the special-purpose code into higher layers.
+<ul class="org-ul">
+<li>A general-purpose mechanism provides <b><b>interfaces</b></b> for special-purpose code to override.</li>
+<li>Each special-purpose code implements particular logic which is unaware by other code, including the general-purpose mechanism.</li>
+</ul></li>
+<li>Combining codes is most beneficial if they are closely related:
+<ul class="org-ul">
+<li>They share information, e.g., HTTP request reader and parser.</li>
+<li>They share repeated pattern, e.g., may <code>goto</code> same cleanup code.</li>
+<li>The combination simplifies the interface, e.g., each code implement a part of the solution.</li>
+<li>They are used together bi-directionally, e.g., a specific error message which is only invoked by one method.</li>
+<li>They overlap conceptually in that there is single higher-level category including both code.</li>
+</ul></li>
+<li>Each method should do one thing and do it <b><b>completely</b></b>.
+<ul class="org-ul">
+<li>The length itself is rarely a good reason for splitting up methods.</li>
+<li>If a method is subdivided, users should be able to understand the child method independently, which typically means the child method is relatively general-purpose, otherwise conjoined methods are created.</li>
+</ul></li>
+</ul></li>
+</ul>
 </div>
 </div>
 <div class="taglist"><a href="https://chenyo.me/tags.html">Tags</a>: <a href="https://chenyo.me/tag-book.html">book</a> <a href="https://chenyo.me/tag-software.html">software</a> <a href="https://chenyo.me/tag-design.html">design</a> </div>
@@ -1049,21 +1084,29 @@ The <a href="https://github.com/chenyo-17/pbaobot">repository</a> is also public
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgb558b88">1. Namespace</a></li>
-<li><a href="#orgd65b775">2. Wrapper class</a></li>
-<li><a href="#orge0d73ab">3. Iterator</a>
+<li><a href="#org232058f">1. Namespace</a></li>
+<li><a href="#orgc80ce54">2. Wrapper class</a></li>
+<li><a href="#org798202f">3. Iterator</a>
 <ul>
-<li><a href="#orgc5a1b2e">3.1. A doubly linked list (DLL) iterator</a></li>
+<li><a href="#org0eaf318">3.1. A doubly linked list (DLL) iterator</a></li>
 </ul>
 </li>
+<li><a href="#org136cb5f">4. STL containers</a>
+<ul>
+<li><a href="#org4309d56">4.1. Vector</a></li>
+<li><a href="#org3b537e3">4.2. Set</a></li>
+<li><a href="#org959f21d">4.3. Unordered maps</a></li>
+</ul>
+</li>
+<li><a href="#org0e93092">5. Auto</a></li>
 </ul>
 </div>
 </nav>
 <p>
 This is a personal not for the <a href="https://github.com/cmu-db/15445-bootcamp">CMU 15-445 C++ bootcamp</a> along with some explanation from Claude.ai.
 </p>
-<div id="outline-container-orgb558b88" class="outline-2">
-<h2 id="orgb558b88"><span class="section-number-2">1.</span> Namespace</h2>
+<div id="outline-container-org232058f" class="outline-2">
+<h2 id="org232058f"><span class="section-number-2">1.</span> Namespace</h2>
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
 <li>Provides scopes to identifiers with <code>::</code>.</li>
@@ -1091,7 +1134,7 @@ Namespaces can be nested.
     <span style="color: #a9a1e1;">DEF</span>::bar(a);
     }
 
-} <span style="color: #5B6268;">// </span><span style="color: #5B6268;">namespace ABC fs</span>
+} <span style="color: #5B6268;">// </span><span style="color: #5B6268;">namespace ABC</span>
 </pre>
 </div></li>
 <li>Two namespaces can define functions with the same name and signatures.</li>
@@ -1101,8 +1144,8 @@ Namespaces can be nested.
 </ul>
 </div>
 </div>
-<div id="outline-container-orgd65b775" class="outline-2">
-<h2 id="orgd65b775"><span class="section-number-2">2.</span> Wrapper class</h2>
+<div id="outline-container-orgc80ce54" class="outline-2">
+<h2 id="orgc80ce54"><span class="section-number-2">2.</span> Wrapper class</h2>
 <div class="outline-text-2" id="text-2">
 <ul class="org-ul">
 <li><p>
@@ -1179,10 +1222,10 @@ A wrapper class is still moveable from different lvalues/owners.
 <pre class="src src-cpp"><span style="color: #51afef;">class</span> <span style="color: #ECBE7B;">IntPtrManager</span> {
 <span style="color: #51afef;">public</span>:
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">a move constructor</span>
-  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">called by `IntPtrManager b(std::move(a))`</span>
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">called by IntPtrManager b(std::move(a))</span>
   <span style="color: #c678dd;">IntPtrManager</span>(<span style="color: #ECBE7B;">IntPtrManager</span> &amp;&amp;<span style="color: #dcaeea;">other</span>) {
     <span style="color: #5B6268;">// </span><span style="color: #5B6268;">while other is a rvalue reference, other.ptr_ is a lvalue</span>
-    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">therefroe a copy happens here, not a move</span>
+    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">therefore a copy happens here, not a move</span>
     <span style="color: #5B6268;">// </span><span style="color: #5B6268;">in the constructor this.ptr_ has not pointed to anything</span>
     <span style="color: #5B6268;">// </span><span style="color: #5B6268;">so no need to delete ptr_</span>
     ptr = other.ptr_;
@@ -1210,8 +1253,8 @@ A wrapper class is still moveable from different lvalues/owners.
 </ul>
 </div>
 </div>
-<div id="outline-container-orge0d73ab" class="outline-2">
-<h2 id="orge0d73ab"><span class="section-number-2">3.</span> Iterator</h2>
+<div id="outline-container-org798202f" class="outline-2">
+<h2 id="org798202f"><span class="section-number-2">3.</span> Iterator</h2>
 <div class="outline-text-2" id="text-3">
 <ul class="org-ul">
 <li><p>
@@ -1240,8 +1283,8 @@ iter++;
 <li>Often used to access and modify elements in C++ STL containers.</li>
 </ul>
 </div>
-<div id="outline-container-orgc5a1b2e" class="outline-3">
-<h3 id="orgc5a1b2e"><span class="section-number-3">3.1.</span> A doubly linked list (DLL) iterator</h3>
+<div id="outline-container-org0eaf318" class="outline-3">
+<h3 id="org0eaf318"><span class="section-number-3">3.1.</span> A doubly linked list (DLL) iterator</h3>
 <div class="outline-text-3" id="text-3-1">
 <ul class="org-ul">
 <li><p>
@@ -1350,12 +1393,246 @@ Define DLL:
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">e.g., `for (DLLIterator iter = dll.Begin(); iter != dll.End(); ++iter)`</span>
   <span style="color: #ECBE7B;">DLLIterator</span> <span style="color: #c678dd;">End</span>() { <span style="color: #51afef;">return</span> DLLIterator(<span style="color: #a9a1e1;">nullptr</span>); }
 
-  <span style="color: #ECBE7B;">Node</span> *<span style="color: #dcaeea;">head_</span>{<span style="color: #a9a1e1;">nullptr</span>};
+  <span style="color: #ECBE7B;">Node</span> *<span style="color: #dcaeea;">head_</span>{<span style="color: #a9a1e1;">nullptr</span>};  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">in-class initializers</span>
   <span style="color: #ECBE7B;">size_t</span> <span style="color: #dcaeea;">size_</span>;
 };
 </pre>
 </div></li>
 </ul>
+</div>
+</div>
+</div>
+<div id="outline-container-org136cb5f" class="outline-2">
+<h2 id="org136cb5f"><span class="section-number-2">4.</span> STL containers</h2>
+<div class="outline-text-2" id="text-4">
+<ul class="org-ul">
+<li>The C++ STL (standard library) is a generic collection of data structure and algorithm implementations, e.g., stacks, queues, hash tables.</li>
+<li>Each container has own header, e.g., <code>std::vector</code>.</li>
+<li>The <code>std::set</code> is implemented as a red-black tree.</li>
+</ul>
+</div>
+<div id="outline-container-org4309d56" class="outline-3">
+<h3 id="org4309d56"><span class="section-number-3">4.1.</span> Vector</h3>
+<div class="outline-text-3" id="text-4-1">
+<div class="org-src-container">
+<pre class="src src-cpp"><span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;algorithm&gt;</span> <span style="color: #5B6268;">// </span><span style="color: #5B6268;">to use std::remove_if</span>
+<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;iostream&gt;</span>  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">to use std::cout</span>
+<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;vector&gt;</span>
+<span style="color: #5B6268;">// </span><span style="color: #5B6268;">A helper class used for vector</span>
+<span style="color: #51afef;">class</span> <span style="color: #ECBE7B;">Point</span> {
+<span style="color: #51afef;">public</span>:
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">constructors</span>
+  <span style="color: #c678dd;">Point</span>() : x_(<span style="color: #da8548; font-weight: bold;">0</span>), y_(<span style="color: #da8548; font-weight: bold;">0</span>) {}
+  <span style="color: #c678dd;">Point</span>(<span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">x</span>, <span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">y</span>) : x_(x), y_(y) {}
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">inline asks the compiler to substitute the function</span>
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">directly at the calling location instead of performing</span>
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">a normal function call, to improve performance for small functions</span>
+  <span style="color: #51afef;">inline</span> <span style="color: #ECBE7B;">int</span> <span style="color: #c678dd;">GetX</span>() <span style="color: #51afef;">const</span> { <span style="color: #51afef;">return</span> x_; }
+  <span style="color: #51afef;">inline</span> <span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">SetX</span>(<span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">x</span>) { x_ = x; }
+
+  <span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">PrintPoint</span>() <span style="color: #51afef;">const</span> {
+    <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"Point: ("</span> &lt;&lt; x_ &lt;&lt; <span style="color: #98be65;">", "</span> &lt;&lt; <span style="color: #98be65;">"y_"</span> &lt;&lt; <span style="color: #98be65;">")\n"</span>;
+  }
+
+<span style="color: #51afef;">private</span>:
+  <span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">x_</span>;
+  <span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">y_</span>;
+};
+
+<span style="color: #ECBE7B;">int</span> <span style="color: #c678dd;">main</span>() {
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">vector</span>&lt;<span style="color: #ECBE7B;">Point</span>&gt; <span style="color: #dcaeea;">point_vector</span>;
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">approach 1 to append to a vector</span>
+  point_vector.push_back(Point(<span style="color: #da8548; font-weight: bold;">35</span>, <span style="color: #da8548; font-weight: bold;">36</span>));
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">approach 2, pass the argument to Point(x,y) constructor</span>
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">slightly faster than push_back</span>
+  point_vector.emplace_back(<span style="color: #da8548; font-weight: bold;">37</span>, <span style="color: #da8548; font-weight: bold;">38</span>);
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">iterate through index</span>
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">size_t: unsigned integers specifially used in loop or counting</span>
+  <span style="color: #51afef;">for</span> (<span style="color: #ECBE7B;">size_t</span> <span style="color: #dcaeea;">i</span> = <span style="color: #da8548; font-weight: bold;">0</span>; i &lt; point_vector.size(); ++i) {
+    point_vector[i].PrintPoint();
+  }
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">iterate through mutable reference</span>
+  <span style="color: #51afef;">for</span> (<span style="color: #ECBE7B;">Point</span> &amp;<span style="color: #dcaeea;">item</span> : point_vector) {
+    item.SetX(<span style="color: #da8548; font-weight: bold;">10</span>);
+  }
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">iterate through immutable reference</span>
+  <span style="color: #51afef;">for</span> (<span style="color: #51afef;">const</span> <span style="color: #ECBE7B;">Point</span> &amp;<span style="color: #dcaeea;">item</span> : point_vector) {
+    item.GetX();
+  }
+
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">initialize the vector with an initializer list</span>
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">vector</span>&lt;<span style="color: #ECBE7B;">int</span>&gt; <span style="color: #dcaeea;">int_vector</span> = {<span style="color: #da8548; font-weight: bold;">0</span>, <span style="color: #da8548; font-weight: bold;">1</span>, <span style="color: #da8548; font-weight: bold;">2</span>, <span style="color: #da8548; font-weight: bold;">3</span>};
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">erase element given its index</span>
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">int_vector.begin() returns a std::vector&lt;int&gt;::iterator</span>
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">pointing to the first elemnt in the vector</span>
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">the vector iterator has a plus iterator</span>
+  int_vector.erase(int_vector.begin() + <span style="color: #da8548; font-weight: bold;">2</span>); <span style="color: #5B6268;">// </span><span style="color: #5B6268;">{0, 1, 3}</span>
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">erase a range of elements</span>
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">int_vector.end() points to the end of a vector (not the last element)</span>
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">and cannot be accessed.</span>
+  int_vector.erase(int_vector.begin() + <span style="color: #da8548; font-weight: bold;">1</span>, int_vector.end()); <span style="color: #5B6268;">// </span><span style="color: #5B6268;">{0}</span>
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">erase elements via filtering</span>
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">std::remove_if(range_begin, range_end, condition) returns an iterator</span>
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">pointing to the first element to be erased</span>
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">remove_if() also partitions point_vector so that unsatisfied elements are</span>
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">moved before the point_vector.begin(), i.e., the vector is reordered</span>
+  point_vector.erase(
+      <span style="color: #a9a1e1;">std</span>::remove_if(point_vector.begin(), point_vector.end(),
+                     [](<span style="color: #51afef;">const</span> <span style="color: #ECBE7B;">Point</span> &amp;<span style="color: #dcaeea;">point</span>) { <span style="color: #51afef;">return</span> point.GetX() == <span style="color: #da8548; font-weight: bold;">10</span>; }),
+      point_vector.end());
+
+  <span style="color: #51afef;">return</span> <span style="color: #da8548; font-weight: bold;">0</span>;
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org3b537e3" class="outline-3">
+<h3 id="org3b537e3"><span class="section-number-3">4.2.</span> Set</h3>
+<div class="outline-text-3" id="text-4-2">
+<div class="org-src-container">
+<pre class="src src-cpp"><span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;iostream&gt;</span>
+<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;set&gt;</span>
+
+<span style="color: #ECBE7B;">int</span> <span style="color: #c678dd;">main</span>() {
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">set</span>&lt;<span style="color: #ECBE7B;">int</span>&gt; <span style="color: #dcaeea;">int_set</span>;
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">can insert element with .insert() or .emplace()</span>
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">.emplace() allows to construct the object in place</span>
+  <span style="color: #51afef;">for</span> (<span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">i</span> = <span style="color: #da8548; font-weight: bold;">1</span>; i &lt;= <span style="color: #da8548; font-weight: bold;">5</span>; ++i) {
+    int_set.insert(i);
+  }
+  <span style="color: #51afef;">for</span> (<span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">i</span> = <span style="color: #da8548; font-weight: bold;">6</span>; i &lt;= <span style="color: #da8548; font-weight: bold;">10</span>; ++i) {
+    int_set.emplace(i);
+  }
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">iterate the set</span>
+  <span style="color: #51afef;">for</span> (<span style="color: #a9a1e1;">std</span>::<span style="color: #a9a1e1;">set</span>&lt;<span style="color: #ECBE7B;">int</span>&gt;::<span style="color: #ECBE7B;">iterator</span> <span style="color: #dcaeea;">it</span> = int_set.begin(); it != int_set.end();
+       ++it) {
+    <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; *it &lt;&lt; <span style="color: #98be65;">" "</span>;
+  }
+  <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"\n"</span>;
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">.find(key) returns an iterator pointing to the key</span>
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">if it is in the set, otherwise returns .end()</span>
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #a9a1e1;">set</span>&lt;<span style="color: #ECBE7B;">int</span>&gt;::<span style="color: #ECBE7B;">iterator</span> <span style="color: #dcaeea;">search</span> = int_set.find(<span style="color: #da8548; font-weight: bold;">2</span>);
+  <span style="color: #51afef;">if</span> (search != int_set.end()) {
+    <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"2 is not found\n"</span>;
+  }
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">check whether the set contains a key with .count()</span>
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">it returns either 0 or 1 as each key is unique</span>
+  <span style="color: #51afef;">if</span> (int_set.count(<span style="color: #da8548; font-weight: bold;">11</span>) == <span style="color: #da8548; font-weight: bold;">0</span>) {
+    <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"11 is not in the set.\n"</span>;
+  }
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">erase a key, returns the count of removed elements 0 or 1</span>
+  int_set.erase(<span style="color: #da8548; font-weight: bold;">4</span>);
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">erase a key given its position, returns the iterator to the next element</span>
+  int_set.erase(int_set.begin());
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">erase a range of elements</span>
+  int_set.erase(int_set.find(<span style="color: #da8548; font-weight: bold;">9</span>), int_set.end());
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org959f21d" class="outline-3">
+<h3 id="org959f21d"><span class="section-number-3">4.3.</span> Unordered maps</h3>
+<div class="outline-text-3" id="text-4-3">
+<div class="org-src-container">
+<pre class="src src-cpp"><span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;iostream&gt;</span>
+<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;string&gt;</span>
+<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;unordered_map&gt;</span>
+<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;utility&gt;</span> <span style="color: #5B6268;">// </span><span style="color: #5B6268;">to use std::make_pair</span>
+
+<span style="color: #ECBE7B;">int</span> <span style="color: #c678dd;">main</span>() {
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">unordered_map</span>&lt;<span style="color: #a9a1e1;">std</span>::string, <span style="color: #ECBE7B;">int</span>&gt; <span style="color: #dcaeea;">map</span>;
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">insert items</span>
+  map.insert({<span style="color: #98be65;">"foo"</span>, <span style="color: #da8548; font-weight: bold;">2</span>});
+  map.insert({{<span style="color: #98be65;">"bar"</span>, <span style="color: #da8548; font-weight: bold;">1</span>}, {<span style="color: #98be65;">"eggs"</span>, <span style="color: #da8548; font-weight: bold;">2</span>}});
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">insert items via pairs</span>
+  map.insert(<span style="color: #a9a1e1;">std</span>::make_pair(<span style="color: #98be65;">"hello"</span>, <span style="color: #da8548; font-weight: bold;">10</span>));
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">insert items in an array-style</span>
+  <span style="color: #ECBE7B;">map</span>[<span style="color: #98be65;">"world"</span>] = <span style="color: #da8548; font-weight: bold;">3</span>;
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">update the value</span>
+  <span style="color: #ECBE7B;">map</span>[<span style="color: #98be65;">"foo"</span>] = <span style="color: #da8548; font-weight: bold;">9</span>;
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">.find() returns an iterator pointing to the item</span>
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">or the end</span>
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #a9a1e1;">unordered_map</span>&lt;<span style="color: #a9a1e1;">std</span>::string, <span style="color: #ECBE7B;">int</span>&gt;::<span style="color: #ECBE7B;">iterator</span> <span style="color: #dcaeea;">result</span> = map.find(<span style="color: #98be65;">"bar"</span>);
+  <span style="color: #51afef;">if</span> (result != map.end()) {
+    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">one way to access the item</span>
+    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">both '\n' and std::endl prints newliine, but std::endl</span>
+    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">also flushes the output buffer, so use '\n' is better</span>
+    <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"key: "</span> &lt;&lt; result-&gt;first &lt;&lt; <span style="color: #98be65;">" value: "</span> &lt;&lt; result-&gt;second
+              &lt;&lt; <span style="color: #a9a1e1;">std</span>::endl;
+    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">another way is dereferencing</span>
+    <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">pair</span>&lt;<span style="color: #a9a1e1;">std</span>::string, <span style="color: #ECBE7B;">int</span>&gt; <span style="color: #dcaeea;">pair</span> = *result;
+    <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"key: "</span> &lt;&lt; pair.first &lt;&lt; <span style="color: #98be65;">" value: "</span> &lt;&lt; pair.second
+              &lt;&lt; <span style="color: #a9a1e1;">std</span>::endl;
+    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">check whether a key exists with .count()</span>
+    <span style="color: #51afef;">if</span> (map.count(<span style="color: #98be65;">"foo"</span>) == <span style="color: #da8548; font-weight: bold;">0</span>) {
+      <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"foo does not exist\n"</span>;
+    }
+    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">erase an item via a key</span>
+    map.erase(<span style="color: #98be65;">"world"</span>);
+    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">or via an iterator</span>
+    map.erase(map.find(<span style="color: #98be65;">"bar"</span>));
+    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">can iterate the map via iterator or via for-each</span>
+    <span style="color: #51afef;">for</span> (<span style="color: #a9a1e1;">std</span>::<span style="color: #a9a1e1;">unordered_map</span>&lt;<span style="color: #a9a1e1;">std</span>::string, <span style="color: #ECBE7B;">int</span>&gt;::<span style="color: #ECBE7B;">iterator</span> <span style="color: #dcaeea;">it</span> = map.begin();
+         it != map.end(); ++it) {
+      <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"("</span> &lt;&lt; it-&gt;first &lt;&lt; <span style="color: #98be65;">", "</span> &lt;&lt; it-&gt;second &lt;&lt; <span style="color: #98be65;">"), "</span>;
+    }
+    <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"\n"</span>;
+  }
+}
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-org0e93092" class="outline-2">
+<h2 id="org0e93092"><span class="section-number-2">5.</span> Auto</h2>
+<div class="outline-text-2" id="text-5">
+<ul class="org-ul">
+<li><code>auto</code> keyword tells the compiler to infer the type via its initialization expression.</li>
+</ul>
+<div class="org-src-container">
+<pre class="src src-cpp"><span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;vector&gt;</span>
+<span style="color: #51afef; font-weight: bold;">#include</span><span style="color: #98be65;">&lt;unordered_map&gt;</span>
+<span style="color: #51afef; font-weight: bold;">#include</span><span style="color: #98be65;">&lt;string&gt;</span>
+<span style="color: #51afef; font-weight: bold;">#include</span><span style="color: #98be65;">&lt;iostream&gt;</span>
+<span style="color: #5B6268;">// </span><span style="color: #5B6268;">create very long class and function</span>
+<span style="color: #51afef;">template</span> &lt;<span style="color: #51afef;">typename</span> <span style="color: #ECBE7B;">T</span>, <span style="color: #51afef;">typename</span> <span style="color: #ECBE7B;">U</span>&gt; <span style="color: #51afef;">class</span> <span style="color: #ECBE7B;">VeryLongTemplateClass</span> {
+<span style="color: #51afef;">public</span>:
+  <span style="color: #c678dd;">VeryLongTemplateClass</span>(<span style="color: #ECBE7B;">T</span> <span style="color: #dcaeea;">instance1</span>, <span style="color: #ECBE7B;">U</span> <span style="color: #dcaeea;">instance2</span>)
+      : instance1_(instance1), instance2_(instance2) {}
+
+<span style="color: #51afef;">private</span>:
+  <span style="color: #ECBE7B;">T</span> <span style="color: #dcaeea;">instance1_</span>;
+  <span style="color: #ECBE7B;">U</span> <span style="color: #dcaeea;">instance2_</span>;
+};
+
+<span style="color: #51afef;">template</span> &lt;<span style="color: #51afef;">typename</span> <span style="color: #ECBE7B;">T</span>&gt; <span style="color: #ECBE7B;">VeryLongTemplateClass</span>&lt;<span style="color: #ECBE7B;">T</span>, <span style="color: #ECBE7B;">T</span>&gt; <span style="color: #c678dd;">construct_obj</span>(<span style="color: #ECBE7B;">T</span> <span style="color: #dcaeea;">instance</span>) {
+  <span style="color: #51afef;">return</span> VeryLongTemplateClass&lt;<span style="color: #ECBE7B;">T</span>, <span style="color: #ECBE7B;">T</span>&gt;(instance, instance);
+}
+
+<span style="color: #ECBE7B;">int</span> <span style="color: #c678dd;">main</span>() {
+  <span style="color: #51afef;">auto</span> <span style="color: #dcaeea;">a</span> = <span style="color: #da8548; font-weight: bold;">1</span>;                        <span style="color: #5B6268;">// </span><span style="color: #5B6268;">a is int</span>
+  <span style="color: #51afef;">auto</span> <span style="color: #dcaeea;">obj1</span> = construct_obj&lt;<span style="color: #ECBE7B;">int</span>&gt;(<span style="color: #da8548; font-weight: bold;">2</span>); <span style="color: #5B6268;">// </span><span style="color: #5B6268;">can infer</span>
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">auto defaults to copy objects rather than taking the reference</span>
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">vector</span>&lt;<span style="color: #ECBE7B;">int</span>&gt; <span style="color: #dcaeea;">int_values</span> = {<span style="color: #da8548; font-weight: bold;">1</span>, <span style="color: #da8548; font-weight: bold;">2</span>, <span style="color: #da8548; font-weight: bold;">3</span>, <span style="color: #da8548; font-weight: bold;">4</span>};
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">a deep-copy happens</span>
+  <span style="color: #51afef;">auto</span> <span style="color: #dcaeea;">copy_int_values</span> = int_values;
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">this creates a reference</span>
+  <span style="color: #51afef;">auto</span> &amp;<span style="color: #dcaeea;">ref_int_values</span> = int_values;
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">use auto in the for loop is very common</span>
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">unordered_map</span>&lt;<span style="color: #a9a1e1;">std</span>::string, <span style="color: #ECBE7B;">int</span>&gt; <span style="color: #dcaeea;">map</span>;
+  <span style="color: #51afef;">for</span> (<span style="color: #51afef;">auto</span> <span style="color: #dcaeea;">it</span> = map.begin(); it != map.end(); ++it) {
+  }
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">another exmaple</span>
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">vector</span>&lt;<span style="color: #ECBE7B;">int</span>&gt; <span style="color: #dcaeea;">vec</span> = {<span style="color: #da8548; font-weight: bold;">1</span>, <span style="color: #da8548; font-weight: bold;">2</span>, <span style="color: #da8548; font-weight: bold;">3</span>, <span style="color: #da8548; font-weight: bold;">4</span>};
+  <span style="color: #51afef;">for</span> (<span style="color: #51afef;">const</span> <span style="color: #51afef;">auto</span> &amp;<span style="color: #dcaeea;">elem</span> : vec) {
+    <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; elem &lt;&lt; <span style="color: #98be65;">" "</span>;
+  }
+  <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #a9a1e1;">std</span>::endl;
+}
+</pre>
 </div>
 </div>
 </div>

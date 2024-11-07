@@ -29,7 +29,7 @@ namespace ABC {
     DEF::bar(a);
     }
 
-} // namespace ABC fs
+} // namespace ABC
   #+end_src
 - Two namespaces can define functions with the same name and signatures.
 - Name resolution rules: first check in the current scope, then enclosing scopes, finally going outward until it reaches the global scope.
@@ -95,10 +95,10 @@ public:
 class IntPtrManager {
 public:
   // a move constructor
-  // called by `IntPtrManager b(std::move(a))`
+  // called by IntPtrManager b(std::move(a))
   IntPtrManager(IntPtrManager &&other) {
     // while other is a rvalue reference, other.ptr_ is a lvalue
-    // therefroe a copy happens here, not a move
+    // therefore a copy happens here, not a move
     // in the constructor this.ptr_ has not pointed to anything
     // so no need to delete ptr_
     ptr = other.ptr_;
@@ -122,8 +122,6 @@ public:
   }
 };
   #+end_src
-
-
 
 * Iterator
 - Iterators, e.g., pointers, are objects that point to an element inside a container.
@@ -244,7 +242,218 @@ public:
   // e.g., `for (DLLIterator iter = dll.Begin(); iter != dll.End(); ++iter)`
   DLLIterator End() { return DLLIterator(nullptr); }
 
-  Node *head_{nullptr};
+  Node *head_{nullptr};  // in-class initializers
   size_t size_;
 };
   #+end_src
+
+* STL containers
+- The C++ STL (standard library) is a generic collection of data structure and algorithm implementations, e.g., stacks, queues, hash tables.
+- Each container has own header, e.g., ~std::vector~.
+- The ~std::set~ is implemented as a red-black tree.
+
+** Vector
+  #+begin_src cpp
+#include <algorithm> // to use std::remove_if
+#include <iostream>  // to use std::cout
+#include <vector>
+// A helper class used for vector
+class Point {
+public:
+  // constructors
+  Point() : x_(0), y_(0) {}
+  Point(int x, int y) : x_(x), y_(y) {}
+  // inline asks the compiler to substitute the function
+  // directly at the calling location instead of performing
+  // a normal function call, to improve performance for small functions
+  inline int GetX() const { return x_; }
+  inline void SetX(int x) { x_ = x; }
+
+  void PrintPoint() const {
+    std::cout << "Point: (" << x_ << ", " << "y_" << ")\n";
+  }
+
+private:
+  int x_;
+  int y_;
+};
+
+int main() {
+  std::vector<Point> point_vector;
+  // approach 1 to append to a vector
+  point_vector.push_back(Point(35, 36));
+  // approach 2, pass the argument to Point(x,y) constructor
+  // slightly faster than push_back
+  point_vector.emplace_back(37, 38);
+  // iterate through index
+  // size_t: unsigned integers specifially used in loop or counting
+  for (size_t i = 0; i < point_vector.size(); ++i) {
+    point_vector[i].PrintPoint();
+  }
+  // iterate through mutable reference
+  for (Point &item : point_vector) {
+    item.SetX(10);
+  }
+  // iterate through immutable reference
+  for (const Point &item : point_vector) {
+    item.GetX();
+  }
+
+  // initialize the vector with an initializer list
+  std::vector<int> int_vector = {0, 1, 2, 3};
+  // erase element given its index
+  // int_vector.begin() returns a std::vector<int>::iterator
+  // pointing to the first elemnt in the vector
+  // the vector iterator has a plus iterator
+  int_vector.erase(int_vector.begin() + 2); // {0, 1, 3}
+  // erase a range of elements
+  // int_vector.end() points to the end of a vector (not the last element)
+  // and cannot be accessed.
+  int_vector.erase(int_vector.begin() + 1, int_vector.end()); // {0}
+  // erase elements via filtering
+  // std::remove_if(range_begin, range_end, condition) returns an iterator
+  // pointing to the first element to be erased
+  // remove_if() also partitions point_vector so that unsatisfied elements are
+  // moved before the point_vector.begin(), i.e., the vector is reordered
+  point_vector.erase(
+      std::remove_if(point_vector.begin(), point_vector.end(),
+                     [](const Point &point) { return point.GetX() == 10; }),
+      point_vector.end());
+
+  return 0;
+}
+  #+end_src
+
+** Set
+#+begin_src cpp
+#include <iostream>
+#include <set>
+
+int main() {
+  std::set<int> int_set;
+  // can insert element with .insert() or .emplace()
+  // .emplace() allows to construct the object in place
+  for (int i = 1; i <= 5; ++i) {
+    int_set.insert(i);
+  }
+  for (int i = 6; i <= 10; ++i) {
+    int_set.emplace(i);
+  }
+  // iterate the set
+  for (std::set<int>::iterator it = int_set.begin(); it != int_set.end();
+       ++it) {
+    std::cout << *it << " ";
+  }
+  std::cout << "\n";
+  // .find(key) returns an iterator pointing to the key
+  // if it is in the set, otherwise returns .end()
+  std::set<int>::iterator search = int_set.find(2);
+  if (search != int_set.end()) {
+    std::cout << "2 is not found\n";
+  }
+  // check whether the set contains a key with .count()
+  // it returns either 0 or 1 as each key is unique
+  if (int_set.count(11) == 0) {
+    std::cout << "11 is not in the set.\n";
+  }
+  // erase a key, returns the count of removed elements 0 or 1
+  int_set.erase(4);
+  // erase a key given its position, returns the iterator to the next element
+  int_set.erase(int_set.begin());
+  // erase a range of elements
+  int_set.erase(int_set.find(9), int_set.end());
+}
+#+end_src
+
+** Unordered maps
+#+begin_src cpp
+#include <iostream>
+#include <string>
+#include <unordered_map>
+#include <utility> // to use std::make_pair
+
+int main() {
+  std::unordered_map<std::string, int> map;
+  // insert items
+  map.insert({"foo", 2});
+  map.insert({{"bar", 1}, {"eggs", 2}});
+  // insert items via pairs
+  map.insert(std::make_pair("hello", 10));
+  // insert items in an array-style
+  map["world"] = 3;
+  // update the value
+  map["foo"] = 9;
+  // .find() returns an iterator pointing to the item
+  // or the end
+  std::unordered_map<std::string, int>::iterator result = map.find("bar");
+  if (result != map.end()) {
+    // one way to access the item
+    // both '\n' and std::endl prints newliine, but std::endl
+    // also flushes the output buffer, so use '\n' is better
+    std::cout << "key: " << result->first << " value: " << result->second
+              << std::endl;
+    // another way is dereferencing
+    std::pair<std::string, int> pair = *result;
+    std::cout << "key: " << pair.first << " value: " << pair.second
+              << std::endl;
+    // check whether a key exists with .count()
+    if (map.count("foo") == 0) {
+      std::cout << "foo does not exist\n";
+    }
+    // erase an item via a key
+    map.erase("world");
+    // or via an iterator
+    map.erase(map.find("bar"));
+    // can iterate the map via iterator or via for-each
+    for (std::unordered_map<std::string, int>::iterator it = map.begin();
+         it != map.end(); ++it) {
+      std::cout << "(" << it->first << ", " << it->second << "), ";
+    }
+    std::cout << "\n";
+  }
+}
+#+end_src
+
+* Auto
+- ~auto~ keyword tells the compiler to infer the type via its initialization expression.
+#+begin_src cpp
+#include <vector>
+#include<unordered_map>
+#include<string>
+#include<iostream>
+// create very long class and function
+template <typename T, typename U> class VeryLongTemplateClass {
+public:
+  VeryLongTemplateClass(T instance1, U instance2)
+      : instance1_(instance1), instance2_(instance2) {}
+
+private:
+  T instance1_;
+  U instance2_;
+};
+
+template <typename T> VeryLongTemplateClass<T, T> construct_obj(T instance) {
+  return VeryLongTemplateClass<T, T>(instance, instance);
+}
+
+int main() {
+  auto a = 1;                        // a is int
+  auto obj1 = construct_obj<int>(2); // can infer
+  // auto defaults to copy objects rather than taking the reference
+  std::vector<int> int_values = {1, 2, 3, 4};
+  // a deep-copy happens
+  auto copy_int_values = int_values;
+  // this creates a reference
+  auto &ref_int_values = int_values;
+  // use auto in the for loop is very common
+  std::unordered_map<std::string, int> map;
+  for (auto it = map.begin(); it != map.end(); ++it) {
+  }
+  // another exmaple
+  std::vector<int> vec = {1, 2, 3, 4};
+  for (const auto &elem : vec) {
+    std::cout << elem << " ";
+  }
+  std::cout << std::endl;
+}
+#+end_src
