@@ -457,3 +457,107 @@ int main() {
   std::cout << std::endl;
 }
 #+end_src
+
+
+
+* Smart pointers
+- A smart pointer is a data structure used in languages that do not have built-in memory management (e.g., with garbage collection, e.g., Python, Java) to handle memory allocation and deallocation.
+- ~std::unique_ptr~ and ~std::shared_ptr~ are two C++ standard library smart pointers, they are wrapper classes over raw pointers.
+- ~std::unique_ptr~ retains sole ownership of an object, i.e., no two instances of ~unique_ptr~ can manage the same object, a ~unique_ptr~ cannot be copied.
+- ~std::shared_ptr~ retains shared ownership of an object, i.e., multiple shared pointers can own the same object and can be copied.
+
+** ~std::unique_ptr~
+#+begin_src cpp
+#include <iostream>
+#include <memory>  // to use std::unique_ptr
+#include <utility> // to use std::move
+
+// class Point is the same as before
+
+// takes in a unique point reference and changes its x value
+void SetXTo10(std::unique_ptr<Point> &ptr) { ptr->SetX(10); }
+int main() {
+  // initialize an empty unique pointer
+  std::unique_ptr<Point> u1;
+  // initialize a unique pointer with constructors
+  std::unique_ptr<Point> u2 = std::make_unique<Point>();
+  std::unique_ptr<Point> u3 = std::make_unique<Point>(2, 3);
+  // can treat a unique pointer as a boolean to determine whether
+  // the pointer contains data
+  std::cout << "Pointer u1 is " << (u1 ? "not empty" : "empty") << std::endl;
+  if (u2) {
+    std::cout << u2->GetX() << std::endl;
+  }
+  // unique_ptr has no copy constructor!
+  std::unique_ptr<Point> u4 = u3; // won't compile!
+  // can transfer ownership with std::move
+  std::unique_ptr<Point> u5 = std::move(u3); // then u3 becomes empty!
+  // pass the pointer as a reference so the ownership does not change
+  SetXTo10(u5); // can still access u5 afterwards
+  return 0;
+}
+#+end_src
+
+- Note that the compiler does not prevent 2 unique pointers from pointing to the same object.
+#+begin_src cpp
+// the following code can compile
+// but it causes a double deletion!
+MyClass *obj = new MyClass();
+std::unique_ptr<MyClass> ptr1(obj);
+std::unique_ptr<MyClass> ptr2(obj);
+#+end_src
+
+** ~std::shared_ptr~
+#+begin_src cpp
+#include <iostream>
+#include <memory>
+#include <utility>
+
+// class Point is the same as before
+
+// modify a Point inside a shared_ptr by passing the reference
+void modify_ptr_via_ref(std::shared_ptr<Point> &point) { point->SetX(10); }
+// modify a Point inside a shared_ptr by passing the rvalue reference
+// If an object is passed by rvalue reference, one should assume the ownership
+// is moved after the function call, so the original object cannot be used
+void modify_ptr_via_rvalue_ref(std::shared_ptr<Point> &&point) {
+  point->SetY(11);
+}
+// copy a shared_pointer with the default constructor
+// so one should define own copy constructor and assignment when an object
+// contains pointers
+void copy_shard_ptr_in_function(std::shared_ptr<Point> point) {
+  std::cout << "Use count of the shared pointer: " << point.use_count()
+            << std::endl; // add by 1
+  // the copy is destroyed at the end, so the count is decremented
+}
+
+int main() {
+  // the pointer constructors are the same as unique_ptr
+  std::shared_ptr<Point> s1;
+  std::shared_ptr<Point> s2 = std::make_shared<Point>();
+  std::shared_ptr<Point> s3 = std::make_shared<Point>(2, 3);
+  // copy a shared pointer via copy assignment or copy constructor
+  // increment the reference count, which can be tracked by .use_count
+  std::cout << "Use count of s3" << s3.use_count() << std::endl; // 1
+  std::shared_ptr<Point> s4 = s3; // copy assignment
+  std::cout << "Use count of s3" << s3.use_count() << std::endl; // 2
+  std::shared_ptr<Point> s5(s4);
+  std::cout << "Use count of s3" << s3.use_count() << std::endl; // 3
+  s3->SetX(100); // also changes the data in s4 and s5
+  std::shared_ptr<Point> s6 = std::move(s5); // s5 transfer the ownership to s6
+  std::cout << "Use count of s3" << s3.use_count()
+            << std::endl; // still 3: s3, s4, s6
+  // as unique_ptr, shared_ptr can be passed by references and rvalue references
+  modify_ptr_via_ref(s2);                   // setX(11)
+  modify_ptr_via_rvalue_ref(std::move(s2)); // setY(12)
+  std::cout << "s2.x = " << s2->GetX()
+            << " , s2.y = " << s2->GetY(); // (11, 12)
+  // shared_ptr can also be passed by value/copy
+  std::cout << "Use count of s2" << s2.use_count() << std::endl; // 1
+  copy_shared_ptr_in_function(s2); // inside the function, the use count is 2
+  std::cout << "Use count of s2" << s2.use_count()
+            << std::endl; // 1 again as the copy is detroyed
+  return 0;
+}
+#+end_src

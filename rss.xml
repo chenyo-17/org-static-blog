@@ -4,7 +4,7 @@
 <title><![CDATA[Chenyo's Blog]]></title>
 <description><![CDATA[Chenyo's Blog]]></description>
 <link>https://chenyo.me</link>
-<lastBuildDate>Fri, 08 Nov 2024 12:22:48 +0100</lastBuildDate>
+<lastBuildDate>Fri, 08 Nov 2024 17:51:11 +0100</lastBuildDate>
 <item>
   <title><![CDATA[Book notes: A Philosophy of Software Design]]></title>
   <description><![CDATA[
@@ -1142,29 +1142,35 @@ The <a href="https://github.com/chenyo-17/pbaobot">repository</a> is also public
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org232058f">1. Namespace</a></li>
-<li><a href="#orgc80ce54">2. Wrapper class</a></li>
-<li><a href="#org798202f">3. Iterator</a>
+<li><a href="#org56b285d">1. Namespace</a></li>
+<li><a href="#org94e6324">2. Wrapper class</a></li>
+<li><a href="#orga5f1f02">3. Iterator</a>
 <ul>
-<li><a href="#org0eaf318">3.1. A doubly linked list (DLL) iterator</a></li>
+<li><a href="#orgc4c20c5">3.1. A doubly linked list (DLL) iterator</a></li>
 </ul>
 </li>
-<li><a href="#org136cb5f">4. STL containers</a>
+<li><a href="#orgf597015">4. STL containers</a>
 <ul>
-<li><a href="#org4309d56">4.1. Vector</a></li>
-<li><a href="#org3b537e3">4.2. Set</a></li>
-<li><a href="#org959f21d">4.3. Unordered maps</a></li>
+<li><a href="#orga246713">4.1. Vector</a></li>
+<li><a href="#org014211d">4.2. Set</a></li>
+<li><a href="#org7ac2f4e">4.3. Unordered maps</a></li>
 </ul>
 </li>
-<li><a href="#org0e93092">5. Auto</a></li>
+<li><a href="#org0b235db">5. Auto</a></li>
+<li><a href="#org7b8c332">6. Smart pointers</a>
+<ul>
+<li><a href="#org4408de2">6.1. <code>std::unique_ptr</code></a></li>
+<li><a href="#orgeb866c0">6.2. <code>std::shared_ptr</code></a></li>
+</ul>
+</li>
 </ul>
 </div>
 </nav>
 <p>
 This is a personal not for the <a href="https://github.com/cmu-db/15445-bootcamp">CMU 15-445 C++ bootcamp</a> along with some explanation from Claude.ai.
 </p>
-<div id="outline-container-org232058f" class="outline-2">
-<h2 id="org232058f"><span class="section-number-2">1.</span> Namespace</h2>
+<div id="outline-container-org56b285d" class="outline-2">
+<h2 id="org56b285d"><span class="section-number-2">1.</span> Namespace</h2>
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
 <li>Provides scopes to identifiers with <code>::</code>.</li>
@@ -1202,8 +1208,8 @@ Namespaces can be nested.
 </ul>
 </div>
 </div>
-<div id="outline-container-orgc80ce54" class="outline-2">
-<h2 id="orgc80ce54"><span class="section-number-2">2.</span> Wrapper class</h2>
+<div id="outline-container-org94e6324" class="outline-2">
+<h2 id="org94e6324"><span class="section-number-2">2.</span> Wrapper class</h2>
 <div class="outline-text-2" id="text-2">
 <ul class="org-ul">
 <li><p>
@@ -1311,8 +1317,8 @@ A wrapper class is still moveable from different lvalues/owners.
 </ul>
 </div>
 </div>
-<div id="outline-container-org798202f" class="outline-2">
-<h2 id="org798202f"><span class="section-number-2">3.</span> Iterator</h2>
+<div id="outline-container-orga5f1f02" class="outline-2">
+<h2 id="orga5f1f02"><span class="section-number-2">3.</span> Iterator</h2>
 <div class="outline-text-2" id="text-3">
 <ul class="org-ul">
 <li><p>
@@ -1341,8 +1347,8 @@ iter++;
 <li>Often used to access and modify elements in C++ STL containers.</li>
 </ul>
 </div>
-<div id="outline-container-org0eaf318" class="outline-3">
-<h3 id="org0eaf318"><span class="section-number-3">3.1.</span> A doubly linked list (DLL) iterator</h3>
+<div id="outline-container-orgc4c20c5" class="outline-3">
+<h3 id="orgc4c20c5"><span class="section-number-3">3.1.</span> A doubly linked list (DLL) iterator</h3>
 <div class="outline-text-3" id="text-3-1">
 <ul class="org-ul">
 <li><p>
@@ -1460,8 +1466,8 @@ Define DLL:
 </div>
 </div>
 </div>
-<div id="outline-container-org136cb5f" class="outline-2">
-<h2 id="org136cb5f"><span class="section-number-2">4.</span> STL containers</h2>
+<div id="outline-container-orgf597015" class="outline-2">
+<h2 id="orgf597015"><span class="section-number-2">4.</span> STL containers</h2>
 <div class="outline-text-2" id="text-4">
 <ul class="org-ul">
 <li>The C++ STL (standard library) is a generic collection of data structure and algorithm implementations, e.g., stacks, queues, hash tables.</li>
@@ -1469,8 +1475,8 @@ Define DLL:
 <li>The <code>std::set</code> is implemented as a red-black tree.</li>
 </ul>
 </div>
-<div id="outline-container-org4309d56" class="outline-3">
-<h3 id="org4309d56"><span class="section-number-3">4.1.</span> Vector</h3>
+<div id="outline-container-orga246713" class="outline-3">
+<h3 id="orga246713"><span class="section-number-3">4.1.</span> Vector</h3>
 <div class="outline-text-3" id="text-4-1">
 <div class="org-src-container">
 <pre class="src src-cpp"><span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;algorithm&gt;</span> <span style="color: #5B6268;">// </span><span style="color: #5B6268;">to use std::remove_if</span>
@@ -1545,8 +1551,8 @@ Define DLL:
 </div>
 </div>
 </div>
-<div id="outline-container-org3b537e3" class="outline-3">
-<h3 id="org3b537e3"><span class="section-number-3">4.2.</span> Set</h3>
+<div id="outline-container-org014211d" class="outline-3">
+<h3 id="org014211d"><span class="section-number-3">4.2.</span> Set</h3>
 <div class="outline-text-3" id="text-4-2">
 <div class="org-src-container">
 <pre class="src src-cpp"><span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;iostream&gt;</span>
@@ -1590,8 +1596,8 @@ Define DLL:
 </div>
 </div>
 </div>
-<div id="outline-container-org959f21d" class="outline-3">
-<h3 id="org959f21d"><span class="section-number-3">4.3.</span> Unordered maps</h3>
+<div id="outline-container-org7ac2f4e" class="outline-3">
+<h3 id="org7ac2f4e"><span class="section-number-3">4.3.</span> Unordered maps</h3>
 <div class="outline-text-3" id="text-4-3">
 <div class="org-src-container">
 <pre class="src src-cpp"><span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;iostream&gt;</span>
@@ -1644,8 +1650,8 @@ Define DLL:
 </div>
 </div>
 </div>
-<div id="outline-container-org0e93092" class="outline-2">
-<h2 id="org0e93092"><span class="section-number-2">5.</span> Auto</h2>
+<div id="outline-container-org0b235db" class="outline-2">
+<h2 id="org0b235db"><span class="section-number-2">5.</span> Auto</h2>
 <div class="outline-text-2" id="text-5">
 <ul class="org-ul">
 <li><code>auto</code> keyword tells the compiler to infer the type via its initialization expression.</li>
@@ -1691,6 +1697,124 @@ Define DLL:
   <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #a9a1e1;">std</span>::endl;
 }
 </pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org7b8c332" class="outline-2">
+<h2 id="org7b8c332"><span class="section-number-2">6.</span> Smart pointers</h2>
+<div class="outline-text-2" id="text-6">
+<ul class="org-ul">
+<li>A smart pointer is a data structure used in languages that do not have built-in memory management (e.g., with garbage collection, e.g., Python, Java) to handle memory allocation and deallocation.</li>
+<li><code>std::unique_ptr</code> and <code>std::shared_ptr</code> are two C++ standard library smart pointers, they are wrapper classes over raw pointers.</li>
+<li><code>std::unique_ptr</code> retains sole ownership of an object, i.e., no two instances of <code>unique_ptr</code> can manage the same object, a <code>unique_ptr</code> cannot be copied.</li>
+<li><code>std::shared_ptr</code> retains shared ownership of an object, i.e., multiple shared pointers can own the same object and can be copied.</li>
+</ul>
+</div>
+<div id="outline-container-org4408de2" class="outline-3">
+<h3 id="org4408de2"><span class="section-number-3">6.1.</span> <code>std::unique_ptr</code></h3>
+<div class="outline-text-3" id="text-6-1">
+<div class="org-src-container">
+<pre class="src src-cpp"><span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;iostream&gt;</span>
+<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;memory&gt;</span>  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">to use std::unique_ptr</span>
+<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;utility&gt;</span> <span style="color: #5B6268;">// </span><span style="color: #5B6268;">to use std::move</span>
+
+<span style="color: #5B6268;">// </span><span style="color: #5B6268;">class Point is the same as before</span>
+
+<span style="color: #5B6268;">// </span><span style="color: #5B6268;">takes in a unique point reference and changes its x value</span>
+<span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">SetXTo10</span>(<span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">unique_ptr</span>&lt;Point&gt; &amp;<span style="color: #dcaeea;">ptr</span>) { ptr-&gt;SetX(<span style="color: #da8548; font-weight: bold;">10</span>); }
+<span style="color: #ECBE7B;">int</span> <span style="color: #c678dd;">main</span>() {
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">initialize an empty unique pointer</span>
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">unique_ptr</span>&lt;Point&gt; <span style="color: #dcaeea;">u1</span>;
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">initialize a unique pointer with constructors</span>
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">unique_ptr</span>&lt;Point&gt; <span style="color: #dcaeea;">u2</span> = <span style="color: #a9a1e1;">std</span>::make_unique&lt;Point&gt;();
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">unique_ptr</span>&lt;Point&gt; <span style="color: #dcaeea;">u3</span> = <span style="color: #a9a1e1;">std</span>::make_unique&lt;Point&gt;(<span style="color: #da8548; font-weight: bold;">2</span>, <span style="color: #da8548; font-weight: bold;">3</span>);
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">can treat a unique pointer as a boolean to determine whether</span>
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">the pointer contains data</span>
+  <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"Pointer u1 is "</span> &lt;&lt; (u1 ? <span style="color: #98be65;">"not empty"</span> : <span style="color: #98be65;">"empty"</span>) &lt;&lt; <span style="color: #a9a1e1;">std</span>::endl;
+  <span style="color: #51afef;">if</span> (u2) {
+    <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; u2-&gt;GetX() &lt;&lt; <span style="color: #a9a1e1;">std</span>::endl;
+  }
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">unique_ptr has no copy constructor!</span>
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">unique_ptr</span>&lt;Point&gt; <span style="color: #dcaeea;">u4</span> = u3; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">won't compile!</span>
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">can transfer ownership with std::move</span>
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">unique_ptr</span>&lt;Point&gt; <span style="color: #dcaeea;">u5</span> = <span style="color: #a9a1e1;">std</span>::move(u3); <span style="color: #5B6268;">// </span><span style="color: #5B6268;">then u3 becomes empty!</span>
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">pass the pointer as a reference so the ownership does not change</span>
+  SetXTo10(u5); <span style="color: #5B6268;">// </span><span style="color: #5B6268;">can still access u5 afterwards</span>
+  <span style="color: #51afef;">return</span> <span style="color: #da8548; font-weight: bold;">0</span>;
+}
+</pre>
+</div>
+
+<ul class="org-ul">
+<li>Note that the compiler does not prevent 2 unique pointers from pointing to the same object.</li>
+</ul>
+<div class="org-src-container">
+<pre class="src src-cpp"><span style="color: #5B6268;">// </span><span style="color: #5B6268;">the following code can compile</span>
+<span style="color: #5B6268;">// </span><span style="color: #5B6268;">but it causes a double deletion!</span>
+<span style="color: #ECBE7B;">MyClass</span> *<span style="color: #dcaeea;">obj</span> = <span style="color: #51afef;">new</span> <span style="color: #ECBE7B;">MyClass</span>();
+<span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">unique_ptr</span>&lt;<span style="color: #ECBE7B;">MyClass</span>&gt; <span style="color: #c678dd;">ptr1</span>(obj);
+<span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">unique_ptr</span>&lt;<span style="color: #ECBE7B;">MyClass</span>&gt; <span style="color: #c678dd;">ptr2</span>(obj);
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgeb866c0" class="outline-3">
+<h3 id="orgeb866c0"><span class="section-number-3">6.2.</span> <code>std::shared_ptr</code></h3>
+<div class="outline-text-3" id="text-6-2">
+<div class="org-src-container">
+<pre class="src src-cpp"><span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;iostream&gt;</span>
+<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;memory&gt;</span>
+<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;utility&gt;</span>
+
+<span style="color: #5B6268;">// </span><span style="color: #5B6268;">class Point is the same as before</span>
+
+<span style="color: #5B6268;">// </span><span style="color: #5B6268;">modify a Point inside a shared_ptr by passing the reference</span>
+<span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">modify_ptr_via_ref</span>(<span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">shared_ptr</span>&lt;Point&gt; &amp;<span style="color: #dcaeea;">point</span>) { point-&gt;SetX(<span style="color: #da8548; font-weight: bold;">10</span>); }
+<span style="color: #5B6268;">// </span><span style="color: #5B6268;">modify a Point inside a shared_ptr by passing the rvalue reference</span>
+<span style="color: #5B6268;">// </span><span style="color: #5B6268;">If an object is passed by rvalue reference, one should assume the ownership</span>
+<span style="color: #5B6268;">// </span><span style="color: #5B6268;">is moved after the function call, so the original object cannot be used</span>
+<span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">modify_ptr_via_rvalue_ref</span>(<span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">shared_ptr</span>&lt;Point&gt; &amp;&amp;<span style="color: #dcaeea;">point</span>) {
+  point-&gt;SetY(<span style="color: #da8548; font-weight: bold;">11</span>);
+}
+<span style="color: #5B6268;">// </span><span style="color: #5B6268;">copy a shared_pointer with the default constructor</span>
+<span style="color: #5B6268;">// </span><span style="color: #5B6268;">so one should define own copy constructor and assignment when an object</span>
+<span style="color: #5B6268;">// </span><span style="color: #5B6268;">contains pointers</span>
+<span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">copy_shard_ptr_in_function</span>(<span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">shared_ptr</span>&lt;Point&gt; <span style="color: #dcaeea;">point</span>) {
+  <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"Use count of the shared pointer: "</span> &lt;&lt; point.use_count()
+            &lt;&lt; <span style="color: #a9a1e1;">std</span>::endl; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">add by 1</span>
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">the copy is destroyed at the end, so the count is decremented</span>
+}
+
+<span style="color: #ECBE7B;">int</span> <span style="color: #c678dd;">main</span>() {
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">the pointer constructors are the same as unique_ptr</span>
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">shared_ptr</span>&lt;Point&gt; <span style="color: #dcaeea;">s1</span>;
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">shared_ptr</span>&lt;Point&gt; <span style="color: #dcaeea;">s2</span> = <span style="color: #a9a1e1;">std</span>::make_shared&lt;Point&gt;();
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">shared_ptr</span>&lt;Point&gt; <span style="color: #dcaeea;">s3</span> = <span style="color: #a9a1e1;">std</span>::make_shared&lt;Point&gt;(<span style="color: #da8548; font-weight: bold;">2</span>, <span style="color: #da8548; font-weight: bold;">3</span>);
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">copy a shared pointer via copy assignment or copy constructor</span>
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">increment the reference count, which can be tracked by .use_count</span>
+  <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"Use count of s3"</span> &lt;&lt; s3.use_count() &lt;&lt; <span style="color: #a9a1e1;">std</span>::endl; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">1</span>
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">shared_ptr</span>&lt;Point&gt; <span style="color: #dcaeea;">s4</span> = s3; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">copy assignment</span>
+  <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"Use count of s3"</span> &lt;&lt; s3.use_count() &lt;&lt; <span style="color: #a9a1e1;">std</span>::endl; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">2</span>
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">shared_ptr</span>&lt;Point&gt; <span style="color: #dcaeea;">s5</span>(s4);
+  <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"Use count of s3"</span> &lt;&lt; s3.use_count() &lt;&lt; <span style="color: #a9a1e1;">std</span>::endl; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">3</span>
+  s3-&gt;SetX(<span style="color: #da8548; font-weight: bold;">100</span>); <span style="color: #5B6268;">// </span><span style="color: #5B6268;">also changes the data in s4 and s5</span>
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">shared_ptr</span>&lt;Point&gt; <span style="color: #dcaeea;">s6</span> = <span style="color: #a9a1e1;">std</span>::move(s5); <span style="color: #5B6268;">// </span><span style="color: #5B6268;">s5 transfer the ownership to s6</span>
+  <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"Use count of s3"</span> &lt;&lt; s3.use_count()
+            &lt;&lt; <span style="color: #a9a1e1;">std</span>::endl; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">still 3: s3, s4, s6</span>
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">as unique_ptr, shared_ptr can be passed by references and rvalue references</span>
+  modify_ptr_via_ref(s2);                   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">setX(11)</span>
+  modify_ptr_via_rvalue_ref(<span style="color: #a9a1e1;">std</span>::move(s2)); <span style="color: #5B6268;">// </span><span style="color: #5B6268;">setY(12)</span>
+  <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"s2.x = "</span> &lt;&lt; s2-&gt;GetX()
+            &lt;&lt; <span style="color: #98be65;">" , s2.y = "</span> &lt;&lt; s2-&gt;GetY(); <span style="color: #5B6268;">// </span><span style="color: #5B6268;">(11, 12)</span>
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">shared_ptr can also be passed by value/copy</span>
+  <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"Use count of s2"</span> &lt;&lt; s2.use_count() &lt;&lt; <span style="color: #a9a1e1;">std</span>::endl; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">1</span>
+  copy_shared_ptr_in_function(s2); <span style="color: #5B6268;">// </span><span style="color: #5B6268;">inside the function, the use count is 2</span>
+  <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"Use count of s2"</span> &lt;&lt; s2.use_count()
+            &lt;&lt; <span style="color: #a9a1e1;">std</span>::endl; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">1 again as the copy is detroyed</span>
+  <span style="color: #51afef;">return</span> <span style="color: #da8548; font-weight: bold;">0</span>;
+}
+</pre>
+</div>
 </div>
 </div>
 </div>
