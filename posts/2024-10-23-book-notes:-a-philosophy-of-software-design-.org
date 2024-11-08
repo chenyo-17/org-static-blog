@@ -4,6 +4,8 @@
 #+filetags: book software design
 
 This is a personal note for the book "A Philosophy of Software Design" (2018, John Ousterhout).
+John Ousterhout is the author of Tcl scripting language and the Raft protocol.
+This book works together with [[https://web.stanford.edu/~ouster/cs190-winter24/info/][Stanford CS190]].
 
 * Introduction
 - The most fundamental problem in CS is **problem decomposition**: how to divide a complex problem into pieces that can be solved independently.
@@ -189,3 +191,30 @@ This is a personal note for the book "A Philosophy of Software Design" (2018, Jo
   - Each method should do one thing and do it **completely**.
     - The length itself is rarely a good reason for splitting up methods.
     - If a method is subdivided, users should be able to understand the child method independently, which typically means the child method is relatively general-purpose, otherwise conjoined methods are created.
+
+* Exception handling
+- Exceptions refer to any uncommon condition that alters the normal control flow.
+  - E.g., bad arguments, an I/O operation fails, server timeout, packet loss, unprepared condition.
+- It's difficult to ensure that exception handling code really works, especially in distributed data-intensive systems.
+- Classes with lots of exceptions have complex interfaces and are shallow.
+- The best way is to reduce the number of places where exceptions have to be handled.
+- The author proposes 4 techniques: define errors out of existence; exception handling; exception aggregation; crash.
+  - For errors that are not worth trying to handle, or occur infrequently, abortion is the simplest thing to do; e.g., there is nothing the application can do when an out-of-memory exception occurs.
+- Same as exceptions, special cases can result in code riddled with ~if~ statements, they should be eliminated by designing the normal case in a way that automatically handles the special cases.
+
+** Define errors out of existence
+- Example 1: instead of throwing an exception when a key does not exist in ~remove~, simply return to ensure the key no longer exists.
+- Example 2: instead of throwing an exception when trying to delete a file that is still open in other processes, mark the file for deletion to deny any processes open the old file later, and delete the file after all processed have closed the file.
+- Example 3: instead of throwing an ~IndexOutOfBoundsExeception~ when ~substring(s, begin, end)~ takes out-of-range arguments, return the overlap substring.
+
+** Exception masking
+- An exceptional condition is detected and handled at a low level in the system so that higher levels need not be aware of the condition.
+- E.g., when a TCP packet is lost, the packet is resent within the implementation and clients are unaware of the dropped packets (they notice the hanging and can abort manually).
+- Exception masking results in deeper classes and pulls complexity downward.
+
+** Exception aggregation
+- Exception aggregation handles many special-purpose exceptions with a single general-purpose handler.
+- Example 1: instead of catching the exception for each individual missing parameter, let the single top-level exception handler aggregate the error message with a single **top-level** try-catch block.
+  - The top-level handler encapsulates knowledge about how to generate error responses, but knows nothing about specific errors.
+  - Each service knows how to generate errors, but does not know how to send the response.
+- Example 2: promote rare exceptions (e.g., corrupted files) to more common exceptions (e.g., server crashes) so that the same handler can be used.
