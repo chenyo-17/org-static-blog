@@ -414,7 +414,7 @@ int main() {
 }
 #+end_src
 
-* Auto
+* ~auto~
 - ~auto~ keyword tells the compiler to infer the type via its initialization expression.
 #+begin_src cpp
 #include <vector>
@@ -457,8 +457,6 @@ int main() {
   std::cout << std::endl;
 }
 #+end_src
-
-
 
 * Smart pointers
 - A smart pointer is a data structure used in languages that do not have built-in memory management (e.g., with garbage collection, e.g., Python, Java) to handle memory allocation and deallocation.
@@ -561,3 +559,133 @@ int main() {
   return 0;
 }
 #+end_src
+
+* Synchronization
+** ~std::mutex~
+#+begin_src cpp
+#include <iostream>
+#include <mutex>
+#include <thread>
+
+// define a global variable to be modified
+// by multiple threads
+int count = 0;
+// declare a mutex
+std::mutex m;
+void add_count() {
+  m.lock(); // acquire the lock
+  count += 1;
+  m.unlock(); // release the lock
+}
+int main() {
+  std::thread t1(add_count);
+  std::thread t2(add_count);
+  t1.join();
+  t2.join();
+  std::cout << count << std::endl; // always 2
+  return 0;
+}
+#+end_src
+
+** ~std::scoped_lock~
+- A mutex wrapper that provides a RAII-style of obtaining and releasing the lock.
+- When the object is constructed, the locks are acquired; when the object is destructured, the locks are released.
+- Better than ~std::mutex~ since it provides exception safety.
+#+begin_src cpp
+#include <iostream>
+#include <mutex>
+
+int count = 0;
+std::mutex m;
+void add_count() {
+  // the scoped_lock constructor allows for the thread
+  // to acquire the mutex m
+  std::scoped_lock slk(m);
+  count += 1;
+  // once the function finishes, slk is destructurd and
+  // m is released
+}
+#+end_src
+
+** ~std::condition_variable~
+- Allow threads to wait until a particular condition before acquiring a mutex.
+- Allow other threads to signal waiting threads to alert them that the condition may be true.
+  ~notify_one~
+#+begin_src cpp
+#include <condition_variable>
+#include <iostream>
+#include <mutex>
+#include <thread>
+
+int count = 0;
+std::mutex m;
+// declare a condition variable
+std::condition_variable cv;
+void add_count_and_notify() {
+  std::scoped_lock slk(m);
+  count += 1;
+  if (count == 2) {
+    // notidy one waiting thread
+    // otherwise the waiter thread hangs forever
+    cv.notify_one();
+  }
+}
+void waiter_thread() {
+  // a unique_lock is movable but not copiable
+  // more flexible than scoped_lock as it can unlock
+  // and relock manually, while scoped_lock can only be
+  // unlocked automatically.
+  // scoped_lock cannot be used with condition variables
+  std::unique_lock lk(m);
+  cv.wait(lk, [] { return count == 2; });
+  std::cout << count << std::endl;
+}
+int main() {
+  std::thread t1(waiter_thread);
+  // make t1 really waits
+  std::this_thread::sleep_for(std::chrono::milliseconds(100));
+  std::thread t2(add_count_and_notify);
+  std::thread t3(add_count_and_notify);
+  t1.join();
+  t2.join();
+  t3.join();
+  return 0;
+}
+#+end_src
+** Reader-writer lock
+- A reader-writer lock allows multiple threads to have shared read access (no writers are allowed during read operations) and exclusive write access, i.e., no other readers or writers are allowed during the write.
+- C++ does not have a specific reader-writer's lock library, but can be emulated with ~std::shared_mutex~, ~std::shared_lock~ and ~std::unique_lock~.
+- ~std::shared_mutex~ is a mutex that allows for both shared read-only locking and exclusive write-only locking.
+- ~std::shared_lock~ can be used as an RAII-style read lock.
+- ~std::unique_lock~ can be used a RAII-style exclusive write lock.
+  #+begin_src cpp
+#include <iostream>
+#include <mutex>
+#include <shared_mutex>
+#include <thread>
+
+int count = 0; // resource
+std::shared_mutex m;
+void read_value() {
+  // use shared_lock to gain read-only, shared access
+  std::shared_lock lk(m);
+  std::cout << "Reading " + std::to_string(count) << std::endl;
+}
+
+void write_value() {
+  // use unique_lock to gain exclusive access
+  std::unique_lock lk(m);
+  count += 3;
+}
+int main() {
+  // since all 3 threads run in parallel,
+  // the output is not deterministic
+  std::thread t1(read_value);
+  std::thread t2(write_value);
+  std::thread t3(read_value);
+  t1.join();
+  t2.join();
+  t3.join();
+  return 0;
+}
+  #+end_src

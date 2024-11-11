@@ -4,7 +4,7 @@
 <title><![CDATA[Chenyo's Blog]]></title>
 <description><![CDATA[Chenyo's Blog]]></description>
 <link>https://chenyo.me</link>
-<lastBuildDate>Fri, 08 Nov 2024 17:51:11 +0100</lastBuildDate>
+<lastBuildDate>Mon, 11 Nov 2024 17:57:32 +0100</lastBuildDate>
 <item>
   <title><![CDATA[Book notes: A Philosophy of Software Design]]></title>
   <description><![CDATA[
@@ -12,49 +12,55 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org6baa55b">1. Introduction</a></li>
-<li><a href="#org89ddffb">2. Complexity</a>
+<li><a href="#orge08c7c0">1. Introduction</a></li>
+<li><a href="#org3e75754">2. Complexity</a>
 <ul>
-<li><a href="#org92af109">2.1. Definition</a></li>
-<li><a href="#org00414ce">2.2. Symptoms</a></li>
-<li><a href="#org04b48af">2.3. Causes</a></li>
+<li><a href="#org1663ee4">2.1. Definition</a></li>
+<li><a href="#orgac1e053">2.2. Symptoms</a></li>
+<li><a href="#orgac4aad9">2.3. Causes</a></li>
 </ul>
 </li>
-<li><a href="#org175a55a">3. Programming mindsets</a>
+<li><a href="#orgcb1ddcc">3. Programming mindsets</a>
 <ul>
-<li><a href="#org5e3a4f3">3.1. Strategic programming</a></li>
+<li><a href="#org61230f7">3.1. Strategic programming</a></li>
 </ul>
 </li>
-<li><a href="#orgd53f55d">4. Modular design</a>
+<li><a href="#orgf14a123">4. Modular design</a>
 <ul>
-<li><a href="#orged162f9">4.1. Interface</a></li>
-<li><a href="#orgbe57e9b">4.2. Abstraction</a></li>
+<li><a href="#org0f75a51">4.1. Interface</a></li>
+<li><a href="#org133654e">4.2. Abstraction</a></li>
 </ul>
 </li>
-<li><a href="#org6fcd689">5. Information hiding</a>
+<li><a href="#org139490a">5. Information hiding</a>
 <ul>
-<li><a href="#org8195503">5.1. Information leakage</a></li>
-<li><a href="#org4b7fe34">5.2. Temporal decomposition</a></li>
+<li><a href="#orge508c8b">5.1. Information leakage</a></li>
+<li><a href="#org6f6c2a9">5.2. Temporal decomposition</a></li>
 </ul>
 </li>
-<li><a href="#org3edbff4">6. General-Purpose modules</a>
+<li><a href="#org72bfc0c">6. General-Purpose modules</a>
 <ul>
-<li><a href="#orgcf17332">6.1. Example: GUI text editor design</a></li>
+<li><a href="#org69aed13">6.1. Example: GUI text editor design</a></li>
 </ul>
 </li>
-<li><a href="#org17045f2">7. Layers of abstractions</a>
+<li><a href="#orge905cd7">7. Layers of abstractions</a>
 <ul>
-<li><a href="#orgd0daf1e">7.1. Pass-through methods</a></li>
-<li><a href="#orgd127a14">7.2. Pass-through variables</a></li>
-<li><a href="#org90795d7">7.3. Acceptable interface duplication</a></li>
+<li><a href="#org092b84f">7.1. Pass-through methods</a></li>
+<li><a href="#org6ee221c">7.2. Pass-through variables</a></li>
+<li><a href="#org84f7cbb">7.3. Acceptable interface duplication</a></li>
 </ul>
 </li>
-<li><a href="#org059420f">8. Combine or separate functionality</a></li>
-<li><a href="#org2fea587">9. Exception handling</a>
+<li><a href="#org852ab17">8. Combine or separate functionality</a></li>
+<li><a href="#org968260f">9. Exception handling</a>
 <ul>
-<li><a href="#org820d7a4">9.1. Define errors out of existence</a></li>
-<li><a href="#org28bef0e">9.2. Exception masking</a></li>
-<li><a href="#orgdb1b17b">9.3. Exception aggregation</a></li>
+<li><a href="#org4b26a96">9.1. Define errors out of existence</a></li>
+<li><a href="#orgcb517a3">9.2. Exception masking</a></li>
+<li><a href="#org59950b5">9.3. Exception aggregation</a></li>
+</ul>
+</li>
+<li><a href="#org9df49ce">10. Design it twice</a></li>
+<li><a href="#org009bebc">11. Write comments</a>
+<ul>
+<li><a href="#orgd86c2e4">11.1. Why write comments</a></li>
 </ul>
 </li>
 </ul>
@@ -65,8 +71,8 @@ This is a personal note for the book &ldquo;A Philosophy of Software Design&rdqu
 John Ousterhout is the author of Tcl scripting language and the Raft protocol.
 This book works together with <a href="https://web.stanford.edu/~ouster/cs190-winter24/info/">Stanford CS190</a>.
 </p>
-<div id="outline-container-org6baa55b" class="outline-2">
-<h2 id="org6baa55b"><span class="section-number-2">1.</span> Introduction</h2>
+<div id="outline-container-orge08c7c0" class="outline-2">
+<h2 id="orge08c7c0"><span class="section-number-2">1.</span> Introduction</h2>
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
 <li>The most fundamental problem in CS is <b><b>problem decomposition</b></b>: how to divide a complex problem into pieces that can be solved independently.</li>
@@ -87,16 +93,16 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 </ul>
 </div>
 </div>
-<div id="outline-container-org89ddffb" class="outline-2">
-<h2 id="org89ddffb"><span class="section-number-2">2.</span> Complexity</h2>
+<div id="outline-container-org3e75754" class="outline-2">
+<h2 id="org3e75754"><span class="section-number-2">2.</span> Complexity</h2>
 <div class="outline-text-2" id="text-2">
 <ul class="org-ul">
 <li>Complexity is <b><b>incremental</b></b>.</li>
 <li>Developers must adopt a <b><b>zero tolerance</b></b> philosophy.</li>
 </ul>
 </div>
-<div id="outline-container-org92af109" class="outline-3">
-<h3 id="org92af109"><span class="section-number-3">2.1.</span> Definition</h3>
+<div id="outline-container-org1663ee4" class="outline-3">
+<h3 id="org1663ee4"><span class="section-number-3">2.1.</span> Definition</h3>
 <div class="outline-text-3" id="text-2-1">
 <ul class="org-ul">
 <li>Complexity is anything related to the structure of a software system that makes it hard to understand and modify the system.</li>
@@ -108,8 +114,8 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 </ul>
 </div>
 </div>
-<div id="outline-container-org00414ce" class="outline-3">
-<h3 id="org00414ce"><span class="section-number-3">2.2.</span> Symptoms</h3>
+<div id="outline-container-orgac1e053" class="outline-3">
+<h3 id="orgac1e053"><span class="section-number-3">2.2.</span> Symptoms</h3>
 <div class="outline-text-3" id="text-2-2">
 <ul class="org-ul">
 <li>Change amplification: a seemingly simple change requires code modifications in many different places.</li>
@@ -123,8 +129,8 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 </ul>
 </div>
 </div>
-<div id="outline-container-org04b48af" class="outline-3">
-<h3 id="org04b48af"><span class="section-number-3">2.3.</span> Causes</h3>
+<div id="outline-container-orgac4aad9" class="outline-3">
+<h3 id="orgac4aad9"><span class="section-number-3">2.3.</span> Causes</h3>
 <div class="outline-text-3" id="text-2-3">
 <ul class="org-ul">
 <li>Complexity is caused by two things: <b><b>dependencies</b></b> and <b><b>obscurity</b></b>.</li>
@@ -144,8 +150,8 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 </div>
 </div>
 </div>
-<div id="outline-container-org175a55a" class="outline-2">
-<h2 id="org175a55a"><span class="section-number-2">3.</span> Programming mindsets</h2>
+<div id="outline-container-orgcb1ddcc" class="outline-2">
+<h2 id="orgcb1ddcc"><span class="section-number-2">3.</span> Programming mindsets</h2>
 <div class="outline-text-2" id="text-3">
 <ul class="org-ul">
 <li>Tactical programming: the main focus is to get something working, e.g., a new feature or a bug fix.</li>
@@ -153,8 +159,8 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 <li>Once a code base turns to spaghetti, it is nearly impossible to fix.</li>
 </ul>
 </div>
-<div id="outline-container-org5e3a4f3" class="outline-3">
-<h3 id="org5e3a4f3"><span class="section-number-3">3.1.</span> Strategic programming</h3>
+<div id="outline-container-org61230f7" class="outline-3">
+<h3 id="org61230f7"><span class="section-number-3">3.1.</span> Strategic programming</h3>
 <div class="outline-text-3" id="text-3-1">
 <ul class="org-ul">
 <li>Requires an investment mindset to improve the system design rather than taking the fastest path to finish the current task.</li>
@@ -164,7 +170,7 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 </ul>
 
 
-<figure id="orgf78f266">
+<figure id="org58e9e17">
 <img src="https://csruiliu.github.io/blog/images/strategic-tactical.jpeg" alt="strategic-tactical.jpeg" align="center" width="400px">
 
 <figcaption><span class="figure-number">Figure 1: </span>Strategic vs Tactical programming (<a href="https://csruiliu.github.io/blog/images/strategic-tactical.jpeg">Source</a>)</figcaption>
@@ -172,8 +178,8 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 </div>
 </div>
 </div>
-<div id="outline-container-orgd53f55d" class="outline-2">
-<h2 id="orgd53f55d"><span class="section-number-2">4.</span> Modular design</h2>
+<div id="outline-container-orgf14a123" class="outline-2">
+<h2 id="orgf14a123"><span class="section-number-2">4.</span> Modular design</h2>
 <div class="outline-text-2" id="text-4">
 <ul class="org-ul">
 <li>The goal of modular design is to minimize the dependencies between modules.</li>
@@ -193,8 +199,8 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 </ul></li>
 </ul>
 </div>
-<div id="outline-container-orged162f9" class="outline-3">
-<h3 id="orged162f9"><span class="section-number-3">4.1.</span> Interface</h3>
+<div id="outline-container-org0f75a51" class="outline-3">
+<h3 id="org0f75a51"><span class="section-number-3">4.1.</span> Interface</h3>
 <div class="outline-text-3" id="text-4-1">
 <ul class="org-ul">
 <li>A module interface contains two information: formal and informal.</li>
@@ -207,8 +213,8 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 </ul>
 </div>
 </div>
-<div id="outline-container-orgbe57e9b" class="outline-3">
-<h3 id="orgbe57e9b"><span class="section-number-3">4.2.</span> Abstraction</h3>
+<div id="outline-container-org133654e" class="outline-3">
+<h3 id="org133654e"><span class="section-number-3">4.2.</span> Abstraction</h3>
 <div class="outline-text-3" id="text-4-2">
 <ul class="org-ul">
 <li>An abstraction is a simplified view of an entity, which omits unimportant details.
@@ -226,8 +232,8 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 </div>
 </div>
 </div>
-<div id="outline-container-org6fcd689" class="outline-2">
-<h2 id="org6fcd689"><span class="section-number-2">5.</span> Information hiding</h2>
+<div id="outline-container-org139490a" class="outline-2">
+<h2 id="org139490a"><span class="section-number-2">5.</span> Information hiding</h2>
 <div class="outline-text-2" id="text-5">
 <ul class="org-ul">
 <li>Information hiding is the most important technique for achieving deep modules.</li>
@@ -240,8 +246,8 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 </ul></li>
 </ul>
 </div>
-<div id="outline-container-org8195503" class="outline-3">
-<h3 id="org8195503"><span class="section-number-3">5.1.</span> Information leakage</h3>
+<div id="outline-container-orge508c8b" class="outline-3">
+<h3 id="orge508c8b"><span class="section-number-3">5.1.</span> Information leakage</h3>
 <div class="outline-text-3" id="text-5-1">
 <ul class="org-ul">
 <li>The leakage occurs when a design decision is reflected in multiple modules. thus creating dependencies between the modules.
@@ -264,8 +270,8 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 </ul>
 </div>
 </div>
-<div id="outline-container-org4b7fe34" class="outline-3">
-<h3 id="org4b7fe34"><span class="section-number-3">5.2.</span> Temporal decomposition</h3>
+<div id="outline-container-org6f6c2a9" class="outline-3">
+<h3 id="org6f6c2a9"><span class="section-number-3">5.2.</span> Temporal decomposition</h3>
 <div class="outline-text-3" id="text-5-2">
 <ul class="org-ul">
 <li>Temporal decomposition is a common cause of information leakage.</li>
@@ -280,8 +286,8 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 </div>
 </div>
 </div>
-<div id="outline-container-org3edbff4" class="outline-2">
-<h2 id="org3edbff4"><span class="section-number-2">6.</span> General-Purpose modules</h2>
+<div id="outline-container-org72bfc0c" class="outline-2">
+<h2 id="org72bfc0c"><span class="section-number-2">6.</span> General-Purpose modules</h2>
 <div class="outline-text-2" id="text-6">
 <ul class="org-ul">
 <li>General-purpose modules can be used to address a broad range of problems such that it may find unanticipated uses in the future (cf. investment mindset).</li>
@@ -295,8 +301,8 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 </ul></li>
 </ul>
 </div>
-<div id="outline-container-orgcf17332" class="outline-3">
-<h3 id="orgcf17332"><span class="section-number-3">6.1.</span> Example: GUI text editor design</h3>
+<div id="outline-container-org69aed13" class="outline-3">
+<h3 id="org69aed13"><span class="section-number-3">6.1.</span> Example: GUI text editor design</h3>
 <div class="outline-text-3" id="text-6-1">
 <ul class="org-ul">
 <li>Specialized design: use individual method in the text class to support each high-level features, e.g., <code>backspace(Cursor cursor)</code> deletes the character before the cursor; <code>delete(Cursor cursor)</code> deletes the character after the cursor; <code>deleteSelection(Selection selection)</code> deletes the selected section.</li>
@@ -319,8 +325,8 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 </div>
 </div>
 </div>
-<div id="outline-container-org17045f2" class="outline-2">
-<h2 id="org17045f2"><span class="section-number-2">7.</span> Layers of abstractions</h2>
+<div id="outline-container-orge905cd7" class="outline-2">
+<h2 id="orge905cd7"><span class="section-number-2">7.</span> Layers of abstractions</h2>
 <div class="outline-text-2" id="text-7">
 <ul class="org-ul">
 <li>Software systems are composed into layers, where higher layers use the facilities provided by lower layers; each layer provides an abstraction different from the layers above or below it.
@@ -336,8 +342,8 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 </ul></li>
 </ul>
 </div>
-<div id="outline-container-orgd0daf1e" class="outline-3">
-<h3 id="orgd0daf1e"><span class="section-number-3">7.1.</span> Pass-through methods</h3>
+<div id="outline-container-org092b84f" class="outline-3">
+<h3 id="org092b84f"><span class="section-number-3">7.1.</span> Pass-through methods</h3>
 <div class="outline-text-3" id="text-7-1">
 <ul class="org-ul">
 <li>A pass-through method is a method that does little except invoke another method, whose signature is similar or identical to the callee function.</li>
@@ -347,15 +353,15 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 </ul>
 
 
-<figure id="orgd4ab37a">
+<figure id="orgafef196">
 <img src="./static/pass-through-methods.png" alt="pass-through-methods.png" align="center" width="400px">
 
 <figcaption><span class="figure-number">Figure 2: </span>Refactor pass-through methods</figcaption>
 </figure>
 </div>
 </div>
-<div id="outline-container-orgd127a14" class="outline-3">
-<h3 id="orgd127a14"><span class="section-number-3">7.2.</span> Pass-through variables</h3>
+<div id="outline-container-org6ee221c" class="outline-3">
+<h3 id="org6ee221c"><span class="section-number-3">7.2.</span> Pass-through variables</h3>
 <div class="outline-text-3" id="text-7-2">
 <ul class="org-ul">
 <li>A pass-through variable is a variable that is passed down through a long chain of methods.</li>
@@ -369,8 +375,8 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 </ul>
 </div>
 </div>
-<div id="outline-container-org90795d7" class="outline-3">
-<h3 id="org90795d7"><span class="section-number-3">7.3.</span> Acceptable interface duplication</h3>
+<div id="outline-container-org84f7cbb" class="outline-3">
+<h3 id="org84f7cbb"><span class="section-number-3">7.3.</span> Acceptable interface duplication</h3>
 <div class="outline-text-3" id="text-7-3">
 <ul class="org-ul">
 <li>Dispatcher: a method that uses its arguments to select a specific method to invoke and passes most of its arguments.
@@ -389,8 +395,8 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 </div>
 </div>
 </div>
-<div id="outline-container-org059420f" class="outline-2">
-<h2 id="org059420f"><span class="section-number-2">8.</span> Combine or separate functionality</h2>
+<div id="outline-container-org852ab17" class="outline-2">
+<h2 id="org852ab17"><span class="section-number-2">8.</span> Combine or separate functionality</h2>
 <div class="outline-text-2" id="text-8">
 <ul class="org-ul">
 <li>The goal is to reduce the system complexity as a <b><b>whole</b></b> and improve its modularity.
@@ -418,8 +424,8 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 </ul>
 </div>
 </div>
-<div id="outline-container-org2fea587" class="outline-2">
-<h2 id="org2fea587"><span class="section-number-2">9.</span> Exception handling</h2>
+<div id="outline-container-org968260f" class="outline-2">
+<h2 id="org968260f"><span class="section-number-2">9.</span> Exception handling</h2>
 <div class="outline-text-2" id="text-9">
 <ul class="org-ul">
 <li>Exceptions refer to any uncommon condition that alters the normal control flow.
@@ -436,8 +442,8 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 <li>Same as exceptions, special cases can result in code riddled with <code>if</code> statements, they should be eliminated by designing the normal case in a way that automatically handles the special cases.</li>
 </ul>
 </div>
-<div id="outline-container-org820d7a4" class="outline-3">
-<h3 id="org820d7a4"><span class="section-number-3">9.1.</span> Define errors out of existence</h3>
+<div id="outline-container-org4b26a96" class="outline-3">
+<h3 id="org4b26a96"><span class="section-number-3">9.1.</span> Define errors out of existence</h3>
 <div class="outline-text-3" id="text-9-1">
 <ul class="org-ul">
 <li>Example 1: instead of throwing an exception when a key does not exist in <code>remove</code>, simply return to ensure the key no longer exists.</li>
@@ -446,8 +452,8 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 </ul>
 </div>
 </div>
-<div id="outline-container-org28bef0e" class="outline-3">
-<h3 id="org28bef0e"><span class="section-number-3">9.2.</span> Exception masking</h3>
+<div id="outline-container-orgcb517a3" class="outline-3">
+<h3 id="orgcb517a3"><span class="section-number-3">9.2.</span> Exception masking</h3>
 <div class="outline-text-3" id="text-9-2">
 <ul class="org-ul">
 <li>An exceptional condition is detected and handled at a low level in the system so that higher levels need not be aware of the condition.</li>
@@ -456,8 +462,8 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 </ul>
 </div>
 </div>
-<div id="outline-container-orgdb1b17b" class="outline-3">
-<h3 id="orgdb1b17b"><span class="section-number-3">9.3.</span> Exception aggregation</h3>
+<div id="outline-container-org59950b5" class="outline-3">
+<h3 id="org59950b5"><span class="section-number-3">9.3.</span> Exception aggregation</h3>
 <div class="outline-text-3" id="text-9-3">
 <ul class="org-ul">
 <li>Exception aggregation handles many special-purpose exceptions with a single general-purpose handler.</li>
@@ -467,6 +473,49 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 <li>Each service knows how to generate errors, but does not know how to send the response.</li>
 </ul></li>
 <li>Example 2: promote rare exceptions (e.g., corrupted files) to more common exceptions (e.g., server crashes) so that the same handler can be used.</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-org9df49ce" class="outline-2">
+<h2 id="org9df49ce"><span class="section-number-2">10.</span> Design it twice</h2>
+<div class="outline-text-2" id="text-10">
+<ul class="org-ul">
+<li>Rather than picking the first idea that comes to mind, try to pick several approaches that are radically <b><b>different</b></b> from each other.
+<ul class="org-ul">
+<li>No need to pin down every feature of each alternative.</li>
+</ul></li>
+<li>Even if you are certain that there is only one reasonable approach, consider a second design anyway, no matter how bad it will be.
+<ul class="org-ul">
+<li>It will be instructive to think about the weaknesses of the second design and contrast with other designs.</li>
+<li>It&rsquo;s easier to identify the best approach if one can compare a few alternatives.</li>
+</ul></li>
+<li>Make a list of the pros and cons of each rough design, e.g.,
+<ul class="org-ul">
+<li>Does one design have a simpler/ more general-purpose interface than another?</li>
+<li>Does one interface enable a more efficient implementation?</li>
+</ul></li>
+<li>The design-it-twice principle can be applied at many levels in a system, e.g., decompose into modules, pick an interface, design an implementation (simplicity and performance).</li>
+<li>No-one is good enough to get it right with their first try in large software system design.</li>
+<li>The process of devising and comparing multiple approaches teach one about the factors that make designs better or worse.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org009bebc" class="outline-2">
+<h2 id="org009bebc"><span class="section-number-2">11.</span> Write comments</h2>
+<div class="outline-text-2" id="text-11">
+</div>
+<div id="outline-container-orgd86c2e4" class="outline-3">
+<h3 id="orgd86c2e4"><span class="section-number-3">11.1.</span> Why write comments</h3>
+<div class="outline-text-3" id="text-11-1">
+<ul class="org-ul">
+<li>The correct process of writing comments will improve the system design.</li>
+<li>A significant amount of design information that was in the mind of the designer cannot be represented in code, e.g., the high-level description of a method, the motivation for a particular design.</li>
+<li>Comments are fundamental to abstractions: if users must read the code to use it, then there is no abstraction.
+<ul class="org-ul">
+<li>If there is no comment, the only abstraction of a method is its declaration which misses too much essential information to provide a useful abstraction by itself; e.g., whether <code>end</code> is inclusive.</li>
+</ul></li>
+<li>Good comments reduce cognitive load and unknown unknowns.</li>
 </ul>
 </div>
 </div>
@@ -1142,25 +1191,33 @@ The <a href="https://github.com/chenyo-17/pbaobot">repository</a> is also public
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org56b285d">1. Namespace</a></li>
-<li><a href="#org94e6324">2. Wrapper class</a></li>
-<li><a href="#orga5f1f02">3. Iterator</a>
+<li><a href="#orgf153467">1. Namespace</a></li>
+<li><a href="#org40232d3">2. Wrapper class</a></li>
+<li><a href="#orgc9d8f4f">3. Iterator</a>
 <ul>
-<li><a href="#orgc4c20c5">3.1. A doubly linked list (DLL) iterator</a></li>
+<li><a href="#org94cb86d">3.1. A doubly linked list (DLL) iterator</a></li>
 </ul>
 </li>
-<li><a href="#orgf597015">4. STL containers</a>
+<li><a href="#org4c18899">4. STL containers</a>
 <ul>
-<li><a href="#orga246713">4.1. Vector</a></li>
-<li><a href="#org014211d">4.2. Set</a></li>
-<li><a href="#org7ac2f4e">4.3. Unordered maps</a></li>
+<li><a href="#org6dcfbeb">4.1. Vector</a></li>
+<li><a href="#orgfc95fbf">4.2. Set</a></li>
+<li><a href="#org5038e7e">4.3. Unordered maps</a></li>
 </ul>
 </li>
-<li><a href="#org0b235db">5. Auto</a></li>
-<li><a href="#org7b8c332">6. Smart pointers</a>
+<li><a href="#org644b019">5. <code>auto</code></a></li>
+<li><a href="#org6876e1c">6. Smart pointers</a>
 <ul>
-<li><a href="#org4408de2">6.1. <code>std::unique_ptr</code></a></li>
-<li><a href="#orgeb866c0">6.2. <code>std::shared_ptr</code></a></li>
+<li><a href="#org03a407c">6.1. <code>std::unique_ptr</code></a></li>
+<li><a href="#orga17c160">6.2. <code>std::shared_ptr</code></a></li>
+</ul>
+</li>
+<li><a href="#orgff9d615">7. Synchronization</a>
+<ul>
+<li><a href="#org720a20f">7.1. <code>std::mutex</code></a></li>
+<li><a href="#org972445b">7.2. <code>std::scoped_lock</code></a></li>
+<li><a href="#org9630937">7.3. <code>std::condition_variable</code></a></li>
+<li><a href="#org45ff32d">7.4. Reader-writer lock</a></li>
 </ul>
 </li>
 </ul>
@@ -1169,8 +1226,8 @@ The <a href="https://github.com/chenyo-17/pbaobot">repository</a> is also public
 <p>
 This is a personal not for the <a href="https://github.com/cmu-db/15445-bootcamp">CMU 15-445 C++ bootcamp</a> along with some explanation from Claude.ai.
 </p>
-<div id="outline-container-org56b285d" class="outline-2">
-<h2 id="org56b285d"><span class="section-number-2">1.</span> Namespace</h2>
+<div id="outline-container-orgf153467" class="outline-2">
+<h2 id="orgf153467"><span class="section-number-2">1.</span> Namespace</h2>
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
 <li>Provides scopes to identifiers with <code>::</code>.</li>
@@ -1208,8 +1265,8 @@ Namespaces can be nested.
 </ul>
 </div>
 </div>
-<div id="outline-container-org94e6324" class="outline-2">
-<h2 id="org94e6324"><span class="section-number-2">2.</span> Wrapper class</h2>
+<div id="outline-container-org40232d3" class="outline-2">
+<h2 id="org40232d3"><span class="section-number-2">2.</span> Wrapper class</h2>
 <div class="outline-text-2" id="text-2">
 <ul class="org-ul">
 <li><p>
@@ -1317,8 +1374,8 @@ A wrapper class is still moveable from different lvalues/owners.
 </ul>
 </div>
 </div>
-<div id="outline-container-orga5f1f02" class="outline-2">
-<h2 id="orga5f1f02"><span class="section-number-2">3.</span> Iterator</h2>
+<div id="outline-container-orgc9d8f4f" class="outline-2">
+<h2 id="orgc9d8f4f"><span class="section-number-2">3.</span> Iterator</h2>
 <div class="outline-text-2" id="text-3">
 <ul class="org-ul">
 <li><p>
@@ -1347,8 +1404,8 @@ iter++;
 <li>Often used to access and modify elements in C++ STL containers.</li>
 </ul>
 </div>
-<div id="outline-container-orgc4c20c5" class="outline-3">
-<h3 id="orgc4c20c5"><span class="section-number-3">3.1.</span> A doubly linked list (DLL) iterator</h3>
+<div id="outline-container-org94cb86d" class="outline-3">
+<h3 id="org94cb86d"><span class="section-number-3">3.1.</span> A doubly linked list (DLL) iterator</h3>
 <div class="outline-text-3" id="text-3-1">
 <ul class="org-ul">
 <li><p>
@@ -1466,8 +1523,8 @@ Define DLL:
 </div>
 </div>
 </div>
-<div id="outline-container-orgf597015" class="outline-2">
-<h2 id="orgf597015"><span class="section-number-2">4.</span> STL containers</h2>
+<div id="outline-container-org4c18899" class="outline-2">
+<h2 id="org4c18899"><span class="section-number-2">4.</span> STL containers</h2>
 <div class="outline-text-2" id="text-4">
 <ul class="org-ul">
 <li>The C++ STL (standard library) is a generic collection of data structure and algorithm implementations, e.g., stacks, queues, hash tables.</li>
@@ -1475,8 +1532,8 @@ Define DLL:
 <li>The <code>std::set</code> is implemented as a red-black tree.</li>
 </ul>
 </div>
-<div id="outline-container-orga246713" class="outline-3">
-<h3 id="orga246713"><span class="section-number-3">4.1.</span> Vector</h3>
+<div id="outline-container-org6dcfbeb" class="outline-3">
+<h3 id="org6dcfbeb"><span class="section-number-3">4.1.</span> Vector</h3>
 <div class="outline-text-3" id="text-4-1">
 <div class="org-src-container">
 <pre class="src src-cpp"><span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;algorithm&gt;</span> <span style="color: #5B6268;">// </span><span style="color: #5B6268;">to use std::remove_if</span>
@@ -1551,8 +1608,8 @@ Define DLL:
 </div>
 </div>
 </div>
-<div id="outline-container-org014211d" class="outline-3">
-<h3 id="org014211d"><span class="section-number-3">4.2.</span> Set</h3>
+<div id="outline-container-orgfc95fbf" class="outline-3">
+<h3 id="orgfc95fbf"><span class="section-number-3">4.2.</span> Set</h3>
 <div class="outline-text-3" id="text-4-2">
 <div class="org-src-container">
 <pre class="src src-cpp"><span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;iostream&gt;</span>
@@ -1596,8 +1653,8 @@ Define DLL:
 </div>
 </div>
 </div>
-<div id="outline-container-org7ac2f4e" class="outline-3">
-<h3 id="org7ac2f4e"><span class="section-number-3">4.3.</span> Unordered maps</h3>
+<div id="outline-container-org5038e7e" class="outline-3">
+<h3 id="org5038e7e"><span class="section-number-3">4.3.</span> Unordered maps</h3>
 <div class="outline-text-3" id="text-4-3">
 <div class="org-src-container">
 <pre class="src src-cpp"><span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;iostream&gt;</span>
@@ -1650,8 +1707,8 @@ Define DLL:
 </div>
 </div>
 </div>
-<div id="outline-container-org0b235db" class="outline-2">
-<h2 id="org0b235db"><span class="section-number-2">5.</span> Auto</h2>
+<div id="outline-container-org644b019" class="outline-2">
+<h2 id="org644b019"><span class="section-number-2">5.</span> <code>auto</code></h2>
 <div class="outline-text-2" id="text-5">
 <ul class="org-ul">
 <li><code>auto</code> keyword tells the compiler to infer the type via its initialization expression.</li>
@@ -1700,8 +1757,8 @@ Define DLL:
 </div>
 </div>
 </div>
-<div id="outline-container-org7b8c332" class="outline-2">
-<h2 id="org7b8c332"><span class="section-number-2">6.</span> Smart pointers</h2>
+<div id="outline-container-org6876e1c" class="outline-2">
+<h2 id="org6876e1c"><span class="section-number-2">6.</span> Smart pointers</h2>
 <div class="outline-text-2" id="text-6">
 <ul class="org-ul">
 <li>A smart pointer is a data structure used in languages that do not have built-in memory management (e.g., with garbage collection, e.g., Python, Java) to handle memory allocation and deallocation.</li>
@@ -1710,8 +1767,8 @@ Define DLL:
 <li><code>std::shared_ptr</code> retains shared ownership of an object, i.e., multiple shared pointers can own the same object and can be copied.</li>
 </ul>
 </div>
-<div id="outline-container-org4408de2" class="outline-3">
-<h3 id="org4408de2"><span class="section-number-3">6.1.</span> <code>std::unique_ptr</code></h3>
+<div id="outline-container-org03a407c" class="outline-3">
+<h3 id="org03a407c"><span class="section-number-3">6.1.</span> <code>std::unique_ptr</code></h3>
 <div class="outline-text-3" id="text-6-1">
 <div class="org-src-container">
 <pre class="src src-cpp"><span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;iostream&gt;</span>
@@ -1758,8 +1815,8 @@ Define DLL:
 </div>
 </div>
 </div>
-<div id="outline-container-orgeb866c0" class="outline-3">
-<h3 id="orgeb866c0"><span class="section-number-3">6.2.</span> <code>std::shared_ptr</code></h3>
+<div id="outline-container-orga17c160" class="outline-3">
+<h3 id="orga17c160"><span class="section-number-3">6.2.</span> <code>std::shared_ptr</code></h3>
 <div class="outline-text-3" id="text-6-2">
 <div class="org-src-container">
 <pre class="src src-cpp"><span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;iostream&gt;</span>
@@ -1815,6 +1872,165 @@ Define DLL:
 }
 </pre>
 </div>
+</div>
+</div>
+</div>
+<div id="outline-container-orgff9d615" class="outline-2">
+<h2 id="orgff9d615"><span class="section-number-2">7.</span> Synchronization</h2>
+<div class="outline-text-2" id="text-7">
+</div>
+<div id="outline-container-org720a20f" class="outline-3">
+<h3 id="org720a20f"><span class="section-number-3">7.1.</span> <code>std::mutex</code></h3>
+<div class="outline-text-3" id="text-7-1">
+<div class="org-src-container">
+<pre class="src src-cpp"><span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;iostream&gt;</span>
+<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;mutex&gt;</span>
+<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;thread&gt;</span>
+
+<span style="color: #5B6268;">// </span><span style="color: #5B6268;">define a global variable to be modified</span>
+<span style="color: #5B6268;">// </span><span style="color: #5B6268;">by multiple threads</span>
+<span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">count</span> = <span style="color: #da8548; font-weight: bold;">0</span>;
+<span style="color: #5B6268;">// </span><span style="color: #5B6268;">declare a mutex</span>
+<span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">mutex</span> <span style="color: #dcaeea;">m</span>;
+<span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">add_count</span>() {
+  m.lock(); <span style="color: #5B6268;">// </span><span style="color: #5B6268;">acquire the lock</span>
+  count += <span style="color: #da8548; font-weight: bold;">1</span>;
+  m.unlock(); <span style="color: #5B6268;">// </span><span style="color: #5B6268;">release the lock</span>
+}
+<span style="color: #ECBE7B;">int</span> <span style="color: #c678dd;">main</span>() {
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">thread</span> <span style="color: #dcaeea;">t1</span>(add_count);
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">thread</span> <span style="color: #dcaeea;">t2</span>(add_count);
+  t1.join();
+  t2.join();
+  <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; count &lt;&lt; <span style="color: #a9a1e1;">std</span>::endl; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">always 2</span>
+  <span style="color: #51afef;">return</span> <span style="color: #da8548; font-weight: bold;">0</span>;
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org972445b" class="outline-3">
+<h3 id="org972445b"><span class="section-number-3">7.2.</span> <code>std::scoped_lock</code></h3>
+<div class="outline-text-3" id="text-7-2">
+<ul class="org-ul">
+<li>A mutex wrapper that provides a RAII-style of obtaining and releasing the lock.</li>
+<li>When the object is constructed, the locks are acquired; when the object is destructured, the locks are released.</li>
+<li>Better than <code>std::mutex</code> since it provides exception safety.</li>
+</ul>
+<div class="org-src-container">
+<pre class="src src-cpp"><span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;iostream&gt;</span>
+<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;mutex&gt;</span>
+
+<span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">count</span> = <span style="color: #da8548; font-weight: bold;">0</span>;
+<span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">mutex</span> <span style="color: #dcaeea;">m</span>;
+<span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">add_count</span>() {
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">the scoped_lock constructor allows for the thread</span>
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">to acquire the mutex m</span>
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">scoped_lock</span> <span style="color: #dcaeea;">slk</span>(m);
+  count += <span style="color: #da8548; font-weight: bold;">1</span>;
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">once the function finishes, slk is destructurd and</span>
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">m is released</span>
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org9630937" class="outline-3">
+<h3 id="org9630937"><span class="section-number-3">7.3.</span> <code>std::condition_variable</code></h3>
+<div class="outline-text-3" id="text-7-3">
+<ul class="org-ul">
+<li>Allow threads to wait until a particular condition before acquiring a mutex.</li>
+<li>Allow other threads to signal waiting threads to alert them that the condition may be true.
+<code>notify_one</code></li>
+</ul>
+<div class="org-src-container">
+<pre class="src src-cpp"><span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;condition_variable&gt;</span>
+<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;iostream&gt;</span>
+<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;mutex&gt;</span>
+<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;thread&gt;</span>
+
+<span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">count</span> = <span style="color: #da8548; font-weight: bold;">0</span>;
+<span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">mutex</span> <span style="color: #dcaeea;">m</span>;
+<span style="color: #5B6268;">// </span><span style="color: #5B6268;">declare a condition variable</span>
+<span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">condition_variable</span> <span style="color: #dcaeea;">cv</span>;
+<span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">add_count_and_notify</span>() {
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">scoped_lock</span> <span style="color: #dcaeea;">slk</span>(m);
+  count += <span style="color: #da8548; font-weight: bold;">1</span>;
+  <span style="color: #51afef;">if</span> (count == <span style="color: #da8548; font-weight: bold;">2</span>) {
+    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">notidy one waiting thread</span>
+    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">otherwise the waiter thread hangs forever</span>
+    cv.notify_one();
+  }
+}
+<span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">waiter_thread</span>() {
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">a unique_lock is movable but not copiable</span>
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">more flexible than scoped_lock as it can unlock</span>
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">and relock manually, while scoped_lock can only be</span>
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">unlocked automatically.</span>
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">scoped_lock cannot be used with condition variables</span>
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">unique_lock</span> <span style="color: #dcaeea;">lk</span>(m);
+  cv.wait(lk, [] { <span style="color: #51afef;">return</span> count == <span style="color: #da8548; font-weight: bold;">2</span>; });
+  <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; count &lt;&lt; <span style="color: #a9a1e1;">std</span>::endl;
+}
+<span style="color: #ECBE7B;">int</span> <span style="color: #c678dd;">main</span>() {
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">thread</span> <span style="color: #dcaeea;">t1</span>(waiter_thread);
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">make t1 really waits</span>
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #a9a1e1;">this_thread</span>::sleep_for(<span style="color: #a9a1e1;">std</span>::<span style="color: #a9a1e1;">chrono</span>::milliseconds(<span style="color: #da8548; font-weight: bold;">100</span>));
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">thread</span> <span style="color: #dcaeea;">t2</span>(add_count_and_notify);
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">thread</span> <span style="color: #dcaeea;">t3</span>(add_count_and_notify);
+  t1.join();
+  t2.join();
+  t3.join();
+  <span style="color: #51afef;">return</span> <span style="color: #da8548; font-weight: bold;">0</span>;
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org45ff32d" class="outline-3">
+<h3 id="org45ff32d"><span class="section-number-3">7.4.</span> Reader-writer lock</h3>
+<div class="outline-text-3" id="text-7-4">
+<ul class="org-ul">
+<li>A reader-writer lock allows multiple threads to have shared read access (no writers are allowed during read operations) and exclusive write access, i.e., no other readers or writers are allowed during the write.</li>
+<li>C++ does not have a specific reader-writer&rsquo;s lock library, but can be emulated with <code>std::shared_mutex</code>, <code>std::shared_lock</code> and <code>std::unique_lock</code>.</li>
+<li><code>std::shared_mutex</code> is a mutex that allows for both shared read-only locking and exclusive write-only locking.</li>
+<li><code>std::shared_lock</code> can be used as an RAII-style read lock.</li>
+<li><p>
+<code>std::unique_lock</code> can be used a RAII-style exclusive write lock.
+</p>
+<div class="org-src-container">
+<pre class="src src-cpp"><span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;iostream&gt;</span>
+<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;mutex&gt;</span>
+<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;shared_mutex&gt;</span>
+<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;thread&gt;</span>
+
+<span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">count</span> = <span style="color: #da8548; font-weight: bold;">0</span>; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">resource</span>
+<span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">shared_mutex</span> <span style="color: #dcaeea;">m</span>;
+<span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">read_value</span>() {
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">use shared_lock to gain read-only, shared access</span>
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">shared_lock</span> <span style="color: #dcaeea;">lk</span>(m);
+  <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"Reading "</span> + <span style="color: #a9a1e1;">std</span>::to_string(count) &lt;&lt; <span style="color: #a9a1e1;">std</span>::endl;
+}
+
+<span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">write_value</span>() {
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">use unique_lock to gain exclusive access</span>
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">unique_lock</span> <span style="color: #dcaeea;">lk</span>(m);
+  count += <span style="color: #da8548; font-weight: bold;">3</span>;
+}
+<span style="color: #ECBE7B;">int</span> <span style="color: #c678dd;">main</span>() {
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">since all 3 threads run in parallel,</span>
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">the output is not deterministic</span>
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">thread</span> <span style="color: #dcaeea;">t1</span>(read_value);
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">thread</span> <span style="color: #dcaeea;">t2</span>(write_value);
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">thread</span> <span style="color: #dcaeea;">t3</span>(read_value);
+  t1.join();
+  t2.join();
+  t3.join();
+  <span style="color: #51afef;">return</span> <span style="color: #da8548; font-weight: bold;">0</span>;
+}
+</pre>
+</div></li>
+</ul>
 </div>
 </div>
 </div>

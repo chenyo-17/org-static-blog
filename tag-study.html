@@ -41,25 +41,33 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org56b285d">1. Namespace</a></li>
-<li><a href="#org94e6324">2. Wrapper class</a></li>
-<li><a href="#orga5f1f02">3. Iterator</a>
+<li><a href="#orgf153467">1. Namespace</a></li>
+<li><a href="#org40232d3">2. Wrapper class</a></li>
+<li><a href="#orgc9d8f4f">3. Iterator</a>
 <ul>
-<li><a href="#orgc4c20c5">3.1. A doubly linked list (DLL) iterator</a></li>
+<li><a href="#org94cb86d">3.1. A doubly linked list (DLL) iterator</a></li>
 </ul>
 </li>
-<li><a href="#orgf597015">4. STL containers</a>
+<li><a href="#org4c18899">4. STL containers</a>
 <ul>
-<li><a href="#orga246713">4.1. Vector</a></li>
-<li><a href="#org014211d">4.2. Set</a></li>
-<li><a href="#org7ac2f4e">4.3. Unordered maps</a></li>
+<li><a href="#org6dcfbeb">4.1. Vector</a></li>
+<li><a href="#orgfc95fbf">4.2. Set</a></li>
+<li><a href="#org5038e7e">4.3. Unordered maps</a></li>
 </ul>
 </li>
-<li><a href="#org0b235db">5. Auto</a></li>
-<li><a href="#org7b8c332">6. Smart pointers</a>
+<li><a href="#org644b019">5. <code>auto</code></a></li>
+<li><a href="#org6876e1c">6. Smart pointers</a>
 <ul>
-<li><a href="#org4408de2">6.1. <code>std::unique_ptr</code></a></li>
-<li><a href="#orgeb866c0">6.2. <code>std::shared_ptr</code></a></li>
+<li><a href="#org03a407c">6.1. <code>std::unique_ptr</code></a></li>
+<li><a href="#orga17c160">6.2. <code>std::shared_ptr</code></a></li>
+</ul>
+</li>
+<li><a href="#orgff9d615">7. Synchronization</a>
+<ul>
+<li><a href="#org720a20f">7.1. <code>std::mutex</code></a></li>
+<li><a href="#org972445b">7.2. <code>std::scoped_lock</code></a></li>
+<li><a href="#org9630937">7.3. <code>std::condition_variable</code></a></li>
+<li><a href="#org45ff32d">7.4. Reader-writer lock</a></li>
 </ul>
 </li>
 </ul>
@@ -68,8 +76,8 @@
 <p>
 This is a personal not for the <a href="https://github.com/cmu-db/15445-bootcamp">CMU 15-445 C++ bootcamp</a> along with some explanation from Claude.ai.
 </p>
-<div id="outline-container-org56b285d" class="outline-2">
-<h2 id="org56b285d"><span class="section-number-2">1.</span> Namespace</h2>
+<div id="outline-container-orgf153467" class="outline-2">
+<h2 id="orgf153467"><span class="section-number-2">1.</span> Namespace</h2>
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
 <li>Provides scopes to identifiers with <code>::</code>.</li>
@@ -107,8 +115,8 @@ Namespaces can be nested.
 </ul>
 </div>
 </div>
-<div id="outline-container-org94e6324" class="outline-2">
-<h2 id="org94e6324"><span class="section-number-2">2.</span> Wrapper class</h2>
+<div id="outline-container-org40232d3" class="outline-2">
+<h2 id="org40232d3"><span class="section-number-2">2.</span> Wrapper class</h2>
 <div class="outline-text-2" id="text-2">
 <ul class="org-ul">
 <li><p>
@@ -216,8 +224,8 @@ A wrapper class is still moveable from different lvalues/owners.
 </ul>
 </div>
 </div>
-<div id="outline-container-orga5f1f02" class="outline-2">
-<h2 id="orga5f1f02"><span class="section-number-2">3.</span> Iterator</h2>
+<div id="outline-container-orgc9d8f4f" class="outline-2">
+<h2 id="orgc9d8f4f"><span class="section-number-2">3.</span> Iterator</h2>
 <div class="outline-text-2" id="text-3">
 <ul class="org-ul">
 <li><p>
@@ -246,8 +254,8 @@ iter++;
 <li>Often used to access and modify elements in C++ STL containers.</li>
 </ul>
 </div>
-<div id="outline-container-orgc4c20c5" class="outline-3">
-<h3 id="orgc4c20c5"><span class="section-number-3">3.1.</span> A doubly linked list (DLL) iterator</h3>
+<div id="outline-container-org94cb86d" class="outline-3">
+<h3 id="org94cb86d"><span class="section-number-3">3.1.</span> A doubly linked list (DLL) iterator</h3>
 <div class="outline-text-3" id="text-3-1">
 <ul class="org-ul">
 <li><p>
@@ -365,8 +373,8 @@ Define DLL:
 </div>
 </div>
 </div>
-<div id="outline-container-orgf597015" class="outline-2">
-<h2 id="orgf597015"><span class="section-number-2">4.</span> STL containers</h2>
+<div id="outline-container-org4c18899" class="outline-2">
+<h2 id="org4c18899"><span class="section-number-2">4.</span> STL containers</h2>
 <div class="outline-text-2" id="text-4">
 <ul class="org-ul">
 <li>The C++ STL (standard library) is a generic collection of data structure and algorithm implementations, e.g., stacks, queues, hash tables.</li>
@@ -374,8 +382,8 @@ Define DLL:
 <li>The <code>std::set</code> is implemented as a red-black tree.</li>
 </ul>
 </div>
-<div id="outline-container-orga246713" class="outline-3">
-<h3 id="orga246713"><span class="section-number-3">4.1.</span> Vector</h3>
+<div id="outline-container-org6dcfbeb" class="outline-3">
+<h3 id="org6dcfbeb"><span class="section-number-3">4.1.</span> Vector</h3>
 <div class="outline-text-3" id="text-4-1">
 <div class="org-src-container">
 <pre class="src src-cpp"><span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;algorithm&gt;</span> <span style="color: #5B6268;">// </span><span style="color: #5B6268;">to use std::remove_if</span>
@@ -450,8 +458,8 @@ Define DLL:
 </div>
 </div>
 </div>
-<div id="outline-container-org014211d" class="outline-3">
-<h3 id="org014211d"><span class="section-number-3">4.2.</span> Set</h3>
+<div id="outline-container-orgfc95fbf" class="outline-3">
+<h3 id="orgfc95fbf"><span class="section-number-3">4.2.</span> Set</h3>
 <div class="outline-text-3" id="text-4-2">
 <div class="org-src-container">
 <pre class="src src-cpp"><span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;iostream&gt;</span>
@@ -495,8 +503,8 @@ Define DLL:
 </div>
 </div>
 </div>
-<div id="outline-container-org7ac2f4e" class="outline-3">
-<h3 id="org7ac2f4e"><span class="section-number-3">4.3.</span> Unordered maps</h3>
+<div id="outline-container-org5038e7e" class="outline-3">
+<h3 id="org5038e7e"><span class="section-number-3">4.3.</span> Unordered maps</h3>
 <div class="outline-text-3" id="text-4-3">
 <div class="org-src-container">
 <pre class="src src-cpp"><span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;iostream&gt;</span>
@@ -549,8 +557,8 @@ Define DLL:
 </div>
 </div>
 </div>
-<div id="outline-container-org0b235db" class="outline-2">
-<h2 id="org0b235db"><span class="section-number-2">5.</span> Auto</h2>
+<div id="outline-container-org644b019" class="outline-2">
+<h2 id="org644b019"><span class="section-number-2">5.</span> <code>auto</code></h2>
 <div class="outline-text-2" id="text-5">
 <ul class="org-ul">
 <li><code>auto</code> keyword tells the compiler to infer the type via its initialization expression.</li>
@@ -599,8 +607,8 @@ Define DLL:
 </div>
 </div>
 </div>
-<div id="outline-container-org7b8c332" class="outline-2">
-<h2 id="org7b8c332"><span class="section-number-2">6.</span> Smart pointers</h2>
+<div id="outline-container-org6876e1c" class="outline-2">
+<h2 id="org6876e1c"><span class="section-number-2">6.</span> Smart pointers</h2>
 <div class="outline-text-2" id="text-6">
 <ul class="org-ul">
 <li>A smart pointer is a data structure used in languages that do not have built-in memory management (e.g., with garbage collection, e.g., Python, Java) to handle memory allocation and deallocation.</li>
@@ -609,8 +617,8 @@ Define DLL:
 <li><code>std::shared_ptr</code> retains shared ownership of an object, i.e., multiple shared pointers can own the same object and can be copied.</li>
 </ul>
 </div>
-<div id="outline-container-org4408de2" class="outline-3">
-<h3 id="org4408de2"><span class="section-number-3">6.1.</span> <code>std::unique_ptr</code></h3>
+<div id="outline-container-org03a407c" class="outline-3">
+<h3 id="org03a407c"><span class="section-number-3">6.1.</span> <code>std::unique_ptr</code></h3>
 <div class="outline-text-3" id="text-6-1">
 <div class="org-src-container">
 <pre class="src src-cpp"><span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;iostream&gt;</span>
@@ -657,8 +665,8 @@ Define DLL:
 </div>
 </div>
 </div>
-<div id="outline-container-orgeb866c0" class="outline-3">
-<h3 id="orgeb866c0"><span class="section-number-3">6.2.</span> <code>std::shared_ptr</code></h3>
+<div id="outline-container-orga17c160" class="outline-3">
+<h3 id="orga17c160"><span class="section-number-3">6.2.</span> <code>std::shared_ptr</code></h3>
 <div class="outline-text-3" id="text-6-2">
 <div class="org-src-container">
 <pre class="src src-cpp"><span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;iostream&gt;</span>
@@ -714,6 +722,165 @@ Define DLL:
 }
 </pre>
 </div>
+</div>
+</div>
+</div>
+<div id="outline-container-orgff9d615" class="outline-2">
+<h2 id="orgff9d615"><span class="section-number-2">7.</span> Synchronization</h2>
+<div class="outline-text-2" id="text-7">
+</div>
+<div id="outline-container-org720a20f" class="outline-3">
+<h3 id="org720a20f"><span class="section-number-3">7.1.</span> <code>std::mutex</code></h3>
+<div class="outline-text-3" id="text-7-1">
+<div class="org-src-container">
+<pre class="src src-cpp"><span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;iostream&gt;</span>
+<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;mutex&gt;</span>
+<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;thread&gt;</span>
+
+<span style="color: #5B6268;">// </span><span style="color: #5B6268;">define a global variable to be modified</span>
+<span style="color: #5B6268;">// </span><span style="color: #5B6268;">by multiple threads</span>
+<span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">count</span> = <span style="color: #da8548; font-weight: bold;">0</span>;
+<span style="color: #5B6268;">// </span><span style="color: #5B6268;">declare a mutex</span>
+<span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">mutex</span> <span style="color: #dcaeea;">m</span>;
+<span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">add_count</span>() {
+  m.lock(); <span style="color: #5B6268;">// </span><span style="color: #5B6268;">acquire the lock</span>
+  count += <span style="color: #da8548; font-weight: bold;">1</span>;
+  m.unlock(); <span style="color: #5B6268;">// </span><span style="color: #5B6268;">release the lock</span>
+}
+<span style="color: #ECBE7B;">int</span> <span style="color: #c678dd;">main</span>() {
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">thread</span> <span style="color: #dcaeea;">t1</span>(add_count);
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">thread</span> <span style="color: #dcaeea;">t2</span>(add_count);
+  t1.join();
+  t2.join();
+  <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; count &lt;&lt; <span style="color: #a9a1e1;">std</span>::endl; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">always 2</span>
+  <span style="color: #51afef;">return</span> <span style="color: #da8548; font-weight: bold;">0</span>;
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org972445b" class="outline-3">
+<h3 id="org972445b"><span class="section-number-3">7.2.</span> <code>std::scoped_lock</code></h3>
+<div class="outline-text-3" id="text-7-2">
+<ul class="org-ul">
+<li>A mutex wrapper that provides a RAII-style of obtaining and releasing the lock.</li>
+<li>When the object is constructed, the locks are acquired; when the object is destructured, the locks are released.</li>
+<li>Better than <code>std::mutex</code> since it provides exception safety.</li>
+</ul>
+<div class="org-src-container">
+<pre class="src src-cpp"><span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;iostream&gt;</span>
+<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;mutex&gt;</span>
+
+<span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">count</span> = <span style="color: #da8548; font-weight: bold;">0</span>;
+<span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">mutex</span> <span style="color: #dcaeea;">m</span>;
+<span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">add_count</span>() {
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">the scoped_lock constructor allows for the thread</span>
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">to acquire the mutex m</span>
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">scoped_lock</span> <span style="color: #dcaeea;">slk</span>(m);
+  count += <span style="color: #da8548; font-weight: bold;">1</span>;
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">once the function finishes, slk is destructurd and</span>
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">m is released</span>
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org9630937" class="outline-3">
+<h3 id="org9630937"><span class="section-number-3">7.3.</span> <code>std::condition_variable</code></h3>
+<div class="outline-text-3" id="text-7-3">
+<ul class="org-ul">
+<li>Allow threads to wait until a particular condition before acquiring a mutex.</li>
+<li>Allow other threads to signal waiting threads to alert them that the condition may be true.
+<code>notify_one</code></li>
+</ul>
+<div class="org-src-container">
+<pre class="src src-cpp"><span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;condition_variable&gt;</span>
+<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;iostream&gt;</span>
+<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;mutex&gt;</span>
+<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;thread&gt;</span>
+
+<span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">count</span> = <span style="color: #da8548; font-weight: bold;">0</span>;
+<span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">mutex</span> <span style="color: #dcaeea;">m</span>;
+<span style="color: #5B6268;">// </span><span style="color: #5B6268;">declare a condition variable</span>
+<span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">condition_variable</span> <span style="color: #dcaeea;">cv</span>;
+<span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">add_count_and_notify</span>() {
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">scoped_lock</span> <span style="color: #dcaeea;">slk</span>(m);
+  count += <span style="color: #da8548; font-weight: bold;">1</span>;
+  <span style="color: #51afef;">if</span> (count == <span style="color: #da8548; font-weight: bold;">2</span>) {
+    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">notidy one waiting thread</span>
+    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">otherwise the waiter thread hangs forever</span>
+    cv.notify_one();
+  }
+}
+<span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">waiter_thread</span>() {
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">a unique_lock is movable but not copiable</span>
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">more flexible than scoped_lock as it can unlock</span>
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">and relock manually, while scoped_lock can only be</span>
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">unlocked automatically.</span>
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">scoped_lock cannot be used with condition variables</span>
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">unique_lock</span> <span style="color: #dcaeea;">lk</span>(m);
+  cv.wait(lk, [] { <span style="color: #51afef;">return</span> count == <span style="color: #da8548; font-weight: bold;">2</span>; });
+  <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; count &lt;&lt; <span style="color: #a9a1e1;">std</span>::endl;
+}
+<span style="color: #ECBE7B;">int</span> <span style="color: #c678dd;">main</span>() {
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">thread</span> <span style="color: #dcaeea;">t1</span>(waiter_thread);
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">make t1 really waits</span>
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #a9a1e1;">this_thread</span>::sleep_for(<span style="color: #a9a1e1;">std</span>::<span style="color: #a9a1e1;">chrono</span>::milliseconds(<span style="color: #da8548; font-weight: bold;">100</span>));
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">thread</span> <span style="color: #dcaeea;">t2</span>(add_count_and_notify);
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">thread</span> <span style="color: #dcaeea;">t3</span>(add_count_and_notify);
+  t1.join();
+  t2.join();
+  t3.join();
+  <span style="color: #51afef;">return</span> <span style="color: #da8548; font-weight: bold;">0</span>;
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org45ff32d" class="outline-3">
+<h3 id="org45ff32d"><span class="section-number-3">7.4.</span> Reader-writer lock</h3>
+<div class="outline-text-3" id="text-7-4">
+<ul class="org-ul">
+<li>A reader-writer lock allows multiple threads to have shared read access (no writers are allowed during read operations) and exclusive write access, i.e., no other readers or writers are allowed during the write.</li>
+<li>C++ does not have a specific reader-writer&rsquo;s lock library, but can be emulated with <code>std::shared_mutex</code>, <code>std::shared_lock</code> and <code>std::unique_lock</code>.</li>
+<li><code>std::shared_mutex</code> is a mutex that allows for both shared read-only locking and exclusive write-only locking.</li>
+<li><code>std::shared_lock</code> can be used as an RAII-style read lock.</li>
+<li><p>
+<code>std::unique_lock</code> can be used a RAII-style exclusive write lock.
+</p>
+<div class="org-src-container">
+<pre class="src src-cpp"><span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;iostream&gt;</span>
+<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;mutex&gt;</span>
+<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;shared_mutex&gt;</span>
+<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;thread&gt;</span>
+
+<span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">count</span> = <span style="color: #da8548; font-weight: bold;">0</span>; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">resource</span>
+<span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">shared_mutex</span> <span style="color: #dcaeea;">m</span>;
+<span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">read_value</span>() {
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">use shared_lock to gain read-only, shared access</span>
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">shared_lock</span> <span style="color: #dcaeea;">lk</span>(m);
+  <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"Reading "</span> + <span style="color: #a9a1e1;">std</span>::to_string(count) &lt;&lt; <span style="color: #a9a1e1;">std</span>::endl;
+}
+
+<span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">write_value</span>() {
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">use unique_lock to gain exclusive access</span>
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">unique_lock</span> <span style="color: #dcaeea;">lk</span>(m);
+  count += <span style="color: #da8548; font-weight: bold;">3</span>;
+}
+<span style="color: #ECBE7B;">int</span> <span style="color: #c678dd;">main</span>() {
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">since all 3 threads run in parallel,</span>
+  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">the output is not deterministic</span>
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">thread</span> <span style="color: #dcaeea;">t1</span>(read_value);
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">thread</span> <span style="color: #dcaeea;">t2</span>(write_value);
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">thread</span> <span style="color: #dcaeea;">t3</span>(read_value);
+  t1.join();
+  t2.join();
+  t3.join();
+  <span style="color: #51afef;">return</span> <span style="color: #da8548; font-weight: bold;">0</span>;
+}
+</pre>
+</div></li>
+</ul>
 </div>
 </div>
 </div>

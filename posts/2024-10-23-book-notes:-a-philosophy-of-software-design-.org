@@ -218,3 +218,23 @@ This book works together with [[https://web.stanford.edu/~ouster/cs190-winter24/
   - The top-level handler encapsulates knowledge about how to generate error responses, but knows nothing about specific errors.
   - Each service knows how to generate errors, but does not know how to send the response.
 - Example 2: promote rare exceptions (e.g., corrupted files) to more common exceptions (e.g., server crashes) so that the same handler can be used.
+
+* Design it twice
+- Rather than picking the first idea that comes to mind, try to pick several approaches that are radically **different** from each other.
+  - No need to pin down every feature of each alternative.
+- Even if you are certain that there is only one reasonable approach, consider a second design anyway, no matter how bad it will be.
+  - It will be instructive to think about the weaknesses of the second design and contrast with other designs.
+  - It's easier to identify the best approach if one can compare a few alternatives.
+- Make a list of the pros and cons of each rough design, e.g.,
+  - Does one design have a simpler/ more general-purpose interface than another?
+  - Does one interface enable a more efficient implementation?
+- The design-it-twice principle can be applied at many levels in a system, e.g., decompose into modules, pick an interface, design an implementation (simplicity and performance).
+- No-one is good enough to get it right with their first try in large software system design.
+- The process of devising and comparing multiple approaches teach one about the factors that make designs better or worse.
+* Write comments
+** Why write comments
+- The correct process of writing comments will improve the system design.
+- A significant amount of design information that was in the mind of the designer cannot be represented in code, e.g., the high-level description of a method, the motivation for a particular design.
+- Comments are fundamental to abstractions: if users must read the code to use it, then there is no abstraction.
+  - If there is no comment, the only abstraction of a method is its declaration which misses too much essential information to provide a useful abstraction by itself; e.g., whether ~end~ is inclusive.
+- Good comments reduce cognitive load and unknown unknowns.
