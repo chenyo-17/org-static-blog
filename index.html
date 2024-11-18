@@ -42,55 +42,64 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orge08c7c0">1. Introduction</a></li>
-<li><a href="#org3e75754">2. Complexity</a>
+<li><a href="#org2d6a880">1. Introduction</a></li>
+<li><a href="#org1539b58">2. Complexity</a>
 <ul>
-<li><a href="#org1663ee4">2.1. Definition</a></li>
-<li><a href="#orgac1e053">2.2. Symptoms</a></li>
-<li><a href="#orgac4aad9">2.3. Causes</a></li>
+<li><a href="#org4c086fb">2.1. Definition</a></li>
+<li><a href="#org16d5763">2.2. Symptoms</a></li>
+<li><a href="#orga48de5c">2.3. Causes</a></li>
 </ul>
 </li>
-<li><a href="#orgcb1ddcc">3. Programming mindsets</a>
+<li><a href="#org1f0ef6d">3. Programming mindsets</a>
 <ul>
-<li><a href="#org61230f7">3.1. Strategic programming</a></li>
+<li><a href="#org34e0ccf">3.1. Strategic programming</a></li>
 </ul>
 </li>
-<li><a href="#orgf14a123">4. Modular design</a>
+<li><a href="#orgfa7227a">4. Modular design</a>
 <ul>
-<li><a href="#org0f75a51">4.1. Interface</a></li>
-<li><a href="#org133654e">4.2. Abstraction</a></li>
+<li><a href="#org764248c">4.1. Interface</a></li>
+<li><a href="#org524a941">4.2. Abstraction</a></li>
 </ul>
 </li>
-<li><a href="#org139490a">5. Information hiding</a>
+<li><a href="#orga2c228e">5. Information hiding</a>
 <ul>
-<li><a href="#orge508c8b">5.1. Information leakage</a></li>
-<li><a href="#org6f6c2a9">5.2. Temporal decomposition</a></li>
+<li><a href="#orgacc2800">5.1. Information leakage</a></li>
+<li><a href="#org5ecc9b8">5.2. Temporal decomposition</a></li>
 </ul>
 </li>
-<li><a href="#org72bfc0c">6. General-Purpose modules</a>
+<li><a href="#orgbf7486d">6. General-Purpose modules</a>
 <ul>
-<li><a href="#org69aed13">6.1. Example: GUI text editor design</a></li>
+<li><a href="#org2b6a3f8">6.1. Example: GUI text editor design</a></li>
 </ul>
 </li>
-<li><a href="#orge905cd7">7. Layers of abstractions</a>
+<li><a href="#org0b4e626">7. Layers of abstractions</a>
 <ul>
-<li><a href="#org092b84f">7.1. Pass-through methods</a></li>
-<li><a href="#org6ee221c">7.2. Pass-through variables</a></li>
-<li><a href="#org84f7cbb">7.3. Acceptable interface duplication</a></li>
+<li><a href="#org295334b">7.1. Pass-through methods</a></li>
+<li><a href="#org893813f">7.2. Pass-through variables</a></li>
+<li><a href="#org8d91692">7.3. Acceptable interface duplication</a></li>
 </ul>
 </li>
-<li><a href="#org852ab17">8. Combine or separate functionality</a></li>
-<li><a href="#org968260f">9. Exception handling</a>
+<li><a href="#org0105abe">8. Combine or separate functionality</a></li>
+<li><a href="#org3766858">9. Exception handling</a>
 <ul>
-<li><a href="#org4b26a96">9.1. Define errors out of existence</a></li>
-<li><a href="#orgcb517a3">9.2. Exception masking</a></li>
-<li><a href="#org59950b5">9.3. Exception aggregation</a></li>
+<li><a href="#org9397766">9.1. Define errors out of existence</a></li>
+<li><a href="#orgd5b53a6">9.2. Exception masking</a></li>
+<li><a href="#org6955e0a">9.3. Exception aggregation</a></li>
 </ul>
 </li>
-<li><a href="#org9df49ce">10. Design it twice</a></li>
-<li><a href="#org009bebc">11. Write comments</a>
+<li><a href="#org118ca0f">10. Design it twice</a></li>
+<li><a href="#org378fda6">11. Write comments</a>
 <ul>
-<li><a href="#orgd86c2e4">11.1. Why write comments</a></li>
+<li><a href="#orga2a90f3">11.1. Why write comments</a></li>
+<li><a href="#org35aadfd">11.2. What are good comments</a>
+<ul>
+<li><a href="#org53da91c">11.2.1. Lower-level comments</a></li>
+<li><a href="#org9c8c2fd">11.2.2. Higher-level comments</a></li>
+<li><a href="#org250cb07">11.2.3. Interface comments</a></li>
+<li><a href="#org0dc59f6">11.2.4. Implementation comments</a></li>
+<li><a href="#org3376360">11.2.5. Cross-module comments</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -101,8 +110,8 @@ This is a personal note for the book &ldquo;A Philosophy of Software Design&rdqu
 John Ousterhout is the author of Tcl scripting language and the Raft protocol.
 This book works together with <a href="https://web.stanford.edu/~ouster/cs190-winter24/info/">Stanford CS190</a>.
 </p>
-<div id="outline-container-orge08c7c0" class="outline-2">
-<h2 id="orge08c7c0"><span class="section-number-2">1.</span> Introduction</h2>
+<div id="outline-container-org2d6a880" class="outline-2">
+<h2 id="org2d6a880"><span class="section-number-2">1.</span> Introduction</h2>
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
 <li>The most fundamental problem in CS is <b><b>problem decomposition</b></b>: how to divide a complex problem into pieces that can be solved independently.</li>
@@ -123,16 +132,16 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 </ul>
 </div>
 </div>
-<div id="outline-container-org3e75754" class="outline-2">
-<h2 id="org3e75754"><span class="section-number-2">2.</span> Complexity</h2>
+<div id="outline-container-org1539b58" class="outline-2">
+<h2 id="org1539b58"><span class="section-number-2">2.</span> Complexity</h2>
 <div class="outline-text-2" id="text-2">
 <ul class="org-ul">
 <li>Complexity is <b><b>incremental</b></b>.</li>
 <li>Developers must adopt a <b><b>zero tolerance</b></b> philosophy.</li>
 </ul>
 </div>
-<div id="outline-container-org1663ee4" class="outline-3">
-<h3 id="org1663ee4"><span class="section-number-3">2.1.</span> Definition</h3>
+<div id="outline-container-org4c086fb" class="outline-3">
+<h3 id="org4c086fb"><span class="section-number-3">2.1.</span> Definition</h3>
 <div class="outline-text-3" id="text-2-1">
 <ul class="org-ul">
 <li>Complexity is anything related to the structure of a software system that makes it hard to understand and modify the system.</li>
@@ -144,8 +153,8 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 </ul>
 </div>
 </div>
-<div id="outline-container-orgac1e053" class="outline-3">
-<h3 id="orgac1e053"><span class="section-number-3">2.2.</span> Symptoms</h3>
+<div id="outline-container-org16d5763" class="outline-3">
+<h3 id="org16d5763"><span class="section-number-3">2.2.</span> Symptoms</h3>
 <div class="outline-text-3" id="text-2-2">
 <ul class="org-ul">
 <li>Change amplification: a seemingly simple change requires code modifications in many different places.</li>
@@ -159,8 +168,8 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 </ul>
 </div>
 </div>
-<div id="outline-container-orgac4aad9" class="outline-3">
-<h3 id="orgac4aad9"><span class="section-number-3">2.3.</span> Causes</h3>
+<div id="outline-container-orga48de5c" class="outline-3">
+<h3 id="orga48de5c"><span class="section-number-3">2.3.</span> Causes</h3>
 <div class="outline-text-3" id="text-2-3">
 <ul class="org-ul">
 <li>Complexity is caused by two things: <b><b>dependencies</b></b> and <b><b>obscurity</b></b>.</li>
@@ -180,8 +189,8 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 </div>
 </div>
 </div>
-<div id="outline-container-orgcb1ddcc" class="outline-2">
-<h2 id="orgcb1ddcc"><span class="section-number-2">3.</span> Programming mindsets</h2>
+<div id="outline-container-org1f0ef6d" class="outline-2">
+<h2 id="org1f0ef6d"><span class="section-number-2">3.</span> Programming mindsets</h2>
 <div class="outline-text-2" id="text-3">
 <ul class="org-ul">
 <li>Tactical programming: the main focus is to get something working, e.g., a new feature or a bug fix.</li>
@@ -189,8 +198,8 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 <li>Once a code base turns to spaghetti, it is nearly impossible to fix.</li>
 </ul>
 </div>
-<div id="outline-container-org61230f7" class="outline-3">
-<h3 id="org61230f7"><span class="section-number-3">3.1.</span> Strategic programming</h3>
+<div id="outline-container-org34e0ccf" class="outline-3">
+<h3 id="org34e0ccf"><span class="section-number-3">3.1.</span> Strategic programming</h3>
 <div class="outline-text-3" id="text-3-1">
 <ul class="org-ul">
 <li>Requires an investment mindset to improve the system design rather than taking the fastest path to finish the current task.</li>
@@ -200,7 +209,7 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 </ul>
 
 
-<figure id="org58e9e17">
+<figure id="org253c52a">
 <img src="https://csruiliu.github.io/blog/images/strategic-tactical.jpeg" alt="strategic-tactical.jpeg" align="center" width="400px">
 
 <figcaption><span class="figure-number">Figure 1: </span>Strategic vs Tactical programming (<a href="https://csruiliu.github.io/blog/images/strategic-tactical.jpeg">Source</a>)</figcaption>
@@ -208,8 +217,8 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 </div>
 </div>
 </div>
-<div id="outline-container-orgf14a123" class="outline-2">
-<h2 id="orgf14a123"><span class="section-number-2">4.</span> Modular design</h2>
+<div id="outline-container-orgfa7227a" class="outline-2">
+<h2 id="orgfa7227a"><span class="section-number-2">4.</span> Modular design</h2>
 <div class="outline-text-2" id="text-4">
 <ul class="org-ul">
 <li>The goal of modular design is to minimize the dependencies between modules.</li>
@@ -229,8 +238,8 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 </ul></li>
 </ul>
 </div>
-<div id="outline-container-org0f75a51" class="outline-3">
-<h3 id="org0f75a51"><span class="section-number-3">4.1.</span> Interface</h3>
+<div id="outline-container-org764248c" class="outline-3">
+<h3 id="org764248c"><span class="section-number-3">4.1.</span> Interface</h3>
 <div class="outline-text-3" id="text-4-1">
 <ul class="org-ul">
 <li>A module interface contains two information: formal and informal.</li>
@@ -243,8 +252,8 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 </ul>
 </div>
 </div>
-<div id="outline-container-org133654e" class="outline-3">
-<h3 id="org133654e"><span class="section-number-3">4.2.</span> Abstraction</h3>
+<div id="outline-container-org524a941" class="outline-3">
+<h3 id="org524a941"><span class="section-number-3">4.2.</span> Abstraction</h3>
 <div class="outline-text-3" id="text-4-2">
 <ul class="org-ul">
 <li>An abstraction is a simplified view of an entity, which omits unimportant details.
@@ -262,8 +271,8 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 </div>
 </div>
 </div>
-<div id="outline-container-org139490a" class="outline-2">
-<h2 id="org139490a"><span class="section-number-2">5.</span> Information hiding</h2>
+<div id="outline-container-orga2c228e" class="outline-2">
+<h2 id="orga2c228e"><span class="section-number-2">5.</span> Information hiding</h2>
 <div class="outline-text-2" id="text-5">
 <ul class="org-ul">
 <li>Information hiding is the most important technique for achieving deep modules.</li>
@@ -276,8 +285,8 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 </ul></li>
 </ul>
 </div>
-<div id="outline-container-orge508c8b" class="outline-3">
-<h3 id="orge508c8b"><span class="section-number-3">5.1.</span> Information leakage</h3>
+<div id="outline-container-orgacc2800" class="outline-3">
+<h3 id="orgacc2800"><span class="section-number-3">5.1.</span> Information leakage</h3>
 <div class="outline-text-3" id="text-5-1">
 <ul class="org-ul">
 <li>The leakage occurs when a design decision is reflected in multiple modules. thus creating dependencies between the modules.
@@ -300,8 +309,8 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 </ul>
 </div>
 </div>
-<div id="outline-container-org6f6c2a9" class="outline-3">
-<h3 id="org6f6c2a9"><span class="section-number-3">5.2.</span> Temporal decomposition</h3>
+<div id="outline-container-org5ecc9b8" class="outline-3">
+<h3 id="org5ecc9b8"><span class="section-number-3">5.2.</span> Temporal decomposition</h3>
 <div class="outline-text-3" id="text-5-2">
 <ul class="org-ul">
 <li>Temporal decomposition is a common cause of information leakage.</li>
@@ -316,8 +325,8 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 </div>
 </div>
 </div>
-<div id="outline-container-org72bfc0c" class="outline-2">
-<h2 id="org72bfc0c"><span class="section-number-2">6.</span> General-Purpose modules</h2>
+<div id="outline-container-orgbf7486d" class="outline-2">
+<h2 id="orgbf7486d"><span class="section-number-2">6.</span> General-Purpose modules</h2>
 <div class="outline-text-2" id="text-6">
 <ul class="org-ul">
 <li>General-purpose modules can be used to address a broad range of problems such that it may find unanticipated uses in the future (cf. investment mindset).</li>
@@ -331,8 +340,8 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 </ul></li>
 </ul>
 </div>
-<div id="outline-container-org69aed13" class="outline-3">
-<h3 id="org69aed13"><span class="section-number-3">6.1.</span> Example: GUI text editor design</h3>
+<div id="outline-container-org2b6a3f8" class="outline-3">
+<h3 id="org2b6a3f8"><span class="section-number-3">6.1.</span> Example: GUI text editor design</h3>
 <div class="outline-text-3" id="text-6-1">
 <ul class="org-ul">
 <li>Specialized design: use individual method in the text class to support each high-level features, e.g., <code>backspace(Cursor cursor)</code> deletes the character before the cursor; <code>delete(Cursor cursor)</code> deletes the character after the cursor; <code>deleteSelection(Selection selection)</code> deletes the selected section.</li>
@@ -355,8 +364,8 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 </div>
 </div>
 </div>
-<div id="outline-container-orge905cd7" class="outline-2">
-<h2 id="orge905cd7"><span class="section-number-2">7.</span> Layers of abstractions</h2>
+<div id="outline-container-org0b4e626" class="outline-2">
+<h2 id="org0b4e626"><span class="section-number-2">7.</span> Layers of abstractions</h2>
 <div class="outline-text-2" id="text-7">
 <ul class="org-ul">
 <li>Software systems are composed into layers, where higher layers use the facilities provided by lower layers; each layer provides an abstraction different from the layers above or below it.
@@ -372,8 +381,8 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 </ul></li>
 </ul>
 </div>
-<div id="outline-container-org092b84f" class="outline-3">
-<h3 id="org092b84f"><span class="section-number-3">7.1.</span> Pass-through methods</h3>
+<div id="outline-container-org295334b" class="outline-3">
+<h3 id="org295334b"><span class="section-number-3">7.1.</span> Pass-through methods</h3>
 <div class="outline-text-3" id="text-7-1">
 <ul class="org-ul">
 <li>A pass-through method is a method that does little except invoke another method, whose signature is similar or identical to the callee function.</li>
@@ -383,15 +392,15 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 </ul>
 
 
-<figure id="orgafef196">
+<figure id="org02d6c81">
 <img src="./static/pass-through-methods.png" alt="pass-through-methods.png" align="center" width="400px">
 
 <figcaption><span class="figure-number">Figure 2: </span>Refactor pass-through methods</figcaption>
 </figure>
 </div>
 </div>
-<div id="outline-container-org6ee221c" class="outline-3">
-<h3 id="org6ee221c"><span class="section-number-3">7.2.</span> Pass-through variables</h3>
+<div id="outline-container-org893813f" class="outline-3">
+<h3 id="org893813f"><span class="section-number-3">7.2.</span> Pass-through variables</h3>
 <div class="outline-text-3" id="text-7-2">
 <ul class="org-ul">
 <li>A pass-through variable is a variable that is passed down through a long chain of methods.</li>
@@ -405,8 +414,8 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 </ul>
 </div>
 </div>
-<div id="outline-container-org84f7cbb" class="outline-3">
-<h3 id="org84f7cbb"><span class="section-number-3">7.3.</span> Acceptable interface duplication</h3>
+<div id="outline-container-org8d91692" class="outline-3">
+<h3 id="org8d91692"><span class="section-number-3">7.3.</span> Acceptable interface duplication</h3>
 <div class="outline-text-3" id="text-7-3">
 <ul class="org-ul">
 <li>Dispatcher: a method that uses its arguments to select a specific method to invoke and passes most of its arguments.
@@ -425,8 +434,8 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 </div>
 </div>
 </div>
-<div id="outline-container-org852ab17" class="outline-2">
-<h2 id="org852ab17"><span class="section-number-2">8.</span> Combine or separate functionality</h2>
+<div id="outline-container-org0105abe" class="outline-2">
+<h2 id="org0105abe"><span class="section-number-2">8.</span> Combine or separate functionality</h2>
 <div class="outline-text-2" id="text-8">
 <ul class="org-ul">
 <li>The goal is to reduce the system complexity as a <b><b>whole</b></b> and improve its modularity.
@@ -454,8 +463,8 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 </ul>
 </div>
 </div>
-<div id="outline-container-org968260f" class="outline-2">
-<h2 id="org968260f"><span class="section-number-2">9.</span> Exception handling</h2>
+<div id="outline-container-org3766858" class="outline-2">
+<h2 id="org3766858"><span class="section-number-2">9.</span> Exception handling</h2>
 <div class="outline-text-2" id="text-9">
 <ul class="org-ul">
 <li>Exceptions refer to any uncommon condition that alters the normal control flow.
@@ -472,8 +481,8 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 <li>Same as exceptions, special cases can result in code riddled with <code>if</code> statements, they should be eliminated by designing the normal case in a way that automatically handles the special cases.</li>
 </ul>
 </div>
-<div id="outline-container-org4b26a96" class="outline-3">
-<h3 id="org4b26a96"><span class="section-number-3">9.1.</span> Define errors out of existence</h3>
+<div id="outline-container-org9397766" class="outline-3">
+<h3 id="org9397766"><span class="section-number-3">9.1.</span> Define errors out of existence</h3>
 <div class="outline-text-3" id="text-9-1">
 <ul class="org-ul">
 <li>Example 1: instead of throwing an exception when a key does not exist in <code>remove</code>, simply return to ensure the key no longer exists.</li>
@@ -482,8 +491,8 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 </ul>
 </div>
 </div>
-<div id="outline-container-orgcb517a3" class="outline-3">
-<h3 id="orgcb517a3"><span class="section-number-3">9.2.</span> Exception masking</h3>
+<div id="outline-container-orgd5b53a6" class="outline-3">
+<h3 id="orgd5b53a6"><span class="section-number-3">9.2.</span> Exception masking</h3>
 <div class="outline-text-3" id="text-9-2">
 <ul class="org-ul">
 <li>An exceptional condition is detected and handled at a low level in the system so that higher levels need not be aware of the condition.</li>
@@ -492,8 +501,8 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 </ul>
 </div>
 </div>
-<div id="outline-container-org59950b5" class="outline-3">
-<h3 id="org59950b5"><span class="section-number-3">9.3.</span> Exception aggregation</h3>
+<div id="outline-container-org6955e0a" class="outline-3">
+<h3 id="org6955e0a"><span class="section-number-3">9.3.</span> Exception aggregation</h3>
 <div class="outline-text-3" id="text-9-3">
 <ul class="org-ul">
 <li>Exception aggregation handles many special-purpose exceptions with a single general-purpose handler.</li>
@@ -507,8 +516,8 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 </div>
 </div>
 </div>
-<div id="outline-container-org9df49ce" class="outline-2">
-<h2 id="org9df49ce"><span class="section-number-2">10.</span> Design it twice</h2>
+<div id="outline-container-org118ca0f" class="outline-2">
+<h2 id="org118ca0f"><span class="section-number-2">10.</span> Design it twice</h2>
 <div class="outline-text-2" id="text-10">
 <ul class="org-ul">
 <li>Rather than picking the first idea that comes to mind, try to pick several approaches that are radically <b><b>different</b></b> from each other.
@@ -531,22 +540,118 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 </ul>
 </div>
 </div>
-<div id="outline-container-org009bebc" class="outline-2">
-<h2 id="org009bebc"><span class="section-number-2">11.</span> Write comments</h2>
+<div id="outline-container-org378fda6" class="outline-2">
+<h2 id="org378fda6"><span class="section-number-2">11.</span> Write comments</h2>
 <div class="outline-text-2" id="text-11">
 </div>
-<div id="outline-container-orgd86c2e4" class="outline-3">
-<h3 id="orgd86c2e4"><span class="section-number-3">11.1.</span> Why write comments</h3>
+<div id="outline-container-orga2a90f3" class="outline-3">
+<h3 id="orga2a90f3"><span class="section-number-3">11.1.</span> Why write comments</h3>
 <div class="outline-text-3" id="text-11-1">
 <ul class="org-ul">
 <li>The correct process of writing comments will improve the system design.</li>
-<li>A significant amount of design information that was in the mind of the designer cannot be represented in code, e.g., the high-level description of a method, the motivation for a particular design.</li>
+<li>A significant amount of design information that was in the mind of the designer cannot be represented in code, e.g., the <b><b>high-level</b></b> description of a method, the motivation for a particular design.</li>
 <li>Comments are fundamental to abstractions: if users must read the code to use it, then there is no abstraction.
 <ul class="org-ul">
 <li>If there is no comment, the only abstraction of a method is its declaration which misses too much essential information to provide a useful abstraction by itself; e.g., whether <code>end</code> is inclusive.</li>
 </ul></li>
 <li>Good comments reduce cognitive load and unknown unknowns.</li>
 </ul>
+</div>
+</div>
+<div id="outline-container-org35aadfd" class="outline-3">
+<h3 id="org35aadfd"><span class="section-number-3">11.2.</span> What are good comments</h3>
+<div class="outline-text-3" id="text-11-2">
+<ul class="org-ul">
+<li>Follow the comment conventions, e.g., Doxygen for C++, godoc for Go.</li>
+<li>Comments categories:
+<ul class="org-ul">
+<li>Interface: a comment block that precedes the declaration; describes the interface, e.g., overall behavior or abstraction, arguments, return values, side effects or exceptions and any requirements the caller must satisfy.</li>
+<li>Data structure member: a comment next to the declaration of a field in a data structure, e.g., a variable.</li>
+<li>Implementation comment: a comment inside the code to describe how the code work internally.</li>
+<li>Cross-module comment: a comment describing dependencies that cross module boundaries.</li>
+</ul></li>
+<li>The interface and the data structure member comments are the most important and should be always present.</li>
+<li>Don&rsquo;t repeat the code: if someone who has never seen the code can also write the comment by just looking at the code next to the comment, then the comment has no value.</li>
+<li>Don&rsquo;t use the same words in the comment that appear in the name of the entity being described, pick words that provide additional information.</li>
+<li>Comments should augment the code by providing information at a different level of detail.
+<ul class="org-ul">
+<li>Lower-level: add precision by clarifying the exact meaning of the code.</li>
+<li>Higher-level: offer intuition behind the code.</li>
+</ul></li>
+</ul>
+</div>
+<div id="outline-container-org53da91c" class="outline-4">
+<h4 id="org53da91c"><span class="section-number-4">11.2.1.</span> Lower-level comments</h4>
+<div class="outline-text-4" id="text-11-2-1">
+<ul class="org-ul">
+<li>Precision is most useful when commenting variable declarations.</li>
+<li>Missing details include: variable units; boundary conditions (inclusive/exclusive); whether a null value is permitted and what does it imply; who is responsible for a resource release; variable invariants that always true.
+<ul class="org-ul">
+<li>Avoid vague comments, e.g., &ldquo;current&rdquo;, not explicitly state the keys and values in a map.</li>
+</ul></li>
+<li>Comments on a variable focuses on what the variable <b><b>represents</b></b>, not how it will be modified.
+<ul class="org-ul">
+<li>E.g., instead of documenting when a boolean variable is toggled to true/false, document what true/false mean.</li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org9c8c2fd" class="outline-4">
+<h4 id="org9c8c2fd"><span class="section-number-4">11.2.2.</span> Higher-level comments</h4>
+<div class="outline-text-4" id="text-11-2-2">
+<ul class="org-ul">
+<li>Help the reader understand the overall intent and code structure, usually inside the code.</li>
+<li>More difficult to write than lower-level comments as one must think about the code in a different way.
+<ul class="org-ul">
+<li>Comments can include why we need this code; what the code does on a high-level.</li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org250cb07" class="outline-4">
+<h4 id="org250cb07"><span class="section-number-4">11.2.3.</span> Interface comments</h4>
+<div class="outline-text-4" id="text-11-2-3">
+<ul class="org-ul">
+<li>Separate interface comments from implementation comments: interface comments provide information for someone to use rather than maintain the entity.</li>
+<li>A class interface comment documents the overall capability and limitation of a class and what each instance represents.</li>
+<li>A method interface comment include both higher-level and lower-level information.
+<ul class="org-ul">
+<li>Starts with one or two sentences describing the method behavior and performance (e.g., whether concurrently).</li>
+<li>Must be very precise about each argument and the return value, and must mention any constraint and dependencies on the arguments.</li>
+<li>Must document any side effects that affect the system future behavior, e.g., modify a system data structure which can be read by other methods.</li>
+<li>Must document any preconditions that must be satisfied before a method is invoked.</li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org0dc59f6" class="outline-4">
+<h4 id="org0dc59f6"><span class="section-number-4">11.2.4.</span> Implementation comments</h4>
+<div class="outline-text-4" id="text-11-2-4">
+<ul class="org-ul">
+<li>The main goal is to help readers understand <b><b>what</b></b> the code is doing and <b><b>why</b></b> the code is needed (e.g., refer to a bug report), not how.</li>
+<li>For long methods, add a comment before each of the major blocks to provide a abstract description of what the block does.</li>
+<li>For complex loops, add a comment before the loop to describe what happens in each iteration at an intuitive level.</li>
+<li>Document the local variables if they are used over a large span of code.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org3376360" class="outline-4">
+<h4 id="org3376360"><span class="section-number-4">11.2.5.</span> Cross-module comments</h4>
+<div class="outline-text-4" id="text-11-2-5">
+<ul class="org-ul">
+<li>Real systems involve design decisions that affect multiple classes.</li>
+<li>The biggest challenge of documenting cross-module decisions is to find a place.
+<ul class="org-ul">
+<li>E.g., when a new state is introduced, multiple updates are required to handle the state; an obvious place to document all required updates is inside the state enum where a new state will be added.</li>
+</ul></li>
+<li>When there is no obvious place, e.g., all updates depend on each other, the author recommends documenting them in a central design notes.
+<ul class="org-ul">
+<li>The file is divided up into clearly labeled section, one for each major topic.</li>
+<li>Then in any code that relates to a topic, add a short comment &ldquo;see &rdquo;X&ldquo; in designNotes&rdquo;.</li>
+<li>The disadvantage of this approach is to keep is up-to-date as the system envolves.</li>
+</ul></li>
+</ul>
+</div>
 </div>
 </div>
 </div>

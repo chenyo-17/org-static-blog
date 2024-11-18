@@ -234,7 +234,57 @@ This book works together with [[https://web.stanford.edu/~ouster/cs190-winter24/
 * Write comments
 ** Why write comments
 - The correct process of writing comments will improve the system design.
-- A significant amount of design information that was in the mind of the designer cannot be represented in code, e.g., the high-level description of a method, the motivation for a particular design.
+- A significant amount of design information that was in the mind of the designer cannot be represented in code, e.g., the **high-level** description of a method, the motivation for a particular design.
 - Comments are fundamental to abstractions: if users must read the code to use it, then there is no abstraction.
   - If there is no comment, the only abstraction of a method is its declaration which misses too much essential information to provide a useful abstraction by itself; e.g., whether ~end~ is inclusive.
 - Good comments reduce cognitive load and unknown unknowns.
+
+** What are good comments
+- Follow the comment conventions, e.g., Doxygen for C++, godoc for Go.
+- Comments categories:
+  - Interface: a comment block that precedes the declaration; describes the interface, e.g., overall behavior or abstraction, arguments, return values, side effects or exceptions and any requirements the caller must satisfy.
+  - Data structure member: a comment next to the declaration of a field in a data structure, e.g., a variable.
+  - Implementation comment: a comment inside the code to describe how the code work internally.
+  - Cross-module comment: a comment describing dependencies that cross module boundaries.
+- The interface and the data structure member comments are the most important and should be always present.
+- Don't repeat the code: if someone who has never seen the code can also write the comment by just looking at the code next to the comment, then the comment has no value.
+- Don't use the same words in the comment that appear in the name of the entity being described, pick words that provide additional information.
+- Comments should augment the code by providing information at a different level of detail.
+  - Lower-level: add precision by clarifying the exact meaning of the code.
+  - Higher-level: offer intuition behind the code.
+
+*** Lower-level comments
+- Precision is most useful when commenting variable declarations.
+- Missing details include: variable units; boundary conditions (inclusive/exclusive); whether a null value is permitted and what does it imply; who is responsible for a resource release; variable invariants that always true.
+  - Avoid vague comments, e.g., "current", not explicitly state the keys and values in a map.
+- Comments on a variable focuses on what the variable **represents**, not how it will be modified.
+  - E.g., instead of documenting when a boolean variable is toggled to true/false, document what true/false mean.
+
+*** Higher-level comments
+- Help the reader understand the overall intent and code structure, usually inside the code.
+- More difficult to write than lower-level comments as one must think about the code in a different way.
+  - Comments can include why we need this code; what the code does on a high-level.
+
+*** Interface comments
+- Separate interface comments from implementation comments: interface comments provide information for someone to use rather than maintain the entity.
+- A class interface comment documents the overall capability and limitation of a class and what each instance represents.
+- A method interface comment include both higher-level and lower-level information.
+  - Starts with one or two sentences describing the method behavior and performance (e.g., whether concurrently).
+  - Must be very precise about each argument and the return value, and must mention any constraint and dependencies on the arguments.
+  - Must document any side effects that affect the system future behavior, e.g., modify a system data structure which can be read by other methods.
+  - Must document any preconditions that must be satisfied before a method is invoked.
+
+*** Implementation comments
+- The main goal is to help readers understand **what** the code is doing and **why** the code is needed (e.g., refer to a bug report), not how.
+- For long methods, add a comment before each of the major blocks to provide a abstract description of what the block does.
+- For complex loops, add a comment before the loop to describe what happens in each iteration at an intuitive level.
+- Document the local variables if they are used over a large span of code.
+
+*** Cross-module comments
+- Real systems involve design decisions that affect multiple classes.
+- The biggest challenge of documenting cross-module decisions is to find a place.
+  - E.g., when a new state is introduced, multiple updates are required to handle the state; an obvious place to document all required updates is inside the state enum where a new state will be added.
+- When there is no obvious place, e.g., all updates depend on each other, the author recommends documenting them in a central design notes.
+  - The file is divided up into clearly labeled section, one for each major topic.
+  - Then in any code that relates to a topic, add a short comment "see "X" in designNotes".
+  - The disadvantage of this approach is to keep is up-to-date as the system envolves.
