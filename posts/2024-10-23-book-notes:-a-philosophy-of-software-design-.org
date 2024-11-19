@@ -288,3 +288,22 @@ This book works together with [[https://web.stanford.edu/~ouster/cs190-winter24/
   - The file is divided up into clearly labeled section, one for each major topic.
   - Then in any code that relates to a topic, add a short comment "see "X" in designNotes".
   - The disadvantage of this approach is to keep is up-to-date as the system envolves.
+* Choose names
+- A good name conveys information about what the underlying entity is and is **not**.
+  - Ask yourself: if someone sees this name in isolation without seeing its declaration or documentation, how closely can they guess?
+- A good name has two properties: precision and consistency.
+- The greater the distance between a name's declaration and its last usage, the longer the name should be.
+
+** Precision
+- Vague name examples: "count", "status", "x", "result" in a no return method.
+- It's fine to use generic "i/j" in a loop as long as the loop does not span large.
+- A name may also become too specific, e.g., ~delete(Range Selection)~ suggests the argument must be a selection, but it can also be passed with unselected range.
+- If you find it difficult to come up with a name that is precise, intuitive and not too long, then it is a red flag that the variable may not have a clear design.
+  - Consider alternative factorings, e.g., separate the representation into multiple variables.
+
+** Consistency
+- Always use the common name for and **only** for the given purpose, e.g., ~ch~ for a channel.
+- Make sure the purpose is narrow enough that all variables with the same name have the same behavior.
+  - E.g., a ~block~ purpose is not narrow as it can have different behaviors for physical and logical blocks.
+- When you need multiple variables that refer to the same general thing, use the common name for each variable and add a distinguishing **prefix**, e.g., ~srcBlock~ and ~dstBlock~.
+- Always use ~i~ in outmost loops and ~j~ for nested loops.
