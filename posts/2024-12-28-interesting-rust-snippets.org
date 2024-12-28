@@ -1,0 +1,30 @@
+#+title: Interesting Rust snippets
+#+date: <2024-12-28 10:21>
+#+description: Some interesting Rust code snippets while learning.
+#+filetags: rust program
+
+* References
+- Rust for Rustaceans
+- Rustlings
+
+* Shared/Mutable reference
+#+begin_src rust
+let mut x;
+x = 42;
+let y = &x;
+x = 43;
+assert_eq!(*y, 42);
+#+end_src
+
+The above code will cause compiler error at ~x=43~ since ~x~ has a shared reference which is still active after ~x=43~. If we comment the ~assert_eq!~, the code compiles.
+
+#+begin_src rust
+let mut x = Vec::new();
+let y = &mut x;
+let z = &mut x;
+y.push(42);
+z.push(13);
+assert_eq!(x, [42, 13]);
+#+end_src
+
+Similarly, the code above will cause compiler error at ~let z = &mut x~ since at this point there exist two mutable references for ~x~. If we swap this line with ~y.push(42)~, the error is resolved because ~y~ is never used after ~let z = &mut x~ now.

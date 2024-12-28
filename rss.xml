@@ -4,7 +4,66 @@
 <title><![CDATA[Chenyo's Blog]]></title>
 <description><![CDATA[Chenyo's Blog]]></description>
 <link>https://chenyo.me</link>
-<lastBuildDate>Tue, 19 Nov 2024 12:09:14 +0100</lastBuildDate>
+<lastBuildDate>Sat, 28 Dec 2024 10:40:22 +0100</lastBuildDate>
+<item>
+  <title><![CDATA[Interesting Rust snippets]]></title>
+  <description><![CDATA[
+<nav id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#org9d39308">1. References</a></li>
+<li><a href="#org47df553">2. Shared/Mutable reference</a></li>
+</ul>
+</div>
+</nav>
+<div id="outline-container-org9d39308" class="outline-2">
+<h2 id="org9d39308"><span class="section-number-2">1.</span> References</h2>
+<div class="outline-text-2" id="text-1">
+<ul class="org-ul">
+<li>Rust for Rustaceans</li>
+<li>Rustlings</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org47df553" class="outline-2">
+<h2 id="org47df553"><span class="section-number-2">2.</span> Shared/Mutable reference</h2>
+<div class="outline-text-2" id="text-2">
+<div class="org-src-container">
+<pre class="src src-rust"><span style="color: #51afef;">let</span> <span style="color: #51afef;">mut</span> <span style="color: #dcaeea;">x</span>;
+x = <span style="color: #da8548; font-weight: bold;">42</span>;
+<span style="color: #51afef;">let</span> <span style="color: #dcaeea;">y</span> = <span style="color: #bbc2cf; background-color: #282c34;">&amp;</span>x;
+x = <span style="color: #da8548; font-weight: bold;">43</span>;
+<span style="color: #51afef; font-weight: bold;">assert_eq!</span><span style="color: #51afef;">(</span>*y, <span style="color: #da8548; font-weight: bold;">42</span><span style="color: #51afef;">)</span>;
+</pre>
+</div>
+
+<p>
+The above code will cause compiler error at <code>x=43</code> since <code>x</code> has a shared reference which is still active after <code>x=43</code>. If we comment the <code>assert_eq!</code>, the code compiles.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-rust"><span style="color: #51afef;">let</span> <span style="color: #51afef;">mut</span> <span style="color: #dcaeea;">x</span> = <span style="color: #ECBE7B;">Vec</span>::new<span style="color: #51afef;">()</span>;
+<span style="color: #51afef;">let</span> <span style="color: #dcaeea;">y</span> = <span style="color: #bbc2cf; background-color: #282c34;">&amp;</span><span style="color: #51afef;">mut</span> x;
+<span style="color: #51afef;">let</span> <span style="color: #dcaeea;">z</span> = <span style="color: #bbc2cf; background-color: #282c34;">&amp;</span><span style="color: #51afef;">mut</span> x;
+y.push<span style="color: #51afef;">(</span><span style="color: #da8548; font-weight: bold;">42</span><span style="color: #51afef;">)</span>;
+z.push<span style="color: #51afef;">(</span><span style="color: #da8548; font-weight: bold;">13</span><span style="color: #51afef;">)</span>;
+<span style="color: #51afef; font-weight: bold;">assert_eq!</span><span style="color: #51afef;">(</span>x, <span style="color: #c678dd;">[</span><span style="color: #da8548; font-weight: bold;">42</span>, <span style="color: #da8548; font-weight: bold;">13</span><span style="color: #c678dd;">]</span><span style="color: #51afef;">)</span>;
+</pre>
+</div>
+
+<p>
+Similarly, the code above will cause compiler error at <code>let z = &amp;mut x</code> since at this point there exist two mutable references for <code>x</code>. If we swap this line with <code>y.push(42)</code>, the error is resolved because <code>y</code> is never used after <code>let z = &amp;mut x</code> now.
+</p>
+</div>
+</div>
+<div class="taglist"><a href="https://chenyo.me/tags.html">Tags</a>: <a href="https://chenyo.me/tag-rust.html">rust</a> <a href="https://chenyo.me/tag-program.html">program</a> </div>]]></description>
+  <category><![CDATA[rust]]></category>
+  <category><![CDATA[program]]></category>
+  <link>https://chenyo.me/2024-12-28-interesting-rust-snippets.html</link>
+  <guid>https://chenyo.me/2024-12-28-interesting-rust-snippets.html</guid>
+  <pubDate>Sat, 28 Dec 2024 10:21:00 +0100</pubDate>
+</item>
 <item>
   <title><![CDATA[Book notes: A Philosophy of Software Design]]></title>
   <description><![CDATA[
