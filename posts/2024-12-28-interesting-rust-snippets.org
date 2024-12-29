@@ -7,7 +7,7 @@
 - Rust for Rustaceans
 - Rustlings
 
-* Shared/Mutable reference
+* Reference and lifetime
 #+begin_src rust
 let mut x;
 x = 42;
@@ -28,3 +28,45 @@ assert_eq!(x, [42, 13]);
 #+end_src
 
 Similarly, the code above will cause compiler error at ~let z = &mut x~ since at this point there exist two mutable references for ~x~. If we swap this line with ~y.push(42)~, the error is resolved because ~y~ is never used after ~let z = &mut x~ now.
+
+The compiler accepts the following code. In ~*x = 84~, the borrow checker takes out a mutable reference to ~x~, while there is also a shared reference ~r = &x~ in the scope at the same time, since it is not accessed later, it does not create a conflict flow. Similarly, when ~println!("{z}")~, the borrow checker walks back the path and finds no conflict until the ~r~ us created.
+
+#+begin_src rust
+let mut x = Box::new(42);
+let r = &x; // lifetime 'a starts
+if rand() > 0.5 {
+    // deref a Box returns a shared or a mutable reference
+    ,*x = 84;
+} else {
+    println!("{z}");
+}
+// println!("{z}");  // this will cause the compiler error
+#+end_src
+
+The following code also compiles, even when the lifetime is intermittently invalid:
+
+#+begin_src rust
+let mut x = Box::new(42);
+let mut z = &x;  // liefttime 'a starts
+for i in 0..100 {
+    println!({"z"});  // lifetime 'a ends here
+    x = Box::new(i);  // x is moved
+    z = &x;  // restart lifetime 'a
+}
+println!("{z}");  // 'a ends here
+#+end_src
+
+In the following code, we have to use two generic lifetime annotations:
+
+#+begin_src rust
+struct MutStr<'a, 'b> {
+    _s: &'a mut &'b str
+}
+
+let mut s = "hello";  // creates a 'static lifetime to "hello"
+*MutStr {_s: &mut s}._s = "world";  // creates a mutable reference to s
+println!("{s}");  // creates a shared reference to s, now s is "world"
+#+end_src
+
+To ~println("{s}")~, the borrow checker has to assume that the lifetime of the mutable reference to ~s~  ~'a~ ends at the line before, and ~'b~ is always ~'static~ as a reference to a string slice.
+If we use ~'a~ only, then the borrow checker tries to shorten ~'static~ to ~'a~, but since the lifetime is behind ~&mut~ which is invariant (see "Rust for Rustaceans" Ch 1), the conversion will fail.

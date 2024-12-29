@@ -41,13 +41,13 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org9d39308">1. References</a></li>
-<li><a href="#org47df553">2. Shared/Mutable reference</a></li>
+<li><a href="#org4e4eca5">1. References</a></li>
+<li><a href="#orge39a7f6">2. Reference and lifetime</a></li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-org9d39308" class="outline-2">
-<h2 id="org9d39308"><span class="section-number-2">1.</span> References</h2>
+<div id="outline-container-org4e4eca5" class="outline-2">
+<h2 id="org4e4eca5"><span class="section-number-2">1.</span> References</h2>
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
 <li>Rust for Rustaceans</li>
@@ -55,8 +55,8 @@
 </ul>
 </div>
 </div>
-<div id="outline-container-org47df553" class="outline-2">
-<h2 id="org47df553"><span class="section-number-2">2.</span> Shared/Mutable reference</h2>
+<div id="outline-container-orge39a7f6" class="outline-2">
+<h2 id="orge39a7f6"><span class="section-number-2">2.</span> Reference and lifetime</h2>
 <div class="outline-text-2" id="text-2">
 <div class="org-src-container">
 <pre class="src src-rust"><span style="color: #51afef;">let</span> <span style="color: #51afef;">mut</span> <span style="color: #dcaeea;">x</span>;
@@ -83,6 +83,59 @@ z.push<span style="color: #51afef;">(</span><span style="color: #da8548; font-we
 
 <p>
 Similarly, the code above will cause compiler error at <code>let z = &amp;mut x</code> since at this point there exist two mutable references for <code>x</code>. If we swap this line with <code>y.push(42)</code>, the error is resolved because <code>y</code> is never used after <code>let z = &amp;mut x</code> now.
+</p>
+
+<p>
+The compiler accepts the following code. In <code>*x = 84</code>, the borrow checker takes out a mutable reference to <code>x</code>, while there is also a shared reference <code>r = &amp;x</code> in the scope at the same time, since it is not accessed later, it does not create a conflict flow. Similarly, when <code>println!("{z}")</code>, the borrow checker walks back the path and finds no conflict until the <code>r</code> us created.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-rust"><span style="color: #51afef;">let</span> <span style="color: #51afef;">mut</span> <span style="color: #dcaeea;">x</span> = <span style="color: #ECBE7B;">Box</span>::new<span style="color: #51afef;">(</span><span style="color: #da8548; font-weight: bold;">42</span><span style="color: #51afef;">)</span>;
+<span style="color: #51afef;">let</span> <span style="color: #dcaeea;">r</span> = <span style="color: #bbc2cf; background-color: #282c34;">&amp;</span>x; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">lifetime 'a starts</span>
+<span style="color: #51afef;">if</span> rand<span style="color: #51afef;">()</span> &gt; <span style="color: #da8548; font-weight: bold;">0.5</span> <span style="color: #51afef;">{</span>
+    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">deref a Box returns a shared or a mutable reference</span>
+    *x = <span style="color: #da8548; font-weight: bold;">84</span>;
+<span style="color: #51afef;">}</span> <span style="color: #51afef;">else</span> <span style="color: #51afef;">{</span>
+    <span style="color: #c678dd;">println!</span><span style="color: #c678dd;">(</span><span style="color: #98be65;">"</span><span style="color: #98be65; font-style: italic;">{z}</span><span style="color: #98be65;">"</span><span style="color: #c678dd;">)</span>;
+<span style="color: #51afef;">}</span>
+<span style="color: #5B6268;">// </span><span style="color: #5B6268;">println!("{z}");  // this will cause the compiler error</span>
+</pre>
+</div>
+
+<p>
+The following code also compiles, even when the lifetime is intermittently invalid:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-rust"><span style="color: #51afef;">let</span> <span style="color: #51afef;">mut</span> <span style="color: #dcaeea;">x</span> = <span style="color: #ECBE7B;">Box</span>::new<span style="color: #51afef;">(</span><span style="color: #da8548; font-weight: bold;">42</span><span style="color: #51afef;">)</span>;
+<span style="color: #51afef;">let</span> <span style="color: #51afef;">mut</span> <span style="color: #dcaeea;">z</span> = <span style="color: #bbc2cf; background-color: #282c34;">&amp;</span>x;  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">liefttime 'a starts</span>
+<span style="color: #51afef;">for</span> <span style="color: #dcaeea;">i</span> <span style="color: #51afef;">in</span> <span style="color: #da8548; font-weight: bold;">0</span>..<span style="color: #da8548; font-weight: bold;">100</span> <span style="color: #51afef;">{</span>
+    <span style="color: #c678dd;">println!</span><span style="color: #c678dd;">(</span><span style="color: #98be65;">{</span><span style="color: #98be65;">"z"</span><span style="color: #98be65;">}</span><span style="color: #c678dd;">)</span>;  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">lifetime 'a ends here</span>
+    x = <span style="color: #ECBE7B;">Box</span>::new<span style="color: #c678dd;">(</span>i<span style="color: #c678dd;">)</span>;  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">x is moved</span>
+    z = <span style="color: #bbc2cf; background-color: #282c34;">&amp;</span>x;  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">restart lifetime 'a</span>
+<span style="color: #51afef;">}</span>
+<span style="color: #c678dd;">println!</span><span style="color: #51afef;">(</span><span style="color: #98be65;">"</span><span style="color: #98be65; font-style: italic;">{z}</span><span style="color: #98be65;">"</span><span style="color: #51afef;">)</span>;  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">'a ends here</span>
+</pre>
+</div>
+
+<p>
+In the following code, we have to use two generic lifetime annotations:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-rust"><span style="color: #51afef;">struct</span> <span style="color: #ECBE7B;">MutStr</span><span style="color: #51afef;">&lt;</span>'<span style="color: #dcaeea;">a</span>, '<span style="color: #dcaeea;">b</span><span style="color: #51afef;">&gt;</span> <span style="color: #51afef;">{</span>
+    <span style="color: #dcaeea;">_s</span>: <span style="color: #bbc2cf; background-color: #282c34;">&amp;</span>'<span style="color: #dcaeea;">a</span> <span style="color: #51afef;">mut</span> <span style="color: #bbc2cf; background-color: #282c34;">&amp;</span>'<span style="color: #dcaeea;">b</span> <span style="color: #ECBE7B;">str</span>
+<span style="color: #51afef;">}</span>
+
+<span style="color: #51afef;">let</span> <span style="color: #51afef;">mut</span> <span style="color: #dcaeea;">s</span> = <span style="color: #98be65;">"hello"</span>;  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">creates a 'static lifetime to "hello"</span>
+*<span style="color: #ECBE7B;">MutStr</span> <span style="color: #51afef;">{</span><span style="color: #dcaeea;">_s</span>: <span style="color: #bbc2cf; background-color: #282c34;">&amp;</span><span style="color: #51afef;">mut</span> s<span style="color: #51afef;">}</span>._s = <span style="color: #98be65;">"world"</span>;  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">creates a mutable reference to s</span>
+<span style="color: #c678dd;">println!</span><span style="color: #51afef;">(</span><span style="color: #98be65;">"</span><span style="color: #98be65; font-style: italic;">{s}</span><span style="color: #98be65;">"</span><span style="color: #51afef;">)</span>;  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">creates a shared reference to s, now s is "world"</span>
+</pre>
+</div>
+
+<p>
+To <code>println("{s}")</code>, the borrow checker has to assume that the lifetime of the mutable reference to <code>s</code>  <code>'a</code> ends at the line before, and <code>'b</code> is always <code>'static</code> as a reference to a string slice.
+If we use <code>'a</code> only, then the borrow checker tries to shorten <code>'static</code> to <code>'a</code>, but since the lifetime is behind <code>&amp;mut</code> which is invariant (see &ldquo;Rust for Rustaceans&rdquo; Ch 1), the conversion will fail.
 </p>
 </div>
 </div>
