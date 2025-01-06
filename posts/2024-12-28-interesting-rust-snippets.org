@@ -4,8 +4,9 @@
 #+filetags: rust program
 
 * References
-- Rust for Rustaceans
-- Rustlings
+- [[https://rust-for-rustaceans.com/][Rust for Rustaceans]]
+- [[https://rustlings.cool/][Rustlings]]
+- [[https://tfpk.github.io/lifetimekata/][LifetimeKata]]
 
 * Reference and lifetime
 #+begin_src rust
@@ -70,3 +71,192 @@ println!("{s}");  // creates a shared reference to s, now s is "world"
 
 To ~println("{s}")~, the borrow checker has to assume that the lifetime of the mutable reference to ~s~  ~'a~ ends at the line before, and ~'b~ is always ~'static~ as a reference to a string slice.
 If we use ~'a~ only, then the borrow checker tries to shorten ~'static~ to ~'a~, but since the lifetime is behind ~&mut~ which is invariant (see "Rust for Rustaceans" Ch 1), the conversion will fail.
+
+Lifetimes are required when there exists mutable references in the function parameters, even if there is no output reference. In the following code, we need ~'contents~ to make sure the new inserted value lives for at least as long as the vector content.
+
+#+begin_src rust
+fn insert_value<'vector, 'content>(my_vec: &'vector mut Vec<&'content i32>, value: &'content i32) {
+    my_vec.push(value); // value needs to live for as long as the contents of my_vec, aka my_vec
+}
+
+fn main() {
+    let x = 1;
+    let my_vec = vec![&x];
+    {
+        let y = 2;
+        insert_value(&mut my_vec, &y);
+    }
+    println!("{my_vec:?}");
+}
+#+end_src
+
+It's important to note that the single lifetime does not work, see the usage below:
+
+#+begin_src rust
+fn insert_value<'a>(my_vec: &'a mut Vec<&'a i32>, value: &'a i32) {
+    my_vec.push(value);
+}
+fn main() {
+    let mut my_vec: Vec<&i32> = vec![];
+    let val1 = 1;
+    let val2 = 2;
+    insert_value(&mut my_vec, &val1); // &val1 needs to live until the vector is dropped
+                                      // so is &mut my_vec now
+    insert_value(&mut my_vec, &val2); // the last &mut my_vec is still valid!
+    println!("{my_vec:?}");
+}
+#+end_src
+
+We need to explicitly annotate the lifetime in the structs and its implementation. In the following code, ~next_word~ uses a second lifetime annotation to decouple the lifetime of the mutable reference to ~WordIterator~ and the next world, otherwise we have to drop the previous next word before getting a new next word.
+
+#+begin_src rust
+struct WordIterator<'s> {
+    position: usize,
+    string: &'s str,
+}
+
+// impl<'a> defines a lifetime
+// WordIterator<'a> says the references in WordIterator must live for 'a
+impl<'a> WordIterator<'a> {
+    fn new(string: &'a str) -> WordIterator<'a> {
+        WordIterator {
+            position: 0,
+            string,
+        }
+    }
+
+    // Gives the next word, None if there is no word left
+    fn next_word(&'b mut self) -> Option<&'a str> {
+        todo!()
+    }
+}
+#+end_src
+
+We can also use lifetime bounds to specify ~'a~ should outlives, i.e., live for at least as long as ~'b~ with ~'a: 'b~:
+
+#+begin_src rust
+fn f<'a, 'b>(x: &'a i32, mut y: &'b i32)
+where
+    'a: 'b,
+{
+    y = x; // &'a i32 is a subtype of &'b
+    let r: &'b &'a i32 = &&0; // &'b is never dangling
+}
+#+end_src
+
+
+* Traits
+** Associated types
+One should use associated types instead of generic type parameters in a trait if there should only exist one trait implementation for any type. For instance, for any given type, the ~Item~ type should be unambiguous even if type contains generic parameters.
+#+begin_src rust
+/* standard trait
+trait Iterator {
+    type Item;
+    fn next(&mut self) -> Option<Self::Item>;
+}
+,*/
+
+#[derive(Default)]
+struct MyVec<T> {  // we cannot directly implement Iterator for MyVec<T> as it does not store internal states.
+    vec: Vec<T>
+}
+
+struct MyVecIter<'a, T> {
+    vec: &'a Vec<T>,
+    position: usize,
+}
+
+impl<'a, T> Iterator for MyVecIter<'a, T> {
+    type Item = &'a T;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        if self.position < self.vec.len() {
+            let item = &self.vec[self.position];
+            self.position += 1;
+            Some(item)
+        } else {
+            None
+        }
+    }
+}
+
+impl<T> MyVec<T> {
+    fn iter(&self) -> MyVecIter<'_, T> {  // this does not consume MyIter
+        MyVecIter {
+            vec: &self.vec,
+            position: 0,
+        }
+    }
+}
+
+impl<'a, T> IntoIterator for &'a MyVec<T> {  // this consumes MyIter
+    type Item = &'a T;
+    type IntoIter = MyVecIter<'a, T>;
+
+    fn into_iter(self) -> Self::IntoIter {
+        self.iter()
+    }
+}
+
+// usage
+let my_vec = MyVec<i32>::default();
+let mut my_vec_iter = my_vec.into_iter();
+my_vec_iter.next();
+#+end_src
+
+On the other hands, sometimes we want multiple trait implementations for the given type, e.g., convert a type to both ~String~ and ~i32~, or when the type has different generic bounds:
+
+#+begin_src rust
+impl From<i32> for MyType {}
+
+impl From<String> for MyType {}
+
+impl<T> MyTrait for Vec<T> where T: Display {}
+
+impl<T> MyTrait for Vec<T> where T: Debug {}
+#+end_src
+
+** Static/Dynamic dispatch
+
+There are two ways to pass into a function a type that implements a trait: static dispatch and dynamic dispatch:
+
+#+begin_src rust
+fn static_dispatch(item: impl MyTrait) {}  // or static_dispatch<T: MyTrait>(item: T) {}
+
+fn dynamic_dispatch(item: &dyn MyTrait) {}
+#+end_src
+
+Static dispatch tells the compiler to make a copy of the function for each ~T~ and replace each generic parameter with the concrete type provided, which is called monomorphization.
+In this way the compiler can optimize the generic code just at non-generic code. To avoid generating duplicated machine code, one can declare a non-generic inner function inside the generic function.
+
+When calling ~dynamic_dispatch~, the caller passes a trait object, which is the combination of a type that implements the trait and a pointer to its virtual method table (vtable) which holds all trait method implementations of this type. Since ~dyn~ is not resolved during the compile time, it is ~!Sized~ and hence it needs to be a wide pointer (~&dyn~) holder, e.g., ~&mut~, ~Box~ or ~Arc~.
+
+Only object-safe traits can allow dynamic dispatch. An object-safe trait must satisfy:
+1. All methods are object-safe:
+   1. No generic parameters,
+   2. No ~Self~ as return type, otherwise the memory layout cannot be determined during the compile time.
+   3. No static methods, i.e., must take ~&self~ or ~&mut self~, otherwise the vtable is not available.
+2. Trait cannot be ~Sized~ bound, otherwise it's against the nature of dynamic dispatch.
+
+Broadly speaking, use static dispatch in a library, and dynamic dispatch in a binary (no other users):
+
+#+begin_src rust
+pub struct DynamicLogger {
+    writer: Box<dyn Write>
+}
+
+pub struct StaticLogger<W: Write> {
+    writer: W
+}
+
+// usage
+let file = File::create("dynamic_log.txt")?;
+let dynamic_logger = DynamicLogger { writer: Box::new(file) };  // Users are forced to use dynamic dispatch
+
+// Both works for static dispatch
+let file = File::create("static_log.txt")?;
+let logger = Logger { writer: file };
+
+let file: Box<dyn Write> = Box::new(File::create("static_log.txt")?);
+let logger = Logger { writer: file };
+#+end_src

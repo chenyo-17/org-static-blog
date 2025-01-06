@@ -41,22 +41,29 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org4e4eca5">1. References</a></li>
-<li><a href="#orge39a7f6">2. Reference and lifetime</a></li>
+<li><a href="#orga0529f5">1. References</a></li>
+<li><a href="#orgcc9e359">2. Reference and lifetime</a></li>
+<li><a href="#orgbb83460">3. Traits</a>
+<ul>
+<li><a href="#org82ac6fa">3.1. Associated types</a></li>
+<li><a href="#org84e2018">3.2. Static/Dynamic dispatch</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-org4e4eca5" class="outline-2">
-<h2 id="org4e4eca5"><span class="section-number-2">1.</span> References</h2>
+<div id="outline-container-orga0529f5" class="outline-2">
+<h2 id="orga0529f5"><span class="section-number-2">1.</span> References</h2>
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
-<li>Rust for Rustaceans</li>
-<li>Rustlings</li>
+<li><a href="https://rust-for-rustaceans.com/">Rust for Rustaceans</a></li>
+<li><a href="https://rustlings.cool/">Rustlings</a></li>
+<li><a href="https://tfpk.github.io/lifetimekata/">LifetimeKata</a></li>
 </ul>
 </div>
 </div>
-<div id="outline-container-orge39a7f6" class="outline-2">
-<h2 id="orge39a7f6"><span class="section-number-2">2.</span> Reference and lifetime</h2>
+<div id="outline-container-orgcc9e359" class="outline-2">
+<h2 id="orgcc9e359"><span class="section-number-2">2.</span> Reference and lifetime</h2>
 <div class="outline-text-2" id="text-2">
 <div class="org-src-container">
 <pre class="src src-rust"><span style="color: #51afef;">let</span> <span style="color: #51afef;">mut</span> <span style="color: #dcaeea;">x</span>;
@@ -137,6 +144,237 @@ In the following code, we have to use two generic lifetime annotations:
 To <code>println("{s}")</code>, the borrow checker has to assume that the lifetime of the mutable reference to <code>s</code>  <code>'a</code> ends at the line before, and <code>'b</code> is always <code>'static</code> as a reference to a string slice.
 If we use <code>'a</code> only, then the borrow checker tries to shorten <code>'static</code> to <code>'a</code>, but since the lifetime is behind <code>&amp;mut</code> which is invariant (see &ldquo;Rust for Rustaceans&rdquo; Ch 1), the conversion will fail.
 </p>
+
+<p>
+Lifetimes are required when there exists mutable references in the function parameters, even if there is no output reference. In the following code, we need <code>'contents</code> to make sure the new inserted value lives for at least as long as the vector content.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-rust"><span style="color: #51afef;">fn</span> <span style="color: #c678dd;">insert_value</span><span style="color: #51afef;">&lt;</span>'<span style="color: #dcaeea;">vector</span>, '<span style="color: #dcaeea;">content</span><span style="color: #51afef;">&gt;(</span><span style="color: #dcaeea;">my_vec</span>: <span style="color: #bbc2cf; background-color: #282c34;">&amp;</span>'<span style="color: #dcaeea;">vector</span> <span style="color: #51afef;">mut</span> <span style="color: #ECBE7B;">Vec</span><span style="color: #c678dd;">&lt;</span><span style="color: #bbc2cf; background-color: #282c34;">&amp;</span>'<span style="color: #dcaeea;">content</span> <span style="color: #ECBE7B;">i32</span><span style="color: #c678dd;">&gt;</span>, <span style="color: #dcaeea;">value</span>: <span style="color: #bbc2cf; background-color: #282c34;">&amp;</span>'<span style="color: #dcaeea;">content</span> <span style="color: #ECBE7B;">i32</span><span style="color: #51afef;">)</span> <span style="color: #51afef;">{</span>
+    my_vec.push<span style="color: #c678dd;">(</span>value<span style="color: #c678dd;">)</span>; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">value needs to live for as long as the contents of my_vec, aka my_vec</span>
+<span style="color: #51afef;">}</span>
+
+<span style="color: #51afef;">fn</span> <span style="color: #c678dd;">main</span><span style="color: #51afef;">()</span> <span style="color: #51afef;">{</span>
+    <span style="color: #51afef;">let</span> <span style="color: #dcaeea;">x</span> = <span style="color: #da8548; font-weight: bold;">1</span>;
+    <span style="color: #51afef;">let</span> <span style="color: #dcaeea;">my_vec</span> = <span style="color: #51afef; font-weight: bold;">vec!</span><span style="color: #c678dd;">[</span><span style="color: #bbc2cf; background-color: #282c34;">&amp;</span>x<span style="color: #c678dd;">]</span>;
+    <span style="color: #c678dd;">{</span>
+        <span style="color: #51afef;">let</span> <span style="color: #dcaeea;">y</span> = <span style="color: #da8548; font-weight: bold;">2</span>;
+        insert_value<span style="color: #98be65;">(</span><span style="color: #bbc2cf; background-color: #282c34;">&amp;</span><span style="color: #51afef;">mut</span> my_vec, <span style="color: #bbc2cf; background-color: #282c34;">&amp;</span>y<span style="color: #98be65;">)</span>;
+    <span style="color: #c678dd;">}</span>
+    <span style="color: #c678dd;">println!</span><span style="color: #c678dd;">(</span><span style="color: #98be65;">"</span><span style="color: #98be65; font-style: italic;">{my_vec:?}</span><span style="color: #98be65;">"</span><span style="color: #c678dd;">)</span>;
+<span style="color: #51afef;">}</span>
+</pre>
+</div>
+
+<p>
+It&rsquo;s important to note that the single lifetime does not work, see the usage below:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-rust"><span style="color: #51afef;">fn</span> <span style="color: #c678dd;">insert_value</span><span style="color: #51afef;">&lt;</span>'<span style="color: #dcaeea;">a</span><span style="color: #51afef;">&gt;(</span><span style="color: #dcaeea;">my_vec</span>: <span style="color: #bbc2cf; background-color: #282c34;">&amp;</span>'<span style="color: #dcaeea;">a</span> <span style="color: #51afef;">mut</span> <span style="color: #ECBE7B;">Vec</span><span style="color: #c678dd;">&lt;</span><span style="color: #bbc2cf; background-color: #282c34;">&amp;</span>'<span style="color: #dcaeea;">a</span> <span style="color: #ECBE7B;">i32</span><span style="color: #c678dd;">&gt;</span>, <span style="color: #dcaeea;">value</span>: <span style="color: #bbc2cf; background-color: #282c34;">&amp;</span>'<span style="color: #dcaeea;">a</span> <span style="color: #ECBE7B;">i32</span><span style="color: #51afef;">)</span> <span style="color: #51afef;">{</span>
+    my_vec.push<span style="color: #c678dd;">(</span>value<span style="color: #c678dd;">)</span>;
+<span style="color: #51afef;">}</span>
+<span style="color: #51afef;">fn</span> <span style="color: #c678dd;">main</span><span style="color: #51afef;">()</span> <span style="color: #51afef;">{</span>
+    <span style="color: #51afef;">let</span> <span style="color: #51afef;">mut</span> <span style="color: #dcaeea;">my_vec</span>: <span style="color: #ECBE7B;">Vec</span><span style="color: #c678dd;">&lt;</span><span style="color: #bbc2cf; background-color: #282c34;">&amp;</span><span style="color: #ECBE7B;">i32</span><span style="color: #c678dd;">&gt;</span> = <span style="color: #51afef; font-weight: bold;">vec!</span><span style="color: #c678dd;">[]</span>;
+    <span style="color: #51afef;">let</span> <span style="color: #dcaeea;">val1</span> = <span style="color: #da8548; font-weight: bold;">1</span>;
+    <span style="color: #51afef;">let</span> <span style="color: #dcaeea;">val2</span> = <span style="color: #da8548; font-weight: bold;">2</span>;
+    insert_value<span style="color: #c678dd;">(</span><span style="color: #bbc2cf; background-color: #282c34;">&amp;</span><span style="color: #51afef;">mut</span> my_vec, <span style="color: #bbc2cf; background-color: #282c34;">&amp;</span>val1<span style="color: #c678dd;">)</span>; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">&amp;val1 needs to live until the vector is dropped</span>
+                                      <span style="color: #5B6268;">// </span><span style="color: #5B6268;">so is &amp;mut my_vec now</span>
+    insert_value<span style="color: #c678dd;">(</span><span style="color: #bbc2cf; background-color: #282c34;">&amp;</span><span style="color: #51afef;">mut</span> my_vec, <span style="color: #bbc2cf; background-color: #282c34;">&amp;</span>val2<span style="color: #c678dd;">)</span>; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">the last &amp;mut my_vec is still valid!</span>
+    <span style="color: #c678dd;">println!</span><span style="color: #c678dd;">(</span><span style="color: #98be65;">"</span><span style="color: #98be65; font-style: italic;">{my_vec:?}</span><span style="color: #98be65;">"</span><span style="color: #c678dd;">)</span>;
+<span style="color: #51afef;">}</span>
+</pre>
+</div>
+
+<p>
+We need to explicitly annotate the lifetime in the structs and its implementation. In the following code, <code>next_word</code> uses a second lifetime annotation to decouple the lifetime of the mutable reference to <code>WordIterator</code> and the next world, otherwise we have to drop the previous next word before getting a new next word.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-rust"><span style="color: #51afef;">struct</span> <span style="color: #ECBE7B;">WordIterator</span><span style="color: #51afef;">&lt;</span>'<span style="color: #dcaeea;">s</span><span style="color: #51afef;">&gt;</span> <span style="color: #51afef;">{</span>
+    <span style="color: #dcaeea;">position</span>: <span style="color: #ECBE7B;">usize</span>,
+    <span style="color: #dcaeea;">string</span>: <span style="color: #bbc2cf; background-color: #282c34;">&amp;</span>'<span style="color: #dcaeea;">s</span> <span style="color: #ECBE7B;">str</span>,
+<span style="color: #51afef;">}</span>
+
+<span style="color: #5B6268;">// </span><span style="color: #5B6268;">impl&lt;'a&gt; defines a lifetime</span>
+<span style="color: #5B6268;">// </span><span style="color: #5B6268;">WordIterator&lt;'a&gt; says the references in WordIterator must live for 'a</span>
+<span style="color: #51afef;">impl</span><span style="color: #51afef;">&lt;</span>'<span style="color: #dcaeea;">a</span><span style="color: #51afef;">&gt;</span> <span style="color: #ECBE7B;">WordIterator</span><span style="color: #51afef;">&lt;</span>'<span style="color: #dcaeea;">a</span><span style="color: #51afef;">&gt;</span> <span style="color: #51afef;">{</span>
+    <span style="color: #51afef;">fn</span> <span style="color: #c678dd;">new</span><span style="color: #c678dd;">(</span><span style="color: #dcaeea;">string</span>: <span style="color: #bbc2cf; background-color: #282c34;">&amp;</span>'<span style="color: #dcaeea;">a</span> <span style="color: #ECBE7B;">str</span><span style="color: #c678dd;">)</span> -&gt; <span style="color: #ECBE7B;">WordIterator</span><span style="color: #c678dd;">&lt;</span>'<span style="color: #dcaeea;">a</span><span style="color: #c678dd;">&gt;</span> <span style="color: #c678dd;">{</span>
+        <span style="color: #ECBE7B;">WordIterator</span> <span style="color: #98be65;">{</span>
+            <span style="color: #dcaeea;">position</span>: <span style="color: #da8548; font-weight: bold;">0</span>,
+            string,
+        <span style="color: #98be65;">}</span>
+    <span style="color: #c678dd;">}</span>
+
+    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">Gives the next word, None if there is no word left</span>
+    <span style="color: #51afef;">fn</span> <span style="color: #c678dd;">next_word</span><span style="color: #c678dd;">(</span><span style="color: #bbc2cf; background-color: #282c34;">&amp;</span>'<span style="color: #dcaeea;">b</span> <span style="color: #51afef;">mut</span> <span style="color: #51afef;">self</span><span style="color: #c678dd;">)</span> -&gt; <span style="color: #ECBE7B;">Option</span><span style="color: #c678dd;">&lt;</span><span style="color: #bbc2cf; background-color: #282c34;">&amp;</span>'<span style="color: #dcaeea;">a</span> <span style="color: #ECBE7B;">str</span><span style="color: #c678dd;">&gt;</span> <span style="color: #c678dd;">{</span>
+        <span style="color: #51afef; font-weight: bold;">todo!</span><span style="color: #98be65;">()</span>
+    <span style="color: #c678dd;">}</span>
+<span style="color: #51afef;">}</span>
+</pre>
+</div>
+
+<p>
+We can also use lifetime bounds to specify <code>'a</code> should outlives, i.e., live for at least as long as <code>'b</code> with <code>'a: 'b</code>:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-rust"><span style="color: #51afef;">fn</span> <span style="color: #c678dd;">f</span><span style="color: #51afef;">&lt;</span>'<span style="color: #dcaeea;">a</span>, '<span style="color: #dcaeea;">b</span><span style="color: #51afef;">&gt;(</span><span style="color: #dcaeea;">x</span>: <span style="color: #bbc2cf; background-color: #282c34;">&amp;</span>'<span style="color: #dcaeea;">a</span> <span style="color: #ECBE7B;">i32</span>, <span style="color: #51afef;">mut</span> <span style="color: #dcaeea;">y</span>: <span style="color: #bbc2cf; background-color: #282c34;">&amp;</span>'<span style="color: #dcaeea;">b</span> <span style="color: #ECBE7B;">i32</span><span style="color: #51afef;">)</span>
+<span style="color: #51afef;">where</span>
+    '<span style="color: #dcaeea;">a</span>: '<span style="color: #dcaeea;">b</span>,
+<span style="color: #51afef;">{</span>
+    y = x; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">&amp;'a i32 is a subtype of &amp;'b</span>
+    <span style="color: #51afef;">let</span> <span style="color: #dcaeea;">r</span>: <span style="color: #bbc2cf; background-color: #282c34;">&amp;</span>'<span style="color: #dcaeea;">b</span> <span style="color: #bbc2cf; background-color: #282c34;">&amp;</span>'<span style="color: #dcaeea;">a</span> <span style="color: #ECBE7B;">i32</span> = <span style="color: #bbc2cf; background-color: #282c34;">&amp;&amp;</span><span style="color: #da8548; font-weight: bold;">0</span>; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">&amp;'b is never dangling</span>
+<span style="color: #51afef;">}</span>
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgbb83460" class="outline-2">
+<h2 id="orgbb83460"><span class="section-number-2">3.</span> Traits</h2>
+<div class="outline-text-2" id="text-3">
+</div>
+<div id="outline-container-org82ac6fa" class="outline-3">
+<h3 id="org82ac6fa"><span class="section-number-3">3.1.</span> Associated types</h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
+One should use associated types instead of generic type parameters in a trait if there should only exist one trait implementation for any type. For instance, for any given type, the <code>Item</code> type should be unambiguous even if type contains generic parameters.
+</p>
+<div class="org-src-container">
+<pre class="src src-rust"><span style="color: #5B6268;">/* </span><span style="color: #5B6268;">standard trait</span>
+<span style="color: #5B6268;">trait Iterator {</span>
+<span style="color: #5B6268;">    type Item;</span>
+<span style="color: #5B6268;">    fn next(&amp;mut self) -&gt; Option&lt;Self::Item&gt;;</span>
+<span style="color: #5B6268;">}</span>
+<span style="color: #5B6268;">*/</span>
+
+<span style="color: #51afef; font-weight: bold;">#</span><span style="color: #51afef; font-weight: bold;">[</span><span style="color: #51afef; font-weight: bold;">derive</span><span style="color: #c678dd; font-weight: bold;">(</span><span style="color: #51afef; font-weight: bold;">Default</span><span style="color: #c678dd; font-weight: bold;">)</span><span style="color: #51afef; font-weight: bold;">]</span>
+<span style="color: #51afef;">struct</span> <span style="color: #ECBE7B;">MyVec</span><span style="color: #51afef;">&lt;</span><span style="color: #ECBE7B;">T</span><span style="color: #51afef;">&gt;</span> <span style="color: #51afef;">{</span>  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">we cannot directly implement Iterator for MyVec&lt;T&gt; as it does not store internal states.</span>
+    <span style="color: #dcaeea;">vec</span>: <span style="color: #ECBE7B;">Vec</span><span style="color: #c678dd;">&lt;</span><span style="color: #ECBE7B;">T</span><span style="color: #c678dd;">&gt;</span>
+<span style="color: #51afef;">}</span>
+
+<span style="color: #51afef;">struct</span> <span style="color: #ECBE7B;">MyVecIter</span><span style="color: #51afef;">&lt;</span>'<span style="color: #dcaeea;">a</span>, <span style="color: #ECBE7B;">T</span><span style="color: #51afef;">&gt;</span> <span style="color: #51afef;">{</span>
+    <span style="color: #dcaeea;">vec</span>: <span style="color: #bbc2cf; background-color: #282c34;">&amp;</span>'<span style="color: #dcaeea;">a</span> <span style="color: #ECBE7B;">Vec</span><span style="color: #c678dd;">&lt;</span><span style="color: #ECBE7B;">T</span><span style="color: #c678dd;">&gt;</span>,
+    <span style="color: #dcaeea;">position</span>: <span style="color: #ECBE7B;">usize</span>,
+<span style="color: #51afef;">}</span>
+
+<span style="color: #51afef;">impl</span><span style="color: #51afef;">&lt;</span>'<span style="color: #dcaeea;">a</span>, <span style="color: #ECBE7B;">T</span><span style="color: #51afef;">&gt;</span> <span style="color: #ECBE7B;">Iterator</span> <span style="color: #51afef;">for</span> <span style="color: #ECBE7B;">MyVecIter</span><span style="color: #51afef;">&lt;</span>'<span style="color: #dcaeea;">a</span>, <span style="color: #ECBE7B;">T</span><span style="color: #51afef;">&gt;</span> <span style="color: #51afef;">{</span>
+    <span style="color: #51afef;">type</span> <span style="color: #ECBE7B;">Item</span> = <span style="color: #bbc2cf; background-color: #282c34;">&amp;</span>'<span style="color: #dcaeea;">a</span> <span style="color: #ECBE7B;">T</span>;
+
+    <span style="color: #51afef;">fn</span> <span style="color: #c678dd;">next</span><span style="color: #c678dd;">(</span><span style="color: #bbc2cf; background-color: #282c34;">&amp;</span><span style="color: #51afef;">mut</span> <span style="color: #51afef;">self</span><span style="color: #c678dd;">)</span> -&gt; <span style="color: #ECBE7B;">Option</span><span style="color: #c678dd;">&lt;</span><span style="color: #ECBE7B;">Self</span>::<span style="color: #ECBE7B;">Item</span><span style="color: #c678dd;">&gt;</span> <span style="color: #c678dd;">{</span>
+        <span style="color: #51afef;">if</span> <span style="color: #51afef;">self</span>.position &lt; <span style="color: #51afef;">self</span>.vec.len<span style="color: #98be65;">()</span> <span style="color: #98be65;">{</span>
+            <span style="color: #51afef;">let</span> <span style="color: #dcaeea;">item</span> = <span style="color: #bbc2cf; background-color: #282c34;">&amp;</span><span style="color: #51afef;">self</span>.vec<span style="color: #a9a1e1;">[</span><span style="color: #51afef;">self</span>.position<span style="color: #a9a1e1;">]</span>;
+            <span style="color: #51afef;">self</span>.position += <span style="color: #da8548; font-weight: bold;">1</span>;
+            <span style="color: #ECBE7B;">Some</span><span style="color: #a9a1e1;">(</span>item<span style="color: #a9a1e1;">)</span>
+        <span style="color: #98be65;">}</span> <span style="color: #51afef;">else</span> <span style="color: #98be65;">{</span>
+            <span style="color: #ECBE7B;">None</span>
+        <span style="color: #98be65;">}</span>
+    <span style="color: #c678dd;">}</span>
+<span style="color: #51afef;">}</span>
+
+<span style="color: #51afef;">impl</span><span style="color: #51afef;">&lt;</span><span style="color: #ECBE7B;">T</span><span style="color: #51afef;">&gt;</span> <span style="color: #ECBE7B;">MyVec</span><span style="color: #51afef;">&lt;</span><span style="color: #ECBE7B;">T</span><span style="color: #51afef;">&gt;</span> <span style="color: #51afef;">{</span>
+    <span style="color: #51afef;">fn</span> <span style="color: #c678dd;">iter</span><span style="color: #c678dd;">(</span><span style="color: #bbc2cf; background-color: #282c34;">&amp;</span><span style="color: #51afef;">self</span><span style="color: #c678dd;">)</span> -&gt; <span style="color: #ECBE7B;">MyVecIter</span><span style="color: #c678dd;">&lt;</span>'<span style="color: #dcaeea;">_</span>, <span style="color: #ECBE7B;">T</span><span style="color: #c678dd;">&gt;</span> <span style="color: #c678dd;">{</span>  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">this does not consume MyIter</span>
+        <span style="color: #ECBE7B;">MyVecIter</span> <span style="color: #98be65;">{</span>
+            <span style="color: #dcaeea;">vec</span>: <span style="color: #bbc2cf; background-color: #282c34;">&amp;</span><span style="color: #51afef;">self</span>.vec,
+            <span style="color: #dcaeea;">position</span>: <span style="color: #da8548; font-weight: bold;">0</span>,
+        <span style="color: #98be65;">}</span>
+    <span style="color: #c678dd;">}</span>
+<span style="color: #51afef;">}</span>
+
+<span style="color: #51afef;">impl</span><span style="color: #51afef;">&lt;</span>'<span style="color: #dcaeea;">a</span>, <span style="color: #ECBE7B;">T</span><span style="color: #51afef;">&gt;</span> <span style="color: #ECBE7B;">IntoIterator</span> <span style="color: #51afef;">for</span> <span style="color: #bbc2cf; background-color: #282c34;">&amp;</span>'<span style="color: #dcaeea;">a</span> <span style="color: #ECBE7B;">MyVec</span><span style="color: #51afef;">&lt;</span><span style="color: #ECBE7B;">T</span><span style="color: #51afef;">&gt;</span> <span style="color: #51afef;">{</span>  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">this consumes MyIter</span>
+    <span style="color: #51afef;">type</span> <span style="color: #ECBE7B;">Item</span> = <span style="color: #bbc2cf; background-color: #282c34;">&amp;</span>'<span style="color: #dcaeea;">a</span> <span style="color: #ECBE7B;">T</span>;
+    <span style="color: #51afef;">type</span> <span style="color: #ECBE7B;">IntoIter</span> = <span style="color: #ECBE7B;">MyVecIter</span><span style="color: #c678dd;">&lt;</span>'<span style="color: #dcaeea;">a</span>, <span style="color: #ECBE7B;">T</span><span style="color: #c678dd;">&gt;</span>;
+
+    <span style="color: #51afef;">fn</span> <span style="color: #c678dd;">into_iter</span><span style="color: #c678dd;">(</span><span style="color: #51afef;">self</span><span style="color: #c678dd;">)</span> -&gt; <span style="color: #ECBE7B;">Self</span>::<span style="color: #ECBE7B;">IntoIter</span> <span style="color: #c678dd;">{</span>
+        <span style="color: #51afef;">self</span>.iter<span style="color: #98be65;">()</span>
+    <span style="color: #c678dd;">}</span>
+<span style="color: #51afef;">}</span>
+
+<span style="color: #5B6268;">// </span><span style="color: #5B6268;">usage</span>
+<span style="color: #51afef;">let</span> <span style="color: #dcaeea;">my_vec</span> = <span style="color: #ECBE7B;">MyVec</span>&lt;<span style="color: #ECBE7B;">i32</span>&gt;::default<span style="color: #51afef;">()</span>;
+<span style="color: #51afef;">let</span> <span style="color: #51afef;">mut</span> <span style="color: #dcaeea;">my_vec_iter</span> = my_vec.into_iter<span style="color: #51afef;">()</span>;
+my_vec_iter.next<span style="color: #51afef;">()</span>;
+</pre>
+</div>
+
+<p>
+On the other hands, sometimes we want multiple trait implementations for the given type, e.g., convert a type to both <code>String</code> and <code>i32</code>, or when the type has different generic bounds:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-rust"><span style="color: #51afef;">impl</span> <span style="color: #ECBE7B;">From</span><span style="color: #51afef;">&lt;</span><span style="color: #ECBE7B;">i32</span><span style="color: #51afef;">&gt;</span> <span style="color: #51afef;">for</span> <span style="color: #ECBE7B;">MyType</span> <span style="color: #51afef;">{}</span>
+
+<span style="color: #51afef;">impl</span> <span style="color: #ECBE7B;">From</span><span style="color: #51afef;">&lt;</span><span style="color: #ECBE7B;">String</span><span style="color: #51afef;">&gt;</span> <span style="color: #51afef;">for</span> <span style="color: #ECBE7B;">MyType</span> <span style="color: #51afef;">{}</span>
+
+<span style="color: #51afef;">impl</span><span style="color: #51afef;">&lt;</span><span style="color: #ECBE7B;">T</span><span style="color: #51afef;">&gt;</span> <span style="color: #ECBE7B;">MyTrait</span> <span style="color: #51afef;">for</span> <span style="color: #ECBE7B;">Vec</span><span style="color: #51afef;">&lt;</span><span style="color: #ECBE7B;">T</span><span style="color: #51afef;">&gt;</span> <span style="color: #51afef;">where</span> <span style="color: #dcaeea;">T</span>: <span style="color: #ECBE7B;">Display</span> <span style="color: #51afef;">{}</span>
+
+<span style="color: #51afef;">impl</span><span style="color: #51afef;">&lt;</span><span style="color: #ECBE7B;">T</span><span style="color: #51afef;">&gt;</span> <span style="color: #ECBE7B;">MyTrait</span> <span style="color: #51afef;">for</span> <span style="color: #ECBE7B;">Vec</span><span style="color: #51afef;">&lt;</span><span style="color: #ECBE7B;">T</span><span style="color: #51afef;">&gt;</span> <span style="color: #51afef;">where</span> <span style="color: #dcaeea;">T</span>: <span style="color: #ECBE7B;">Debug</span> <span style="color: #51afef;">{}</span>
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org84e2018" class="outline-3">
+<h3 id="org84e2018"><span class="section-number-3">3.2.</span> Static/Dynamic dispatch</h3>
+<div class="outline-text-3" id="text-3-2">
+<p>
+There are two ways to pass into a function a type that implements a trait: static dispatch and dynamic dispatch:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-rust"><span style="color: #51afef;">fn</span> <span style="color: #c678dd;">static_dispatch</span><span style="color: #51afef;">(</span><span style="color: #dcaeea;">item</span>: <span style="color: #51afef;">impl</span> <span style="color: #ECBE7B;">MyTrait</span><span style="color: #51afef;">)</span> <span style="color: #51afef;">{}</span>  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">or static_dispatch&lt;T: MyTrait&gt;(item: T) {}</span>
+
+<span style="color: #51afef;">fn</span> <span style="color: #c678dd;">dynamic_dispatch</span><span style="color: #51afef;">(</span><span style="color: #dcaeea;">item</span>: <span style="color: #bbc2cf; background-color: #282c34;">&amp;</span><span style="color: #51afef;">dyn</span> <span style="color: #ECBE7B;">MyTrait</span><span style="color: #51afef;">)</span> <span style="color: #51afef;">{}</span>
+</pre>
+</div>
+
+<p>
+Static dispatch tells the compiler to make a copy of the function for each <code>T</code> and replace each generic parameter with the concrete type provided, which is called monomorphization.
+In this way the compiler can optimize the generic code just at non-generic code. To avoid generating duplicated machine code, one can declare a non-generic inner function inside the generic function.
+</p>
+
+<p>
+When calling <code>dynamic_dispatch</code>, the caller passes a trait object, which is the combination of a type that implements the trait and a pointer to its virtual method table (vtable) which holds all trait method implementations of this type. Since <code>dyn</code> is not resolved during the compile time, it is <code>!Sized</code> and hence it needs to be a wide pointer (<code>&amp;dyn</code>) holder, e.g., <code>&amp;mut</code>, <code>Box</code> or <code>Arc</code>.
+</p>
+
+<p>
+Only object-safe traits can allow dynamic dispatch. An object-safe trait must satisfy:
+</p>
+<ol class="org-ol">
+<li>All methods are object-safe:
+<ol class="org-ol">
+<li>No generic parameters,</li>
+<li>No <code>Self</code> as return type, otherwise the memory layout cannot be determined during the compile time.</li>
+<li>No static methods, i.e., must take <code>&amp;self</code> or <code>&amp;mut self</code>, otherwise the vtable is not available.</li>
+</ol></li>
+<li>Trait cannot be <code>Sized</code> bound, otherwise it&rsquo;s against the nature of dynamic dispatch.</li>
+</ol>
+
+<p>
+Broadly speaking, use static dispatch in a library, and dynamic dispatch in a binary (no other users):
+</p>
+
+<div class="org-src-container">
+<pre class="src src-rust"><span style="color: #51afef;">pub</span> <span style="color: #51afef;">struct</span> <span style="color: #ECBE7B;">DynamicLogger</span> <span style="color: #51afef;">{</span>
+    <span style="color: #dcaeea;">writer</span>: <span style="color: #ECBE7B;">Box</span><span style="color: #c678dd;">&lt;</span><span style="color: #51afef;">dyn</span> <span style="color: #ECBE7B;">Write</span><span style="color: #c678dd;">&gt;</span>
+<span style="color: #51afef;">}</span>
+
+<span style="color: #51afef;">pub</span> <span style="color: #51afef;">struct</span> <span style="color: #ECBE7B;">StaticLogger</span><span style="color: #51afef;">&lt;</span><span style="color: #dcaeea;">W</span>: <span style="color: #ECBE7B;">Write</span><span style="color: #51afef;">&gt;</span> <span style="color: #51afef;">{</span>
+    <span style="color: #dcaeea;">writer</span>: <span style="color: #ECBE7B;">W</span>
+<span style="color: #51afef;">}</span>
+
+<span style="color: #5B6268;">// </span><span style="color: #5B6268;">usage</span>
+<span style="color: #51afef;">let</span> <span style="color: #dcaeea;">file</span> = <span style="color: #ECBE7B;">File</span>::create<span style="color: #51afef;">(</span><span style="color: #98be65;">"dynamic_log.txt"</span><span style="color: #51afef;">)</span><span style="color: #c678dd; font-weight: bold;">?</span>;
+<span style="color: #51afef;">let</span> <span style="color: #dcaeea;">dynamic_logger</span> = <span style="color: #ECBE7B;">DynamicLogger</span> <span style="color: #51afef;">{</span> <span style="color: #dcaeea;">writer</span>: <span style="color: #ECBE7B;">Box</span>::new<span style="color: #c678dd;">(</span>file<span style="color: #c678dd;">)</span> <span style="color: #51afef;">}</span>;  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">Users are forced to use dynamic dispatch</span>
+
+<span style="color: #5B6268;">// </span><span style="color: #5B6268;">Both works for static dispatch</span>
+<span style="color: #51afef;">let</span> <span style="color: #dcaeea;">file</span> = <span style="color: #ECBE7B;">File</span>::create<span style="color: #51afef;">(</span><span style="color: #98be65;">"static_log.txt"</span><span style="color: #51afef;">)</span><span style="color: #c678dd; font-weight: bold;">?</span>;
+<span style="color: #51afef;">let</span> <span style="color: #dcaeea;">logger</span> = <span style="color: #ECBE7B;">Logger</span> <span style="color: #51afef;">{</span> <span style="color: #dcaeea;">writer</span>: file <span style="color: #51afef;">}</span>;
+
+<span style="color: #51afef;">let</span> <span style="color: #dcaeea;">file</span>: <span style="color: #ECBE7B;">Box</span><span style="color: #51afef;">&lt;</span><span style="color: #51afef;">dyn</span> <span style="color: #ECBE7B;">Write</span><span style="color: #51afef;">&gt;</span> = <span style="color: #ECBE7B;">Box</span>::new<span style="color: #51afef;">(</span><span style="color: #ECBE7B;">File</span>::create<span style="color: #c678dd;">(</span><span style="color: #98be65;">"static_log.txt"</span><span style="color: #c678dd;">)</span><span style="color: #c678dd; font-weight: bold;">?</span><span style="color: #51afef;">)</span>;
+<span style="color: #51afef;">let</span> <span style="color: #dcaeea;">logger</span> = <span style="color: #ECBE7B;">Logger</span> <span style="color: #51afef;">{</span> <span style="color: #dcaeea;">writer</span>: file <span style="color: #51afef;">}</span>;
+</pre>
+</div>
+</div>
 </div>
 </div>
 <div class="taglist"><a href="https://chenyo.me/tags.html">Tags</a>: <a href="https://chenyo.me/tag-rust.html">rust</a> <a href="https://chenyo.me/tag-program.html">program</a> </div><div id="archive">
