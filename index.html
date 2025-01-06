@@ -42,29 +42,32 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orga0529f5">1. References</a></li>
-<li><a href="#orgcc9e359">2. Reference and lifetime</a></li>
-<li><a href="#orgbb83460">3. Traits</a>
+<li><a href="#orgedf339f">1. References</a></li>
+<li><a href="#orge8586d2">2. Reference and lifetime</a></li>
+<li><a href="#orgce4466f">3. Traits</a>
 <ul>
-<li><a href="#org82ac6fa">3.1. Associated types</a></li>
-<li><a href="#org84e2018">3.2. Static/Dynamic dispatch</a></li>
+<li><a href="#orgc623a73">3.1. Associated types</a></li>
+<li><a href="#orgd9c5ba6">3.2. Static/Dynamic dispatch</a></li>
+<li><a href="#orgc29e694">3.3. Trait bounds</a></li>
+<li><a href="#orga3509ec">3.4. Existential types</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-orga0529f5" class="outline-2">
-<h2 id="orga0529f5"><span class="section-number-2">1.</span> References</h2>
+<div id="outline-container-orgedf339f" class="outline-2">
+<h2 id="orgedf339f"><span class="section-number-2">1.</span> References</h2>
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
 <li><a href="https://rust-for-rustaceans.com/">Rust for Rustaceans</a></li>
 <li><a href="https://rustlings.cool/">Rustlings</a></li>
 <li><a href="https://tfpk.github.io/lifetimekata/">LifetimeKata</a></li>
+<li>Claude</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-orgcc9e359" class="outline-2">
-<h2 id="orgcc9e359"><span class="section-number-2">2.</span> Reference and lifetime</h2>
+<div id="outline-container-orge8586d2" class="outline-2">
+<h2 id="orge8586d2"><span class="section-number-2">2.</span> Reference and lifetime</h2>
 <div class="outline-text-2" id="text-2">
 <div class="org-src-container">
 <pre class="src src-rust"><span style="color: #51afef;">let</span> <span style="color: #51afef;">mut</span> <span style="color: #dcaeea;">x</span>;
@@ -231,12 +234,12 @@ We can also use lifetime bounds to specify <code>'a</code> should outlives, i.e.
 </div>
 </div>
 </div>
-<div id="outline-container-orgbb83460" class="outline-2">
-<h2 id="orgbb83460"><span class="section-number-2">3.</span> Traits</h2>
+<div id="outline-container-orgce4466f" class="outline-2">
+<h2 id="orgce4466f"><span class="section-number-2">3.</span> Traits</h2>
 <div class="outline-text-2" id="text-3">
 </div>
-<div id="outline-container-org82ac6fa" class="outline-3">
-<h3 id="org82ac6fa"><span class="section-number-3">3.1.</span> Associated types</h3>
+<div id="outline-container-orgc623a73" class="outline-3">
+<h3 id="orgc623a73"><span class="section-number-3">3.1.</span> Associated types</h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
 One should use associated types instead of generic type parameters in a trait if there should only exist one trait implementation for any type. For instance, for any given type, the <code>Item</code> type should be unambiguous even if type contains generic parameters.
@@ -292,7 +295,7 @@ One should use associated types instead of generic type parameters in a trait if
 <span style="color: #51afef;">}</span>
 
 <span style="color: #5B6268;">// </span><span style="color: #5B6268;">usage</span>
-<span style="color: #51afef;">let</span> <span style="color: #dcaeea;">my_vec</span> = <span style="color: #ECBE7B;">MyVec</span>&lt;<span style="color: #ECBE7B;">i32</span>&gt;::default<span style="color: #51afef;">()</span>;
+<span style="color: #51afef;">let</span> <span style="color: #dcaeea;">my_vec</span> = <span style="color: #ECBE7B;">MyVec</span>::<span style="color: #51afef;">&lt;</span><span style="color: #ECBE7B;">i32</span><span style="color: #51afef;">&gt;</span>::default<span style="color: #51afef;">()</span>;
 <span style="color: #51afef;">let</span> <span style="color: #51afef;">mut</span> <span style="color: #dcaeea;">my_vec_iter</span> = my_vec.into_iter<span style="color: #51afef;">()</span>;
 my_vec_iter.next<span style="color: #51afef;">()</span>;
 </pre>
@@ -314,8 +317,8 @@ On the other hands, sometimes we want multiple trait implementations for the giv
 </div>
 </div>
 </div>
-<div id="outline-container-org84e2018" class="outline-3">
-<h3 id="org84e2018"><span class="section-number-3">3.2.</span> Static/Dynamic dispatch</h3>
+<div id="outline-container-orgd9c5ba6" class="outline-3">
+<h3 id="orgd9c5ba6"><span class="section-number-3">3.2.</span> Static/Dynamic dispatch</h3>
 <div class="outline-text-3" id="text-3-2">
 <p>
 There are two ways to pass into a function a type that implements a trait: static dispatch and dynamic dispatch:
@@ -375,6 +378,93 @@ Broadly speaking, use static dispatch in a library, and dynamic dispatch in a bi
 <span style="color: #51afef;">let</span> <span style="color: #dcaeea;">logger</span> = <span style="color: #ECBE7B;">Logger</span> <span style="color: #51afef;">{</span> <span style="color: #dcaeea;">writer</span>: file <span style="color: #51afef;">}</span>;
 </pre>
 </div>
+</div>
+</div>
+<div id="outline-container-orgc29e694" class="outline-3">
+<h3 id="orgc29e694"><span class="section-number-3">3.3.</span> Trait bounds</h3>
+<div class="outline-text-3" id="text-3-3">
+<div class="org-src-container">
+<pre class="src src-rust"><span style="color: #51afef;">fn</span> <span style="color: #c678dd;">collect_to_map</span><span style="color: #51afef;">&lt;</span><span style="color: #ECBE7B;">T</span>, <span style="color: #ECBE7B;">S</span><span style="color: #51afef;">&gt;(</span><span style="color: #dcaeea;">items</span>: <span style="color: #51afef;">impl</span> <span style="color: #ECBE7B;">IntoIterator</span><span style="color: #c678dd;">&lt;</span><span style="color: #ECBE7B;">Item</span> = <span style="color: #ECBE7B;">T</span><span style="color: #c678dd;">&gt;</span><span style="color: #51afef;">)</span> -&gt; <span style="color: #ECBE7B;">HashMap</span><span style="color: #51afef;">&lt;</span><span style="color: #ECBE7B;">T</span>, <span style="color: #ECBE7B;">usize</span>, <span style="color: #ECBE7B;">S</span><span style="color: #51afef;">&gt;</span>
+<span style="color: #51afef;">where</span>
+   <span style="color: #ECBE7B;">HashMap</span><span style="color: #51afef;">&lt;</span><span style="color: #ECBE7B;">T</span>, <span style="color: #ECBE7B;">usize</span>, <span style="color: #ECBE7B;">S</span><span style="color: #51afef;">&gt;</span>: <span style="color: #ECBE7B;">FromIterator</span><span style="color: #51afef;">&lt;</span><span style="color: #c678dd;">(</span><span style="color: #ECBE7B;">T</span>, <span style="color: #ECBE7B;">usize</span><span style="color: #c678dd;">)</span><span style="color: #51afef;">&gt;</span>
+<span style="color: #51afef;">{</span>
+   items
+       .into_iter<span style="color: #c678dd;">()</span>
+       .enumerate<span style="color: #c678dd;">()</span>
+       .map<span style="color: #c678dd;">(</span>|<span style="color: #98be65;">(</span>i, item<span style="color: #98be65;">)</span>| <span style="color: #98be65;">(</span>item, i<span style="color: #98be65;">)</span><span style="color: #c678dd;">)</span>
+       .collect<span style="color: #c678dd;">()</span>
+<span style="color: #51afef;">}</span>
+</pre>
+</div>
+
+<p>
+The trait above is better than explicitly writing <code>T: Hash + Eq</code> and <code>S: BuildHasher + Default</code> since they are implicitly required for <code>HashMap</code> to implement <code>FromIterator</code>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-rust"><span style="color: #51afef;">impl</span> <span style="color: #ECBE7B;">Debug</span> <span style="color: #51afef;">for</span> <span style="color: #ECBE7B;">AnyIterable</span>
+<span style="color: #51afef;">where</span>
+    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">the reference to Self implements IntoIterator for any lifetime 'a</span>
+    <span style="color: #51afef;">for</span><span style="color: #51afef;">&lt;</span>'<span style="color: #dcaeea;">a</span><span style="color: #51afef;">&gt;</span> <span style="color: #bbc2cf; background-color: #282c34;">&amp;</span>'<span style="color: #dcaeea;">a</span> <span style="color: #dcaeea;">Self</span>: <span style="color: #ECBE7B;">IntoIterator</span>,
+    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">the item (associated type in Self) produced by iterating over the reference to Self implement Debug</span>
+    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">We cannnot write &lt;&amp;'a Self&gt;::Item because the associated type Item only exists in IntoIterator</span>
+    <span style="color: #51afef;">for</span><span style="color: #51afef;">&lt;</span>'<span style="color: #dcaeea;">a</span><span style="color: #51afef;">&gt;</span> &lt;<span style="color: #bbc2cf; background-color: #282c34;">&amp;</span>'<span style="color: #dcaeea;">a</span> <span style="color: #ECBE7B;">Self</span> <span style="color: #51afef;">as</span> <span style="color: #ECBE7B;">IntoIterator</span>&gt;::<span style="color: #dcaeea;">Item</span>: <span style="color: #ECBE7B;">Debug</span>,
+<span style="color: #51afef;">{</span>
+    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">since fmt signature does not allow lifetime annotation,</span>
+    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">we need to specify "the reference implements the trait for any lifetime"</span>
+    <span style="color: #51afef;">fn</span> <span style="color: #c678dd;">fmt</span><span style="color: #c678dd;">(</span><span style="color: #bbc2cf; background-color: #282c34;">&amp;</span><span style="color: #51afef;">self</span>, <span style="color: #dcaeea;">f</span>: <span style="color: #bbc2cf; background-color: #282c34;">&amp;</span><span style="color: #51afef;">mut</span> <span style="color: #ECBE7B;">Formatter</span><span style="color: #c678dd;">)</span> -&gt; <span style="color: #ECBE7B;">Result</span><span style="color: #c678dd;">&lt;</span><span style="color: #98be65;">()</span>, <span style="color: #ECBE7B;">Error</span><span style="color: #c678dd;">&gt;</span> <span style="color: #c678dd;">{</span>
+        f.debug_list<span style="color: #98be65;">()</span>  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">formats items, e.g., [item1, item2]</span>
+            .entries<span style="color: #98be65;">(</span><span style="color: #51afef;">self</span><span style="color: #98be65;">)</span> <span style="color: #5B6268;">// </span><span style="color: #5B6268;">iterates over self and debug-formatted each item</span>
+            .finish<span style="color: #98be65;">()</span>
+    <span style="color: #c678dd;">}</span>
+<span style="color: #51afef;">}</span>
+</pre>
+</div>
+
+<p>
+The code above adds trait bounds for both outer type and the inner associated type. It implement <code>Debug</code> for any type that can be iterated over and whose elements are <code>Debug</code>.
+</p>
+</div>
+</div>
+<div id="outline-container-orga3509ec" class="outline-3">
+<h3 id="orga3509ec"><span class="section-number-3">3.4.</span> Existential types</h3>
+<div class="outline-text-3" id="text-3-4">
+<div class="org-src-container">
+<pre class="src src-rust"><span style="color: #51afef; font-weight: bold;">#!</span><span style="color: #51afef; font-weight: bold;">[</span><span style="color: #51afef; font-weight: bold;">feature</span><span style="color: #c678dd; font-weight: bold;">(</span><span style="color: #51afef; font-weight: bold;">impl_trait_in_assoc_type</span><span style="color: #c678dd; font-weight: bold;">)</span><span style="color: #51afef; font-weight: bold;">]</span> <span style="color: #5B6268;">// </span><span style="color: #5B6268;">require nightly</span>
+
+<span style="color: #51afef; font-weight: bold;">#</span><span style="color: #51afef; font-weight: bold;">[</span><span style="color: #51afef; font-weight: bold;">derive</span><span style="color: #c678dd; font-weight: bold;">(</span><span style="color: #51afef; font-weight: bold;">Default</span><span style="color: #c678dd; font-weight: bold;">)</span><span style="color: #51afef; font-weight: bold;">]</span>
+<span style="color: #51afef;">struct</span> <span style="color: #ECBE7B;">MyVec</span><span style="color: #51afef;">&lt;</span><span style="color: #ECBE7B;">T</span><span style="color: #51afef;">&gt;</span> <span style="color: #51afef;">{</span>
+    <span style="color: #dcaeea;">vec</span>: <span style="color: #ECBE7B;">Vec</span><span style="color: #c678dd;">&lt;</span><span style="color: #ECBE7B;">T</span><span style="color: #c678dd;">&gt;</span>,
+<span style="color: #51afef;">}</span>
+
+<span style="color: #51afef;">impl</span><span style="color: #51afef;">&lt;</span><span style="color: #ECBE7B;">T</span><span style="color: #51afef;">&gt;</span> <span style="color: #ECBE7B;">IntoIterator</span> <span style="color: #51afef;">for</span> <span style="color: #ECBE7B;">MyVec</span><span style="color: #51afef;">&lt;</span><span style="color: #ECBE7B;">T</span><span style="color: #51afef;">&gt;</span> <span style="color: #51afef;">{</span>
+    <span style="color: #51afef;">type</span> <span style="color: #ECBE7B;">Item</span> = <span style="color: #ECBE7B;">T</span>;
+    <span style="color: #51afef;">type</span> <span style="color: #ECBE7B;">IntoIter</span> = <span style="color: #51afef;">impl</span> <span style="color: #ECBE7B;">Iterator</span><span style="color: #c678dd;">&lt;</span><span style="color: #ECBE7B;">Item</span> = <span style="color: #ECBE7B;">Self</span>::<span style="color: #ECBE7B;">Item</span><span style="color: #c678dd;">&gt;</span>; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">existential type</span>
+
+    <span style="color: #51afef;">fn</span> <span style="color: #c678dd;">into_iter</span><span style="color: #c678dd;">(</span><span style="color: #51afef;">self</span><span style="color: #c678dd;">)</span> -&gt; <span style="color: #ECBE7B;">Self</span>::<span style="color: #ECBE7B;">IntoIter</span> <span style="color: #c678dd;">{</span>
+        <span style="color: #51afef;">let</span> <span style="color: #51afef;">mut</span> <span style="color: #dcaeea;">vec</span> = <span style="color: #51afef;">self</span>.vec;
+        <span style="color: #51afef;">let</span> <span style="color: #dcaeea;">position</span> = <span style="color: #da8548; font-weight: bold;">0</span>;
+        <span style="color: #a9a1e1;">std</span>::<span style="color: #a9a1e1;">iter</span>::from_fn<span style="color: #98be65;">(</span><span style="color: #51afef;">move</span> || <span style="color: #a9a1e1;">{</span>
+            <span style="color: #51afef;">if</span> position &lt; vec.len<span style="color: #51afef;">()</span> <span style="color: #51afef;">{</span>
+                <span style="color: #51afef;">let</span> <span style="color: #dcaeea;">item</span> = vec.remove<span style="color: #c678dd;">(</span>position<span style="color: #c678dd;">)</span>; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">consume vec</span>
+                <span style="color: #ECBE7B;">Some</span><span style="color: #c678dd;">(</span>item<span style="color: #c678dd;">)</span>
+            <span style="color: #51afef;">}</span> <span style="color: #51afef;">else</span> <span style="color: #51afef;">{</span>
+                <span style="color: #ECBE7B;">None</span>
+            <span style="color: #51afef;">}</span>
+        <span style="color: #a9a1e1;">}</span><span style="color: #98be65;">)</span>
+    <span style="color: #c678dd;">}</span>
+<span style="color: #51afef;">}</span>
+
+<span style="color: #51afef;">fn</span> <span style="color: #c678dd;">main</span><span style="color: #51afef;">()</span> <span style="color: #51afef;">{</span>
+    <span style="color: #51afef;">let</span> <span style="color: #51afef;">mut</span> <span style="color: #dcaeea;">my_vec</span> = <span style="color: #ECBE7B;">MyVec</span>::<span style="color: #c678dd;">&lt;</span><span style="color: #ECBE7B;">i32</span><span style="color: #c678dd;">&gt;</span>::default<span style="color: #c678dd;">()</span>.into_iter<span style="color: #c678dd;">()</span>;
+    <span style="color: #c678dd;">println!</span><span style="color: #c678dd;">(</span><span style="color: #98be65;">"</span><span style="color: #98be65; font-style: italic;">{:?}</span><span style="color: #98be65;">"</span>, my_vec.next<span style="color: #98be65;">()</span><span style="color: #c678dd;">)</span>;
+<span style="color: #51afef;">}</span>
+</pre>
+</div>
+
+<p>
+The code above uses existential types in the associated types to avoid creating new type <code>MyVecIter</code>, hence perform zero-cost type erasure.
+</p>
 </div>
 </div>
 </div>

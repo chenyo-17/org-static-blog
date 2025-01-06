@@ -7,6 +7,7 @@
 - [[https://rust-for-rustaceans.com/][Rust for Rustaceans]]
 - [[https://rustlings.cool/][Rustlings]]
 - [[https://tfpk.github.io/lifetimekata/][LifetimeKata]]
+- Claude
 
 * Reference and lifetime
 #+begin_src rust
@@ -199,7 +200,7 @@ impl<'a, T> IntoIterator for &'a MyVec<T> {  // this consumes MyIter
 }
 
 // usage
-let my_vec = MyVec<i32>::default();
+let my_vec = MyVec::<i32>::default();
 let mut my_vec_iter = my_vec.into_iter();
 my_vec_iter.next();
 #+end_src
@@ -260,3 +261,75 @@ let logger = Logger { writer: file };
 let file: Box<dyn Write> = Box::new(File::create("static_log.txt")?);
 let logger = Logger { writer: file };
 #+end_src
+
+** Trait bounds
+#+begin_src rust
+fn collect_to_map<T, S>(items: impl IntoIterator<Item = T>) -> HashMap<T, usize, S>
+where
+   HashMap<T, usize, S>: FromIterator<(T, usize)>
+{
+   items
+       .into_iter()
+       .enumerate()
+       .map(|(i, item)| (item, i))
+       .collect()
+}
+#+end_src
+
+The trait above is better than explicitly writing ~T: Hash + Eq~ and ~S: BuildHasher + Default~ since they are implicitly required for ~HashMap~ to implement ~FromIterator~.
+
+#+begin_src rust
+impl Debug for AnyIterable
+where
+    // the reference to Self implements IntoIterator for any lifetime 'a
+    for<'a> &'a Self: IntoIterator,
+    // the item (associated type in Self) produced by iterating over the reference to Self implement Debug
+    // We cannnot write <&'a Self>::Item because the associated type Item only exists in IntoIterator
+    for<'a> <&'a Self as IntoIterator>::Item: Debug,
+{
+    // since fmt signature does not allow lifetime annotation,
+    // we need to specify "the reference implements the trait for any lifetime"
+    fn fmt(&self, f: &mut Formatter) -> Result<(), Error> {
+        f.debug_list()  // formats items, e.g., [item1, item2]
+            .entries(self) // iterates over self and debug-formatted each item
+            .finish()
+    }
+}
+#+end_src
+
+The code above adds trait bounds for both outer type and the inner associated type. It implement ~Debug~ for any type that can be iterated over and whose elements are ~Debug~.
+
+** Existential types
+#+begin_src rust
+#![feature(impl_trait_in_assoc_type)] // require nightly
+
+#[derive(Default)]
+struct MyVec<T> {
+    vec: Vec<T>,
+}
+
+impl<T> IntoIterator for MyVec<T> {
+    type Item = T;
+    type IntoIter = impl Iterator<Item = Self::Item>; // existential type
+
+    fn into_iter(self) -> Self::IntoIter {
+        let mut vec = self.vec;
+        let position = 0;
+        std::iter::from_fn(move || {
+            if position < vec.len() {
+                let item = vec.remove(position); // consume vec
+                Some(item)
+            } else {
+                None
+            }
+        })
+    }
+}
+
+fn main() {
+    let mut my_vec = MyVec::<i32>::default().into_iter();
+    println!("{:?}", my_vec.next());
+}
+#+end_src
+
+The code above uses existential types in the associated types to avoid creating new type ~MyVecIter~, hence perform zero-cost type erasure.
