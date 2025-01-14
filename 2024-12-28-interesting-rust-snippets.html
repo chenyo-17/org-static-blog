@@ -41,21 +41,26 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgedf339f">1. References</a></li>
-<li><a href="#orge8586d2">2. Reference and lifetime</a></li>
-<li><a href="#orgce4466f">3. Traits</a>
+<li><a href="#org49e504a">1. References</a></li>
+<li><a href="#org836e221">2. Reference and lifetime</a></li>
+<li><a href="#org28fc803">3. Traits</a>
 <ul>
-<li><a href="#orgc623a73">3.1. Associated types</a></li>
-<li><a href="#orgd9c5ba6">3.2. Static/Dynamic dispatch</a></li>
-<li><a href="#orgc29e694">3.3. Trait bounds</a></li>
-<li><a href="#orga3509ec">3.4. Existential types</a></li>
+<li><a href="#org9d5d649">3.1. Associated types</a></li>
+<li><a href="#org577d000">3.2. Static/Dynamic dispatch</a></li>
+<li><a href="#org8fd2c40">3.3. Trait bounds</a></li>
+<li><a href="#org0577e0b">3.4. Existential types</a></li>
+</ul>
+</li>
+<li><a href="#org9b039b6">4. Linked-list</a>
+<ul>
+<li><a href="#orgf6ba0e3">4.1. Leetcode 146: LRU cache</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-orgedf339f" class="outline-2">
-<h2 id="orgedf339f"><span class="section-number-2">1.</span> References</h2>
+<div id="outline-container-org49e504a" class="outline-2">
+<h2 id="org49e504a"><span class="section-number-2">1.</span> References</h2>
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
 <li><a href="https://rust-for-rustaceans.com/">Rust for Rustaceans</a></li>
@@ -65,8 +70,8 @@
 </ul>
 </div>
 </div>
-<div id="outline-container-orge8586d2" class="outline-2">
-<h2 id="orge8586d2"><span class="section-number-2">2.</span> Reference and lifetime</h2>
+<div id="outline-container-org836e221" class="outline-2">
+<h2 id="org836e221"><span class="section-number-2">2.</span> Reference and lifetime</h2>
 <div class="outline-text-2" id="text-2">
 <div class="org-src-container">
 <pre class="src src-rust"><span style="color: #51afef;">let</span> <span style="color: #51afef;">mut</span> <span style="color: #dcaeea;">x</span>;
@@ -233,12 +238,12 @@ We can also use lifetime bounds to specify <code>'a</code> should outlives, i.e.
 </div>
 </div>
 </div>
-<div id="outline-container-orgce4466f" class="outline-2">
-<h2 id="orgce4466f"><span class="section-number-2">3.</span> Traits</h2>
+<div id="outline-container-org28fc803" class="outline-2">
+<h2 id="org28fc803"><span class="section-number-2">3.</span> Traits</h2>
 <div class="outline-text-2" id="text-3">
 </div>
-<div id="outline-container-orgc623a73" class="outline-3">
-<h3 id="orgc623a73"><span class="section-number-3">3.1.</span> Associated types</h3>
+<div id="outline-container-org9d5d649" class="outline-3">
+<h3 id="org9d5d649"><span class="section-number-3">3.1.</span> Associated types</h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
 One should use associated types instead of generic type parameters in a trait if there should only exist one trait implementation for any type. For instance, for any given type, the <code>Item</code> type should be unambiguous even if type contains generic parameters.
@@ -316,8 +321,8 @@ On the other hands, sometimes we want multiple trait implementations for the giv
 </div>
 </div>
 </div>
-<div id="outline-container-orgd9c5ba6" class="outline-3">
-<h3 id="orgd9c5ba6"><span class="section-number-3">3.2.</span> Static/Dynamic dispatch</h3>
+<div id="outline-container-org577d000" class="outline-3">
+<h3 id="org577d000"><span class="section-number-3">3.2.</span> Static/Dynamic dispatch</h3>
 <div class="outline-text-3" id="text-3-2">
 <p>
 There are two ways to pass into a function a type that implements a trait: static dispatch and dynamic dispatch:
@@ -379,8 +384,8 @@ Broadly speaking, use static dispatch in a library, and dynamic dispatch in a bi
 </div>
 </div>
 </div>
-<div id="outline-container-orgc29e694" class="outline-3">
-<h3 id="orgc29e694"><span class="section-number-3">3.3.</span> Trait bounds</h3>
+<div id="outline-container-org8fd2c40" class="outline-3">
+<h3 id="org8fd2c40"><span class="section-number-3">3.3.</span> Trait bounds</h3>
 <div class="outline-text-3" id="text-3-3">
 <div class="org-src-container">
 <pre class="src src-rust"><span style="color: #51afef;">fn</span> <span style="color: #c678dd;">collect_to_map</span><span style="color: #51afef;">&lt;</span><span style="color: #ECBE7B;">T</span>, <span style="color: #ECBE7B;">S</span><span style="color: #51afef;">&gt;(</span><span style="color: #dcaeea;">items</span>: <span style="color: #51afef;">impl</span> <span style="color: #ECBE7B;">IntoIterator</span><span style="color: #c678dd;">&lt;</span><span style="color: #ECBE7B;">Item</span> = <span style="color: #ECBE7B;">T</span><span style="color: #c678dd;">&gt;</span><span style="color: #51afef;">)</span> -&gt; <span style="color: #ECBE7B;">HashMap</span><span style="color: #51afef;">&lt;</span><span style="color: #ECBE7B;">T</span>, <span style="color: #ECBE7B;">usize</span>, <span style="color: #ECBE7B;">S</span><span style="color: #51afef;">&gt;</span>
@@ -425,8 +430,8 @@ The code above adds trait bounds for both outer type and the inner associated ty
 </p>
 </div>
 </div>
-<div id="outline-container-orga3509ec" class="outline-3">
-<h3 id="orga3509ec"><span class="section-number-3">3.4.</span> Existential types</h3>
+<div id="outline-container-org0577e0b" class="outline-3">
+<h3 id="org0577e0b"><span class="section-number-3">3.4.</span> Existential types</h3>
 <div class="outline-text-3" id="text-3-4">
 <div class="org-src-container">
 <pre class="src src-rust"><span style="color: #51afef; font-weight: bold;">#!</span><span style="color: #51afef; font-weight: bold;">[</span><span style="color: #51afef; font-weight: bold;">feature</span><span style="color: #c678dd; font-weight: bold;">(</span><span style="color: #51afef; font-weight: bold;">impl_trait_in_assoc_type</span><span style="color: #c678dd; font-weight: bold;">)</span><span style="color: #51afef; font-weight: bold;">]</span> <span style="color: #5B6268;">// </span><span style="color: #5B6268;">require nightly</span>
@@ -464,6 +469,137 @@ The code above adds trait bounds for both outer type and the inner associated ty
 <p>
 The code above uses existential types in the associated types to avoid creating new type <code>MyVecIter</code>, hence perform zero-cost type erasure.
 </p>
+</div>
+</div>
+</div>
+<div id="outline-container-org9b039b6" class="outline-2">
+<h2 id="org9b039b6"><span class="section-number-2">4.</span> Linked-list</h2>
+<div class="outline-text-2" id="text-4">
+</div>
+<div id="outline-container-orgf6ba0e3" class="outline-3">
+<h3 id="orgf6ba0e3"><span class="section-number-3">4.1.</span> <a href="https://leetcode.com/problems/lru-cache/description/">Leetcode 146: LRU cache</a></h3>
+<div class="outline-text-3" id="text-4-1">
+<p>
+This is not interesting at all, but it took me so long to make it right, and I may have used too many reference counters.
+</p>
+<div class="org-src-container">
+<pre class="src src-rust"><span style="color: #51afef;">use</span> <span style="color: #a9a1e1;">std</span>::<span style="color: #51afef;">{</span><span style="color: #a9a1e1;">cell</span>::<span style="color: #ECBE7B;">RefCell</span>, <span style="color: #a9a1e1;">collections</span>::<span style="color: #ECBE7B;">HashMap</span>, <span style="color: #a9a1e1;">rc</span>::<span style="color: #ECBE7B;">Rc</span><span style="color: #51afef;">}</span>;
+
+<span style="color: #51afef;">type</span> <span style="color: #ECBE7B;">List</span> = <span style="color: #ECBE7B;">Option</span><span style="color: #51afef;">&lt;</span><span style="color: #ECBE7B;">Rc</span><span style="color: #c678dd;">&lt;</span><span style="color: #ECBE7B;">RefCell</span><span style="color: #98be65;">&lt;</span><span style="color: #ECBE7B;">ListNode</span><span style="color: #98be65;">&gt;</span><span style="color: #c678dd;">&gt;</span><span style="color: #51afef;">&gt;</span>;
+
+<span style="color: #51afef;">struct</span> <span style="color: #ECBE7B;">ListNode</span> <span style="color: #51afef;">{</span>
+    <span style="color: #dcaeea;">key</span>: <span style="color: #ECBE7B;">i32</span>,
+    <span style="color: #dcaeea;">value</span>: <span style="color: #ECBE7B;">i32</span>,
+    <span style="color: #dcaeea;">prev</span>: <span style="color: #ECBE7B;">List</span>,
+    <span style="color: #dcaeea;">next</span>: <span style="color: #ECBE7B;">List</span>,
+<span style="color: #51afef;">}</span>
+
+<span style="color: #51afef;">struct</span> <span style="color: #ECBE7B;">LRUCache</span> <span style="color: #51afef;">{</span>
+    <span style="color: #dcaeea;">head</span>: <span style="color: #ECBE7B;">List</span>,
+    <span style="color: #dcaeea;">tail</span>: <span style="color: #ECBE7B;">List</span>,
+    <span style="color: #dcaeea;">data</span>: <span style="color: #ECBE7B;">HashMap</span><span style="color: #c678dd;">&lt;</span><span style="color: #ECBE7B;">i32</span>, <span style="color: #ECBE7B;">Rc</span><span style="color: #98be65;">&lt;</span><span style="color: #ECBE7B;">RefCell</span><span style="color: #a9a1e1;">&lt;</span><span style="color: #ECBE7B;">ListNode</span><span style="color: #a9a1e1;">&gt;</span><span style="color: #98be65;">&gt;</span><span style="color: #c678dd;">&gt;</span>,
+    <span style="color: #dcaeea;">capacity</span>: <span style="color: #ECBE7B;">usize</span>,
+<span style="color: #51afef;">}</span>
+
+<span style="color: #51afef;">impl</span> <span style="color: #ECBE7B;">LRUCache</span> <span style="color: #51afef;">{</span>
+    <span style="color: #51afef;">fn</span> <span style="color: #c678dd;">new</span><span style="color: #c678dd;">(</span><span style="color: #dcaeea;">capacity</span>: <span style="color: #ECBE7B;">i32</span><span style="color: #c678dd;">)</span> -&gt; <span style="color: #ECBE7B;">Self</span> <span style="color: #c678dd;">{</span>
+        <span style="color: #ECBE7B;">Self</span> <span style="color: #98be65;">{</span>
+            <span style="color: #dcaeea;">head</span>: <span style="color: #ECBE7B;">None</span>,
+            <span style="color: #dcaeea;">tail</span>: <span style="color: #ECBE7B;">None</span>,
+            <span style="color: #dcaeea;">data</span>: <span style="color: #ECBE7B;">HashMap</span>::new<span style="color: #a9a1e1;">()</span>,
+            <span style="color: #dcaeea;">capacity</span>: capacity <span style="color: #51afef;">as</span> <span style="color: #ECBE7B;">usize</span>,
+        <span style="color: #98be65;">}</span>
+    <span style="color: #c678dd;">}</span>
+
+    <span style="color: #51afef;">fn</span> <span style="color: #c678dd;">move_to_front</span><span style="color: #c678dd;">(</span><span style="color: #bbc2cf; background-color: #282c34;">&amp;</span><span style="color: #51afef;">mut</span> <span style="color: #51afef;">self</span>, <span style="color: #dcaeea;">node</span>: <span style="color: #ECBE7B;">Rc</span><span style="color: #98be65;">&lt;</span><span style="color: #ECBE7B;">RefCell</span><span style="color: #a9a1e1;">&lt;</span><span style="color: #ECBE7B;">ListNode</span><span style="color: #a9a1e1;">&gt;</span><span style="color: #98be65;">&gt;</span><span style="color: #c678dd;">)</span> <span style="color: #c678dd;">{</span>
+        <span style="color: #5B6268;">// </span><span style="color: #5B6268;">early return if the node is already the head</span>
+        <span style="color: #51afef;">if</span> <span style="color: #51afef;">let</span> <span style="color: #ECBE7B;">Some</span><span style="color: #98be65;">(</span>head<span style="color: #98be65;">)</span> = <span style="color: #bbc2cf; background-color: #282c34;">&amp;</span><span style="color: #51afef;">self</span>.head <span style="color: #98be65;">{</span>
+            <span style="color: #51afef;">if</span> <span style="color: #ECBE7B;">Rc</span>::ptr_eq<span style="color: #a9a1e1;">(</span>head, <span style="color: #bbc2cf; background-color: #282c34;">&amp;</span>node<span style="color: #a9a1e1;">)</span> <span style="color: #a9a1e1;">{</span>
+                <span style="color: #51afef;">return</span>;
+            <span style="color: #a9a1e1;">}</span>
+        <span style="color: #98be65;">}</span>
+
+        <span style="color: #51afef;">let</span> <span style="color: #dcaeea;">prev</span> = node.borrow<span style="color: #98be65;">()</span>.prev.clone<span style="color: #98be65;">()</span>;
+        <span style="color: #51afef;">let</span> <span style="color: #dcaeea;">next</span> = node.borrow<span style="color: #98be65;">()</span>.next.clone<span style="color: #98be65;">()</span>;
+
+        <span style="color: #51afef;">match</span> <span style="color: #98be65;">(</span>prev.as_ref<span style="color: #a9a1e1;">()</span>, next.as_ref<span style="color: #a9a1e1;">()</span><span style="color: #98be65;">)</span> <span style="color: #98be65;">{</span>
+            <span style="color: #a9a1e1;">(</span><span style="color: #ECBE7B;">None</span>, <span style="color: #ECBE7B;">None</span><span style="color: #a9a1e1;">)</span> =&gt; <span style="color: #a9a1e1;">{</span>
+                <span style="color: #5B6268;">// </span><span style="color: #5B6268;">insert a new node only modifies the head,</span>
+                <span style="color: #5B6268;">// </span><span style="color: #5B6268;">the rest of the list is untouched.</span>
+            <span style="color: #a9a1e1;">}</span>
+            <span style="color: #a9a1e1;">(</span><span style="color: #ECBE7B;">Some</span><span style="color: #51afef;">(</span>prev<span style="color: #51afef;">)</span>, <span style="color: #ECBE7B;">None</span><span style="color: #a9a1e1;">)</span> =&gt; <span style="color: #a9a1e1;">{</span>
+                <span style="color: #5B6268;">// </span><span style="color: #5B6268;">get the tail node</span>
+                prev.borrow_mut<span style="color: #51afef;">()</span>.next = <span style="color: #ECBE7B;">None</span>;
+                <span style="color: #51afef;">self</span>.tail = <span style="color: #ECBE7B;">Some</span><span style="color: #51afef;">(</span><span style="color: #ECBE7B;">Rc</span>::clone<span style="color: #c678dd;">(</span>prev<span style="color: #c678dd;">)</span><span style="color: #51afef;">)</span>;
+            <span style="color: #a9a1e1;">}</span>
+            <span style="color: #a9a1e1;">(</span><span style="color: #ECBE7B;">None</span>, <span style="color: #ECBE7B;">Some</span><span style="color: #51afef;">(</span>_<span style="color: #51afef;">)</span><span style="color: #a9a1e1;">)</span> =&gt; <span style="color: #a9a1e1;">{</span>
+                <span style="color: #5B6268;">// </span><span style="color: #5B6268;">get the head node is already handled</span>
+                <span style="color: #51afef;">return</span>;
+            <span style="color: #a9a1e1;">}</span>
+            <span style="color: #a9a1e1;">(</span><span style="color: #ECBE7B;">Some</span><span style="color: #51afef;">(</span>prev<span style="color: #51afef;">)</span>, <span style="color: #ECBE7B;">Some</span><span style="color: #51afef;">(</span>next<span style="color: #51afef;">)</span><span style="color: #a9a1e1;">)</span> =&gt; <span style="color: #a9a1e1;">{</span>
+                <span style="color: #5B6268;">// </span><span style="color: #5B6268;">get a node in the middle of a list,</span>
+                <span style="color: #5B6268;">// </span><span style="color: #5B6268;">connect its prev and next</span>
+                prev.borrow_mut<span style="color: #51afef;">()</span>.next = <span style="color: #ECBE7B;">Some</span><span style="color: #51afef;">(</span><span style="color: #ECBE7B;">Rc</span>::clone<span style="color: #c678dd;">(</span>next<span style="color: #c678dd;">)</span><span style="color: #51afef;">)</span>;
+                next.borrow_mut<span style="color: #51afef;">()</span>.prev = <span style="color: #ECBE7B;">Some</span><span style="color: #51afef;">(</span><span style="color: #ECBE7B;">Rc</span>::clone<span style="color: #c678dd;">(</span>prev<span style="color: #c678dd;">)</span><span style="color: #51afef;">)</span>;
+            <span style="color: #a9a1e1;">}</span>
+        <span style="color: #98be65;">}</span>
+
+        <span style="color: #5B6268;">// </span><span style="color: #5B6268;">update node to be the new head</span>
+        <span style="color: #51afef;">if</span> <span style="color: #51afef;">let</span> <span style="color: #ECBE7B;">Some</span><span style="color: #98be65;">(</span>old_head<span style="color: #98be65;">)</span> = <span style="color: #bbc2cf; background-color: #282c34;">&amp;</span><span style="color: #51afef;">self</span>.head <span style="color: #98be65;">{</span>
+            node.borrow_mut<span style="color: #a9a1e1;">()</span>.next = <span style="color: #ECBE7B;">Some</span><span style="color: #a9a1e1;">(</span><span style="color: #ECBE7B;">Rc</span>::clone<span style="color: #51afef;">(</span>old_head<span style="color: #51afef;">)</span><span style="color: #a9a1e1;">)</span>;
+            old_head.borrow_mut<span style="color: #a9a1e1;">()</span>.prev = <span style="color: #ECBE7B;">Some</span><span style="color: #a9a1e1;">(</span><span style="color: #ECBE7B;">Rc</span>::clone<span style="color: #51afef;">(</span><span style="color: #bbc2cf; background-color: #282c34;">&amp;</span>node<span style="color: #51afef;">)</span><span style="color: #a9a1e1;">)</span>;
+        <span style="color: #98be65;">}</span> <span style="color: #51afef;">else</span> <span style="color: #98be65;">{</span>
+            <span style="color: #5B6268;">// </span><span style="color: #5B6268;">insert a node to the empty list</span>
+            <span style="color: #51afef;">self</span>.tail = <span style="color: #ECBE7B;">Some</span><span style="color: #a9a1e1;">(</span><span style="color: #ECBE7B;">Rc</span>::clone<span style="color: #51afef;">(</span><span style="color: #bbc2cf; background-color: #282c34;">&amp;</span>node<span style="color: #51afef;">)</span><span style="color: #a9a1e1;">)</span>;
+        <span style="color: #98be65;">}</span>
+        node.borrow_mut<span style="color: #98be65;">()</span>.prev = <span style="color: #ECBE7B;">None</span>;
+        <span style="color: #51afef;">self</span>.head = <span style="color: #ECBE7B;">Some</span><span style="color: #98be65;">(</span>node<span style="color: #98be65;">)</span>;
+    <span style="color: #c678dd;">}</span>
+
+    <span style="color: #51afef;">fn</span> <span style="color: #c678dd;">get</span><span style="color: #c678dd;">(</span><span style="color: #bbc2cf; background-color: #282c34;">&amp;</span><span style="color: #51afef;">mut</span> <span style="color: #51afef;">self</span>, <span style="color: #dcaeea;">key</span>: <span style="color: #ECBE7B;">i32</span><span style="color: #c678dd;">)</span> -&gt; <span style="color: #ECBE7B;">i32</span> <span style="color: #c678dd;">{</span>
+        <span style="color: #51afef;">let</span> <span style="color: #51afef;">mut</span> <span style="color: #dcaeea;">result</span> = -<span style="color: #da8548; font-weight: bold;">1</span>;
+        <span style="color: #51afef;">if</span> <span style="color: #51afef;">let</span> <span style="color: #ECBE7B;">Some</span><span style="color: #98be65;">(</span>node<span style="color: #98be65;">)</span> = <span style="color: #51afef;">self</span>.data.get<span style="color: #98be65;">(</span><span style="color: #bbc2cf; background-color: #282c34;">&amp;</span>key<span style="color: #98be65;">)</span> <span style="color: #98be65;">{</span>
+            result = node.borrow<span style="color: #a9a1e1;">()</span>.value;
+            <span style="color: #51afef;">self</span>.move_to_front<span style="color: #a9a1e1;">(</span><span style="color: #ECBE7B;">Rc</span>::clone<span style="color: #51afef;">(</span>node<span style="color: #51afef;">)</span><span style="color: #a9a1e1;">)</span>;
+        <span style="color: #98be65;">}</span>
+        result
+    <span style="color: #c678dd;">}</span>
+
+    <span style="color: #51afef;">fn</span> <span style="color: #c678dd;">put</span><span style="color: #c678dd;">(</span><span style="color: #bbc2cf; background-color: #282c34;">&amp;</span><span style="color: #51afef;">mut</span> <span style="color: #51afef;">self</span>, <span style="color: #dcaeea;">key</span>: <span style="color: #ECBE7B;">i32</span>, <span style="color: #dcaeea;">value</span>: <span style="color: #ECBE7B;">i32</span><span style="color: #c678dd;">)</span> <span style="color: #c678dd;">{</span>
+        <span style="color: #51afef;">if</span> <span style="color: #51afef;">let</span> <span style="color: #ECBE7B;">Some</span><span style="color: #98be65;">(</span>node<span style="color: #98be65;">)</span> = <span style="color: #51afef;">self</span>.data.get<span style="color: #98be65;">(</span><span style="color: #bbc2cf; background-color: #282c34;">&amp;</span>key<span style="color: #98be65;">)</span> <span style="color: #98be65;">{</span>
+            <span style="color: #51afef;">let</span> <span style="color: #dcaeea;">node</span> = <span style="color: #ECBE7B;">Rc</span>::clone<span style="color: #a9a1e1;">(</span>node<span style="color: #a9a1e1;">)</span>;
+            node.borrow_mut<span style="color: #a9a1e1;">()</span>.value = value;
+            <span style="color: #51afef;">self</span>.move_to_front<span style="color: #a9a1e1;">(</span>node<span style="color: #a9a1e1;">)</span>;
+        <span style="color: #98be65;">}</span> <span style="color: #51afef;">else</span> <span style="color: #98be65;">{</span>
+            <span style="color: #51afef;">let</span> <span style="color: #dcaeea;">new_node</span> = <span style="color: #ECBE7B;">Rc</span>::new<span style="color: #a9a1e1;">(</span><span style="color: #ECBE7B;">RefCell</span>::new<span style="color: #51afef;">(</span><span style="color: #ECBE7B;">ListNode</span> <span style="color: #c678dd;">{</span>
+                key,
+                value,
+                <span style="color: #dcaeea;">prev</span>: <span style="color: #ECBE7B;">None</span>,
+                <span style="color: #dcaeea;">next</span>: <span style="color: #ECBE7B;">None</span>,
+            <span style="color: #c678dd;">}</span><span style="color: #51afef;">)</span><span style="color: #a9a1e1;">)</span>;
+            <span style="color: #5B6268;">// </span><span style="color: #5B6268;">evict the tail node</span>
+            <span style="color: #51afef;">if</span> <span style="color: #51afef;">self</span>.data.len<span style="color: #a9a1e1;">()</span> &gt;= <span style="color: #51afef;">self</span>.capacity <span style="color: #a9a1e1;">{</span>
+                <span style="color: #51afef;">if</span> <span style="color: #51afef;">let</span> <span style="color: #ECBE7B;">Some</span><span style="color: #51afef;">(</span>tail<span style="color: #51afef;">)</span> = <span style="color: #51afef;">self</span>.tail.take<span style="color: #51afef;">()</span> <span style="color: #51afef;">{</span>
+                    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">cannot simply take the prev as it breaks the list?</span>
+                    <span style="color: #51afef;">let</span> <span style="color: #dcaeea;">prev</span> = tail.borrow<span style="color: #c678dd;">()</span>.prev.clone<span style="color: #c678dd;">()</span>;
+                    <span style="color: #51afef;">self</span>.data.remove<span style="color: #c678dd;">(</span><span style="color: #bbc2cf; background-color: #282c34;">&amp;</span>tail.borrow<span style="color: #98be65;">()</span>.key<span style="color: #c678dd;">)</span>;
+                    <span style="color: #51afef;">if</span> <span style="color: #51afef;">let</span> <span style="color: #ECBE7B;">Some</span><span style="color: #c678dd;">(</span>prev<span style="color: #c678dd;">)</span> = prev <span style="color: #c678dd;">{</span>
+                        prev.borrow_mut<span style="color: #98be65;">()</span>.next = <span style="color: #ECBE7B;">None</span>;
+                        <span style="color: #51afef;">self</span>.tail = <span style="color: #ECBE7B;">Some</span><span style="color: #98be65;">(</span>prev<span style="color: #98be65;">)</span>;
+                    <span style="color: #c678dd;">}</span> <span style="color: #51afef;">else</span> <span style="color: #c678dd;">{</span>
+                        <span style="color: #51afef;">self</span>.head = <span style="color: #ECBE7B;">None</span>;
+                        <span style="color: #51afef;">self</span>.tail = <span style="color: #ECBE7B;">None</span>;
+                    <span style="color: #c678dd;">}</span>
+                <span style="color: #51afef;">}</span>
+            <span style="color: #a9a1e1;">}</span>
+            <span style="color: #51afef;">self</span>.data.insert<span style="color: #a9a1e1;">(</span>key, <span style="color: #ECBE7B;">Rc</span>::clone<span style="color: #51afef;">(</span><span style="color: #bbc2cf; background-color: #282c34;">&amp;</span>new_node<span style="color: #51afef;">)</span><span style="color: #a9a1e1;">)</span>;
+            <span style="color: #51afef;">self</span>.move_to_front<span style="color: #a9a1e1;">(</span>new_node<span style="color: #a9a1e1;">)</span>;
+        <span style="color: #98be65;">}</span>
+    <span style="color: #c678dd;">}</span>
+<span style="color: #51afef;">}</span>
+
+</pre>
+</div>
 </div>
 </div>
 </div>
