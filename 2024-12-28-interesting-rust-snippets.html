@@ -41,26 +41,26 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org49e504a">1. References</a></li>
-<li><a href="#org836e221">2. Reference and lifetime</a></li>
-<li><a href="#org28fc803">3. Traits</a>
+<li><a href="#org62935f2">1. References</a></li>
+<li><a href="#org87fc779">2. Reference and lifetime</a></li>
+<li><a href="#orgebad419">3. Traits</a>
 <ul>
-<li><a href="#org9d5d649">3.1. Associated types</a></li>
-<li><a href="#org577d000">3.2. Static/Dynamic dispatch</a></li>
-<li><a href="#org8fd2c40">3.3. Trait bounds</a></li>
-<li><a href="#org0577e0b">3.4. Existential types</a></li>
+<li><a href="#org89b3bea">3.1. Associated types</a></li>
+<li><a href="#org5c10eb1">3.2. Static/Dynamic dispatch</a></li>
+<li><a href="#orgca620aa">3.3. Trait bounds</a></li>
+<li><a href="#org48a674d">3.4. Existential types</a></li>
 </ul>
 </li>
-<li><a href="#org9b039b6">4. Linked-list</a>
+<li><a href="#org83f62fb">4. Linked-list</a>
 <ul>
-<li><a href="#orgf6ba0e3">4.1. Leetcode 146: LRU cache</a></li>
+<li><a href="#orge5d18c5">4.1. Leetcode 146: LRU cache</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-org49e504a" class="outline-2">
-<h2 id="org49e504a"><span class="section-number-2">1.</span> References</h2>
+<div id="outline-container-org62935f2" class="outline-2">
+<h2 id="org62935f2"><span class="section-number-2">1.</span> References</h2>
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
 <li><a href="https://rust-for-rustaceans.com/">Rust for Rustaceans</a></li>
@@ -70,8 +70,8 @@
 </ul>
 </div>
 </div>
-<div id="outline-container-org836e221" class="outline-2">
-<h2 id="org836e221"><span class="section-number-2">2.</span> Reference and lifetime</h2>
+<div id="outline-container-org87fc779" class="outline-2">
+<h2 id="org87fc779"><span class="section-number-2">2.</span> Reference and lifetime</h2>
 <div class="outline-text-2" id="text-2">
 <div class="org-src-container">
 <pre class="src src-rust"><span style="color: #51afef;">let</span> <span style="color: #51afef;">mut</span> <span style="color: #dcaeea;">x</span>;
@@ -238,12 +238,12 @@ We can also use lifetime bounds to specify <code>'a</code> should outlives, i.e.
 </div>
 </div>
 </div>
-<div id="outline-container-org28fc803" class="outline-2">
-<h2 id="org28fc803"><span class="section-number-2">3.</span> Traits</h2>
+<div id="outline-container-orgebad419" class="outline-2">
+<h2 id="orgebad419"><span class="section-number-2">3.</span> Traits</h2>
 <div class="outline-text-2" id="text-3">
 </div>
-<div id="outline-container-org9d5d649" class="outline-3">
-<h3 id="org9d5d649"><span class="section-number-3">3.1.</span> Associated types</h3>
+<div id="outline-container-org89b3bea" class="outline-3">
+<h3 id="org89b3bea"><span class="section-number-3">3.1.</span> Associated types</h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
 One should use associated types instead of generic type parameters in a trait if there should only exist one trait implementation for any type. For instance, for any given type, the <code>Item</code> type should be unambiguous even if type contains generic parameters.
@@ -321,8 +321,8 @@ On the other hands, sometimes we want multiple trait implementations for the giv
 </div>
 </div>
 </div>
-<div id="outline-container-org577d000" class="outline-3">
-<h3 id="org577d000"><span class="section-number-3">3.2.</span> Static/Dynamic dispatch</h3>
+<div id="outline-container-org5c10eb1" class="outline-3">
+<h3 id="org5c10eb1"><span class="section-number-3">3.2.</span> Static/Dynamic dispatch</h3>
 <div class="outline-text-3" id="text-3-2">
 <p>
 There are two ways to pass into a function a type that implements a trait: static dispatch and dynamic dispatch:
@@ -384,8 +384,8 @@ Broadly speaking, use static dispatch in a library, and dynamic dispatch in a bi
 </div>
 </div>
 </div>
-<div id="outline-container-org8fd2c40" class="outline-3">
-<h3 id="org8fd2c40"><span class="section-number-3">3.3.</span> Trait bounds</h3>
+<div id="outline-container-orgca620aa" class="outline-3">
+<h3 id="orgca620aa"><span class="section-number-3">3.3.</span> Trait bounds</h3>
 <div class="outline-text-3" id="text-3-3">
 <div class="org-src-container">
 <pre class="src src-rust"><span style="color: #51afef;">fn</span> <span style="color: #c678dd;">collect_to_map</span><span style="color: #51afef;">&lt;</span><span style="color: #ECBE7B;">T</span>, <span style="color: #ECBE7B;">S</span><span style="color: #51afef;">&gt;(</span><span style="color: #dcaeea;">items</span>: <span style="color: #51afef;">impl</span> <span style="color: #ECBE7B;">IntoIterator</span><span style="color: #c678dd;">&lt;</span><span style="color: #ECBE7B;">Item</span> = <span style="color: #ECBE7B;">T</span><span style="color: #c678dd;">&gt;</span><span style="color: #51afef;">)</span> -&gt; <span style="color: #ECBE7B;">HashMap</span><span style="color: #51afef;">&lt;</span><span style="color: #ECBE7B;">T</span>, <span style="color: #ECBE7B;">usize</span>, <span style="color: #ECBE7B;">S</span><span style="color: #51afef;">&gt;</span>
@@ -430,8 +430,8 @@ The code above adds trait bounds for both outer type and the inner associated ty
 </p>
 </div>
 </div>
-<div id="outline-container-org0577e0b" class="outline-3">
-<h3 id="org0577e0b"><span class="section-number-3">3.4.</span> Existential types</h3>
+<div id="outline-container-org48a674d" class="outline-3">
+<h3 id="org48a674d"><span class="section-number-3">3.4.</span> Existential types</h3>
 <div class="outline-text-3" id="text-3-4">
 <div class="org-src-container">
 <pre class="src src-rust"><span style="color: #51afef; font-weight: bold;">#!</span><span style="color: #51afef; font-weight: bold;">[</span><span style="color: #51afef; font-weight: bold;">feature</span><span style="color: #c678dd; font-weight: bold;">(</span><span style="color: #51afef; font-weight: bold;">impl_trait_in_assoc_type</span><span style="color: #c678dd; font-weight: bold;">)</span><span style="color: #51afef; font-weight: bold;">]</span> <span style="color: #5B6268;">// </span><span style="color: #5B6268;">require nightly</span>
@@ -472,15 +472,15 @@ The code above uses existential types in the associated types to avoid creating 
 </div>
 </div>
 </div>
-<div id="outline-container-org9b039b6" class="outline-2">
-<h2 id="org9b039b6"><span class="section-number-2">4.</span> Linked-list</h2>
+<div id="outline-container-org83f62fb" class="outline-2">
+<h2 id="org83f62fb"><span class="section-number-2">4.</span> Linked-list</h2>
 <div class="outline-text-2" id="text-4">
 </div>
-<div id="outline-container-orgf6ba0e3" class="outline-3">
-<h3 id="orgf6ba0e3"><span class="section-number-3">4.1.</span> <a href="https://leetcode.com/problems/lru-cache/description/">Leetcode 146: LRU cache</a></h3>
+<div id="outline-container-orge5d18c5" class="outline-3">
+<h3 id="orge5d18c5"><span class="section-number-3">4.1.</span> <a href="https://leetcode.com/problems/lru-cache/description/">Leetcode 146: LRU cache</a></h3>
 <div class="outline-text-3" id="text-4-1">
 <p>
-This is not interesting at all, but it took me so long to make it right, and I may have used too many reference counters.
+Below is my personal solution for the problem, while it was accepted, there is space to improve it and I may come back when I have another idea.
 </p>
 <div class="org-src-container">
 <pre class="src src-rust"><span style="color: #51afef;">use</span> <span style="color: #a9a1e1;">std</span>::<span style="color: #51afef;">{</span><span style="color: #a9a1e1;">cell</span>::<span style="color: #ECBE7B;">RefCell</span>, <span style="color: #a9a1e1;">collections</span>::<span style="color: #ECBE7B;">HashMap</span>, <span style="color: #a9a1e1;">rc</span>::<span style="color: #ECBE7B;">Rc</span><span style="color: #51afef;">}</span>;
@@ -622,6 +622,7 @@ This is not interesting at all, but it took me so long to make it right, and I m
             <i class="fab fa-github"></i>
       </a>
       </div>
+      <script src="assets/toggle.js"></script>
       </footer></div>
 </body>
 </html>

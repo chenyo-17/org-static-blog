@@ -42,26 +42,26 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org49e504a">1. References</a></li>
-<li><a href="#org836e221">2. Reference and lifetime</a></li>
-<li><a href="#org28fc803">3. Traits</a>
+<li><a href="#org62935f2">1. References</a></li>
+<li><a href="#org87fc779">2. Reference and lifetime</a></li>
+<li><a href="#orgebad419">3. Traits</a>
 <ul>
-<li><a href="#org9d5d649">3.1. Associated types</a></li>
-<li><a href="#org577d000">3.2. Static/Dynamic dispatch</a></li>
-<li><a href="#org8fd2c40">3.3. Trait bounds</a></li>
-<li><a href="#org0577e0b">3.4. Existential types</a></li>
+<li><a href="#org89b3bea">3.1. Associated types</a></li>
+<li><a href="#org5c10eb1">3.2. Static/Dynamic dispatch</a></li>
+<li><a href="#orgca620aa">3.3. Trait bounds</a></li>
+<li><a href="#org48a674d">3.4. Existential types</a></li>
 </ul>
 </li>
-<li><a href="#org9b039b6">4. Linked-list</a>
+<li><a href="#org83f62fb">4. Linked-list</a>
 <ul>
-<li><a href="#orgf6ba0e3">4.1. Leetcode 146: LRU cache</a></li>
+<li><a href="#orge5d18c5">4.1. Leetcode 146: LRU cache</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-org49e504a" class="outline-2">
-<h2 id="org49e504a"><span class="section-number-2">1.</span> References</h2>
+<div id="outline-container-org62935f2" class="outline-2">
+<h2 id="org62935f2"><span class="section-number-2">1.</span> References</h2>
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
 <li><a href="https://rust-for-rustaceans.com/">Rust for Rustaceans</a></li>
@@ -71,8 +71,8 @@
 </ul>
 </div>
 </div>
-<div id="outline-container-org836e221" class="outline-2">
-<h2 id="org836e221"><span class="section-number-2">2.</span> Reference and lifetime</h2>
+<div id="outline-container-org87fc779" class="outline-2">
+<h2 id="org87fc779"><span class="section-number-2">2.</span> Reference and lifetime</h2>
 <div class="outline-text-2" id="text-2">
 <div class="org-src-container">
 <pre class="src src-rust"><span style="color: #51afef;">let</span> <span style="color: #51afef;">mut</span> <span style="color: #dcaeea;">x</span>;
@@ -239,12 +239,12 @@ We can also use lifetime bounds to specify <code>'a</code> should outlives, i.e.
 </div>
 </div>
 </div>
-<div id="outline-container-org28fc803" class="outline-2">
-<h2 id="org28fc803"><span class="section-number-2">3.</span> Traits</h2>
+<div id="outline-container-orgebad419" class="outline-2">
+<h2 id="orgebad419"><span class="section-number-2">3.</span> Traits</h2>
 <div class="outline-text-2" id="text-3">
 </div>
-<div id="outline-container-org9d5d649" class="outline-3">
-<h3 id="org9d5d649"><span class="section-number-3">3.1.</span> Associated types</h3>
+<div id="outline-container-org89b3bea" class="outline-3">
+<h3 id="org89b3bea"><span class="section-number-3">3.1.</span> Associated types</h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
 One should use associated types instead of generic type parameters in a trait if there should only exist one trait implementation for any type. For instance, for any given type, the <code>Item</code> type should be unambiguous even if type contains generic parameters.
@@ -322,8 +322,8 @@ On the other hands, sometimes we want multiple trait implementations for the giv
 </div>
 </div>
 </div>
-<div id="outline-container-org577d000" class="outline-3">
-<h3 id="org577d000"><span class="section-number-3">3.2.</span> Static/Dynamic dispatch</h3>
+<div id="outline-container-org5c10eb1" class="outline-3">
+<h3 id="org5c10eb1"><span class="section-number-3">3.2.</span> Static/Dynamic dispatch</h3>
 <div class="outline-text-3" id="text-3-2">
 <p>
 There are two ways to pass into a function a type that implements a trait: static dispatch and dynamic dispatch:
@@ -385,8 +385,8 @@ Broadly speaking, use static dispatch in a library, and dynamic dispatch in a bi
 </div>
 </div>
 </div>
-<div id="outline-container-org8fd2c40" class="outline-3">
-<h3 id="org8fd2c40"><span class="section-number-3">3.3.</span> Trait bounds</h3>
+<div id="outline-container-orgca620aa" class="outline-3">
+<h3 id="orgca620aa"><span class="section-number-3">3.3.</span> Trait bounds</h3>
 <div class="outline-text-3" id="text-3-3">
 <div class="org-src-container">
 <pre class="src src-rust"><span style="color: #51afef;">fn</span> <span style="color: #c678dd;">collect_to_map</span><span style="color: #51afef;">&lt;</span><span style="color: #ECBE7B;">T</span>, <span style="color: #ECBE7B;">S</span><span style="color: #51afef;">&gt;(</span><span style="color: #dcaeea;">items</span>: <span style="color: #51afef;">impl</span> <span style="color: #ECBE7B;">IntoIterator</span><span style="color: #c678dd;">&lt;</span><span style="color: #ECBE7B;">Item</span> = <span style="color: #ECBE7B;">T</span><span style="color: #c678dd;">&gt;</span><span style="color: #51afef;">)</span> -&gt; <span style="color: #ECBE7B;">HashMap</span><span style="color: #51afef;">&lt;</span><span style="color: #ECBE7B;">T</span>, <span style="color: #ECBE7B;">usize</span>, <span style="color: #ECBE7B;">S</span><span style="color: #51afef;">&gt;</span>
@@ -431,8 +431,8 @@ The code above adds trait bounds for both outer type and the inner associated ty
 </p>
 </div>
 </div>
-<div id="outline-container-org0577e0b" class="outline-3">
-<h3 id="org0577e0b"><span class="section-number-3">3.4.</span> Existential types</h3>
+<div id="outline-container-org48a674d" class="outline-3">
+<h3 id="org48a674d"><span class="section-number-3">3.4.</span> Existential types</h3>
 <div class="outline-text-3" id="text-3-4">
 <div class="org-src-container">
 <pre class="src src-rust"><span style="color: #51afef; font-weight: bold;">#!</span><span style="color: #51afef; font-weight: bold;">[</span><span style="color: #51afef; font-weight: bold;">feature</span><span style="color: #c678dd; font-weight: bold;">(</span><span style="color: #51afef; font-weight: bold;">impl_trait_in_assoc_type</span><span style="color: #c678dd; font-weight: bold;">)</span><span style="color: #51afef; font-weight: bold;">]</span> <span style="color: #5B6268;">// </span><span style="color: #5B6268;">require nightly</span>
@@ -473,15 +473,15 @@ The code above uses existential types in the associated types to avoid creating 
 </div>
 </div>
 </div>
-<div id="outline-container-org9b039b6" class="outline-2">
-<h2 id="org9b039b6"><span class="section-number-2">4.</span> Linked-list</h2>
+<div id="outline-container-org83f62fb" class="outline-2">
+<h2 id="org83f62fb"><span class="section-number-2">4.</span> Linked-list</h2>
 <div class="outline-text-2" id="text-4">
 </div>
-<div id="outline-container-orgf6ba0e3" class="outline-3">
-<h3 id="orgf6ba0e3"><span class="section-number-3">4.1.</span> <a href="https://leetcode.com/problems/lru-cache/description/">Leetcode 146: LRU cache</a></h3>
+<div id="outline-container-orge5d18c5" class="outline-3">
+<h3 id="orge5d18c5"><span class="section-number-3">4.1.</span> <a href="https://leetcode.com/problems/lru-cache/description/">Leetcode 146: LRU cache</a></h3>
 <div class="outline-text-3" id="text-4-1">
 <p>
-This is not interesting at all, but it took me so long to make it right, and I may have used too many reference counters.
+Below is my personal solution for the problem, while it was accepted, there is space to improve it and I may come back when I have another idea.
 </p>
 <div class="org-src-container">
 <pre class="src src-rust"><span style="color: #51afef;">use</span> <span style="color: #a9a1e1;">std</span>::<span style="color: #51afef;">{</span><span style="color: #a9a1e1;">cell</span>::<span style="color: #ECBE7B;">RefCell</span>, <span style="color: #a9a1e1;">collections</span>::<span style="color: #ECBE7B;">HashMap</span>, <span style="color: #a9a1e1;">rc</span>::<span style="color: #ECBE7B;">Rc</span><span style="color: #51afef;">}</span>;
@@ -610,70 +610,70 @@ This is not interesting at all, but it took me so long to make it right, and I m
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org0047a6c">1. Introduction</a></li>
-<li><a href="#org5e4815d">2. Complexity</a>
+<li><a href="#orga657ed5">1. Introduction</a></li>
+<li><a href="#org1917476">2. Complexity</a>
 <ul>
-<li><a href="#org4171659">2.1. Definition</a></li>
-<li><a href="#orgda5850f">2.2. Symptoms</a></li>
-<li><a href="#orge7cd90b">2.3. Causes</a></li>
+<li><a href="#org8e9d6aa">2.1. Definition</a></li>
+<li><a href="#orge5b36b6">2.2. Symptoms</a></li>
+<li><a href="#orgb9d2185">2.3. Causes</a></li>
 </ul>
 </li>
-<li><a href="#org4526627">3. Programming mindsets</a>
+<li><a href="#org9ddf31f">3. Programming mindsets</a>
 <ul>
-<li><a href="#org8891fe0">3.1. Strategic programming</a></li>
+<li><a href="#orge8e1b21">3.1. Strategic programming</a></li>
 </ul>
 </li>
-<li><a href="#org99fc0ab">4. Modular design</a>
+<li><a href="#org2830b98">4. Modular design</a>
 <ul>
-<li><a href="#org5185435">4.1. Interface</a></li>
-<li><a href="#orgf90a710">4.2. Abstraction</a></li>
+<li><a href="#orgb6344b6">4.1. Interface</a></li>
+<li><a href="#org2577a29">4.2. Abstraction</a></li>
 </ul>
 </li>
-<li><a href="#org8050b6d">5. Information hiding</a>
+<li><a href="#org3ce63f4">5. Information hiding</a>
 <ul>
-<li><a href="#org00dfaa5">5.1. Information leakage</a></li>
-<li><a href="#orgc638438">5.2. Temporal decomposition</a></li>
+<li><a href="#orgcf2d65b">5.1. Information leakage</a></li>
+<li><a href="#org9d344e3">5.2. Temporal decomposition</a></li>
 </ul>
 </li>
-<li><a href="#org5200a4b">6. General-Purpose modules</a>
+<li><a href="#org707264a">6. General-Purpose modules</a>
 <ul>
-<li><a href="#org90c7d9d">6.1. Example: GUI text editor design</a></li>
+<li><a href="#orgac0f26f">6.1. Example: GUI text editor design</a></li>
 </ul>
 </li>
-<li><a href="#org1a9b571">7. Layers of abstractions</a>
+<li><a href="#org49e9c8b">7. Layers of abstractions</a>
 <ul>
-<li><a href="#org93fdc1c">7.1. Pass-through methods</a></li>
-<li><a href="#org229bdb5">7.2. Pass-through variables</a></li>
-<li><a href="#orgf897c14">7.3. Acceptable interface duplication</a></li>
+<li><a href="#orgf68c15a">7.1. Pass-through methods</a></li>
+<li><a href="#org0b297c6">7.2. Pass-through variables</a></li>
+<li><a href="#org1792615">7.3. Acceptable interface duplication</a></li>
 </ul>
 </li>
-<li><a href="#orgf863796">8. Combine or separate functionality</a></li>
-<li><a href="#org615f6d2">9. Exception handling</a>
+<li><a href="#org7020788">8. Combine or separate functionality</a></li>
+<li><a href="#org5af7f08">9. Exception handling</a>
 <ul>
-<li><a href="#orga7f7974">9.1. Define errors out of existence</a></li>
-<li><a href="#org7ab2088">9.2. Exception masking</a></li>
-<li><a href="#org049389f">9.3. Exception aggregation</a></li>
+<li><a href="#org1f06053">9.1. Define errors out of existence</a></li>
+<li><a href="#org8b716f2">9.2. Exception masking</a></li>
+<li><a href="#org1c1c0c9">9.3. Exception aggregation</a></li>
 </ul>
 </li>
-<li><a href="#org900e81a">10. Design it twice</a></li>
-<li><a href="#orgfa4c08c">11. Write comments</a>
+<li><a href="#org074dfb1">10. Design it twice</a></li>
+<li><a href="#org531e52e">11. Write comments</a>
 <ul>
-<li><a href="#orgbd95ce2">11.1. Why write comments</a></li>
-<li><a href="#org269a3c0">11.2. What are good comments</a>
+<li><a href="#org452c4d5">11.1. Why write comments</a></li>
+<li><a href="#org5ea44c7">11.2. What are good comments</a>
 <ul>
-<li><a href="#org5f38c1b">11.2.1. Lower-level comments</a></li>
-<li><a href="#org74c7a02">11.2.2. Higher-level comments</a></li>
-<li><a href="#orgd53dc56">11.2.3. Interface comments</a></li>
-<li><a href="#orga495a56">11.2.4. Implementation comments</a></li>
-<li><a href="#orgea0e7b6">11.2.5. Cross-module comments</a></li>
+<li><a href="#org9f0b7f9">11.2.1. Lower-level comments</a></li>
+<li><a href="#org8de8e4e">11.2.2. Higher-level comments</a></li>
+<li><a href="#orgb2dc86a">11.2.3. Interface comments</a></li>
+<li><a href="#orgf6d93df">11.2.4. Implementation comments</a></li>
+<li><a href="#org62b2ad3">11.2.5. Cross-module comments</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#org1c5f413">12. Choose names</a>
+<li><a href="#orgc96d377">12. Choose names</a>
 <ul>
-<li><a href="#org0e67aa5">12.1. Precision</a></li>
-<li><a href="#org2d62f1e">12.2. Consistency</a></li>
+<li><a href="#org24c083f">12.1. Precision</a></li>
+<li><a href="#org9a759fc">12.2. Consistency</a></li>
 </ul>
 </li>
 </ul>
@@ -684,8 +684,8 @@ This is a personal note for the book &ldquo;A Philosophy of Software Design&rdqu
 John Ousterhout is the author of Tcl scripting language and the Raft protocol.
 This book works together with <a href="https://web.stanford.edu/~ouster/cs190-winter24/info/">Stanford CS190</a>.
 </p>
-<div id="outline-container-org0047a6c" class="outline-2">
-<h2 id="org0047a6c"><span class="section-number-2">1.</span> Introduction</h2>
+<div id="outline-container-orga657ed5" class="outline-2">
+<h2 id="orga657ed5"><span class="section-number-2">1.</span> Introduction</h2>
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
 <li>The most fundamental problem in CS is <b><b>problem decomposition</b></b>: how to divide a complex problem into pieces that can be solved independently.</li>
@@ -706,16 +706,16 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 </ul>
 </div>
 </div>
-<div id="outline-container-org5e4815d" class="outline-2">
-<h2 id="org5e4815d"><span class="section-number-2">2.</span> Complexity</h2>
+<div id="outline-container-org1917476" class="outline-2">
+<h2 id="org1917476"><span class="section-number-2">2.</span> Complexity</h2>
 <div class="outline-text-2" id="text-2">
 <ul class="org-ul">
 <li>Complexity is <b><b>incremental</b></b>.</li>
 <li>Developers must adopt a <b><b>zero tolerance</b></b> philosophy.</li>
 </ul>
 </div>
-<div id="outline-container-org4171659" class="outline-3">
-<h3 id="org4171659"><span class="section-number-3">2.1.</span> Definition</h3>
+<div id="outline-container-org8e9d6aa" class="outline-3">
+<h3 id="org8e9d6aa"><span class="section-number-3">2.1.</span> Definition</h3>
 <div class="outline-text-3" id="text-2-1">
 <ul class="org-ul">
 <li>Complexity is anything related to the structure of a software system that makes it hard to understand and modify the system.</li>
@@ -727,8 +727,8 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 </ul>
 </div>
 </div>
-<div id="outline-container-orgda5850f" class="outline-3">
-<h3 id="orgda5850f"><span class="section-number-3">2.2.</span> Symptoms</h3>
+<div id="outline-container-orge5b36b6" class="outline-3">
+<h3 id="orge5b36b6"><span class="section-number-3">2.2.</span> Symptoms</h3>
 <div class="outline-text-3" id="text-2-2">
 <ul class="org-ul">
 <li>Change amplification: a seemingly simple change requires code modifications in many different places.</li>
@@ -742,8 +742,8 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 </ul>
 </div>
 </div>
-<div id="outline-container-orge7cd90b" class="outline-3">
-<h3 id="orge7cd90b"><span class="section-number-3">2.3.</span> Causes</h3>
+<div id="outline-container-orgb9d2185" class="outline-3">
+<h3 id="orgb9d2185"><span class="section-number-3">2.3.</span> Causes</h3>
 <div class="outline-text-3" id="text-2-3">
 <ul class="org-ul">
 <li>Complexity is caused by two things: <b><b>dependencies</b></b> and <b><b>obscurity</b></b>.</li>
@@ -763,8 +763,8 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 </div>
 </div>
 </div>
-<div id="outline-container-org4526627" class="outline-2">
-<h2 id="org4526627"><span class="section-number-2">3.</span> Programming mindsets</h2>
+<div id="outline-container-org9ddf31f" class="outline-2">
+<h2 id="org9ddf31f"><span class="section-number-2">3.</span> Programming mindsets</h2>
 <div class="outline-text-2" id="text-3">
 <ul class="org-ul">
 <li>Tactical programming: the main focus is to get something working, e.g., a new feature or a bug fix.</li>
@@ -772,8 +772,8 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 <li>Once a code base turns to spaghetti, it is nearly impossible to fix.</li>
 </ul>
 </div>
-<div id="outline-container-org8891fe0" class="outline-3">
-<h3 id="org8891fe0"><span class="section-number-3">3.1.</span> Strategic programming</h3>
+<div id="outline-container-orge8e1b21" class="outline-3">
+<h3 id="orge8e1b21"><span class="section-number-3">3.1.</span> Strategic programming</h3>
 <div class="outline-text-3" id="text-3-1">
 <ul class="org-ul">
 <li>Requires an investment mindset to improve the system design rather than taking the fastest path to finish the current task.</li>
@@ -783,7 +783,7 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 </ul>
 
 
-<figure id="orgf8611f6">
+<figure id="org931e0f3">
 <img src="https://csruiliu.github.io/blog/images/strategic-tactical.jpeg" alt="strategic-tactical.jpeg" align="center" width="400px">
 
 <figcaption><span class="figure-number">Figure 1: </span>Strategic vs Tactical programming (<a href="https://csruiliu.github.io/blog/images/strategic-tactical.jpeg">Source</a>)</figcaption>
@@ -791,8 +791,8 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 </div>
 </div>
 </div>
-<div id="outline-container-org99fc0ab" class="outline-2">
-<h2 id="org99fc0ab"><span class="section-number-2">4.</span> Modular design</h2>
+<div id="outline-container-org2830b98" class="outline-2">
+<h2 id="org2830b98"><span class="section-number-2">4.</span> Modular design</h2>
 <div class="outline-text-2" id="text-4">
 <ul class="org-ul">
 <li>The goal of modular design is to minimize the dependencies between modules.</li>
@@ -812,8 +812,8 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 </ul></li>
 </ul>
 </div>
-<div id="outline-container-org5185435" class="outline-3">
-<h3 id="org5185435"><span class="section-number-3">4.1.</span> Interface</h3>
+<div id="outline-container-orgb6344b6" class="outline-3">
+<h3 id="orgb6344b6"><span class="section-number-3">4.1.</span> Interface</h3>
 <div class="outline-text-3" id="text-4-1">
 <ul class="org-ul">
 <li>A module interface contains two information: formal and informal.</li>
@@ -826,8 +826,8 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 </ul>
 </div>
 </div>
-<div id="outline-container-orgf90a710" class="outline-3">
-<h3 id="orgf90a710"><span class="section-number-3">4.2.</span> Abstraction</h3>
+<div id="outline-container-org2577a29" class="outline-3">
+<h3 id="org2577a29"><span class="section-number-3">4.2.</span> Abstraction</h3>
 <div class="outline-text-3" id="text-4-2">
 <ul class="org-ul">
 <li>An abstraction is a simplified view of an entity, which omits unimportant details.
@@ -845,8 +845,8 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 </div>
 </div>
 </div>
-<div id="outline-container-org8050b6d" class="outline-2">
-<h2 id="org8050b6d"><span class="section-number-2">5.</span> Information hiding</h2>
+<div id="outline-container-org3ce63f4" class="outline-2">
+<h2 id="org3ce63f4"><span class="section-number-2">5.</span> Information hiding</h2>
 <div class="outline-text-2" id="text-5">
 <ul class="org-ul">
 <li>Information hiding is the most important technique for achieving deep modules.</li>
@@ -859,8 +859,8 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 </ul></li>
 </ul>
 </div>
-<div id="outline-container-org00dfaa5" class="outline-3">
-<h3 id="org00dfaa5"><span class="section-number-3">5.1.</span> Information leakage</h3>
+<div id="outline-container-orgcf2d65b" class="outline-3">
+<h3 id="orgcf2d65b"><span class="section-number-3">5.1.</span> Information leakage</h3>
 <div class="outline-text-3" id="text-5-1">
 <ul class="org-ul">
 <li>The leakage occurs when a design decision is reflected in multiple modules. thus creating dependencies between the modules.
@@ -883,8 +883,8 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 </ul>
 </div>
 </div>
-<div id="outline-container-orgc638438" class="outline-3">
-<h3 id="orgc638438"><span class="section-number-3">5.2.</span> Temporal decomposition</h3>
+<div id="outline-container-org9d344e3" class="outline-3">
+<h3 id="org9d344e3"><span class="section-number-3">5.2.</span> Temporal decomposition</h3>
 <div class="outline-text-3" id="text-5-2">
 <ul class="org-ul">
 <li>Temporal decomposition is a common cause of information leakage.</li>
@@ -899,8 +899,8 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 </div>
 </div>
 </div>
-<div id="outline-container-org5200a4b" class="outline-2">
-<h2 id="org5200a4b"><span class="section-number-2">6.</span> General-Purpose modules</h2>
+<div id="outline-container-org707264a" class="outline-2">
+<h2 id="org707264a"><span class="section-number-2">6.</span> General-Purpose modules</h2>
 <div class="outline-text-2" id="text-6">
 <ul class="org-ul">
 <li>General-purpose modules can be used to address a broad range of problems such that it may find unanticipated uses in the future (cf. investment mindset).</li>
@@ -914,8 +914,8 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 </ul></li>
 </ul>
 </div>
-<div id="outline-container-org90c7d9d" class="outline-3">
-<h3 id="org90c7d9d"><span class="section-number-3">6.1.</span> Example: GUI text editor design</h3>
+<div id="outline-container-orgac0f26f" class="outline-3">
+<h3 id="orgac0f26f"><span class="section-number-3">6.1.</span> Example: GUI text editor design</h3>
 <div class="outline-text-3" id="text-6-1">
 <ul class="org-ul">
 <li>Specialized design: use individual method in the text class to support each high-level features, e.g., <code>backspace(Cursor cursor)</code> deletes the character before the cursor; <code>delete(Cursor cursor)</code> deletes the character after the cursor; <code>deleteSelection(Selection selection)</code> deletes the selected section.</li>
@@ -938,8 +938,8 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 </div>
 </div>
 </div>
-<div id="outline-container-org1a9b571" class="outline-2">
-<h2 id="org1a9b571"><span class="section-number-2">7.</span> Layers of abstractions</h2>
+<div id="outline-container-org49e9c8b" class="outline-2">
+<h2 id="org49e9c8b"><span class="section-number-2">7.</span> Layers of abstractions</h2>
 <div class="outline-text-2" id="text-7">
 <ul class="org-ul">
 <li>Software systems are composed into layers, where higher layers use the facilities provided by lower layers; each layer provides an abstraction different from the layers above or below it.
@@ -955,8 +955,8 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 </ul></li>
 </ul>
 </div>
-<div id="outline-container-org93fdc1c" class="outline-3">
-<h3 id="org93fdc1c"><span class="section-number-3">7.1.</span> Pass-through methods</h3>
+<div id="outline-container-orgf68c15a" class="outline-3">
+<h3 id="orgf68c15a"><span class="section-number-3">7.1.</span> Pass-through methods</h3>
 <div class="outline-text-3" id="text-7-1">
 <ul class="org-ul">
 <li>A pass-through method is a method that does little except invoke another method, whose signature is similar or identical to the callee function.</li>
@@ -966,15 +966,15 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 </ul>
 
 
-<figure id="org7282617">
+<figure id="orgbdaf39d">
 <img src="./static/pass-through-methods.png" alt="pass-through-methods.png" align="center" width="400px">
 
 <figcaption><span class="figure-number">Figure 2: </span>Refactor pass-through methods</figcaption>
 </figure>
 </div>
 </div>
-<div id="outline-container-org229bdb5" class="outline-3">
-<h3 id="org229bdb5"><span class="section-number-3">7.2.</span> Pass-through variables</h3>
+<div id="outline-container-org0b297c6" class="outline-3">
+<h3 id="org0b297c6"><span class="section-number-3">7.2.</span> Pass-through variables</h3>
 <div class="outline-text-3" id="text-7-2">
 <ul class="org-ul">
 <li>A pass-through variable is a variable that is passed down through a long chain of methods.</li>
@@ -988,8 +988,8 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 </ul>
 </div>
 </div>
-<div id="outline-container-orgf897c14" class="outline-3">
-<h3 id="orgf897c14"><span class="section-number-3">7.3.</span> Acceptable interface duplication</h3>
+<div id="outline-container-org1792615" class="outline-3">
+<h3 id="org1792615"><span class="section-number-3">7.3.</span> Acceptable interface duplication</h3>
 <div class="outline-text-3" id="text-7-3">
 <ul class="org-ul">
 <li>Dispatcher: a method that uses its arguments to select a specific method to invoke and passes most of its arguments.
@@ -1008,8 +1008,8 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 </div>
 </div>
 </div>
-<div id="outline-container-orgf863796" class="outline-2">
-<h2 id="orgf863796"><span class="section-number-2">8.</span> Combine or separate functionality</h2>
+<div id="outline-container-org7020788" class="outline-2">
+<h2 id="org7020788"><span class="section-number-2">8.</span> Combine or separate functionality</h2>
 <div class="outline-text-2" id="text-8">
 <ul class="org-ul">
 <li>The goal is to reduce the system complexity as a <b><b>whole</b></b> and improve its modularity.
@@ -1037,8 +1037,8 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 </ul>
 </div>
 </div>
-<div id="outline-container-org615f6d2" class="outline-2">
-<h2 id="org615f6d2"><span class="section-number-2">9.</span> Exception handling</h2>
+<div id="outline-container-org5af7f08" class="outline-2">
+<h2 id="org5af7f08"><span class="section-number-2">9.</span> Exception handling</h2>
 <div class="outline-text-2" id="text-9">
 <ul class="org-ul">
 <li>Exceptions refer to any uncommon condition that alters the normal control flow.
@@ -1055,8 +1055,8 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 <li>Same as exceptions, special cases can result in code riddled with <code>if</code> statements, they should be eliminated by designing the normal case in a way that automatically handles the special cases.</li>
 </ul>
 </div>
-<div id="outline-container-orga7f7974" class="outline-3">
-<h3 id="orga7f7974"><span class="section-number-3">9.1.</span> Define errors out of existence</h3>
+<div id="outline-container-org1f06053" class="outline-3">
+<h3 id="org1f06053"><span class="section-number-3">9.1.</span> Define errors out of existence</h3>
 <div class="outline-text-3" id="text-9-1">
 <ul class="org-ul">
 <li>Example 1: instead of throwing an exception when a key does not exist in <code>remove</code>, simply return to ensure the key no longer exists.</li>
@@ -1065,8 +1065,8 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 </ul>
 </div>
 </div>
-<div id="outline-container-org7ab2088" class="outline-3">
-<h3 id="org7ab2088"><span class="section-number-3">9.2.</span> Exception masking</h3>
+<div id="outline-container-org8b716f2" class="outline-3">
+<h3 id="org8b716f2"><span class="section-number-3">9.2.</span> Exception masking</h3>
 <div class="outline-text-3" id="text-9-2">
 <ul class="org-ul">
 <li>An exceptional condition is detected and handled at a low level in the system so that higher levels need not be aware of the condition.</li>
@@ -1075,8 +1075,8 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 </ul>
 </div>
 </div>
-<div id="outline-container-org049389f" class="outline-3">
-<h3 id="org049389f"><span class="section-number-3">9.3.</span> Exception aggregation</h3>
+<div id="outline-container-org1c1c0c9" class="outline-3">
+<h3 id="org1c1c0c9"><span class="section-number-3">9.3.</span> Exception aggregation</h3>
 <div class="outline-text-3" id="text-9-3">
 <ul class="org-ul">
 <li>Exception aggregation handles many special-purpose exceptions with a single general-purpose handler.</li>
@@ -1090,8 +1090,8 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 </div>
 </div>
 </div>
-<div id="outline-container-org900e81a" class="outline-2">
-<h2 id="org900e81a"><span class="section-number-2">10.</span> Design it twice</h2>
+<div id="outline-container-org074dfb1" class="outline-2">
+<h2 id="org074dfb1"><span class="section-number-2">10.</span> Design it twice</h2>
 <div class="outline-text-2" id="text-10">
 <ul class="org-ul">
 <li>Rather than picking the first idea that comes to mind, try to pick several approaches that are radically <b><b>different</b></b> from each other.
@@ -1114,12 +1114,12 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 </ul>
 </div>
 </div>
-<div id="outline-container-orgfa4c08c" class="outline-2">
-<h2 id="orgfa4c08c"><span class="section-number-2">11.</span> Write comments</h2>
+<div id="outline-container-org531e52e" class="outline-2">
+<h2 id="org531e52e"><span class="section-number-2">11.</span> Write comments</h2>
 <div class="outline-text-2" id="text-11">
 </div>
-<div id="outline-container-orgbd95ce2" class="outline-3">
-<h3 id="orgbd95ce2"><span class="section-number-3">11.1.</span> Why write comments</h3>
+<div id="outline-container-org452c4d5" class="outline-3">
+<h3 id="org452c4d5"><span class="section-number-3">11.1.</span> Why write comments</h3>
 <div class="outline-text-3" id="text-11-1">
 <ul class="org-ul">
 <li>The correct process of writing comments will improve the system design.</li>
@@ -1132,8 +1132,8 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 </ul>
 </div>
 </div>
-<div id="outline-container-org269a3c0" class="outline-3">
-<h3 id="org269a3c0"><span class="section-number-3">11.2.</span> What are good comments</h3>
+<div id="outline-container-org5ea44c7" class="outline-3">
+<h3 id="org5ea44c7"><span class="section-number-3">11.2.</span> What are good comments</h3>
 <div class="outline-text-3" id="text-11-2">
 <ul class="org-ul">
 <li>Follow the comment conventions, e.g., Doxygen for C++, godoc for Go.</li>
@@ -1154,8 +1154,8 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 </ul></li>
 </ul>
 </div>
-<div id="outline-container-org5f38c1b" class="outline-4">
-<h4 id="org5f38c1b"><span class="section-number-4">11.2.1.</span> Lower-level comments</h4>
+<div id="outline-container-org9f0b7f9" class="outline-4">
+<h4 id="org9f0b7f9"><span class="section-number-4">11.2.1.</span> Lower-level comments</h4>
 <div class="outline-text-4" id="text-11-2-1">
 <ul class="org-ul">
 <li>Precision is most useful when commenting variable declarations.</li>
@@ -1170,8 +1170,8 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 </ul>
 </div>
 </div>
-<div id="outline-container-org74c7a02" class="outline-4">
-<h4 id="org74c7a02"><span class="section-number-4">11.2.2.</span> Higher-level comments</h4>
+<div id="outline-container-org8de8e4e" class="outline-4">
+<h4 id="org8de8e4e"><span class="section-number-4">11.2.2.</span> Higher-level comments</h4>
 <div class="outline-text-4" id="text-11-2-2">
 <ul class="org-ul">
 <li>Help the reader understand the overall intent and code structure, usually inside the code.</li>
@@ -1182,8 +1182,8 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 </ul>
 </div>
 </div>
-<div id="outline-container-orgd53dc56" class="outline-4">
-<h4 id="orgd53dc56"><span class="section-number-4">11.2.3.</span> Interface comments</h4>
+<div id="outline-container-orgb2dc86a" class="outline-4">
+<h4 id="orgb2dc86a"><span class="section-number-4">11.2.3.</span> Interface comments</h4>
 <div class="outline-text-4" id="text-11-2-3">
 <ul class="org-ul">
 <li>Separate interface comments from implementation comments: interface comments provide information for someone to use rather than maintain the entity.</li>
@@ -1198,8 +1198,8 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 </ul>
 </div>
 </div>
-<div id="outline-container-orga495a56" class="outline-4">
-<h4 id="orga495a56"><span class="section-number-4">11.2.4.</span> Implementation comments</h4>
+<div id="outline-container-orgf6d93df" class="outline-4">
+<h4 id="orgf6d93df"><span class="section-number-4">11.2.4.</span> Implementation comments</h4>
 <div class="outline-text-4" id="text-11-2-4">
 <ul class="org-ul">
 <li>The main goal is to help readers understand <b><b>what</b></b> the code is doing and <b><b>why</b></b> the code is needed (e.g., refer to a bug report), not how.</li>
@@ -1209,8 +1209,8 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 </ul>
 </div>
 </div>
-<div id="outline-container-orgea0e7b6" class="outline-4">
-<h4 id="orgea0e7b6"><span class="section-number-4">11.2.5.</span> Cross-module comments</h4>
+<div id="outline-container-org62b2ad3" class="outline-4">
+<h4 id="org62b2ad3"><span class="section-number-4">11.2.5.</span> Cross-module comments</h4>
 <div class="outline-text-4" id="text-11-2-5">
 <ul class="org-ul">
 <li>Real systems involve design decisions that affect multiple classes.</li>
@@ -1229,8 +1229,8 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 </div>
 </div>
 </div>
-<div id="outline-container-org1c5f413" class="outline-2">
-<h2 id="org1c5f413"><span class="section-number-2">12.</span> Choose names</h2>
+<div id="outline-container-orgc96d377" class="outline-2">
+<h2 id="orgc96d377"><span class="section-number-2">12.</span> Choose names</h2>
 <div class="outline-text-2" id="text-12">
 <ul class="org-ul">
 <li>A good name conveys information about what the underlying entity is and is <b><b>not</b></b>.
@@ -1241,8 +1241,8 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 <li>The greater the distance between a name&rsquo;s declaration and its last usage, the longer the name should be.</li>
 </ul>
 </div>
-<div id="outline-container-org0e67aa5" class="outline-3">
-<h3 id="org0e67aa5"><span class="section-number-3">12.1.</span> Precision</h3>
+<div id="outline-container-org24c083f" class="outline-3">
+<h3 id="org24c083f"><span class="section-number-3">12.1.</span> Precision</h3>
 <div class="outline-text-3" id="text-12-1">
 <ul class="org-ul">
 <li>Vague name examples: &ldquo;count&rdquo;, &ldquo;status&rdquo;, &ldquo;x&rdquo;, &ldquo;result&rdquo; in a no return method.</li>
@@ -1255,8 +1255,8 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 </ul>
 </div>
 </div>
-<div id="outline-container-org2d62f1e" class="outline-3">
-<h3 id="org2d62f1e"><span class="section-number-3">12.2.</span> Consistency</h3>
+<div id="outline-container-org9a759fc" class="outline-3">
+<h3 id="org9a759fc"><span class="section-number-3">12.2.</span> Consistency</h3>
 <div class="outline-text-3" id="text-12-2">
 <ul class="org-ul">
 <li>Always use the common name for and <b><b>only</b></b> for the given purpose, e.g., <code>ch</code> for a channel.</li>
@@ -1276,66 +1276,66 @@ This book works together with <a href="https://web.stanford.edu/~ouster/cs190-wi
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org2f9bacb">1. Terminology</a>
+<li><a href="#orgb3fa791">1. Terminology</a>
 <ul>
-<li><a href="#orge61e168">1.1. IC design principle</a></li>
-<li><a href="#org3bb5e65">1.2. IC protocol stack</a>
+<li><a href="#orgd9ad074">1.1. IC design principle</a></li>
+<li><a href="#org3aeea39">1.2. IC protocol stack</a>
 <ul>
-<li><a href="#orgf4bbfe9">1.2.1. Execution layer</a></li>
-<li><a href="#orgefb086d">1.2.2. Message routing layer</a></li>
-<li><a href="#orgc008fd4">1.2.3. Consensus layer</a></li>
-<li><a href="#org1202791">1.2.4. P2P layer</a></li>
+<li><a href="#org833bb8f">1.2.1. Execution layer</a></li>
+<li><a href="#org9743eca">1.2.2. Message routing layer</a></li>
+<li><a href="#org98cbd22">1.2.3. Consensus layer</a></li>
+<li><a href="#orgb0017e0">1.2.4. P2P layer</a></li>
 </ul>
 </li>
-<li><a href="#org8078573">1.3. State sync</a></li>
-<li><a href="#org3a05ca3">1.4. QUIC protocol</a></li>
-<li><a href="#org18b65c6">1.5. Backpressure in blockchain</a></li>
+<li><a href="#org1125642">1.3. State sync</a></li>
+<li><a href="#org0686c84">1.4. QUIC protocol</a></li>
+<li><a href="#org86435d1">1.5. Backpressure in blockchain</a></li>
 </ul>
 </li>
-<li><a href="#org829e630">2. P2P layer</a>
+<li><a href="#org83ccea0">2. P2P layer</a>
 <ul>
-<li><a href="#org571c9f3">2.1. Gossip protocol</a></li>
-<li><a href="#org722f0c7">2.2. Artifacts</a></li>
-<li><a href="#orgb1b4646">2.3. Constraints</a></li>
-<li><a href="#org3b96b60">2.4. Adverts</a>
+<li><a href="#org62678a1">2.1. Gossip protocol</a></li>
+<li><a href="#orge37e9da">2.2. Artifacts</a></li>
+<li><a href="#org1dc925b">2.3. Constraints</a></li>
+<li><a href="#orgc1e2be6">2.4. Adverts</a>
 <ul>
-<li><a href="#org2ea3d9b">2.4.1. Advert priority</a></li>
+<li><a href="#orgd3871ab">2.4.1. Advert priority</a></li>
 </ul>
 </li>
-<li><a href="#org804eeb4">2.5. Artifact pool</a></li>
-<li><a href="#org2f8f707">2.6. Peer context</a></li>
-<li><a href="#org6dbbbb1">2.7. Gossip protocol events</a>
+<li><a href="#org75a5a00">2.5. Artifact pool</a></li>
+<li><a href="#org96fdae6">2.6. Peer context</a></li>
+<li><a href="#orgd5d43ee">2.7. Gossip protocol events</a>
 <ul>
-<li><a href="#orgc11963e">2.7.1. Process a new advert received from peer \(i\)</a></li>
-<li><a href="#org5466c45">2.7.2. Process a new received artifact from peer \(i\)</a></li>
+<li><a href="#orgb88b30b">2.7.1. Process a new advert received from peer \(i\)</a></li>
+<li><a href="#orgbf423b6">2.7.2. Process a new received artifact from peer \(i\)</a></li>
 </ul>
 </li>
-<li><a href="#orgee01a65">2.8. Common attacks</a>
+<li><a href="#org6c517fa">2.8. Common attacks</a>
 <ul>
-<li><a href="#org962b49f">2.8.1. Sybil attack</a></li>
-<li><a href="#org150081f">2.8.2. Eclipse attack</a></li>
-<li><a href="#org9da9cee">2.8.3. Routing table poisoning</a></li>
-<li><a href="#orgec2eb1a">2.8.4. Bandwidth hogging</a></li>
+<li><a href="#orgfd1d522">2.8.1. Sybil attack</a></li>
+<li><a href="#org870ea28">2.8.2. Eclipse attack</a></li>
+<li><a href="#orgdba1aff">2.8.3. Routing table poisoning</a></li>
+<li><a href="#org53f86f9">2.8.4. Bandwidth hogging</a></li>
 </ul>
 </li>
-<li><a href="#org71a026f">2.9. Security</a></li>
+<li><a href="#org91251d1">2.9. Security</a></li>
 </ul>
 </li>
-<li><a href="#orgd35eb30">3. Transport component</a>
+<li><a href="#orga591c0f">3. Transport component</a>
 <ul>
-<li><a href="#org7547aab">3.1. Transient connection disturbances</a></li>
-<li><a href="#org9a38d6d">3.2. Long disconnection with full TX queue</a></li>
+<li><a href="#org5a5bb2f">3.1. Transient connection disturbances</a></li>
+<li><a href="#org90425a4">3.2. Long disconnection with full TX queue</a></li>
 </ul>
 </li>
-<li><a href="#org2301ac7">4. State sync protocol</a>
+<li><a href="#orgca3424d">4. State sync protocol</a>
 <ul>
-<li><a href="#orgeb4205a">4.1. Monolithic P2P layer not suitable for the state sync</a></li>
+<li><a href="#org3c8ed8a">4.1. Monolithic P2P layer not suitable for the state sync</a></li>
 </ul>
 </li>
-<li><a href="#orgef1fedd">5. Fully QUIC-based P2P layer</a>
+<li><a href="#orga14cf38">5. Fully QUIC-based P2P layer</a>
 <ul>
-<li><a href="#org6b246b2">5.1. Properties for consensus-related clients</a></li>
-<li><a href="#org9be0596">5.2. Slot table</a></li>
+<li><a href="#org82401b7">5.1. Properties for consensus-related clients</a></li>
+<li><a href="#orgaa2f888">5.2. Slot table</a></li>
 </ul>
 </li>
 </ul>
@@ -1357,12 +1357,12 @@ The learning resources include:
 <li><a href="https://www.youtube.com/watch?v=31J8PoLW9iM">Youtube: QUIC Tutorial (SIGCOMM 2020)</a>;</li>
 <li><a href="https://medium.com/dfinity/a-new-p2p-layer-is-coming-to-the-internet-computer-772ac2a29484">Medium: Fully asynchronous IC P2P layer (Jan 2024)</a>.</li>
 </ul>
-<div id="outline-container-org2f9bacb" class="outline-2">
-<h2 id="org2f9bacb"><span class="section-number-2">1.</span> Terminology</h2>
+<div id="outline-container-orgb3fa791" class="outline-2">
+<h2 id="orgb3fa791"><span class="section-number-2">1.</span> Terminology</h2>
 <div class="outline-text-2" id="text-1">
 </div>
-<div id="outline-container-orge61e168" class="outline-3">
-<h3 id="orge61e168"><span class="section-number-3">1.1.</span> IC design principle</h3>
+<div id="outline-container-orgd9ad074" class="outline-3">
+<h3 id="orgd9ad074"><span class="section-number-3">1.1.</span> IC design principle</h3>
 <div class="outline-text-3" id="text-1-1">
 <ul class="org-ul">
 <li>Secure, reliable and scalable.</li>
@@ -1370,23 +1370,23 @@ The learning resources include:
 </ul>
 </div>
 </div>
-<div id="outline-container-org3bb5e65" class="outline-3">
-<h3 id="org3bb5e65"><span class="section-number-3">1.2.</span> IC protocol stack</h3>
+<div id="outline-container-org3aeea39" class="outline-3">
+<h3 id="org3aeea39"><span class="section-number-3">1.2.</span> IC protocol stack</h3>
 <div class="outline-text-3" id="text-1-2">
 <ul class="org-ul">
 <li>From top to down: execution, message routing, consensus, P2P.</li>
 </ul>
 </div>
-<div id="outline-container-orgf4bbfe9" class="outline-4">
-<h4 id="orgf4bbfe9"><span class="section-number-4">1.2.1.</span> Execution layer</h4>
+<div id="outline-container-org833bb8f" class="outline-4">
+<h4 id="org833bb8f"><span class="section-number-4">1.2.1.</span> Execution layer</h4>
 <div class="outline-text-4" id="text-1-2-1">
 <ul class="org-ul">
 <li>Manages a safe environment for deterministic execution of software messages.</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-orgefb086d" class="outline-4">
-<h4 id="orgefb086d"><span class="section-number-4">1.2.2.</span> Message routing layer</h4>
+<div id="outline-container-org9743eca" class="outline-4">
+<h4 id="org9743eca"><span class="section-number-4">1.2.2.</span> Message routing layer</h4>
 <div class="outline-text-4" id="text-1-2-2">
 <ul class="org-ul">
 <li>Routes user and system-generated messages between subnets.</li>
@@ -1395,16 +1395,16 @@ The learning resources include:
 </ul>
 </div>
 </div>
-<div id="outline-container-orgc008fd4" class="outline-4">
-<h4 id="orgc008fd4"><span class="section-number-4">1.2.3.</span> Consensus layer</h4>
+<div id="outline-container-org98cbd22" class="outline-4">
+<h4 id="org98cbd22"><span class="section-number-4">1.2.3.</span> Consensus layer</h4>
 <div class="outline-text-4" id="text-1-2-3">
 <ul class="org-ul">
 <li>Arranges messages received from users and different subnets into blocks before delivering them to the message routing layer.</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org1202791" class="outline-4">
-<h4 id="org1202791"><span class="section-number-4">1.2.4.</span> P2P layer</h4>
+<div id="outline-container-orgb0017e0" class="outline-4">
+<h4 id="orgb0017e0"><span class="section-number-4">1.2.4.</span> P2P layer</h4>
 <div class="outline-text-4" id="text-1-2-4">
 <ul class="org-ul">
 <li>Collects and advertises messages from users and other nodes in the same subnet, e.g., IC consensus protocol, the state sync protocol.</li>
@@ -1413,8 +1413,8 @@ The learning resources include:
 </div>
 </div>
 </div>
-<div id="outline-container-org8078573" class="outline-3">
-<h3 id="org8078573"><span class="section-number-3">1.3.</span> State sync</h3>
+<div id="outline-container-org1125642" class="outline-3">
+<h3 id="org1125642"><span class="section-number-3">1.3.</span> State sync</h3>
 <div class="outline-text-3" id="text-1-3">
 <ul class="org-ul">
 <li>Enables nodes to synchronize the replicated state of the subnet by downloading the required state and verify its authenticity relative to the subnet&rsquo;s chain key with the state sync protocol.</li>
@@ -1425,8 +1425,8 @@ The learning resources include:
 </ul>
 </div>
 </div>
-<div id="outline-container-org3a05ca3" class="outline-3">
-<h3 id="org3a05ca3"><span class="section-number-3">1.4.</span> QUIC protocol</h3>
+<div id="outline-container-org0686c84" class="outline-3">
+<h3 id="org0686c84"><span class="section-number-3">1.4.</span> QUIC protocol</h3>
 <div class="outline-text-3" id="text-1-4">
 <ul class="org-ul">
 <li>A new transport protocol with TLS 1.3, new handshake, new packet structure, encryption, uni/bi-directional streams, etc.</li>
@@ -1448,8 +1448,8 @@ The learning resources include:
 </ul>
 </div>
 </div>
-<div id="outline-container-org18b65c6" class="outline-3">
-<h3 id="org18b65c6"><span class="section-number-3">1.5.</span> Backpressure in blockchain</h3>
+<div id="outline-container-org86435d1" class="outline-3">
+<h3 id="org86435d1"><span class="section-number-3">1.5.</span> Backpressure in blockchain</h3>
 <div class="outline-text-3" id="text-1-5">
 <ul class="org-ul">
 <li>If the receiver slows down the message consumption, the sender&rsquo;s buffer fills up and the sender&rsquo;s networking layer must take one of the three paths:
@@ -1462,8 +1462,8 @@ The learning resources include:
 </div>
 </div>
 </div>
-<div id="outline-container-org829e630" class="outline-2">
-<h2 id="org829e630"><span class="section-number-2">2.</span> P2P layer</h2>
+<div id="outline-container-org83ccea0" class="outline-2">
+<h2 id="org83ccea0"><span class="section-number-2">2.</span> P2P layer</h2>
 <div class="outline-text-2" id="text-2">
 <ul class="org-ul">
 <li>Send out artifacts created by the above layers.</li>
@@ -1475,8 +1475,8 @@ The learning resources include:
 </ul></li>
 </ul>
 </div>
-<div id="outline-container-org571c9f3" class="outline-3">
-<h3 id="org571c9f3"><span class="section-number-3">2.1.</span> Gossip protocol</h3>
+<div id="outline-container-org62678a1" class="outline-3">
+<h3 id="org62678a1"><span class="section-number-3">2.1.</span> Gossip protocol</h3>
 <div class="outline-text-3" id="text-2-1">
 <ul class="org-ul">
 <li>When a subnet node creates an artifact or receives it from its peer, it gossips this artifact to all its peers, i.e., other connected subnet nodes.
@@ -1486,8 +1486,8 @@ The learning resources include:
 </ul>
 </div>
 </div>
-<div id="outline-container-org722f0c7" class="outline-3">
-<h3 id="org722f0c7"><span class="section-number-3">2.2.</span> Artifacts</h3>
+<div id="outline-container-orge37e9da" class="outline-3">
+<h3 id="orge37e9da"><span class="section-number-3">2.2.</span> Artifacts</h3>
 <div class="outline-text-3" id="text-2-2">
 <ul class="org-ul">
 <li>Network messages to be broadcast in the subnet, e.g.,
@@ -1498,8 +1498,8 @@ The learning resources include:
 </ul>
 </div>
 </div>
-<div id="outline-container-orgb1b4646" class="outline-3">
-<h3 id="orgb1b4646"><span class="section-number-3">2.3.</span> Constraints</h3>
+<div id="outline-container-org1dc925b" class="outline-3">
+<h3 id="org1dc925b"><span class="section-number-3">2.3.</span> Constraints</h3>
 <div class="outline-text-3" id="text-2-3">
 <ul class="org-ul">
 <li>P2P layer should provide the above guarantee under the following constraints:
@@ -1514,8 +1514,8 @@ The learning resources include:
 </ul>
 </div>
 </div>
-<div id="outline-container-org3b96b60" class="outline-3">
-<h3 id="org3b96b60"><span class="section-number-3">2.4.</span> Adverts</h3>
+<div id="outline-container-orgc1e2be6" class="outline-3">
+<h3 id="orgc1e2be6"><span class="section-number-3">2.4.</span> Adverts</h3>
 <div class="outline-text-3" id="text-2-4">
 <ul class="org-ul">
 <li>Simply flooding all artifacts consumes unnecessary network bandwidth, instead artifacts previews called adverts are sent first.</li>
@@ -1524,8 +1524,8 @@ The learning resources include:
 <li>In the new P2P layer, if the artifact is small enough (&lt; 1KB), adverts are not used.</li>
 </ul>
 </div>
-<div id="outline-container-org2ea3d9b" class="outline-4">
-<h4 id="org2ea3d9b"><span class="section-number-4">2.4.1.</span> Advert priority</h4>
+<div id="outline-container-orgd3871ab" class="outline-4">
+<h4 id="orgd3871ab"><span class="section-number-4">2.4.1.</span> Advert priority</h4>
 <div class="outline-text-4" id="text-2-4-1">
 <ul class="org-ul">
 <li>Consensus provides the gossip protocol with a priority function, which takes an advert and its attributes and returns a priority value.</li>
@@ -1534,8 +1534,8 @@ The learning resources include:
 </div>
 </div>
 </div>
-<div id="outline-container-org804eeb4" class="outline-3">
-<h3 id="org804eeb4"><span class="section-number-3">2.5.</span> Artifact pool</h3>
+<div id="outline-container-org75a5a00" class="outline-3">
+<h3 id="org75a5a00"><span class="section-number-3">2.5.</span> Artifact pool</h3>
 <div class="outline-text-3" id="text-2-5">
 <ul class="org-ul">
 <li>A data structure maintained by the gossip protocol.</li>
@@ -1549,8 +1549,8 @@ The learning resources include:
 </ul>
 </div>
 </div>
-<div id="outline-container-org2f8f707" class="outline-3">
-<h3 id="org2f8f707"><span class="section-number-3">2.6.</span> Peer context</h3>
+<div id="outline-container-org96fdae6" class="outline-3">
+<h3 id="org96fdae6"><span class="section-number-3">2.6.</span> Peer context</h3>
 <div class="outline-text-3" id="text-2-6">
 <ul class="org-ul">
 <li>Advert queue: a priority queue of all adverts the peer has received from another peer, ordered by their priority.</li>
@@ -1559,8 +1559,8 @@ The learning resources include:
 </ul>
 </div>
 </div>
-<div id="outline-container-org6dbbbb1" class="outline-3">
-<h3 id="org6dbbbb1"><span class="section-number-3">2.7.</span> Gossip protocol events</h3>
+<div id="outline-container-orgd5d43ee" class="outline-3">
+<h3 id="orgd5d43ee"><span class="section-number-3">2.7.</span> Gossip protocol events</h3>
 <div class="outline-text-3" id="text-2-7">
 <ul class="org-ul">
 <li>Create a new advert for a new artifact added by application component locally and sends to all peers;</li>
@@ -1569,8 +1569,8 @@ The learning resources include:
 <li>Handle recovery and reconnection.</li>
 </ul>
 </div>
-<div id="outline-container-orgc11963e" class="outline-4">
-<h4 id="orgc11963e"><span class="section-number-4">2.7.1.</span> Process a new advert received from peer \(i\)</h4>
+<div id="outline-container-orgb88b30b" class="outline-4">
+<h4 id="orgb88b30b"><span class="section-number-4">2.7.1.</span> Process a new advert received from peer \(i\)</h4>
 <div class="outline-text-4" id="text-2-7-1">
 <ul class="org-ul">
 <li>If the advert is already in peer \(i\)&rsquo;s received check cache, or the priority is &ldquo;drop&rdquo;, ignore;</li>
@@ -1581,8 +1581,8 @@ The learning resources include:
 </ul>
 </div>
 </div>
-<div id="outline-container-org5466c45" class="outline-4">
-<h4 id="org5466c45"><span class="section-number-4">2.7.2.</span> Process a new received artifact from peer \(i\)</h4>
+<div id="outline-container-orgbf423b6" class="outline-4">
+<h4 id="orgbf423b6"><span class="section-number-4">2.7.2.</span> Process a new received artifact from peer \(i\)</h4>
 <div class="outline-text-4" id="text-2-7-2">
 <ul class="org-ul">
 <li>First check the received artifact has been requested and verify its integrity;</li>
@@ -1597,20 +1597,20 @@ The learning resources include:
 </div>
 </div>
 </div>
-<div id="outline-container-orgee01a65" class="outline-3">
-<h3 id="orgee01a65"><span class="section-number-3">2.8.</span> Common attacks</h3>
+<div id="outline-container-org6c517fa" class="outline-3">
+<h3 id="org6c517fa"><span class="section-number-3">2.8.</span> Common attacks</h3>
 <div class="outline-text-3" id="text-2-8">
 </div>
-<div id="outline-container-org962b49f" class="outline-4">
-<h4 id="org962b49f"><span class="section-number-4">2.8.1.</span> Sybil attack</h4>
+<div id="outline-container-orgfd1d522" class="outline-4">
+<h4 id="orgfd1d522"><span class="section-number-4">2.8.1.</span> Sybil attack</h4>
 <div class="outline-text-4" id="text-2-8-1">
 <ul class="org-ul">
 <li>An attack creates multiple nodes to gain influences.</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org150081f" class="outline-4">
-<h4 id="org150081f"><span class="section-number-4">2.8.2.</span> Eclipse attack</h4>
+<div id="outline-container-org870ea28" class="outline-4">
+<h4 id="org870ea28"><span class="section-number-4">2.8.2.</span> Eclipse attack</h4>
 <div class="outline-text-4" id="text-2-8-2">
 <ul class="org-ul">
 <li>All peers of a correct node are byzantine nodes to disconnect the correct node from the subnet (though they cannot send spoofed artifacts due to artifact authentication).</li>
@@ -1622,16 +1622,16 @@ The learning resources include:
 </ul>
 </div>
 </div>
-<div id="outline-container-org9da9cee" class="outline-4">
-<h4 id="org9da9cee"><span class="section-number-4">2.8.3.</span> Routing table poisoning</h4>
+<div id="outline-container-orgdba1aff" class="outline-4">
+<h4 id="orgdba1aff"><span class="section-number-4">2.8.3.</span> Routing table poisoning</h4>
 <div class="outline-text-4" id="text-2-8-3">
 <ul class="org-ul">
 <li>Malicious nodes provide false routing information to disrupt network topology.</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-orgec2eb1a" class="outline-4">
-<h4 id="orgec2eb1a"><span class="section-number-4">2.8.4.</span> Bandwidth hogging</h4>
+<div id="outline-container-org53f86f9" class="outline-4">
+<h4 id="org53f86f9"><span class="section-number-4">2.8.4.</span> Bandwidth hogging</h4>
 <div class="outline-text-4" id="text-2-8-4">
 <ul class="org-ul">
 <li>Attackers consume excessive network resources.</li>
@@ -1639,8 +1639,8 @@ The learning resources include:
 </div>
 </div>
 </div>
-<div id="outline-container-org71a026f" class="outline-3">
-<h3 id="org71a026f"><span class="section-number-3">2.9.</span> Security</h3>
+<div id="outline-container-org91251d1" class="outline-3">
+<h3 id="org91251d1"><span class="section-number-3">2.9.</span> Security</h3>
 <div class="outline-text-3" id="text-2-9">
 <ul class="org-ul">
 <li>NNS manages the subnet membership, each node only requests and accepts connections with nodes in the same subnet to prevent DoS attack.</li>
@@ -1649,8 +1649,8 @@ The learning resources include:
 </div>
 </div>
 </div>
-<div id="outline-container-orgd35eb30" class="outline-2">
-<h2 id="orgd35eb30"><span class="section-number-2">3.</span> Transport component</h2>
+<div id="outline-container-orga591c0f" class="outline-2">
+<h2 id="orga591c0f"><span class="section-number-2">3.</span> Transport component</h2>
 <div class="outline-text-2" id="text-3">
 <ul class="org-ul">
 <li>Below the P2P component to main the actual network connections between peers.</li>
@@ -1658,8 +1658,8 @@ The learning resources include:
 <li>Frame gossip message with its own 7 headers.</li>
 </ul>
 </div>
-<div id="outline-container-org7547aab" class="outline-3">
-<h3 id="org7547aab"><span class="section-number-3">3.1.</span> Transient connection disturbances</h3>
+<div id="outline-container-org5a5bb2f" class="outline-3">
+<h3 id="org5a5bb2f"><span class="section-number-3">3.1.</span> Transient connection disturbances</h3>
 <div class="outline-text-3" id="text-3-1">
 <ul class="org-ul">
 <li>Transport keeps buffering ongoing messages in TX queues;</li>
@@ -1667,8 +1667,8 @@ The learning resources include:
 </ul>
 </div>
 </div>
-<div id="outline-container-org9a38d6d" class="outline-3">
-<h3 id="org9a38d6d"><span class="section-number-3">3.2.</span> Long disconnection with full TX queue</h3>
+<div id="outline-container-org90425a4" class="outline-3">
+<h3 id="org90425a4"><span class="section-number-3">3.2.</span> Long disconnection with full TX queue</h3>
 <div class="outline-text-3" id="text-3-2">
 <ul class="org-ul">
 <li>Transport notifies the receiver gossip protocol, sends retransmission request with artifact filter to tell the sender the latest advert the receiver has seen;
@@ -1681,8 +1681,8 @@ The learning resources include:
 </div>
 </div>
 </div>
-<div id="outline-container-org2301ac7" class="outline-2">
-<h2 id="org2301ac7"><span class="section-number-2">4.</span> State sync protocol</h2>
+<div id="outline-container-orgca3424d" class="outline-2">
+<h2 id="orgca3424d"><span class="section-number-2">4.</span> State sync protocol</h2>
 <div class="outline-text-2" id="text-4">
 <ul class="org-ul">
 <li>Nodes periodically advertise all locally available state versions with adverts;
@@ -1702,8 +1702,8 @@ The learning resources include:
 <li>The node then request missing chunks from multiple peers.</li>
 </ul>
 </div>
-<div id="outline-container-orgeb4205a" class="outline-3">
-<h3 id="orgeb4205a"><span class="section-number-3">4.1.</span> Monolithic P2P layer not suitable for the state sync</h3>
+<div id="outline-container-org3c8ed8a" class="outline-3">
+<h3 id="org3c8ed8a"><span class="section-number-3">4.1.</span> Monolithic P2P layer not suitable for the state sync</h3>
 <div class="outline-text-3" id="text-4-1">
 <ul class="org-ul">
 <li>P2P layer is designed to distribute small messages, which is not the case for the state sync protocol.</li>
@@ -1723,8 +1723,8 @@ The learning resources include:
 </div>
 </div>
 </div>
-<div id="outline-container-orgef1fedd" class="outline-2">
-<h2 id="orgef1fedd"><span class="section-number-2">5.</span> Fully QUIC-based P2P layer</h2>
+<div id="outline-container-orga14cf38" class="outline-2">
+<h2 id="orga14cf38"><span class="section-number-2">5.</span> Fully QUIC-based P2P layer</h2>
 <div class="outline-text-2" id="text-5">
 <ul class="org-ul">
 <li>IC&rsquo;s P2P layer stops using TCP altogether, which means a shift to a fully asynchronous implementation of the P2P layer.
@@ -1737,8 +1737,8 @@ The learning resources include:
 <li>Will eventually shift all clients to use the new P2P layer.</li>
 </ul>
 </div>
-<div id="outline-container-org6b246b2" class="outline-3">
-<h3 id="org6b246b2"><span class="section-number-3">5.1.</span> Properties for consensus-related clients</h3>
+<div id="outline-container-org82401b7" class="outline-3">
+<h3 id="org82401b7"><span class="section-number-3">5.1.</span> Properties for consensus-related clients</h3>
 <div class="outline-text-3" id="text-5-1">
 <ul class="org-ul">
 <li>Bounded number of active artifacts in the validated artifact pool; the consensus protocol uses checkpoints to purge artifacts periodically, hence a maximal pool size \(C\).</li>
@@ -1750,8 +1750,8 @@ The learning resources include:
 </ul>
 </div>
 </div>
-<div id="outline-container-org9be0596" class="outline-3">
-<h3 id="org9be0596"><span class="section-number-3">5.2.</span> Slot table</h3>
+<div id="outline-container-orgaa2f888" class="outline-3">
+<h3 id="orgaa2f888"><span class="section-number-3">5.2.</span> Slot table</h3>
 <div class="outline-text-3" id="text-5-2">
 <ul class="org-ul">
 <li>Maintained on the sender side and inferred on the receiver side.</li>
@@ -1777,21 +1777,21 @@ The learning resources include:
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org9c416c5">1. Previously on my Telegram bot</a></li>
-<li><a href="#org0d7541b">2. Why do I need a Mensa bot</a></li>
-<li><a href="#org8ce79e5">3. How to get the data</a>
+<li><a href="#org4663c8f">1. Previously on my Telegram bot</a></li>
+<li><a href="#org3be2547">2. Why do I need a Mensa bot</a></li>
+<li><a href="#orgdb88c92">3. How to get the data</a>
 <ul>
-<li><a href="#org305692d">3.1. Scrape menus locally</a></li>
-<li><a href="#org9b59469">3.2. Scrape menus on Render</a></li>
+<li><a href="#org0a2800a">3.1. Scrape menus locally</a></li>
+<li><a href="#orgd2ff214">3.2. Scrape menus on Render</a></li>
 </ul>
 </li>
-<li><a href="#org761b316">4. Performance</a></li>
-<li><a href="#orgab206e1">5. Conclusion</a></li>
+<li><a href="#org36f6131">4. Performance</a></li>
+<li><a href="#org3e53350">5. Conclusion</a></li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-org9c416c5" class="outline-2">
-<h2 id="org9c416c5"><span class="section-number-2">1.</span> Previously on my Telegram bot</h2>
+<div id="outline-container-org4663c8f" class="outline-2">
+<h2 id="org4663c8f"><span class="section-number-2">1.</span> Previously on my Telegram bot</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 In the post <a href="https://chenyo.me/2024-09-08-build-a-free-telegram-sticker-bot.html">Build a free Telegram sticker tag bot</a>, I detailed the process of integrating various online services to create a sticker tag bot.
@@ -1810,8 +1810,8 @@ At the conclusion of that post, I hinted at a second functionality I had in mind
 </p>
 </div>
 </div>
-<div id="outline-container-org0d7541b" class="outline-2">
-<h2 id="org0d7541b"><span class="section-number-2">2.</span> Why do I need a Mensa bot</h2>
+<div id="outline-container-org3be2547" class="outline-2">
+<h2 id="org3be2547"><span class="section-number-2">2.</span> Why do I need a Mensa bot</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 One mobile app I frequently use on weekdays is <a href="https://github.com/famoser/Mensa">Mensa</a>, which lists daily menus for each Zürich Mensa to help people make their most important decision of the day.
@@ -1821,8 +1821,8 @@ To fix this, I decide to add the meal images myself.
 </p>
 </div>
 </div>
-<div id="outline-container-org8ce79e5" class="outline-2">
-<h2 id="org8ce79e5"><span class="section-number-2">3.</span> How to get the data</h2>
+<div id="outline-container-orgdb88c92" class="outline-2">
+<h2 id="orgdb88c92"><span class="section-number-2">3.</span> How to get the data</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 I couldn&rsquo;t find an official API for this, so I decided to scrape the webpage myself.
@@ -1830,8 +1830,8 @@ Here&rsquo;s where things got tricky: the Mensa web pages use JavaScript to rend
 This meant I couldn&rsquo;t just grab the page - I needed a browser to run the JavaScript first.
 </p>
 </div>
-<div id="outline-container-org305692d" class="outline-3">
-<h3 id="org305692d"><span class="section-number-3">3.1.</span> Scrape menus locally</h3>
+<div id="outline-container-org0a2800a" class="outline-3">
+<h3 id="org0a2800a"><span class="section-number-3">3.1.</span> Scrape menus locally</h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
 On a local machine, it&rsquo;s pretty straightforward.
@@ -1840,8 +1840,8 @@ After you&rsquo;ve snagged the page, you can use an HTML parser like <a href="ht
 </p>
 </div>
 </div>
-<div id="outline-container-org9b59469" class="outline-3">
-<h3 id="org9b59469"><span class="section-number-3">3.2.</span> Scrape menus on Render</h3>
+<div id="outline-container-orgd2ff214" class="outline-3">
+<h3 id="orgd2ff214"><span class="section-number-3">3.2.</span> Scrape menus on Render</h3>
 <div class="outline-text-3" id="text-3-2">
 <p>
 The only snag with <code>go-rod</code> is it&rsquo;s too bulky for a Render free account.
@@ -1866,8 +1866,8 @@ So I had to clean it up before <code>goquery</code> can make sense of it.
 </div>
 </div>
 </div>
-<div id="outline-container-org761b316" class="outline-2">
-<h2 id="org761b316"><span class="section-number-2">4.</span> Performance</h2>
+<div id="outline-container-org36f6131" class="outline-2">
+<h2 id="org36f6131"><span class="section-number-2">4.</span> Performance</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 AbstractAPI&rsquo;s free plan only lets you make one request per second.
@@ -1883,8 +1883,8 @@ So, I end up scraping fresh data for each Mensa every single time.
 </p>
 </div>
 </div>
-<div id="outline-container-orgab206e1" class="outline-2">
-<h2 id="orgab206e1"><span class="section-number-2">5.</span> Conclusion</h2>
+<div id="outline-container-org3e53350" class="outline-2">
+<h2 id="org3e53350"><span class="section-number-2">5.</span> Conclusion</h2>
 <div class="outline-text-2" id="text-5">
 <p>
 Here&rsquo;s a quick look at what the bot can do now: it tags stickers and scrapes Mensa menus.
@@ -1892,7 +1892,7 @@ Keep in mind the GIF is sped up to twice the normal speed.
 </p>
 
 
-<figure id="orgc879d3a">
+<figure id="org85a53db">
 <img src="./static/telegram.gif" alt="telegram.gif" align="center" width="700px" style="border: 1px solid black;">
 
 <figcaption><span class="figure-number">Figure 1: </span>The current Telegram bot</figcaption>
@@ -1915,33 +1915,33 @@ The <a href="https://github.com/chenyo-17/pbaobot">repository</a> is also public
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgf153467">1. Namespace</a></li>
-<li><a href="#org40232d3">2. Wrapper class</a></li>
-<li><a href="#orgc9d8f4f">3. Iterator</a>
+<li><a href="#org3319f27">1. Namespace</a></li>
+<li><a href="#org6c5ab6f">2. Wrapper class</a></li>
+<li><a href="#orge28eb5f">3. Iterator</a>
 <ul>
-<li><a href="#org94cb86d">3.1. A doubly linked list (DLL) iterator</a></li>
+<li><a href="#org22b3188">3.1. A doubly linked list (DLL) iterator</a></li>
 </ul>
 </li>
-<li><a href="#org4c18899">4. STL containers</a>
+<li><a href="#orgabecb8b">4. STL containers</a>
 <ul>
-<li><a href="#org6dcfbeb">4.1. Vector</a></li>
-<li><a href="#orgfc95fbf">4.2. Set</a></li>
-<li><a href="#org5038e7e">4.3. Unordered maps</a></li>
+<li><a href="#org125b0e5">4.1. Vector</a></li>
+<li><a href="#orgb13b64e">4.2. Set</a></li>
+<li><a href="#org7084f8e">4.3. Unordered maps</a></li>
 </ul>
 </li>
-<li><a href="#org644b019">5. <code>auto</code></a></li>
-<li><a href="#org6876e1c">6. Smart pointers</a>
+<li><a href="#org4aebc03">5. <code>auto</code></a></li>
+<li><a href="#org9a35959">6. Smart pointers</a>
 <ul>
-<li><a href="#org03a407c">6.1. <code>std::unique_ptr</code></a></li>
-<li><a href="#orga17c160">6.2. <code>std::shared_ptr</code></a></li>
+<li><a href="#org3f34e9b">6.1. <code>std::unique_ptr</code></a></li>
+<li><a href="#orga6f4d50">6.2. <code>std::shared_ptr</code></a></li>
 </ul>
 </li>
-<li><a href="#orgff9d615">7. Synchronization</a>
+<li><a href="#org0b2f277">7. Synchronization</a>
 <ul>
-<li><a href="#org720a20f">7.1. <code>std::mutex</code></a></li>
-<li><a href="#org972445b">7.2. <code>std::scoped_lock</code></a></li>
-<li><a href="#org9630937">7.3. <code>std::condition_variable</code></a></li>
-<li><a href="#org45ff32d">7.4. Reader-writer lock</a></li>
+<li><a href="#org2b7c7db">7.1. <code>std::mutex</code></a></li>
+<li><a href="#orgace0084">7.2. <code>std::scoped_lock</code></a></li>
+<li><a href="#org00ab3e7">7.3. <code>std::condition_variable</code></a></li>
+<li><a href="#org4f057cc">7.4. Reader-writer lock</a></li>
 </ul>
 </li>
 </ul>
@@ -1950,8 +1950,8 @@ The <a href="https://github.com/chenyo-17/pbaobot">repository</a> is also public
 <p>
 This is a personal not for the <a href="https://github.com/cmu-db/15445-bootcamp">CMU 15-445 C++ bootcamp</a> along with some explanation from Claude.ai.
 </p>
-<div id="outline-container-orgf153467" class="outline-2">
-<h2 id="orgf153467"><span class="section-number-2">1.</span> Namespace</h2>
+<div id="outline-container-org3319f27" class="outline-2">
+<h2 id="org3319f27"><span class="section-number-2">1.</span> Namespace</h2>
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
 <li>Provides scopes to identifiers with <code>::</code>.</li>
@@ -1959,27 +1959,27 @@ This is a personal not for the <a href="https://github.com/cmu-db/15445-bootcamp
 Namespaces can be nested.
 </p>
 <div class="org-src-container">
-<pre class="src src-cpp"><span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;iostream&gt;</span>
-<span style="color: #51afef;">namespace</span> <span style="color: #a9a1e1;">ABC</span> {
-    <span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">spam</span>(<span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">a</span>) { <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"Hello from ABC::spam"</span> &lt;&lt; <span style="color: #a9a1e1;">std</span>::endl; }
+<pre class="src src-cpp"><span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #51afef;">&lt;</span><span style="color: #98be65;">iostream</span><span style="color: #51afef;">&gt;</span>
+<span style="color: #51afef;">namespace</span> <span style="color: #a9a1e1;">ABC</span> <span style="color: #51afef;">{</span>
+    <span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">spam</span><span style="color: #c678dd;">(</span><span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">a</span><span style="color: #c678dd;">)</span> <span style="color: #c678dd;">{</span> <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"Hello from ABC::spam"</span> &lt;&lt; <span style="color: #a9a1e1;">std</span>::endl; <span style="color: #c678dd;">}</span>
     <span style="color: #5B6268;">// </span><span style="color: #5B6268;">declare a nested namespace</span>
-    <span style="color: #51afef;">namespace</span> <span style="color: #a9a1e1;">DEF</span> {
-    <span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">bar</span>(<span style="color: #ECBE7B;">float</span> <span style="color: #dcaeea;">a</span>) { <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"Hello from ABC::DEF::bar"</span> &lt;&lt; <span style="color: #a9a1e1;">std</span>::endl; }
-    <span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">use_spam</span>(<span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">a</span>) {
-    <span style="color: #a9a1e1;">ABC</span>::spam(a);
+    <span style="color: #51afef;">namespace</span> <span style="color: #a9a1e1;">DEF</span> <span style="color: #c678dd;">{</span>
+    <span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">bar</span><span style="color: #98be65;">(</span><span style="color: #ECBE7B;">float</span> <span style="color: #dcaeea;">a</span><span style="color: #98be65;">)</span> <span style="color: #98be65;">{</span> <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"Hello from ABC::DEF::bar"</span> &lt;&lt; <span style="color: #a9a1e1;">std</span>::endl; <span style="color: #98be65;">}</span>
+    <span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">use_spam</span><span style="color: #98be65;">(</span><span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">a</span><span style="color: #98be65;">)</span> <span style="color: #98be65;">{</span>
+    <span style="color: #a9a1e1;">ABC</span>::spam<span style="color: #a9a1e1;">(</span>a<span style="color: #a9a1e1;">)</span>;
     <span style="color: #5B6268;">// </span><span style="color: #5B6268;">no difference with ABC::spam(a) if DEF</span>
     <span style="color: #5B6268;">// </span><span style="color: #5B6268;">does not have a spam function</span>
-    spam(a);
-    }
-} <span style="color: #5B6268;">// </span><span style="color: #5B6268;">namespace DEF</span>
+    spam<span style="color: #a9a1e1;">(</span>a<span style="color: #a9a1e1;">)</span>;
+    <span style="color: #98be65;">}</span>
+<span style="color: #c678dd;">}</span> <span style="color: #5B6268;">// </span><span style="color: #5B6268;">namespace DEF</span>
 
-    <span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">use_DEF_bar</span>(<span style="color: #ECBE7B;">float</span> <span style="color: #dcaeea;">a</span>) {
+    <span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">use_DEF_bar</span><span style="color: #c678dd;">(</span><span style="color: #ECBE7B;">float</span> <span style="color: #dcaeea;">a</span><span style="color: #c678dd;">)</span> <span style="color: #c678dd;">{</span>
     <span style="color: #5B6268;">// </span><span style="color: #5B6268;">if a namespace outside of DEF wants to use DEF::bar</span>
     <span style="color: #5B6268;">// </span><span style="color: #5B6268;">it must use the full namespace path ABC::DEF::bar</span>
-    <span style="color: #a9a1e1;">DEF</span>::bar(a);
-    }
+    <span style="color: #a9a1e1;">DEF</span>::bar<span style="color: #98be65;">(</span>a<span style="color: #98be65;">)</span>;
+    <span style="color: #c678dd;">}</span>
 
-} <span style="color: #5B6268;">// </span><span style="color: #5B6268;">namespace ABC</span>
+<span style="color: #51afef;">}</span> <span style="color: #5B6268;">// </span><span style="color: #5B6268;">namespace ABC</span>
 </pre>
 </div></li>
 <li>Two namespaces can define functions with the same name and signatures.</li>
@@ -1989,19 +1989,19 @@ Namespaces can be nested.
 </ul>
 </div>
 </div>
-<div id="outline-container-org40232d3" class="outline-2">
-<h2 id="org40232d3"><span class="section-number-2">2.</span> Wrapper class</h2>
+<div id="outline-container-org6c5ab6f" class="outline-2">
+<h2 id="org6c5ab6f"><span class="section-number-2">2.</span> Wrapper class</h2>
 <div class="outline-text-2" id="text-2">
 <ul class="org-ul">
 <li><p>
 Used to manage a resource, e.g., memory, file sockets, network connections.
 </p>
 <div class="org-src-container">
-<pre class="src src-cpp"><span style="color: #51afef;">class</span> <span style="color: #ECBE7B;">IntPtrManager</span> {
+<pre class="src src-cpp"><span style="color: #51afef;">class</span> <span style="color: #ECBE7B;">IntPtrManager</span> <span style="color: #51afef;">{</span>
 <span style="color: #51afef;">private</span>:
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">manages an int* to access the dynamic memory</span>
   <span style="color: #ECBE7B;">int</span> *<span style="color: #dcaeea;">ptr_</span>;
-};
+<span style="color: #51afef;">}</span>;
 </pre>
 </div></li>
 
@@ -2012,36 +2012,36 @@ Used to manage a resource, e.g., memory, file sockets, network connections.
 Acquisition: resources are acquired in the constructor.
 </p>
 <div class="org-src-container">
-<pre class="src src-cpp"><span style="color: #51afef;">class</span> <span style="color: #ECBE7B;">IntPtrManager</span> {
+<pre class="src src-cpp"><span style="color: #51afef;">class</span> <span style="color: #ECBE7B;">IntPtrManager</span> <span style="color: #51afef;">{</span>
 <span style="color: #51afef;">public</span>:
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">the constructor initializes a resource</span>
-  <span style="color: #c678dd;">IntPtrManager</span>() {
+  <span style="color: #c678dd;">IntPtrManager</span><span style="color: #c678dd;">()</span> <span style="color: #c678dd;">{</span>
     ptr_ = <span style="color: #51afef;">new</span> <span style="color: #ECBE7B;">int</span>;  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">allocate the memory</span>
     *ptr_ = <span style="color: #da8548; font-weight: bold;">0</span>;  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">set the default value</span>
-  }
+  <span style="color: #c678dd;">}</span>
 
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">the second constructor takes an initial value</span>
-  <span style="color: #c678dd;">IntPtrManager</span>(<span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">val</span>) {
+  <span style="color: #c678dd;">IntPtrManager</span><span style="color: #c678dd;">(</span><span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">val</span><span style="color: #c678dd;">)</span> <span style="color: #c678dd;">{</span>
     ptr_ = <span style="color: #51afef;">new</span> <span style="color: #ECBE7B;">int</span>;
     *ptr_ = val;
-  }
-};
+  <span style="color: #c678dd;">}</span>
+<span style="color: #51afef;">}</span>;
 </pre>
 </div></li>
 <li><p>
 Release: resources are released in the destructor.
 </p>
 <div class="org-src-container">
-<pre class="src src-cpp"><span style="color: #51afef;">class</span> <span style="color: #ECBE7B;">IntPtrManager</span> {
+<pre class="src src-cpp"><span style="color: #51afef;">class</span> <span style="color: #ECBE7B;">IntPtrManager</span> <span style="color: #51afef;">{</span>
 <span style="color: #51afef;">public</span>:
-  ~<span style="color: #c678dd;">IntPtrManager</span>() {
+  ~<span style="color: #c678dd;">IntPtrManager</span><span style="color: #c678dd;">()</span> <span style="color: #c678dd;">{</span>
     <span style="color: #5B6268;">// </span><span style="color: #5B6268;">ptr_ may be null after the move</span>
     <span style="color: #5B6268;">// </span><span style="color: #5B6268;">don't delete a null pointer</span>
-    <span style="color: #51afef;">if</span> (ptr_) {
+    <span style="color: #51afef;">if</span> <span style="color: #98be65;">(</span>ptr_<span style="color: #98be65;">)</span> <span style="color: #98be65;">{</span>
       <span style="color: #51afef;">delete</span> ptr_;
-    }
-  }
-};
+    <span style="color: #98be65;">}</span>
+  <span style="color: #c678dd;">}</span>
+<span style="color: #51afef;">}</span>;
 </pre>
 </div></li>
 </ul></li>
@@ -2050,13 +2050,13 @@ Release: resources are released in the destructor.
 A wrapper class should not be copyable to avoid double deletion of the same resource in two destructors.
 </p>
 <div class="org-src-container">
-<pre class="src src-cpp"><span style="color: #51afef;">class</span> <span style="color: #ECBE7B;">IntPtrManager</span> {
+<pre class="src src-cpp"><span style="color: #51afef;">class</span> <span style="color: #ECBE7B;">IntPtrManager</span> <span style="color: #51afef;">{</span>
 <span style="color: #51afef;">public</span>:
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">delete copy constructor</span>
-  <span style="color: #c678dd;">IntPtrManager</span>(<span style="color: #51afef;">const</span> <span style="color: #ECBE7B;">IntPtrManager</span> &amp;) = <span style="color: #51afef;">delete</span>;
+  <span style="color: #c678dd;">IntPtrManager</span><span style="color: #c678dd;">(</span><span style="color: #51afef;">const</span> <span style="color: #ECBE7B;">IntPtrManager</span> &amp;<span style="color: #c678dd;">)</span> = <span style="color: #51afef;">delete</span>;
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">delete copy assignment operator</span>
-  <span style="color: #ECBE7B;">IntPtrManager</span> &amp;<span style="color: #51afef;">operator</span><span style="color: #c678dd;">=</span>(<span style="color: #51afef;">const</span> <span style="color: #ECBE7B;">IntPtrManager</span> &amp;) = <span style="color: #51afef;">delete</span>;
-};
+  <span style="color: #ECBE7B;">IntPtrManager</span> &amp;<span style="color: #51afef;">operator</span><span style="color: #c678dd;">=</span><span style="color: #c678dd;">(</span><span style="color: #51afef;">const</span> <span style="color: #ECBE7B;">IntPtrManager</span> &amp;<span style="color: #c678dd;">)</span> = <span style="color: #51afef;">delete</span>;
+<span style="color: #51afef;">}</span>;
 </pre>
 </div></li>
 
@@ -2064,49 +2064,49 @@ A wrapper class should not be copyable to avoid double deletion of the same reso
 A wrapper class is still moveable from different lvalues/owners.
 </p>
 <div class="org-src-container">
-<pre class="src src-cpp"><span style="color: #51afef;">class</span> <span style="color: #ECBE7B;">IntPtrManager</span> {
+<pre class="src src-cpp"><span style="color: #51afef;">class</span> <span style="color: #ECBE7B;">IntPtrManager</span> <span style="color: #51afef;">{</span>
 <span style="color: #51afef;">public</span>:
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">a move constructor</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">called by IntPtrManager b(std::move(a))</span>
-  <span style="color: #c678dd;">IntPtrManager</span>(<span style="color: #ECBE7B;">IntPtrManager</span> &amp;&amp;<span style="color: #dcaeea;">other</span>) {
+  <span style="color: #c678dd;">IntPtrManager</span><span style="color: #c678dd;">(</span><span style="color: #ECBE7B;">IntPtrManager</span> &amp;&amp;<span style="color: #dcaeea;">other</span><span style="color: #c678dd;">)</span> <span style="color: #c678dd;">{</span>
     <span style="color: #5B6268;">// </span><span style="color: #5B6268;">while other is a rvalue reference, other.ptr_ is a lvalue</span>
     <span style="color: #5B6268;">// </span><span style="color: #5B6268;">therefore a copy happens here, not a move</span>
     <span style="color: #5B6268;">// </span><span style="color: #5B6268;">in the constructor this.ptr_ has not pointed to anything</span>
     <span style="color: #5B6268;">// </span><span style="color: #5B6268;">so no need to delete ptr_</span>
     ptr = other.ptr_;
     other.ptr_ = <span style="color: #a9a1e1;">nullptr</span>;  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">other.ptr_ becomes invalud</span>
-  }
+  <span style="color: #c678dd;">}</span>
 
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">move assignment operator</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">this function is used by c = std::move(b) operation</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">note that calling std::move() does not require implementing this operator</span>
-  <span style="color: #ECBE7B;">IntPtrManager</span> &amp;<span style="color: #51afef;">operator</span><span style="color: #c678dd;">=</span>(<span style="color: #ECBE7B;">IntPtrManager</span> &amp;&amp;<span style="color: #dcaeea;">other</span>) {
+  <span style="color: #ECBE7B;">IntPtrManager</span> &amp;<span style="color: #51afef;">operator</span><span style="color: #c678dd;">=</span><span style="color: #c678dd;">(</span><span style="color: #ECBE7B;">IntPtrManager</span> &amp;&amp;<span style="color: #dcaeea;">other</span><span style="color: #c678dd;">)</span> <span style="color: #c678dd;">{</span>
     <span style="color: #5B6268;">// </span><span style="color: #5B6268;">a self assignment should not delete its ptr_</span>
-    <span style="color: #51afef;">if</span> (ptr_ == other.ptr_) {
+    <span style="color: #51afef;">if</span> <span style="color: #98be65;">(</span>ptr_ == other.ptr_<span style="color: #98be65;">)</span> <span style="color: #98be65;">{</span>
       <span style="color: #51afef;">return</span> *<span style="color: #51afef;">this</span>;
-    }
-    <span style="color: #51afef;">if</span> (ptr_) {
+    <span style="color: #98be65;">}</span>
+    <span style="color: #51afef;">if</span> <span style="color: #98be65;">(</span>ptr_<span style="color: #98be65;">)</span> <span style="color: #98be65;">{</span>
       <span style="color: #51afef;">delete</span> ptr_; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">release old resource to avoid leak</span>
-    }
+    <span style="color: #98be65;">}</span>
     ptr_ = other.ptr_;
     other.ptr_ = <span style="color: #a9a1e1;">nullptr</span>;  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">invalidate other.ptr_</span>
     <span style="color: #51afef;">return</span> *<span style="color: #51afef;">this</span>;
-  }
-};
+  <span style="color: #c678dd;">}</span>
+<span style="color: #51afef;">}</span>;
 </pre>
 </div></li>
 </ul>
 </div>
 </div>
-<div id="outline-container-orgc9d8f4f" class="outline-2">
-<h2 id="orgc9d8f4f"><span class="section-number-2">3.</span> Iterator</h2>
+<div id="outline-container-orge28eb5f" class="outline-2">
+<h2 id="orge28eb5f"><span class="section-number-2">3.</span> Iterator</h2>
 <div class="outline-text-2" id="text-3">
 <ul class="org-ul">
 <li><p>
 Iterators, e.g., pointers, are objects that point to an element inside a container.
 </p>
 <div class="org-src-container">
-<pre class="src src-cpp"><span style="color: #ECBE7B;">int</span> *<span style="color: #dcaeea;">array</span> = malloc(<span style="color: #51afef;">sizeof</span>(<span style="color: #ECBE7B;">int</span>) * <span style="color: #da8548; font-weight: bold;">10</span>);
+<pre class="src src-cpp"><span style="color: #ECBE7B;">int</span> *<span style="color: #dcaeea;">array</span> = malloc<span style="color: #51afef;">(</span><span style="color: #51afef;">sizeof</span><span style="color: #c678dd;">(</span><span style="color: #ECBE7B;">int</span><span style="color: #c678dd;">)</span> * <span style="color: #da8548; font-weight: bold;">10</span><span style="color: #51afef;">)</span>;
 <span style="color: #ECBE7B;">int</span> *<span style="color: #dcaeea;">iter</span> = array;
 <span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">zero_elem</span> = *iter;
 <span style="color: #5B6268;">// </span><span style="color: #5B6268;">use ++ to iterate through the C style array</span>
@@ -2128,22 +2128,22 @@ iter++;
 <li>Often used to access and modify elements in C++ STL containers.</li>
 </ul>
 </div>
-<div id="outline-container-org94cb86d" class="outline-3">
-<h3 id="org94cb86d"><span class="section-number-3">3.1.</span> A doubly linked list (DLL) iterator</h3>
+<div id="outline-container-org22b3188" class="outline-3">
+<h3 id="org22b3188"><span class="section-number-3">3.1.</span> A doubly linked list (DLL) iterator</h3>
 <div class="outline-text-3" id="text-3-1">
 <ul class="org-ul">
 <li><p>
 Define a link node:
 </p>
 <div class="org-src-container">
-<pre class="src src-cpp"><span style="color: #51afef;">struct</span> <span style="color: #ECBE7B;">Node</span> {
+<pre class="src src-cpp"><span style="color: #51afef;">struct</span> <span style="color: #ECBE7B;">Node</span> <span style="color: #51afef;">{</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">member initializer list, e.g., next_(nullptr) equals to next_ = nullptr</span>
-  <span style="color: #c678dd;">Node</span>(<span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">val</span>) : next_(<span style="color: #a9a1e1;">nullptr</span>), prev_(<span style="color: #a9a1e1;">nullptr</span>), value_(val) {}
+  <span style="color: #c678dd;">Node</span><span style="color: #c678dd;">(</span><span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">val</span><span style="color: #c678dd;">)</span> : next_<span style="color: #c678dd;">(</span><span style="color: #a9a1e1;">nullptr</span><span style="color: #c678dd;">)</span>, prev_<span style="color: #c678dd;">(</span><span style="color: #a9a1e1;">nullptr</span><span style="color: #c678dd;">)</span>, value_<span style="color: #c678dd;">(</span>val<span style="color: #c678dd;">)</span> <span style="color: #c678dd;">{}</span>
 
   <span style="color: #ECBE7B;">Node</span> *<span style="color: #dcaeea;">next_</span>;
   <span style="color: #ECBE7B;">Node</span> *<span style="color: #dcaeea;">prev_</span>;
   <span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">value_</span>;
-};
+<span style="color: #51afef;">}</span>;
 </pre>
 </div></li>
 
@@ -2151,23 +2151,23 @@ Define a link node:
 Define the iterator for the DLL:
 </p>
 <div class="org-src-container">
-<pre class="src src-cpp"><span style="color: #51afef;">class</span> <span style="color: #ECBE7B;">DLLIterator</span> {
+<pre class="src src-cpp"><span style="color: #51afef;">class</span> <span style="color: #ECBE7B;">DLLIterator</span> <span style="color: #51afef;">{</span>
 <span style="color: #51afef;">public</span>:
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">takes in a node to mark the start of the iteration</span>
-  <span style="color: #c678dd;">DLLIterator</span>(<span style="color: #ECBE7B;">Node</span> *<span style="color: #dcaeea;">head</span>) : curr_(head) {}
+  <span style="color: #c678dd;">DLLIterator</span><span style="color: #c678dd;">(</span><span style="color: #ECBE7B;">Node</span> *<span style="color: #dcaeea;">head</span><span style="color: #c678dd;">)</span> : curr_<span style="color: #c678dd;">(</span>head<span style="color: #c678dd;">)</span> <span style="color: #c678dd;">{}</span>
 
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">prefix increment operator (++iter)</span>
-  <span style="color: #ECBE7B;">DLLIterator</span> &amp;<span style="color: #51afef;">operator</span><span style="color: #c678dd;">++</span>() {
+  <span style="color: #ECBE7B;">DLLIterator</span> &amp;<span style="color: #51afef;">operator</span><span style="color: #c678dd;">++</span><span style="color: #c678dd;">()</span> <span style="color: #c678dd;">{</span>
     <span style="color: #5B6268;">// </span><span style="color: #5B6268;">must use -&gt; to access the member of a pointer!</span>
     <span style="color: #5B6268;">// </span><span style="color: #5B6268;">use . if accessing the object itself</span>
     curr_ = curr_-&gt;next_;
     <span style="color: #51afef;">return</span> *<span style="color: #51afef;">this</span>;
-  }
+  <span style="color: #c678dd;">}</span>
 
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">postfix increment operator (iter++)</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">the (int) is a dummy parameter to differentiate</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">the prefix and postfix increment</span>
-  <span style="color: #ECBE7B;">DLLIterator</span> <span style="color: #51afef;">operator</span><span style="color: #c678dd;">++</span>(<span style="color: #ECBE7B;">int</span>) {
+  <span style="color: #ECBE7B;">DLLIterator</span> <span style="color: #51afef;">operator</span><span style="color: #c678dd;">++</span><span style="color: #c678dd;">(</span><span style="color: #ECBE7B;">int</span><span style="color: #c678dd;">)</span> <span style="color: #c678dd;">{</span>
     <span style="color: #ECBE7B;">DLLIterator</span> <span style="color: #dcaeea;">temp</span> = *<span style="color: #51afef;">this</span>;
     <span style="color: #5B6268;">// </span><span style="color: #5B6268;">this is a pointer to the current object</span>
     <span style="color: #5B6268;">// </span><span style="color: #5B6268;">*this returns the iterator object</span>
@@ -2175,7 +2175,7 @@ Define the iterator for the DLL:
     <span style="color: #5B6268;">// </span><span style="color: #5B6268;">which equals to `this-&gt;operator++()`</span>
     ++*<span style="color: #51afef;">this</span>;
     <span style="color: #51afef;">return</span> temp;
-  }
+  <span style="color: #c678dd;">}</span>
 
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">implement the equality operator</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">an lvalue reference argument avoids the copy</span>
@@ -2183,17 +2183,17 @@ Define the iterator for the DLL:
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">cannot modify the argument</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">the `const` outside the parameter list means</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">the function cannot modify `this`</span>
-  <span style="color: #ECBE7B;">bool</span> <span style="color: #51afef;">operator</span><span style="color: #c678dd;">==</span>(<span style="color: #51afef;">const</span> <span style="color: #ECBE7B;">DLLIterator</span> &amp;<span style="color: #dcaeea;">str</span>) <span style="color: #51afef;">const</span> {
+  <span style="color: #ECBE7B;">bool</span> <span style="color: #51afef;">operator</span><span style="color: #c678dd;">==</span><span style="color: #c678dd;">(</span><span style="color: #51afef;">const</span> <span style="color: #ECBE7B;">DLLIterator</span> &amp;<span style="color: #dcaeea;">str</span><span style="color: #c678dd;">)</span> <span style="color: #51afef;">const</span> <span style="color: #c678dd;">{</span>
     <span style="color: #51afef;">return</span> itr.curr_ == <span style="color: #51afef;">this</span>-&gt;curr_;
-  }
+  <span style="color: #c678dd;">}</span>
 
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">implement the dereference operator to return the value</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">at the current iterator position</span>
-  <span style="color: #ECBE7B;">int</span> <span style="color: #51afef;">operator</span><span style="color: #c678dd;">*</span>() { <span style="color: #51afef;">return</span> curr_-&gt;value_; }
+  <span style="color: #ECBE7B;">int</span> <span style="color: #51afef;">operator</span><span style="color: #c678dd;">*</span><span style="color: #c678dd;">()</span> <span style="color: #c678dd;">{</span> <span style="color: #51afef;">return</span> curr_-&gt;value_; <span style="color: #c678dd;">}</span>
 
 <span style="color: #51afef;">private</span>:
   <span style="color: #ECBE7B;">Node</span> *<span style="color: #dcaeea;">curr_</span>;
-};
+<span style="color: #51afef;">}</span>;
 </pre>
 </div></li>
 
@@ -2201,54 +2201,54 @@ Define the iterator for the DLL:
 Define DLL:
 </p>
 <div class="org-src-container">
-<pre class="src src-cpp"><span style="color: #51afef;">class</span> <span style="color: #ECBE7B;">DLL</span> {
+<pre class="src src-cpp"><span style="color: #51afef;">class</span> <span style="color: #ECBE7B;">DLL</span> <span style="color: #51afef;">{</span>
 <span style="color: #51afef;">public</span>:
-  <span style="color: #c678dd;">DLL</span>() : head_(<span style="color: #a9a1e1;">nullptr</span>), size_(<span style="color: #da8548; font-weight: bold;">0</span>) {}
+  <span style="color: #c678dd;">DLL</span><span style="color: #c678dd;">()</span> : head_<span style="color: #c678dd;">(</span><span style="color: #a9a1e1;">nullptr</span><span style="color: #c678dd;">)</span>, size_<span style="color: #c678dd;">(</span><span style="color: #da8548; font-weight: bold;">0</span><span style="color: #c678dd;">)</span> <span style="color: #c678dd;">{}</span>
 
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">the destructor deletes nodes one by one</span>
-  ~<span style="color: #c678dd;">DLL</span>() {
+  ~<span style="color: #c678dd;">DLL</span><span style="color: #c678dd;">()</span> <span style="color: #c678dd;">{</span>
     <span style="color: #ECBE7B;">Node</span> *<span style="color: #dcaeea;">current</span> = head_;
-    <span style="color: #51afef;">while</span> (current != <span style="color: #a9a1e1;">nullptr</span>) {
+    <span style="color: #51afef;">while</span> <span style="color: #98be65;">(</span>current != <span style="color: #a9a1e1;">nullptr</span><span style="color: #98be65;">)</span> <span style="color: #98be65;">{</span>
       <span style="color: #ECBE7B;">Node</span> *<span style="color: #dcaeea;">next</span> = current-&gt;next_;
       <span style="color: #51afef;">delete</span> current;
       current = next;
-    }
+    <span style="color: #98be65;">}</span>
     head_ = <span style="color: #a9a1e1;">nullptr</span>;
-  }
+  <span style="color: #c678dd;">}</span>
 
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">after the insertion `new_node` becomes the new head</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">`head` is just a pointer to the node</span>
-  <span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">InsertAtHead</span>(<span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">val</span>) {
-    <span style="color: #ECBE7B;">Node</span> *<span style="color: #dcaeea;">new_node</span> = <span style="color: #51afef;">new</span> <span style="color: #ECBE7B;">Node</span>(val);
+  <span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">InsertAtHead</span><span style="color: #c678dd;">(</span><span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">val</span><span style="color: #c678dd;">)</span> <span style="color: #c678dd;">{</span>
+    <span style="color: #ECBE7B;">Node</span> *<span style="color: #dcaeea;">new_node</span> = <span style="color: #51afef;">new</span> <span style="color: #ECBE7B;">Node</span><span style="color: #98be65;">(</span>val<span style="color: #98be65;">)</span>;
     <span style="color: #5B6268;">// </span><span style="color: #5B6268;">new_node-&gt;next points to the object pointed by head_</span>
     new_node-&gt;next_ = head_;
 
-    <span style="color: #51afef;">if</span> (head_ != <span style="color: #a9a1e1;">nullptr</span>) {
+    <span style="color: #51afef;">if</span> <span style="color: #98be65;">(</span>head_ != <span style="color: #a9a1e1;">nullptr</span><span style="color: #98be65;">)</span> <span style="color: #98be65;">{</span>
       head_-&gt;prev_ = new_node;
-    }
+    <span style="color: #98be65;">}</span>
 
     head_ = new_node;
     size_ += <span style="color: #da8548; font-weight: bold;">1</span>;
-  }
+  <span style="color: #c678dd;">}</span>
 
-  <span style="color: #ECBE7B;">DLLIterator</span> <span style="color: #c678dd;">Begin</span>() { <span style="color: #51afef;">return</span> DLLIterator(head_); }
+  <span style="color: #ECBE7B;">DLLIterator</span> <span style="color: #c678dd;">Begin</span><span style="color: #c678dd;">()</span> <span style="color: #c678dd;">{</span> <span style="color: #51afef;">return</span> DLLIterator<span style="color: #98be65;">(</span>head_<span style="color: #98be65;">)</span>; <span style="color: #c678dd;">}</span>
 
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">returns the pointer pointing one after the last element</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">used in the loop to determine whether the iteration ends</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">e.g., `for (DLLIterator iter = dll.Begin(); iter != dll.End(); ++iter)`</span>
-  <span style="color: #ECBE7B;">DLLIterator</span> <span style="color: #c678dd;">End</span>() { <span style="color: #51afef;">return</span> DLLIterator(<span style="color: #a9a1e1;">nullptr</span>); }
+  <span style="color: #ECBE7B;">DLLIterator</span> <span style="color: #c678dd;">End</span><span style="color: #c678dd;">()</span> <span style="color: #c678dd;">{</span> <span style="color: #51afef;">return</span> DLLIterator<span style="color: #98be65;">(</span><span style="color: #a9a1e1;">nullptr</span><span style="color: #98be65;">)</span>; <span style="color: #c678dd;">}</span>
 
-  <span style="color: #ECBE7B;">Node</span> *<span style="color: #dcaeea;">head_</span>{<span style="color: #a9a1e1;">nullptr</span>};  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">in-class initializers</span>
+  <span style="color: #ECBE7B;">Node</span> *<span style="color: #dcaeea;">head_</span><span style="color: #c678dd;">{</span><span style="color: #a9a1e1;">nullptr</span><span style="color: #c678dd;">}</span>;  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">in-class initializers</span>
   <span style="color: #ECBE7B;">size_t</span> <span style="color: #dcaeea;">size_</span>;
-};
+<span style="color: #51afef;">}</span>;
 </pre>
 </div></li>
 </ul>
 </div>
 </div>
 </div>
-<div id="outline-container-org4c18899" class="outline-2">
-<h2 id="org4c18899"><span class="section-number-2">4.</span> STL containers</h2>
+<div id="outline-container-orgabecb8b" class="outline-2">
+<h2 id="orgabecb8b"><span class="section-number-2">4.</span> STL containers</h2>
 <div class="outline-text-2" id="text-4">
 <ul class="org-ul">
 <li>The C++ STL (standard library) is a generic collection of data structure and algorithm implementations, e.g., stacks, queues, hash tables.</li>
@@ -2256,233 +2256,233 @@ Define DLL:
 <li>The <code>std::set</code> is implemented as a red-black tree.</li>
 </ul>
 </div>
-<div id="outline-container-org6dcfbeb" class="outline-3">
-<h3 id="org6dcfbeb"><span class="section-number-3">4.1.</span> Vector</h3>
+<div id="outline-container-org125b0e5" class="outline-3">
+<h3 id="org125b0e5"><span class="section-number-3">4.1.</span> Vector</h3>
 <div class="outline-text-3" id="text-4-1">
 <div class="org-src-container">
-<pre class="src src-cpp"><span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;algorithm&gt;</span> <span style="color: #5B6268;">// </span><span style="color: #5B6268;">to use std::remove_if</span>
-<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;iostream&gt;</span>  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">to use std::cout</span>
-<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;vector&gt;</span>
+<pre class="src src-cpp"><span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #51afef;">&lt;</span><span style="color: #98be65;">algorithm</span><span style="color: #51afef;">&gt;</span> <span style="color: #5B6268;">// </span><span style="color: #5B6268;">to use std::remove_if</span>
+<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #51afef;">&lt;</span><span style="color: #98be65;">iostream</span><span style="color: #51afef;">&gt;</span>  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">to use std::cout</span>
+<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #51afef;">&lt;</span><span style="color: #98be65;">vector</span><span style="color: #51afef;">&gt;</span>
 <span style="color: #5B6268;">// </span><span style="color: #5B6268;">A helper class used for vector</span>
-<span style="color: #51afef;">class</span> <span style="color: #ECBE7B;">Point</span> {
+<span style="color: #51afef;">class</span> <span style="color: #ECBE7B;">Point</span> <span style="color: #51afef;">{</span>
 <span style="color: #51afef;">public</span>:
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">constructors</span>
-  <span style="color: #c678dd;">Point</span>() : x_(<span style="color: #da8548; font-weight: bold;">0</span>), y_(<span style="color: #da8548; font-weight: bold;">0</span>) {}
-  <span style="color: #c678dd;">Point</span>(<span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">x</span>, <span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">y</span>) : x_(x), y_(y) {}
+  <span style="color: #c678dd;">Point</span><span style="color: #c678dd;">()</span> : x_<span style="color: #c678dd;">(</span><span style="color: #da8548; font-weight: bold;">0</span><span style="color: #c678dd;">)</span>, y_<span style="color: #c678dd;">(</span><span style="color: #da8548; font-weight: bold;">0</span><span style="color: #c678dd;">)</span> <span style="color: #c678dd;">{}</span>
+  <span style="color: #c678dd;">Point</span><span style="color: #c678dd;">(</span><span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">x</span>, <span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">y</span><span style="color: #c678dd;">)</span> : x_<span style="color: #c678dd;">(</span>x<span style="color: #c678dd;">)</span>, y_<span style="color: #c678dd;">(</span>y<span style="color: #c678dd;">)</span> <span style="color: #c678dd;">{}</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">inline asks the compiler to substitute the function</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">directly at the calling location instead of performing</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">a normal function call, to improve performance for small functions</span>
-  <span style="color: #51afef;">inline</span> <span style="color: #ECBE7B;">int</span> <span style="color: #c678dd;">GetX</span>() <span style="color: #51afef;">const</span> { <span style="color: #51afef;">return</span> x_; }
-  <span style="color: #51afef;">inline</span> <span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">SetX</span>(<span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">x</span>) { x_ = x; }
+  <span style="color: #51afef;">inline</span> <span style="color: #ECBE7B;">int</span> <span style="color: #c678dd;">GetX</span><span style="color: #c678dd;">()</span> <span style="color: #51afef;">const</span> <span style="color: #c678dd;">{</span> <span style="color: #51afef;">return</span> x_; <span style="color: #c678dd;">}</span>
+  <span style="color: #51afef;">inline</span> <span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">SetX</span><span style="color: #c678dd;">(</span><span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">x</span><span style="color: #c678dd;">)</span> <span style="color: #c678dd;">{</span> x_ = x; <span style="color: #c678dd;">}</span>
 
-  <span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">PrintPoint</span>() <span style="color: #51afef;">const</span> {
+  <span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">PrintPoint</span><span style="color: #c678dd;">()</span> <span style="color: #51afef;">const</span> <span style="color: #c678dd;">{</span>
     <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"Point: ("</span> &lt;&lt; x_ &lt;&lt; <span style="color: #98be65;">", "</span> &lt;&lt; <span style="color: #98be65;">"y_"</span> &lt;&lt; <span style="color: #98be65;">")\n"</span>;
-  }
+  <span style="color: #c678dd;">}</span>
 
 <span style="color: #51afef;">private</span>:
   <span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">x_</span>;
   <span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">y_</span>;
-};
+<span style="color: #51afef;">}</span>;
 
-<span style="color: #ECBE7B;">int</span> <span style="color: #c678dd;">main</span>() {
-  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">vector</span>&lt;<span style="color: #ECBE7B;">Point</span>&gt; <span style="color: #dcaeea;">point_vector</span>;
+<span style="color: #ECBE7B;">int</span> <span style="color: #c678dd;">main</span><span style="color: #51afef;">()</span> <span style="color: #51afef;">{</span>
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">vector</span><span style="color: #c678dd;">&lt;</span><span style="color: #ECBE7B;">Point</span><span style="color: #c678dd;">&gt;</span> <span style="color: #dcaeea;">point_vector</span>;
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">approach 1 to append to a vector</span>
-  point_vector.push_back(Point(<span style="color: #da8548; font-weight: bold;">35</span>, <span style="color: #da8548; font-weight: bold;">36</span>));
+  point_vector.push_back<span style="color: #c678dd;">(</span>Point<span style="color: #98be65;">(</span><span style="color: #da8548; font-weight: bold;">35</span>, <span style="color: #da8548; font-weight: bold;">36</span><span style="color: #98be65;">)</span><span style="color: #c678dd;">)</span>;
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">approach 2, pass the argument to Point(x,y) constructor</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">slightly faster than push_back</span>
-  point_vector.emplace_back(<span style="color: #da8548; font-weight: bold;">37</span>, <span style="color: #da8548; font-weight: bold;">38</span>);
+  point_vector.emplace_back<span style="color: #c678dd;">(</span><span style="color: #da8548; font-weight: bold;">37</span>, <span style="color: #da8548; font-weight: bold;">38</span><span style="color: #c678dd;">)</span>;
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">iterate through index</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">size_t: unsigned integers specifially used in loop or counting</span>
-  <span style="color: #51afef;">for</span> (<span style="color: #ECBE7B;">size_t</span> <span style="color: #dcaeea;">i</span> = <span style="color: #da8548; font-weight: bold;">0</span>; i &lt; point_vector.size(); ++i) {
-    point_vector[i].PrintPoint();
-  }
+  <span style="color: #51afef;">for</span> <span style="color: #c678dd;">(</span><span style="color: #ECBE7B;">size_t</span> <span style="color: #dcaeea;">i</span> = <span style="color: #da8548; font-weight: bold;">0</span>; i &lt; point_vector.size<span style="color: #98be65;">()</span>; ++i<span style="color: #c678dd;">)</span> <span style="color: #c678dd;">{</span>
+    point_vector<span style="color: #98be65;">[</span>i<span style="color: #98be65;">]</span>.PrintPoint<span style="color: #98be65;">()</span>;
+  <span style="color: #c678dd;">}</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">iterate through mutable reference</span>
-  <span style="color: #51afef;">for</span> (<span style="color: #ECBE7B;">Point</span> &amp;<span style="color: #dcaeea;">item</span> : point_vector) {
-    item.SetX(<span style="color: #da8548; font-weight: bold;">10</span>);
-  }
+  <span style="color: #51afef;">for</span> <span style="color: #c678dd;">(</span><span style="color: #ECBE7B;">Point</span> &amp;<span style="color: #dcaeea;">item</span> : point_vector<span style="color: #c678dd;">)</span> <span style="color: #c678dd;">{</span>
+    item.SetX<span style="color: #98be65;">(</span><span style="color: #da8548; font-weight: bold;">10</span><span style="color: #98be65;">)</span>;
+  <span style="color: #c678dd;">}</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">iterate through immutable reference</span>
-  <span style="color: #51afef;">for</span> (<span style="color: #51afef;">const</span> <span style="color: #ECBE7B;">Point</span> &amp;<span style="color: #dcaeea;">item</span> : point_vector) {
-    item.GetX();
-  }
+  <span style="color: #51afef;">for</span> <span style="color: #c678dd;">(</span><span style="color: #51afef;">const</span> <span style="color: #ECBE7B;">Point</span> &amp;<span style="color: #dcaeea;">item</span> : point_vector<span style="color: #c678dd;">)</span> <span style="color: #c678dd;">{</span>
+    item.GetX<span style="color: #98be65;">()</span>;
+  <span style="color: #c678dd;">}</span>
 
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">initialize the vector with an initializer list</span>
-  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">vector</span>&lt;<span style="color: #ECBE7B;">int</span>&gt; <span style="color: #dcaeea;">int_vector</span> = {<span style="color: #da8548; font-weight: bold;">0</span>, <span style="color: #da8548; font-weight: bold;">1</span>, <span style="color: #da8548; font-weight: bold;">2</span>, <span style="color: #da8548; font-weight: bold;">3</span>};
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">vector</span><span style="color: #c678dd;">&lt;</span><span style="color: #ECBE7B;">int</span><span style="color: #c678dd;">&gt;</span> <span style="color: #dcaeea;">int_vector</span> = <span style="color: #c678dd;">{</span><span style="color: #da8548; font-weight: bold;">0</span>, <span style="color: #da8548; font-weight: bold;">1</span>, <span style="color: #da8548; font-weight: bold;">2</span>, <span style="color: #da8548; font-weight: bold;">3</span><span style="color: #c678dd;">}</span>;
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">erase element given its index</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">int_vector.begin() returns a std::vector&lt;int&gt;::iterator</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">pointing to the first elemnt in the vector</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">the vector iterator has a plus iterator</span>
-  int_vector.erase(int_vector.begin() + <span style="color: #da8548; font-weight: bold;">2</span>); <span style="color: #5B6268;">// </span><span style="color: #5B6268;">{0, 1, 3}</span>
+  int_vector.erase<span style="color: #c678dd;">(</span>int_vector.begin<span style="color: #98be65;">()</span> + <span style="color: #da8548; font-weight: bold;">2</span><span style="color: #c678dd;">)</span>; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">{0, 1, 3}</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">erase a range of elements</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">int_vector.end() points to the end of a vector (not the last element)</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">and cannot be accessed.</span>
-  int_vector.erase(int_vector.begin() + <span style="color: #da8548; font-weight: bold;">1</span>, int_vector.end()); <span style="color: #5B6268;">// </span><span style="color: #5B6268;">{0}</span>
+  int_vector.erase<span style="color: #c678dd;">(</span>int_vector.begin<span style="color: #98be65;">()</span> + <span style="color: #da8548; font-weight: bold;">1</span>, int_vector.end<span style="color: #98be65;">()</span><span style="color: #c678dd;">)</span>; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">{0}</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">erase elements via filtering</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">std::remove_if(range_begin, range_end, condition) returns an iterator</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">pointing to the first element to be erased</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">remove_if() also partitions point_vector so that unsatisfied elements are</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">moved before the point_vector.begin(), i.e., the vector is reordered</span>
-  point_vector.erase(
-      <span style="color: #a9a1e1;">std</span>::remove_if(point_vector.begin(), point_vector.end(),
-                     [](<span style="color: #51afef;">const</span> <span style="color: #ECBE7B;">Point</span> &amp;<span style="color: #dcaeea;">point</span>) { <span style="color: #51afef;">return</span> point.GetX() == <span style="color: #da8548; font-weight: bold;">10</span>; }),
-      point_vector.end());
+  point_vector.erase<span style="color: #c678dd;">(</span>
+      <span style="color: #a9a1e1;">std</span>::remove_if<span style="color: #98be65;">(</span>point_vector.begin<span style="color: #a9a1e1;">()</span>, point_vector.end<span style="color: #a9a1e1;">()</span>,
+                     <span style="color: #a9a1e1;">[](</span><span style="color: #51afef;">const</span> <span style="color: #ECBE7B;">Point</span> &amp;<span style="color: #dcaeea;">point</span><span style="color: #a9a1e1;">)</span> <span style="color: #a9a1e1;">{</span> <span style="color: #51afef;">return</span> point.GetX<span style="color: #51afef;">()</span> == <span style="color: #da8548; font-weight: bold;">10</span>; <span style="color: #a9a1e1;">}</span><span style="color: #98be65;">)</span>,
+      point_vector.end<span style="color: #98be65;">()</span><span style="color: #c678dd;">)</span>;
 
   <span style="color: #51afef;">return</span> <span style="color: #da8548; font-weight: bold;">0</span>;
-}
+<span style="color: #51afef;">}</span>
 </pre>
 </div>
 </div>
 </div>
-<div id="outline-container-orgfc95fbf" class="outline-3">
-<h3 id="orgfc95fbf"><span class="section-number-3">4.2.</span> Set</h3>
+<div id="outline-container-orgb13b64e" class="outline-3">
+<h3 id="orgb13b64e"><span class="section-number-3">4.2.</span> Set</h3>
 <div class="outline-text-3" id="text-4-2">
 <div class="org-src-container">
-<pre class="src src-cpp"><span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;iostream&gt;</span>
-<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;set&gt;</span>
+<pre class="src src-cpp"><span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #51afef;">&lt;</span><span style="color: #98be65;">iostream</span><span style="color: #51afef;">&gt;</span>
+<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #51afef;">&lt;</span><span style="color: #98be65;">set</span><span style="color: #51afef;">&gt;</span>
 
-<span style="color: #ECBE7B;">int</span> <span style="color: #c678dd;">main</span>() {
-  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">set</span>&lt;<span style="color: #ECBE7B;">int</span>&gt; <span style="color: #dcaeea;">int_set</span>;
+<span style="color: #ECBE7B;">int</span> <span style="color: #c678dd;">main</span><span style="color: #51afef;">()</span> <span style="color: #51afef;">{</span>
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">set</span><span style="color: #c678dd;">&lt;</span><span style="color: #ECBE7B;">int</span><span style="color: #c678dd;">&gt;</span> <span style="color: #dcaeea;">int_set</span>;
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">can insert element with .insert() or .emplace()</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">.emplace() allows to construct the object in place</span>
-  <span style="color: #51afef;">for</span> (<span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">i</span> = <span style="color: #da8548; font-weight: bold;">1</span>; i &lt;= <span style="color: #da8548; font-weight: bold;">5</span>; ++i) {
-    int_set.insert(i);
-  }
-  <span style="color: #51afef;">for</span> (<span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">i</span> = <span style="color: #da8548; font-weight: bold;">6</span>; i &lt;= <span style="color: #da8548; font-weight: bold;">10</span>; ++i) {
-    int_set.emplace(i);
-  }
+  <span style="color: #51afef;">for</span> <span style="color: #c678dd;">(</span><span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">i</span> = <span style="color: #da8548; font-weight: bold;">1</span>; i &lt;= <span style="color: #da8548; font-weight: bold;">5</span>; ++i<span style="color: #c678dd;">)</span> <span style="color: #c678dd;">{</span>
+    int_set.insert<span style="color: #98be65;">(</span>i<span style="color: #98be65;">)</span>;
+  <span style="color: #c678dd;">}</span>
+  <span style="color: #51afef;">for</span> <span style="color: #c678dd;">(</span><span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">i</span> = <span style="color: #da8548; font-weight: bold;">6</span>; i &lt;= <span style="color: #da8548; font-weight: bold;">10</span>; ++i<span style="color: #c678dd;">)</span> <span style="color: #c678dd;">{</span>
+    int_set.emplace<span style="color: #98be65;">(</span>i<span style="color: #98be65;">)</span>;
+  <span style="color: #c678dd;">}</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">iterate the set</span>
-  <span style="color: #51afef;">for</span> (<span style="color: #a9a1e1;">std</span>::<span style="color: #a9a1e1;">set</span>&lt;<span style="color: #ECBE7B;">int</span>&gt;::<span style="color: #ECBE7B;">iterator</span> <span style="color: #dcaeea;">it</span> = int_set.begin(); it != int_set.end();
-       ++it) {
+  <span style="color: #51afef;">for</span> <span style="color: #c678dd;">(</span><span style="color: #a9a1e1;">std</span>::<span style="color: #a9a1e1;">set</span><span style="color: #98be65;">&lt;</span><span style="color: #ECBE7B;">int</span><span style="color: #98be65;">&gt;</span>::<span style="color: #ECBE7B;">iterator</span> <span style="color: #dcaeea;">it</span> = int_set.begin<span style="color: #98be65;">()</span>; it != int_set.end<span style="color: #98be65;">()</span>;
+       ++it<span style="color: #c678dd;">)</span> <span style="color: #c678dd;">{</span>
     <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; *it &lt;&lt; <span style="color: #98be65;">" "</span>;
-  }
+  <span style="color: #c678dd;">}</span>
   <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"\n"</span>;
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">.find(key) returns an iterator pointing to the key</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">if it is in the set, otherwise returns .end()</span>
-  <span style="color: #a9a1e1;">std</span>::<span style="color: #a9a1e1;">set</span>&lt;<span style="color: #ECBE7B;">int</span>&gt;::<span style="color: #ECBE7B;">iterator</span> <span style="color: #dcaeea;">search</span> = int_set.find(<span style="color: #da8548; font-weight: bold;">2</span>);
-  <span style="color: #51afef;">if</span> (search != int_set.end()) {
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #a9a1e1;">set</span><span style="color: #c678dd;">&lt;</span><span style="color: #ECBE7B;">int</span><span style="color: #c678dd;">&gt;</span>::<span style="color: #ECBE7B;">iterator</span> <span style="color: #dcaeea;">search</span> = int_set.find<span style="color: #c678dd;">(</span><span style="color: #da8548; font-weight: bold;">2</span><span style="color: #c678dd;">)</span>;
+  <span style="color: #51afef;">if</span> <span style="color: #c678dd;">(</span>search != int_set.end<span style="color: #98be65;">()</span><span style="color: #c678dd;">)</span> <span style="color: #c678dd;">{</span>
     <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"2 is not found\n"</span>;
-  }
+  <span style="color: #c678dd;">}</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">check whether the set contains a key with .count()</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">it returns either 0 or 1 as each key is unique</span>
-  <span style="color: #51afef;">if</span> (int_set.count(<span style="color: #da8548; font-weight: bold;">11</span>) == <span style="color: #da8548; font-weight: bold;">0</span>) {
+  <span style="color: #51afef;">if</span> <span style="color: #c678dd;">(</span>int_set.count<span style="color: #98be65;">(</span><span style="color: #da8548; font-weight: bold;">11</span><span style="color: #98be65;">)</span> == <span style="color: #da8548; font-weight: bold;">0</span><span style="color: #c678dd;">)</span> <span style="color: #c678dd;">{</span>
     <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"11 is not in the set.\n"</span>;
-  }
+  <span style="color: #c678dd;">}</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">erase a key, returns the count of removed elements 0 or 1</span>
-  int_set.erase(<span style="color: #da8548; font-weight: bold;">4</span>);
+  int_set.erase<span style="color: #c678dd;">(</span><span style="color: #da8548; font-weight: bold;">4</span><span style="color: #c678dd;">)</span>;
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">erase a key given its position, returns the iterator to the next element</span>
-  int_set.erase(int_set.begin());
+  int_set.erase<span style="color: #c678dd;">(</span>int_set.begin<span style="color: #98be65;">()</span><span style="color: #c678dd;">)</span>;
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">erase a range of elements</span>
-  int_set.erase(int_set.find(<span style="color: #da8548; font-weight: bold;">9</span>), int_set.end());
-}
+  int_set.erase<span style="color: #c678dd;">(</span>int_set.find<span style="color: #98be65;">(</span><span style="color: #da8548; font-weight: bold;">9</span><span style="color: #98be65;">)</span>, int_set.end<span style="color: #98be65;">()</span><span style="color: #c678dd;">)</span>;
+<span style="color: #51afef;">}</span>
 </pre>
 </div>
 </div>
 </div>
-<div id="outline-container-org5038e7e" class="outline-3">
-<h3 id="org5038e7e"><span class="section-number-3">4.3.</span> Unordered maps</h3>
+<div id="outline-container-org7084f8e" class="outline-3">
+<h3 id="org7084f8e"><span class="section-number-3">4.3.</span> Unordered maps</h3>
 <div class="outline-text-3" id="text-4-3">
 <div class="org-src-container">
-<pre class="src src-cpp"><span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;iostream&gt;</span>
-<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;string&gt;</span>
-<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;unordered_map&gt;</span>
-<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;utility&gt;</span> <span style="color: #5B6268;">// </span><span style="color: #5B6268;">to use std::make_pair</span>
+<pre class="src src-cpp"><span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #51afef;">&lt;</span><span style="color: #98be65;">iostream</span><span style="color: #51afef;">&gt;</span>
+<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #51afef;">&lt;</span><span style="color: #98be65;">string</span><span style="color: #51afef;">&gt;</span>
+<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #51afef;">&lt;</span><span style="color: #98be65;">unordered_map</span><span style="color: #51afef;">&gt;</span>
+<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #51afef;">&lt;</span><span style="color: #98be65;">utility</span><span style="color: #51afef;">&gt;</span> <span style="color: #5B6268;">// </span><span style="color: #5B6268;">to use std::make_pair</span>
 
-<span style="color: #ECBE7B;">int</span> <span style="color: #c678dd;">main</span>() {
-  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">unordered_map</span>&lt;<span style="color: #a9a1e1;">std</span>::string, <span style="color: #ECBE7B;">int</span>&gt; <span style="color: #dcaeea;">map</span>;
+<span style="color: #ECBE7B;">int</span> <span style="color: #c678dd;">main</span><span style="color: #51afef;">()</span> <span style="color: #51afef;">{</span>
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">unordered_map</span><span style="color: #c678dd;">&lt;</span><span style="color: #a9a1e1;">std</span>::string, <span style="color: #ECBE7B;">int</span><span style="color: #c678dd;">&gt;</span> <span style="color: #dcaeea;">map</span>;
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">insert items</span>
-  map.insert({<span style="color: #98be65;">"foo"</span>, <span style="color: #da8548; font-weight: bold;">2</span>});
-  map.insert({{<span style="color: #98be65;">"bar"</span>, <span style="color: #da8548; font-weight: bold;">1</span>}, {<span style="color: #98be65;">"eggs"</span>, <span style="color: #da8548; font-weight: bold;">2</span>}});
+  map.insert<span style="color: #c678dd;">(</span><span style="color: #98be65;">{</span><span style="color: #98be65;">"foo"</span>, <span style="color: #da8548; font-weight: bold;">2</span><span style="color: #98be65;">}</span><span style="color: #c678dd;">)</span>;
+  map.insert<span style="color: #c678dd;">(</span><span style="color: #98be65;">{</span><span style="color: #a9a1e1;">{</span><span style="color: #98be65;">"bar"</span>, <span style="color: #da8548; font-weight: bold;">1</span><span style="color: #a9a1e1;">}</span>, <span style="color: #a9a1e1;">{</span><span style="color: #98be65;">"eggs"</span>, <span style="color: #da8548; font-weight: bold;">2</span><span style="color: #a9a1e1;">}</span><span style="color: #98be65;">}</span><span style="color: #c678dd;">)</span>;
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">insert items via pairs</span>
-  map.insert(<span style="color: #a9a1e1;">std</span>::make_pair(<span style="color: #98be65;">"hello"</span>, <span style="color: #da8548; font-weight: bold;">10</span>));
+  map.insert<span style="color: #c678dd;">(</span><span style="color: #a9a1e1;">std</span>::make_pair<span style="color: #98be65;">(</span><span style="color: #98be65;">"hello"</span>, <span style="color: #da8548; font-weight: bold;">10</span><span style="color: #98be65;">)</span><span style="color: #c678dd;">)</span>;
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">insert items in an array-style</span>
-  <span style="color: #ECBE7B;">map</span>[<span style="color: #98be65;">"world"</span>] = <span style="color: #da8548; font-weight: bold;">3</span>;
+  <span style="color: #ECBE7B;">map</span><span style="color: #c678dd;">[</span><span style="color: #98be65;">"world"</span><span style="color: #c678dd;">]</span> = <span style="color: #da8548; font-weight: bold;">3</span>;
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">update the value</span>
-  <span style="color: #ECBE7B;">map</span>[<span style="color: #98be65;">"foo"</span>] = <span style="color: #da8548; font-weight: bold;">9</span>;
+  <span style="color: #ECBE7B;">map</span><span style="color: #c678dd;">[</span><span style="color: #98be65;">"foo"</span><span style="color: #c678dd;">]</span> = <span style="color: #da8548; font-weight: bold;">9</span>;
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">.find() returns an iterator pointing to the item</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">or the end</span>
-  <span style="color: #a9a1e1;">std</span>::<span style="color: #a9a1e1;">unordered_map</span>&lt;<span style="color: #a9a1e1;">std</span>::string, <span style="color: #ECBE7B;">int</span>&gt;::<span style="color: #ECBE7B;">iterator</span> <span style="color: #dcaeea;">result</span> = map.find(<span style="color: #98be65;">"bar"</span>);
-  <span style="color: #51afef;">if</span> (result != map.end()) {
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #a9a1e1;">unordered_map</span><span style="color: #c678dd;">&lt;</span><span style="color: #a9a1e1;">std</span>::string, <span style="color: #ECBE7B;">int</span><span style="color: #c678dd;">&gt;</span>::<span style="color: #ECBE7B;">iterator</span> <span style="color: #dcaeea;">result</span> = map.find<span style="color: #c678dd;">(</span><span style="color: #98be65;">"bar"</span><span style="color: #c678dd;">)</span>;
+  <span style="color: #51afef;">if</span> <span style="color: #c678dd;">(</span>result != map.end<span style="color: #98be65;">()</span><span style="color: #c678dd;">)</span> <span style="color: #c678dd;">{</span>
     <span style="color: #5B6268;">// </span><span style="color: #5B6268;">one way to access the item</span>
     <span style="color: #5B6268;">// </span><span style="color: #5B6268;">both '\n' and std::endl prints newliine, but std::endl</span>
     <span style="color: #5B6268;">// </span><span style="color: #5B6268;">also flushes the output buffer, so use '\n' is better</span>
     <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"key: "</span> &lt;&lt; result-&gt;first &lt;&lt; <span style="color: #98be65;">" value: "</span> &lt;&lt; result-&gt;second
               &lt;&lt; <span style="color: #a9a1e1;">std</span>::endl;
     <span style="color: #5B6268;">// </span><span style="color: #5B6268;">another way is dereferencing</span>
-    <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">pair</span>&lt;<span style="color: #a9a1e1;">std</span>::string, <span style="color: #ECBE7B;">int</span>&gt; <span style="color: #dcaeea;">pair</span> = *result;
+    <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">pair</span><span style="color: #98be65;">&lt;</span><span style="color: #a9a1e1;">std</span>::string, <span style="color: #ECBE7B;">int</span><span style="color: #98be65;">&gt;</span> <span style="color: #dcaeea;">pair</span> = *result;
     <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"key: "</span> &lt;&lt; pair.first &lt;&lt; <span style="color: #98be65;">" value: "</span> &lt;&lt; pair.second
               &lt;&lt; <span style="color: #a9a1e1;">std</span>::endl;
     <span style="color: #5B6268;">// </span><span style="color: #5B6268;">check whether a key exists with .count()</span>
-    <span style="color: #51afef;">if</span> (map.count(<span style="color: #98be65;">"foo"</span>) == <span style="color: #da8548; font-weight: bold;">0</span>) {
+    <span style="color: #51afef;">if</span> <span style="color: #98be65;">(</span>map.count<span style="color: #a9a1e1;">(</span><span style="color: #98be65;">"foo"</span><span style="color: #a9a1e1;">)</span> == <span style="color: #da8548; font-weight: bold;">0</span><span style="color: #98be65;">)</span> <span style="color: #98be65;">{</span>
       <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"foo does not exist\n"</span>;
-    }
+    <span style="color: #98be65;">}</span>
     <span style="color: #5B6268;">// </span><span style="color: #5B6268;">erase an item via a key</span>
-    map.erase(<span style="color: #98be65;">"world"</span>);
+    map.erase<span style="color: #98be65;">(</span><span style="color: #98be65;">"world"</span><span style="color: #98be65;">)</span>;
     <span style="color: #5B6268;">// </span><span style="color: #5B6268;">or via an iterator</span>
-    map.erase(map.find(<span style="color: #98be65;">"bar"</span>));
+    map.erase<span style="color: #98be65;">(</span>map.find<span style="color: #a9a1e1;">(</span><span style="color: #98be65;">"bar"</span><span style="color: #a9a1e1;">)</span><span style="color: #98be65;">)</span>;
     <span style="color: #5B6268;">// </span><span style="color: #5B6268;">can iterate the map via iterator or via for-each</span>
-    <span style="color: #51afef;">for</span> (<span style="color: #a9a1e1;">std</span>::<span style="color: #a9a1e1;">unordered_map</span>&lt;<span style="color: #a9a1e1;">std</span>::string, <span style="color: #ECBE7B;">int</span>&gt;::<span style="color: #ECBE7B;">iterator</span> <span style="color: #dcaeea;">it</span> = map.begin();
-         it != map.end(); ++it) {
+    <span style="color: #51afef;">for</span> <span style="color: #98be65;">(</span><span style="color: #a9a1e1;">std</span>::<span style="color: #a9a1e1;">unordered_map</span><span style="color: #a9a1e1;">&lt;</span><span style="color: #a9a1e1;">std</span>::string, <span style="color: #ECBE7B;">int</span><span style="color: #a9a1e1;">&gt;</span>::<span style="color: #ECBE7B;">iterator</span> <span style="color: #dcaeea;">it</span> = map.begin<span style="color: #a9a1e1;">()</span>;
+         it != map.end<span style="color: #a9a1e1;">()</span>; ++it<span style="color: #98be65;">)</span> <span style="color: #98be65;">{</span>
       <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"("</span> &lt;&lt; it-&gt;first &lt;&lt; <span style="color: #98be65;">", "</span> &lt;&lt; it-&gt;second &lt;&lt; <span style="color: #98be65;">"), "</span>;
-    }
+    <span style="color: #98be65;">}</span>
     <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"\n"</span>;
-  }
-}
+  <span style="color: #c678dd;">}</span>
+<span style="color: #51afef;">}</span>
 </pre>
 </div>
 </div>
 </div>
 </div>
-<div id="outline-container-org644b019" class="outline-2">
-<h2 id="org644b019"><span class="section-number-2">5.</span> <code>auto</code></h2>
+<div id="outline-container-org4aebc03" class="outline-2">
+<h2 id="org4aebc03"><span class="section-number-2">5.</span> <code>auto</code></h2>
 <div class="outline-text-2" id="text-5">
 <ul class="org-ul">
 <li><code>auto</code> keyword tells the compiler to infer the type via its initialization expression.</li>
 </ul>
 <div class="org-src-container">
-<pre class="src src-cpp"><span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;vector&gt;</span>
-<span style="color: #51afef; font-weight: bold;">#include</span><span style="color: #98be65;">&lt;unordered_map&gt;</span>
-<span style="color: #51afef; font-weight: bold;">#include</span><span style="color: #98be65;">&lt;string&gt;</span>
-<span style="color: #51afef; font-weight: bold;">#include</span><span style="color: #98be65;">&lt;iostream&gt;</span>
+<pre class="src src-cpp"><span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #51afef;">&lt;</span><span style="color: #98be65;">vector</span><span style="color: #51afef;">&gt;</span>
+<span style="color: #51afef; font-weight: bold;">#include</span><span style="color: #51afef;">&lt;</span><span style="color: #98be65;">unordered_map</span><span style="color: #51afef;">&gt;</span>
+<span style="color: #51afef; font-weight: bold;">#include</span><span style="color: #51afef;">&lt;</span><span style="color: #98be65;">string</span><span style="color: #51afef;">&gt;</span>
+<span style="color: #51afef; font-weight: bold;">#include</span><span style="color: #51afef;">&lt;</span><span style="color: #98be65;">iostream</span><span style="color: #51afef;">&gt;</span>
 <span style="color: #5B6268;">// </span><span style="color: #5B6268;">create very long class and function</span>
-<span style="color: #51afef;">template</span> &lt;<span style="color: #51afef;">typename</span> <span style="color: #ECBE7B;">T</span>, <span style="color: #51afef;">typename</span> <span style="color: #ECBE7B;">U</span>&gt; <span style="color: #51afef;">class</span> <span style="color: #ECBE7B;">VeryLongTemplateClass</span> {
+<span style="color: #51afef;">template</span> <span style="color: #51afef;">&lt;</span><span style="color: #51afef;">typename</span> <span style="color: #ECBE7B;">T</span>, <span style="color: #51afef;">typename</span> <span style="color: #ECBE7B;">U</span><span style="color: #51afef;">&gt;</span> <span style="color: #51afef;">class</span> <span style="color: #ECBE7B;">VeryLongTemplateClass</span> <span style="color: #51afef;">{</span>
 <span style="color: #51afef;">public</span>:
-  <span style="color: #c678dd;">VeryLongTemplateClass</span>(<span style="color: #ECBE7B;">T</span> <span style="color: #dcaeea;">instance1</span>, <span style="color: #ECBE7B;">U</span> <span style="color: #dcaeea;">instance2</span>)
-      : instance1_(instance1), instance2_(instance2) {}
+  <span style="color: #c678dd;">VeryLongTemplateClass</span><span style="color: #c678dd;">(</span><span style="color: #ECBE7B;">T</span> <span style="color: #dcaeea;">instance1</span>, <span style="color: #ECBE7B;">U</span> <span style="color: #dcaeea;">instance2</span><span style="color: #c678dd;">)</span>
+      : instance1_<span style="color: #c678dd;">(</span>instance1<span style="color: #c678dd;">)</span>, instance2_<span style="color: #c678dd;">(</span>instance2<span style="color: #c678dd;">)</span> <span style="color: #c678dd;">{}</span>
 
 <span style="color: #51afef;">private</span>:
   <span style="color: #ECBE7B;">T</span> <span style="color: #dcaeea;">instance1_</span>;
   <span style="color: #ECBE7B;">U</span> <span style="color: #dcaeea;">instance2_</span>;
-};
+<span style="color: #51afef;">}</span>;
 
-<span style="color: #51afef;">template</span> &lt;<span style="color: #51afef;">typename</span> <span style="color: #ECBE7B;">T</span>&gt; <span style="color: #ECBE7B;">VeryLongTemplateClass</span>&lt;<span style="color: #ECBE7B;">T</span>, <span style="color: #ECBE7B;">T</span>&gt; <span style="color: #c678dd;">construct_obj</span>(<span style="color: #ECBE7B;">T</span> <span style="color: #dcaeea;">instance</span>) {
-  <span style="color: #51afef;">return</span> VeryLongTemplateClass&lt;<span style="color: #ECBE7B;">T</span>, <span style="color: #ECBE7B;">T</span>&gt;(instance, instance);
-}
+<span style="color: #51afef;">template</span> <span style="color: #51afef;">&lt;</span><span style="color: #51afef;">typename</span> <span style="color: #ECBE7B;">T</span><span style="color: #51afef;">&gt;</span> <span style="color: #ECBE7B;">VeryLongTemplateClass</span><span style="color: #51afef;">&lt;</span><span style="color: #ECBE7B;">T</span>, <span style="color: #ECBE7B;">T</span><span style="color: #51afef;">&gt;</span> <span style="color: #c678dd;">construct_obj</span><span style="color: #51afef;">(</span><span style="color: #ECBE7B;">T</span> <span style="color: #dcaeea;">instance</span><span style="color: #51afef;">)</span> <span style="color: #51afef;">{</span>
+  <span style="color: #51afef;">return</span> VeryLongTemplateClass<span style="color: #c678dd;">&lt;</span><span style="color: #ECBE7B;">T</span>, <span style="color: #ECBE7B;">T</span><span style="color: #c678dd;">&gt;(</span>instance, instance<span style="color: #c678dd;">)</span>;
+<span style="color: #51afef;">}</span>
 
-<span style="color: #ECBE7B;">int</span> <span style="color: #c678dd;">main</span>() {
+<span style="color: #ECBE7B;">int</span> <span style="color: #c678dd;">main</span><span style="color: #51afef;">()</span> <span style="color: #51afef;">{</span>
   <span style="color: #51afef;">auto</span> <span style="color: #dcaeea;">a</span> = <span style="color: #da8548; font-weight: bold;">1</span>;                        <span style="color: #5B6268;">// </span><span style="color: #5B6268;">a is int</span>
-  <span style="color: #51afef;">auto</span> <span style="color: #dcaeea;">obj1</span> = construct_obj&lt;<span style="color: #ECBE7B;">int</span>&gt;(<span style="color: #da8548; font-weight: bold;">2</span>); <span style="color: #5B6268;">// </span><span style="color: #5B6268;">can infer</span>
+  <span style="color: #51afef;">auto</span> <span style="color: #dcaeea;">obj1</span> = construct_obj<span style="color: #c678dd;">&lt;</span><span style="color: #ECBE7B;">int</span><span style="color: #c678dd;">&gt;(</span><span style="color: #da8548; font-weight: bold;">2</span><span style="color: #c678dd;">)</span>; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">can infer</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">auto defaults to copy objects rather than taking the reference</span>
-  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">vector</span>&lt;<span style="color: #ECBE7B;">int</span>&gt; <span style="color: #dcaeea;">int_values</span> = {<span style="color: #da8548; font-weight: bold;">1</span>, <span style="color: #da8548; font-weight: bold;">2</span>, <span style="color: #da8548; font-weight: bold;">3</span>, <span style="color: #da8548; font-weight: bold;">4</span>};
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">vector</span><span style="color: #c678dd;">&lt;</span><span style="color: #ECBE7B;">int</span><span style="color: #c678dd;">&gt;</span> <span style="color: #dcaeea;">int_values</span> = <span style="color: #c678dd;">{</span><span style="color: #da8548; font-weight: bold;">1</span>, <span style="color: #da8548; font-weight: bold;">2</span>, <span style="color: #da8548; font-weight: bold;">3</span>, <span style="color: #da8548; font-weight: bold;">4</span><span style="color: #c678dd;">}</span>;
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">a deep-copy happens</span>
   <span style="color: #51afef;">auto</span> <span style="color: #dcaeea;">copy_int_values</span> = int_values;
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">this creates a reference</span>
   <span style="color: #51afef;">auto</span> &amp;<span style="color: #dcaeea;">ref_int_values</span> = int_values;
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">use auto in the for loop is very common</span>
-  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">unordered_map</span>&lt;<span style="color: #a9a1e1;">std</span>::string, <span style="color: #ECBE7B;">int</span>&gt; <span style="color: #dcaeea;">map</span>;
-  <span style="color: #51afef;">for</span> (<span style="color: #51afef;">auto</span> <span style="color: #dcaeea;">it</span> = map.begin(); it != map.end(); ++it) {
-  }
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">unordered_map</span><span style="color: #c678dd;">&lt;</span><span style="color: #a9a1e1;">std</span>::string, <span style="color: #ECBE7B;">int</span><span style="color: #c678dd;">&gt;</span> <span style="color: #dcaeea;">map</span>;
+  <span style="color: #51afef;">for</span> <span style="color: #c678dd;">(</span><span style="color: #51afef;">auto</span> <span style="color: #dcaeea;">it</span> = map.begin<span style="color: #98be65;">()</span>; it != map.end<span style="color: #98be65;">()</span>; ++it<span style="color: #c678dd;">)</span> <span style="color: #c678dd;">{</span>
+  <span style="color: #c678dd;">}</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">another exmaple</span>
-  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">vector</span>&lt;<span style="color: #ECBE7B;">int</span>&gt; <span style="color: #dcaeea;">vec</span> = {<span style="color: #da8548; font-weight: bold;">1</span>, <span style="color: #da8548; font-weight: bold;">2</span>, <span style="color: #da8548; font-weight: bold;">3</span>, <span style="color: #da8548; font-weight: bold;">4</span>};
-  <span style="color: #51afef;">for</span> (<span style="color: #51afef;">const</span> <span style="color: #51afef;">auto</span> &amp;<span style="color: #dcaeea;">elem</span> : vec) {
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">vector</span><span style="color: #c678dd;">&lt;</span><span style="color: #ECBE7B;">int</span><span style="color: #c678dd;">&gt;</span> <span style="color: #dcaeea;">vec</span> = <span style="color: #c678dd;">{</span><span style="color: #da8548; font-weight: bold;">1</span>, <span style="color: #da8548; font-weight: bold;">2</span>, <span style="color: #da8548; font-weight: bold;">3</span>, <span style="color: #da8548; font-weight: bold;">4</span><span style="color: #c678dd;">}</span>;
+  <span style="color: #51afef;">for</span> <span style="color: #c678dd;">(</span><span style="color: #51afef;">const</span> <span style="color: #51afef;">auto</span> &amp;<span style="color: #dcaeea;">elem</span> : vec<span style="color: #c678dd;">)</span> <span style="color: #c678dd;">{</span>
     <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; elem &lt;&lt; <span style="color: #98be65;">" "</span>;
-  }
+  <span style="color: #c678dd;">}</span>
   <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #a9a1e1;">std</span>::endl;
-}
+<span style="color: #51afef;">}</span>
 </pre>
 </div>
 </div>
 </div>
-<div id="outline-container-org6876e1c" class="outline-2">
-<h2 id="org6876e1c"><span class="section-number-2">6.</span> Smart pointers</h2>
+<div id="outline-container-org9a35959" class="outline-2">
+<h2 id="org9a35959"><span class="section-number-2">6.</span> Smart pointers</h2>
 <div class="outline-text-2" id="text-6">
 <ul class="org-ul">
 <li>A smart pointer is a data structure used in languages that do not have built-in memory management (e.g., with garbage collection, e.g., Python, Java) to handle memory allocation and deallocation.</li>
@@ -2491,38 +2491,38 @@ Define DLL:
 <li><code>std::shared_ptr</code> retains shared ownership of an object, i.e., multiple shared pointers can own the same object and can be copied.</li>
 </ul>
 </div>
-<div id="outline-container-org03a407c" class="outline-3">
-<h3 id="org03a407c"><span class="section-number-3">6.1.</span> <code>std::unique_ptr</code></h3>
+<div id="outline-container-org3f34e9b" class="outline-3">
+<h3 id="org3f34e9b"><span class="section-number-3">6.1.</span> <code>std::unique_ptr</code></h3>
 <div class="outline-text-3" id="text-6-1">
 <div class="org-src-container">
-<pre class="src src-cpp"><span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;iostream&gt;</span>
-<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;memory&gt;</span>  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">to use std::unique_ptr</span>
-<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;utility&gt;</span> <span style="color: #5B6268;">// </span><span style="color: #5B6268;">to use std::move</span>
+<pre class="src src-cpp"><span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #51afef;">&lt;</span><span style="color: #98be65;">iostream</span><span style="color: #51afef;">&gt;</span>
+<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #51afef;">&lt;</span><span style="color: #98be65;">memory</span><span style="color: #51afef;">&gt;</span>  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">to use std::unique_ptr</span>
+<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #51afef;">&lt;</span><span style="color: #98be65;">utility</span><span style="color: #51afef;">&gt;</span> <span style="color: #5B6268;">// </span><span style="color: #5B6268;">to use std::move</span>
 
 <span style="color: #5B6268;">// </span><span style="color: #5B6268;">class Point is the same as before</span>
 
 <span style="color: #5B6268;">// </span><span style="color: #5B6268;">takes in a unique point reference and changes its x value</span>
-<span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">SetXTo10</span>(<span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">unique_ptr</span>&lt;Point&gt; &amp;<span style="color: #dcaeea;">ptr</span>) { ptr-&gt;SetX(<span style="color: #da8548; font-weight: bold;">10</span>); }
-<span style="color: #ECBE7B;">int</span> <span style="color: #c678dd;">main</span>() {
+<span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">SetXTo10</span><span style="color: #51afef;">(</span><span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">unique_ptr</span><span style="color: #c678dd;">&lt;</span>Point<span style="color: #c678dd;">&gt;</span> &amp;<span style="color: #dcaeea;">ptr</span><span style="color: #51afef;">)</span> <span style="color: #51afef;">{</span> ptr-&gt;SetX<span style="color: #c678dd;">(</span><span style="color: #da8548; font-weight: bold;">10</span><span style="color: #c678dd;">)</span>; <span style="color: #51afef;">}</span>
+<span style="color: #ECBE7B;">int</span> <span style="color: #c678dd;">main</span><span style="color: #51afef;">()</span> <span style="color: #51afef;">{</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">initialize an empty unique pointer</span>
-  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">unique_ptr</span>&lt;Point&gt; <span style="color: #dcaeea;">u1</span>;
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">unique_ptr</span><span style="color: #c678dd;">&lt;</span>Point<span style="color: #c678dd;">&gt;</span> <span style="color: #dcaeea;">u1</span>;
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">initialize a unique pointer with constructors</span>
-  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">unique_ptr</span>&lt;Point&gt; <span style="color: #dcaeea;">u2</span> = <span style="color: #a9a1e1;">std</span>::make_unique&lt;Point&gt;();
-  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">unique_ptr</span>&lt;Point&gt; <span style="color: #dcaeea;">u3</span> = <span style="color: #a9a1e1;">std</span>::make_unique&lt;Point&gt;(<span style="color: #da8548; font-weight: bold;">2</span>, <span style="color: #da8548; font-weight: bold;">3</span>);
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">unique_ptr</span><span style="color: #c678dd;">&lt;</span>Point<span style="color: #c678dd;">&gt;</span> <span style="color: #dcaeea;">u2</span> = <span style="color: #a9a1e1;">std</span>::make_unique<span style="color: #c678dd;">&lt;</span>Point<span style="color: #c678dd;">&gt;()</span>;
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">unique_ptr</span><span style="color: #c678dd;">&lt;</span>Point<span style="color: #c678dd;">&gt;</span> <span style="color: #dcaeea;">u3</span> = <span style="color: #a9a1e1;">std</span>::make_unique<span style="color: #c678dd;">&lt;</span>Point<span style="color: #c678dd;">&gt;(</span><span style="color: #da8548; font-weight: bold;">2</span>, <span style="color: #da8548; font-weight: bold;">3</span><span style="color: #c678dd;">)</span>;
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">can treat a unique pointer as a boolean to determine whether</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">the pointer contains data</span>
-  <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"Pointer u1 is "</span> &lt;&lt; (u1 ? <span style="color: #98be65;">"not empty"</span> : <span style="color: #98be65;">"empty"</span>) &lt;&lt; <span style="color: #a9a1e1;">std</span>::endl;
-  <span style="color: #51afef;">if</span> (u2) {
-    <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; u2-&gt;GetX() &lt;&lt; <span style="color: #a9a1e1;">std</span>::endl;
-  }
+  <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"Pointer u1 is "</span> &lt;&lt; <span style="color: #c678dd;">(</span>u1 ? <span style="color: #98be65;">"not empty"</span> : <span style="color: #98be65;">"empty"</span><span style="color: #c678dd;">)</span> &lt;&lt; <span style="color: #a9a1e1;">std</span>::endl;
+  <span style="color: #51afef;">if</span> <span style="color: #c678dd;">(</span>u2<span style="color: #c678dd;">)</span> <span style="color: #c678dd;">{</span>
+    <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; u2-&gt;GetX<span style="color: #98be65;">()</span> &lt;&lt; <span style="color: #a9a1e1;">std</span>::endl;
+  <span style="color: #c678dd;">}</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">unique_ptr has no copy constructor!</span>
-  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">unique_ptr</span>&lt;Point&gt; <span style="color: #dcaeea;">u4</span> = u3; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">won't compile!</span>
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">unique_ptr</span><span style="color: #c678dd;">&lt;</span>Point<span style="color: #c678dd;">&gt;</span> <span style="color: #dcaeea;">u4</span> = u3; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">won't compile!</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">can transfer ownership with std::move</span>
-  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">unique_ptr</span>&lt;Point&gt; <span style="color: #dcaeea;">u5</span> = <span style="color: #a9a1e1;">std</span>::move(u3); <span style="color: #5B6268;">// </span><span style="color: #5B6268;">then u3 becomes empty!</span>
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">unique_ptr</span><span style="color: #c678dd;">&lt;</span>Point<span style="color: #c678dd;">&gt;</span> <span style="color: #dcaeea;">u5</span> = <span style="color: #a9a1e1;">std</span>::move<span style="color: #c678dd;">(</span>u3<span style="color: #c678dd;">)</span>; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">then u3 becomes empty!</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">pass the pointer as a reference so the ownership does not change</span>
-  SetXTo10(u5); <span style="color: #5B6268;">// </span><span style="color: #5B6268;">can still access u5 afterwards</span>
+  SetXTo10<span style="color: #c678dd;">(</span>u5<span style="color: #c678dd;">)</span>; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">can still access u5 afterwards</span>
   <span style="color: #51afef;">return</span> <span style="color: #da8548; font-weight: bold;">0</span>;
-}
+<span style="color: #51afef;">}</span>
 </pre>
 </div>
 
@@ -2532,109 +2532,109 @@ Define DLL:
 <div class="org-src-container">
 <pre class="src src-cpp"><span style="color: #5B6268;">// </span><span style="color: #5B6268;">the following code can compile</span>
 <span style="color: #5B6268;">// </span><span style="color: #5B6268;">but it causes a double deletion!</span>
-<span style="color: #ECBE7B;">MyClass</span> *<span style="color: #dcaeea;">obj</span> = <span style="color: #51afef;">new</span> <span style="color: #ECBE7B;">MyClass</span>();
-<span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">unique_ptr</span>&lt;<span style="color: #ECBE7B;">MyClass</span>&gt; <span style="color: #c678dd;">ptr1</span>(obj);
-<span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">unique_ptr</span>&lt;<span style="color: #ECBE7B;">MyClass</span>&gt; <span style="color: #c678dd;">ptr2</span>(obj);
+<span style="color: #ECBE7B;">MyClass</span> *<span style="color: #dcaeea;">obj</span> = <span style="color: #51afef;">new</span> <span style="color: #ECBE7B;">MyClass</span><span style="color: #51afef;">()</span>;
+<span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">unique_ptr</span><span style="color: #51afef;">&lt;</span><span style="color: #ECBE7B;">MyClass</span><span style="color: #51afef;">&gt;</span> <span style="color: #c678dd;">ptr1</span><span style="color: #51afef;">(</span>obj<span style="color: #51afef;">)</span>;
+<span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">unique_ptr</span><span style="color: #51afef;">&lt;</span><span style="color: #ECBE7B;">MyClass</span><span style="color: #51afef;">&gt;</span> <span style="color: #c678dd;">ptr2</span><span style="color: #51afef;">(</span>obj<span style="color: #51afef;">)</span>;
 </pre>
 </div>
 </div>
 </div>
-<div id="outline-container-orga17c160" class="outline-3">
-<h3 id="orga17c160"><span class="section-number-3">6.2.</span> <code>std::shared_ptr</code></h3>
+<div id="outline-container-orga6f4d50" class="outline-3">
+<h3 id="orga6f4d50"><span class="section-number-3">6.2.</span> <code>std::shared_ptr</code></h3>
 <div class="outline-text-3" id="text-6-2">
 <div class="org-src-container">
-<pre class="src src-cpp"><span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;iostream&gt;</span>
-<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;memory&gt;</span>
-<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;utility&gt;</span>
+<pre class="src src-cpp"><span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #51afef;">&lt;</span><span style="color: #98be65;">iostream</span><span style="color: #51afef;">&gt;</span>
+<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #51afef;">&lt;</span><span style="color: #98be65;">memory</span><span style="color: #51afef;">&gt;</span>
+<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #51afef;">&lt;</span><span style="color: #98be65;">utility</span><span style="color: #51afef;">&gt;</span>
 
 <span style="color: #5B6268;">// </span><span style="color: #5B6268;">class Point is the same as before</span>
 
 <span style="color: #5B6268;">// </span><span style="color: #5B6268;">modify a Point inside a shared_ptr by passing the reference</span>
-<span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">modify_ptr_via_ref</span>(<span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">shared_ptr</span>&lt;Point&gt; &amp;<span style="color: #dcaeea;">point</span>) { point-&gt;SetX(<span style="color: #da8548; font-weight: bold;">10</span>); }
+<span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">modify_ptr_via_ref</span><span style="color: #51afef;">(</span><span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">shared_ptr</span><span style="color: #c678dd;">&lt;</span>Point<span style="color: #c678dd;">&gt;</span> &amp;<span style="color: #dcaeea;">point</span><span style="color: #51afef;">)</span> <span style="color: #51afef;">{</span> point-&gt;SetX<span style="color: #c678dd;">(</span><span style="color: #da8548; font-weight: bold;">10</span><span style="color: #c678dd;">)</span>; <span style="color: #51afef;">}</span>
 <span style="color: #5B6268;">// </span><span style="color: #5B6268;">modify a Point inside a shared_ptr by passing the rvalue reference</span>
 <span style="color: #5B6268;">// </span><span style="color: #5B6268;">If an object is passed by rvalue reference, one should assume the ownership</span>
 <span style="color: #5B6268;">// </span><span style="color: #5B6268;">is moved after the function call, so the original object cannot be used</span>
-<span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">modify_ptr_via_rvalue_ref</span>(<span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">shared_ptr</span>&lt;Point&gt; &amp;&amp;<span style="color: #dcaeea;">point</span>) {
-  point-&gt;SetY(<span style="color: #da8548; font-weight: bold;">11</span>);
-}
+<span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">modify_ptr_via_rvalue_ref</span><span style="color: #51afef;">(</span><span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">shared_ptr</span><span style="color: #c678dd;">&lt;</span>Point<span style="color: #c678dd;">&gt;</span> &amp;&amp;<span style="color: #dcaeea;">point</span><span style="color: #51afef;">)</span> <span style="color: #51afef;">{</span>
+  point-&gt;SetY<span style="color: #c678dd;">(</span><span style="color: #da8548; font-weight: bold;">11</span><span style="color: #c678dd;">)</span>;
+<span style="color: #51afef;">}</span>
 <span style="color: #5B6268;">// </span><span style="color: #5B6268;">copy a shared_pointer with the default constructor</span>
 <span style="color: #5B6268;">// </span><span style="color: #5B6268;">so one should define own copy constructor and assignment when an object</span>
 <span style="color: #5B6268;">// </span><span style="color: #5B6268;">contains pointers</span>
-<span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">copy_shard_ptr_in_function</span>(<span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">shared_ptr</span>&lt;Point&gt; <span style="color: #dcaeea;">point</span>) {
-  <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"Use count of the shared pointer: "</span> &lt;&lt; point.use_count()
+<span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">copy_shard_ptr_in_function</span><span style="color: #51afef;">(</span><span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">shared_ptr</span><span style="color: #c678dd;">&lt;</span>Point<span style="color: #c678dd;">&gt;</span> <span style="color: #dcaeea;">point</span><span style="color: #51afef;">)</span> <span style="color: #51afef;">{</span>
+  <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"Use count of the shared pointer: "</span> &lt;&lt; point.use_count<span style="color: #c678dd;">()</span>
             &lt;&lt; <span style="color: #a9a1e1;">std</span>::endl; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">add by 1</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">the copy is destroyed at the end, so the count is decremented</span>
-}
+<span style="color: #51afef;">}</span>
 
-<span style="color: #ECBE7B;">int</span> <span style="color: #c678dd;">main</span>() {
+<span style="color: #ECBE7B;">int</span> <span style="color: #c678dd;">main</span><span style="color: #51afef;">()</span> <span style="color: #51afef;">{</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">the pointer constructors are the same as unique_ptr</span>
-  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">shared_ptr</span>&lt;Point&gt; <span style="color: #dcaeea;">s1</span>;
-  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">shared_ptr</span>&lt;Point&gt; <span style="color: #dcaeea;">s2</span> = <span style="color: #a9a1e1;">std</span>::make_shared&lt;Point&gt;();
-  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">shared_ptr</span>&lt;Point&gt; <span style="color: #dcaeea;">s3</span> = <span style="color: #a9a1e1;">std</span>::make_shared&lt;Point&gt;(<span style="color: #da8548; font-weight: bold;">2</span>, <span style="color: #da8548; font-weight: bold;">3</span>);
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">shared_ptr</span><span style="color: #c678dd;">&lt;</span>Point<span style="color: #c678dd;">&gt;</span> <span style="color: #dcaeea;">s1</span>;
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">shared_ptr</span><span style="color: #c678dd;">&lt;</span>Point<span style="color: #c678dd;">&gt;</span> <span style="color: #dcaeea;">s2</span> = <span style="color: #a9a1e1;">std</span>::make_shared<span style="color: #c678dd;">&lt;</span>Point<span style="color: #c678dd;">&gt;()</span>;
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">shared_ptr</span><span style="color: #c678dd;">&lt;</span>Point<span style="color: #c678dd;">&gt;</span> <span style="color: #dcaeea;">s3</span> = <span style="color: #a9a1e1;">std</span>::make_shared<span style="color: #c678dd;">&lt;</span>Point<span style="color: #c678dd;">&gt;(</span><span style="color: #da8548; font-weight: bold;">2</span>, <span style="color: #da8548; font-weight: bold;">3</span><span style="color: #c678dd;">)</span>;
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">copy a shared pointer via copy assignment or copy constructor</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">increment the reference count, which can be tracked by .use_count</span>
-  <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"Use count of s3"</span> &lt;&lt; s3.use_count() &lt;&lt; <span style="color: #a9a1e1;">std</span>::endl; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">1</span>
-  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">shared_ptr</span>&lt;Point&gt; <span style="color: #dcaeea;">s4</span> = s3; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">copy assignment</span>
-  <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"Use count of s3"</span> &lt;&lt; s3.use_count() &lt;&lt; <span style="color: #a9a1e1;">std</span>::endl; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">2</span>
-  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">shared_ptr</span>&lt;Point&gt; <span style="color: #dcaeea;">s5</span>(s4);
-  <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"Use count of s3"</span> &lt;&lt; s3.use_count() &lt;&lt; <span style="color: #a9a1e1;">std</span>::endl; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">3</span>
-  s3-&gt;SetX(<span style="color: #da8548; font-weight: bold;">100</span>); <span style="color: #5B6268;">// </span><span style="color: #5B6268;">also changes the data in s4 and s5</span>
-  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">shared_ptr</span>&lt;Point&gt; <span style="color: #dcaeea;">s6</span> = <span style="color: #a9a1e1;">std</span>::move(s5); <span style="color: #5B6268;">// </span><span style="color: #5B6268;">s5 transfer the ownership to s6</span>
-  <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"Use count of s3"</span> &lt;&lt; s3.use_count()
+  <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"Use count of s3"</span> &lt;&lt; s3.use_count<span style="color: #c678dd;">()</span> &lt;&lt; <span style="color: #a9a1e1;">std</span>::endl; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">1</span>
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">shared_ptr</span><span style="color: #c678dd;">&lt;</span>Point<span style="color: #c678dd;">&gt;</span> <span style="color: #dcaeea;">s4</span> = s3; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">copy assignment</span>
+  <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"Use count of s3"</span> &lt;&lt; s3.use_count<span style="color: #c678dd;">()</span> &lt;&lt; <span style="color: #a9a1e1;">std</span>::endl; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">2</span>
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">shared_ptr</span><span style="color: #c678dd;">&lt;</span>Point<span style="color: #c678dd;">&gt;</span> <span style="color: #dcaeea;">s5</span><span style="color: #c678dd;">(</span>s4<span style="color: #c678dd;">)</span>;
+  <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"Use count of s3"</span> &lt;&lt; s3.use_count<span style="color: #c678dd;">()</span> &lt;&lt; <span style="color: #a9a1e1;">std</span>::endl; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">3</span>
+  s3-&gt;SetX<span style="color: #c678dd;">(</span><span style="color: #da8548; font-weight: bold;">100</span><span style="color: #c678dd;">)</span>; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">also changes the data in s4 and s5</span>
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">shared_ptr</span><span style="color: #c678dd;">&lt;</span>Point<span style="color: #c678dd;">&gt;</span> <span style="color: #dcaeea;">s6</span> = <span style="color: #a9a1e1;">std</span>::move<span style="color: #c678dd;">(</span>s5<span style="color: #c678dd;">)</span>; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">s5 transfer the ownership to s6</span>
+  <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"Use count of s3"</span> &lt;&lt; s3.use_count<span style="color: #c678dd;">()</span>
             &lt;&lt; <span style="color: #a9a1e1;">std</span>::endl; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">still 3: s3, s4, s6</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">as unique_ptr, shared_ptr can be passed by references and rvalue references</span>
-  modify_ptr_via_ref(s2);                   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">setX(11)</span>
-  modify_ptr_via_rvalue_ref(<span style="color: #a9a1e1;">std</span>::move(s2)); <span style="color: #5B6268;">// </span><span style="color: #5B6268;">setY(12)</span>
-  <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"s2.x = "</span> &lt;&lt; s2-&gt;GetX()
-            &lt;&lt; <span style="color: #98be65;">" , s2.y = "</span> &lt;&lt; s2-&gt;GetY(); <span style="color: #5B6268;">// </span><span style="color: #5B6268;">(11, 12)</span>
+  modify_ptr_via_ref<span style="color: #c678dd;">(</span>s2<span style="color: #c678dd;">)</span>;                   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">setX(11)</span>
+  modify_ptr_via_rvalue_ref<span style="color: #c678dd;">(</span><span style="color: #a9a1e1;">std</span>::move<span style="color: #98be65;">(</span>s2<span style="color: #98be65;">)</span><span style="color: #c678dd;">)</span>; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">setY(12)</span>
+  <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"s2.x = "</span> &lt;&lt; s2-&gt;GetX<span style="color: #c678dd;">()</span>
+            &lt;&lt; <span style="color: #98be65;">" , s2.y = "</span> &lt;&lt; s2-&gt;GetY<span style="color: #c678dd;">()</span>; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">(11, 12)</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">shared_ptr can also be passed by value/copy</span>
-  <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"Use count of s2"</span> &lt;&lt; s2.use_count() &lt;&lt; <span style="color: #a9a1e1;">std</span>::endl; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">1</span>
-  copy_shared_ptr_in_function(s2); <span style="color: #5B6268;">// </span><span style="color: #5B6268;">inside the function, the use count is 2</span>
-  <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"Use count of s2"</span> &lt;&lt; s2.use_count()
+  <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"Use count of s2"</span> &lt;&lt; s2.use_count<span style="color: #c678dd;">()</span> &lt;&lt; <span style="color: #a9a1e1;">std</span>::endl; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">1</span>
+  copy_shared_ptr_in_function<span style="color: #c678dd;">(</span>s2<span style="color: #c678dd;">)</span>; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">inside the function, the use count is 2</span>
+  <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"Use count of s2"</span> &lt;&lt; s2.use_count<span style="color: #c678dd;">()</span>
             &lt;&lt; <span style="color: #a9a1e1;">std</span>::endl; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">1 again as the copy is detroyed</span>
   <span style="color: #51afef;">return</span> <span style="color: #da8548; font-weight: bold;">0</span>;
-}
+<span style="color: #51afef;">}</span>
 </pre>
 </div>
 </div>
 </div>
 </div>
-<div id="outline-container-orgff9d615" class="outline-2">
-<h2 id="orgff9d615"><span class="section-number-2">7.</span> Synchronization</h2>
+<div id="outline-container-org0b2f277" class="outline-2">
+<h2 id="org0b2f277"><span class="section-number-2">7.</span> Synchronization</h2>
 <div class="outline-text-2" id="text-7">
 </div>
-<div id="outline-container-org720a20f" class="outline-3">
-<h3 id="org720a20f"><span class="section-number-3">7.1.</span> <code>std::mutex</code></h3>
+<div id="outline-container-org2b7c7db" class="outline-3">
+<h3 id="org2b7c7db"><span class="section-number-3">7.1.</span> <code>std::mutex</code></h3>
 <div class="outline-text-3" id="text-7-1">
 <div class="org-src-container">
-<pre class="src src-cpp"><span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;iostream&gt;</span>
-<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;mutex&gt;</span>
-<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;thread&gt;</span>
+<pre class="src src-cpp"><span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #51afef;">&lt;</span><span style="color: #98be65;">iostream</span><span style="color: #51afef;">&gt;</span>
+<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #51afef;">&lt;</span><span style="color: #98be65;">mutex</span><span style="color: #51afef;">&gt;</span>
+<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #51afef;">&lt;</span><span style="color: #98be65;">thread</span><span style="color: #51afef;">&gt;</span>
 
 <span style="color: #5B6268;">// </span><span style="color: #5B6268;">define a global variable to be modified</span>
 <span style="color: #5B6268;">// </span><span style="color: #5B6268;">by multiple threads</span>
 <span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">count</span> = <span style="color: #da8548; font-weight: bold;">0</span>;
 <span style="color: #5B6268;">// </span><span style="color: #5B6268;">declare a mutex</span>
 <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">mutex</span> <span style="color: #dcaeea;">m</span>;
-<span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">add_count</span>() {
-  m.lock(); <span style="color: #5B6268;">// </span><span style="color: #5B6268;">acquire the lock</span>
+<span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">add_count</span><span style="color: #51afef;">()</span> <span style="color: #51afef;">{</span>
+  m.lock<span style="color: #c678dd;">()</span>; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">acquire the lock</span>
   count += <span style="color: #da8548; font-weight: bold;">1</span>;
-  m.unlock(); <span style="color: #5B6268;">// </span><span style="color: #5B6268;">release the lock</span>
-}
-<span style="color: #ECBE7B;">int</span> <span style="color: #c678dd;">main</span>() {
-  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">thread</span> <span style="color: #dcaeea;">t1</span>(add_count);
-  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">thread</span> <span style="color: #dcaeea;">t2</span>(add_count);
-  t1.join();
-  t2.join();
+  m.unlock<span style="color: #c678dd;">()</span>; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">release the lock</span>
+<span style="color: #51afef;">}</span>
+<span style="color: #ECBE7B;">int</span> <span style="color: #c678dd;">main</span><span style="color: #51afef;">()</span> <span style="color: #51afef;">{</span>
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">thread</span> <span style="color: #dcaeea;">t1</span><span style="color: #c678dd;">(</span>add_count<span style="color: #c678dd;">)</span>;
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">thread</span> <span style="color: #dcaeea;">t2</span><span style="color: #c678dd;">(</span>add_count<span style="color: #c678dd;">)</span>;
+  t1.join<span style="color: #c678dd;">()</span>;
+  t2.join<span style="color: #c678dd;">()</span>;
   <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; count &lt;&lt; <span style="color: #a9a1e1;">std</span>::endl; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">always 2</span>
   <span style="color: #51afef;">return</span> <span style="color: #da8548; font-weight: bold;">0</span>;
-}
+<span style="color: #51afef;">}</span>
 </pre>
 </div>
 </div>
 </div>
-<div id="outline-container-org972445b" class="outline-3">
-<h3 id="org972445b"><span class="section-number-3">7.2.</span> <code>std::scoped_lock</code></h3>
+<div id="outline-container-orgace0084" class="outline-3">
+<h3 id="orgace0084"><span class="section-number-3">7.2.</span> <code>std::scoped_lock</code></h3>
 <div class="outline-text-3" id="text-7-2">
 <ul class="org-ul">
 <li>A mutex wrapper that provides a RAII-style of obtaining and releasing the lock.</li>
@@ -2642,25 +2642,25 @@ Define DLL:
 <li>Better than <code>std::mutex</code> since it provides exception safety.</li>
 </ul>
 <div class="org-src-container">
-<pre class="src src-cpp"><span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;iostream&gt;</span>
-<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;mutex&gt;</span>
+<pre class="src src-cpp"><span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #51afef;">&lt;</span><span style="color: #98be65;">iostream</span><span style="color: #51afef;">&gt;</span>
+<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #51afef;">&lt;</span><span style="color: #98be65;">mutex</span><span style="color: #51afef;">&gt;</span>
 
 <span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">count</span> = <span style="color: #da8548; font-weight: bold;">0</span>;
 <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">mutex</span> <span style="color: #dcaeea;">m</span>;
-<span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">add_count</span>() {
+<span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">add_count</span><span style="color: #51afef;">()</span> <span style="color: #51afef;">{</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">the scoped_lock constructor allows for the thread</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">to acquire the mutex m</span>
-  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">scoped_lock</span> <span style="color: #dcaeea;">slk</span>(m);
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">scoped_lock</span> <span style="color: #dcaeea;">slk</span><span style="color: #c678dd;">(</span>m<span style="color: #c678dd;">)</span>;
   count += <span style="color: #da8548; font-weight: bold;">1</span>;
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">once the function finishes, slk is destructurd and</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">m is released</span>
-}
+<span style="color: #51afef;">}</span>
 </pre>
 </div>
 </div>
 </div>
-<div id="outline-container-org9630937" class="outline-3">
-<h3 id="org9630937"><span class="section-number-3">7.3.</span> <code>std::condition_variable</code></h3>
+<div id="outline-container-org00ab3e7" class="outline-3">
+<h3 id="org00ab3e7"><span class="section-number-3">7.3.</span> <code>std::condition_variable</code></h3>
 <div class="outline-text-3" id="text-7-3">
 <ul class="org-ul">
 <li>Allow threads to wait until a particular condition before acquiring a mutex.</li>
@@ -2668,51 +2668,51 @@ Define DLL:
 <code>notify_one</code></li>
 </ul>
 <div class="org-src-container">
-<pre class="src src-cpp"><span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;condition_variable&gt;</span>
-<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;iostream&gt;</span>
-<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;mutex&gt;</span>
-<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;thread&gt;</span>
+<pre class="src src-cpp"><span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #51afef;">&lt;</span><span style="color: #98be65;">condition_variable</span><span style="color: #51afef;">&gt;</span>
+<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #51afef;">&lt;</span><span style="color: #98be65;">iostream</span><span style="color: #51afef;">&gt;</span>
+<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #51afef;">&lt;</span><span style="color: #98be65;">mutex</span><span style="color: #51afef;">&gt;</span>
+<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #51afef;">&lt;</span><span style="color: #98be65;">thread</span><span style="color: #51afef;">&gt;</span>
 
 <span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">count</span> = <span style="color: #da8548; font-weight: bold;">0</span>;
 <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">mutex</span> <span style="color: #dcaeea;">m</span>;
 <span style="color: #5B6268;">// </span><span style="color: #5B6268;">declare a condition variable</span>
 <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">condition_variable</span> <span style="color: #dcaeea;">cv</span>;
-<span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">add_count_and_notify</span>() {
-  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">scoped_lock</span> <span style="color: #dcaeea;">slk</span>(m);
+<span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">add_count_and_notify</span><span style="color: #51afef;">()</span> <span style="color: #51afef;">{</span>
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">scoped_lock</span> <span style="color: #dcaeea;">slk</span><span style="color: #c678dd;">(</span>m<span style="color: #c678dd;">)</span>;
   count += <span style="color: #da8548; font-weight: bold;">1</span>;
-  <span style="color: #51afef;">if</span> (count == <span style="color: #da8548; font-weight: bold;">2</span>) {
+  <span style="color: #51afef;">if</span> <span style="color: #c678dd;">(</span>count == <span style="color: #da8548; font-weight: bold;">2</span><span style="color: #c678dd;">)</span> <span style="color: #c678dd;">{</span>
     <span style="color: #5B6268;">// </span><span style="color: #5B6268;">notidy one waiting thread</span>
     <span style="color: #5B6268;">// </span><span style="color: #5B6268;">otherwise the waiter thread hangs forever</span>
-    cv.notify_one();
-  }
-}
-<span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">waiter_thread</span>() {
+    cv.notify_one<span style="color: #98be65;">()</span>;
+  <span style="color: #c678dd;">}</span>
+<span style="color: #51afef;">}</span>
+<span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">waiter_thread</span><span style="color: #51afef;">()</span> <span style="color: #51afef;">{</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">a unique_lock is movable but not copiable</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">more flexible than scoped_lock as it can unlock</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">and relock manually, while scoped_lock can only be</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">unlocked automatically.</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">scoped_lock cannot be used with condition variables</span>
-  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">unique_lock</span> <span style="color: #dcaeea;">lk</span>(m);
-  cv.wait(lk, [] { <span style="color: #51afef;">return</span> count == <span style="color: #da8548; font-weight: bold;">2</span>; });
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">unique_lock</span> <span style="color: #dcaeea;">lk</span><span style="color: #c678dd;">(</span>m<span style="color: #c678dd;">)</span>;
+  cv.wait<span style="color: #c678dd;">(</span>lk, <span style="color: #98be65;">[]</span> <span style="color: #98be65;">{</span> <span style="color: #51afef;">return</span> count == <span style="color: #da8548; font-weight: bold;">2</span>; <span style="color: #98be65;">}</span><span style="color: #c678dd;">)</span>;
   <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; count &lt;&lt; <span style="color: #a9a1e1;">std</span>::endl;
-}
-<span style="color: #ECBE7B;">int</span> <span style="color: #c678dd;">main</span>() {
-  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">thread</span> <span style="color: #dcaeea;">t1</span>(waiter_thread);
+<span style="color: #51afef;">}</span>
+<span style="color: #ECBE7B;">int</span> <span style="color: #c678dd;">main</span><span style="color: #51afef;">()</span> <span style="color: #51afef;">{</span>
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">thread</span> <span style="color: #dcaeea;">t1</span><span style="color: #c678dd;">(</span>waiter_thread<span style="color: #c678dd;">)</span>;
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">make t1 really waits</span>
-  <span style="color: #a9a1e1;">std</span>::<span style="color: #a9a1e1;">this_thread</span>::sleep_for(<span style="color: #a9a1e1;">std</span>::<span style="color: #a9a1e1;">chrono</span>::milliseconds(<span style="color: #da8548; font-weight: bold;">100</span>));
-  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">thread</span> <span style="color: #dcaeea;">t2</span>(add_count_and_notify);
-  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">thread</span> <span style="color: #dcaeea;">t3</span>(add_count_and_notify);
-  t1.join();
-  t2.join();
-  t3.join();
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #a9a1e1;">this_thread</span>::sleep_for<span style="color: #c678dd;">(</span><span style="color: #a9a1e1;">std</span>::<span style="color: #a9a1e1;">chrono</span>::milliseconds<span style="color: #98be65;">(</span><span style="color: #da8548; font-weight: bold;">100</span><span style="color: #98be65;">)</span><span style="color: #c678dd;">)</span>;
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">thread</span> <span style="color: #dcaeea;">t2</span><span style="color: #c678dd;">(</span>add_count_and_notify<span style="color: #c678dd;">)</span>;
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">thread</span> <span style="color: #dcaeea;">t3</span><span style="color: #c678dd;">(</span>add_count_and_notify<span style="color: #c678dd;">)</span>;
+  t1.join<span style="color: #c678dd;">()</span>;
+  t2.join<span style="color: #c678dd;">()</span>;
+  t3.join<span style="color: #c678dd;">()</span>;
   <span style="color: #51afef;">return</span> <span style="color: #da8548; font-weight: bold;">0</span>;
-}
+<span style="color: #51afef;">}</span>
 </pre>
 </div>
 </div>
 </div>
-<div id="outline-container-org45ff32d" class="outline-3">
-<h3 id="org45ff32d"><span class="section-number-3">7.4.</span> Reader-writer lock</h3>
+<div id="outline-container-org4f057cc" class="outline-3">
+<h3 id="org4f057cc"><span class="section-number-3">7.4.</span> Reader-writer lock</h3>
 <div class="outline-text-3" id="text-7-4">
 <ul class="org-ul">
 <li>A reader-writer lock allows multiple threads to have shared read access (no writers are allowed during read operations) and exclusive write access, i.e., no other readers or writers are allowed during the write.</li>
@@ -2723,35 +2723,35 @@ Define DLL:
 <code>std::unique_lock</code> can be used a RAII-style exclusive write lock.
 </p>
 <div class="org-src-container">
-<pre class="src src-cpp"><span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;iostream&gt;</span>
-<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;mutex&gt;</span>
-<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;shared_mutex&gt;</span>
-<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;thread&gt;</span>
+<pre class="src src-cpp"><span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #51afef;">&lt;</span><span style="color: #98be65;">iostream</span><span style="color: #51afef;">&gt;</span>
+<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #51afef;">&lt;</span><span style="color: #98be65;">mutex</span><span style="color: #51afef;">&gt;</span>
+<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #51afef;">&lt;</span><span style="color: #98be65;">shared_mutex</span><span style="color: #51afef;">&gt;</span>
+<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #51afef;">&lt;</span><span style="color: #98be65;">thread</span><span style="color: #51afef;">&gt;</span>
 
 <span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">count</span> = <span style="color: #da8548; font-weight: bold;">0</span>; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">resource</span>
 <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">shared_mutex</span> <span style="color: #dcaeea;">m</span>;
-<span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">read_value</span>() {
+<span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">read_value</span><span style="color: #51afef;">()</span> <span style="color: #51afef;">{</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">use shared_lock to gain read-only, shared access</span>
-  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">shared_lock</span> <span style="color: #dcaeea;">lk</span>(m);
-  <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"Reading "</span> + <span style="color: #a9a1e1;">std</span>::to_string(count) &lt;&lt; <span style="color: #a9a1e1;">std</span>::endl;
-}
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">shared_lock</span> <span style="color: #dcaeea;">lk</span><span style="color: #c678dd;">(</span>m<span style="color: #c678dd;">)</span>;
+  <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"Reading "</span> + <span style="color: #a9a1e1;">std</span>::to_string<span style="color: #c678dd;">(</span>count<span style="color: #c678dd;">)</span> &lt;&lt; <span style="color: #a9a1e1;">std</span>::endl;
+<span style="color: #51afef;">}</span>
 
-<span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">write_value</span>() {
+<span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">write_value</span><span style="color: #51afef;">()</span> <span style="color: #51afef;">{</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">use unique_lock to gain exclusive access</span>
-  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">unique_lock</span> <span style="color: #dcaeea;">lk</span>(m);
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">unique_lock</span> <span style="color: #dcaeea;">lk</span><span style="color: #c678dd;">(</span>m<span style="color: #c678dd;">)</span>;
   count += <span style="color: #da8548; font-weight: bold;">3</span>;
-}
-<span style="color: #ECBE7B;">int</span> <span style="color: #c678dd;">main</span>() {
+<span style="color: #51afef;">}</span>
+<span style="color: #ECBE7B;">int</span> <span style="color: #c678dd;">main</span><span style="color: #51afef;">()</span> <span style="color: #51afef;">{</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">since all 3 threads run in parallel,</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">the output is not deterministic</span>
-  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">thread</span> <span style="color: #dcaeea;">t1</span>(read_value);
-  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">thread</span> <span style="color: #dcaeea;">t2</span>(write_value);
-  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">thread</span> <span style="color: #dcaeea;">t3</span>(read_value);
-  t1.join();
-  t2.join();
-  t3.join();
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">thread</span> <span style="color: #dcaeea;">t1</span><span style="color: #c678dd;">(</span>read_value<span style="color: #c678dd;">)</span>;
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">thread</span> <span style="color: #dcaeea;">t2</span><span style="color: #c678dd;">(</span>write_value<span style="color: #c678dd;">)</span>;
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">thread</span> <span style="color: #dcaeea;">t3</span><span style="color: #c678dd;">(</span>read_value<span style="color: #c678dd;">)</span>;
+  t1.join<span style="color: #c678dd;">()</span>;
+  t2.join<span style="color: #c678dd;">()</span>;
+  t3.join<span style="color: #c678dd;">()</span>;
   <span style="color: #51afef;">return</span> <span style="color: #da8548; font-weight: bold;">0</span>;
-}
+<span style="color: #51afef;">}</span>
 </pre>
 </div></li>
 </ul>
@@ -2780,6 +2780,7 @@ Define DLL:
             <i class="fab fa-github"></i>
       </a>
       </div>
+      <script src="assets/toggle.js"></script>
       </footer></div>
 </body>
 </html>

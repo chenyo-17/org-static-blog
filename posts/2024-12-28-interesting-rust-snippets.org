@@ -2,6 +2,8 @@
 #+date: <2024-12-28 10:21>
 #+description: Some interesting Rust code snippets while learning.
 #+filetags: rust program
+#+HTML_HEAD_EXTRA: <script type="text/javascript"  src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+#+HTML_HEAD_EXTRA: <script type="text/javascript" src="assets/esquemadorg.js"></script>
 
 * References
 - [[https://rust-for-rustaceans.com/][Rust for Rustaceans]]
@@ -337,8 +339,8 @@ The code above uses existential types in the associated types to avoid creating 
 
 * Linked-list
 ** [[https://leetcode.com/problems/lru-cache/description/][Leetcode 146: LRU cache]]
-This is not interesting at all, but it took me so long to make it right, and I may have used too many reference counters.
-#+begin_src rust
+Below is my personal solution for the problem, while it was accepted, there is space to improve it and I may come back when I have another idea.
+#+begin_src rust :fold
 use std::{cell::RefCell, collections::HashMap, rc::Rc};
 
 type List = Option<Rc<RefCell<ListNode>>>;

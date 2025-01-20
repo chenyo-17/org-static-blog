@@ -41,21 +41,21 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org9c416c5">1. Previously on my Telegram bot</a></li>
-<li><a href="#org0d7541b">2. Why do I need a Mensa bot</a></li>
-<li><a href="#org8ce79e5">3. How to get the data</a>
+<li><a href="#org4663c8f">1. Previously on my Telegram bot</a></li>
+<li><a href="#org3be2547">2. Why do I need a Mensa bot</a></li>
+<li><a href="#orgdb88c92">3. How to get the data</a>
 <ul>
-<li><a href="#org305692d">3.1. Scrape menus locally</a></li>
-<li><a href="#org9b59469">3.2. Scrape menus on Render</a></li>
+<li><a href="#org0a2800a">3.1. Scrape menus locally</a></li>
+<li><a href="#orgd2ff214">3.2. Scrape menus on Render</a></li>
 </ul>
 </li>
-<li><a href="#org761b316">4. Performance</a></li>
-<li><a href="#orgab206e1">5. Conclusion</a></li>
+<li><a href="#org36f6131">4. Performance</a></li>
+<li><a href="#org3e53350">5. Conclusion</a></li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-org9c416c5" class="outline-2">
-<h2 id="org9c416c5"><span class="section-number-2">1.</span> Previously on my Telegram bot</h2>
+<div id="outline-container-org4663c8f" class="outline-2">
+<h2 id="org4663c8f"><span class="section-number-2">1.</span> Previously on my Telegram bot</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 In the post <a href="https://chenyo.me/2024-09-08-build-a-free-telegram-sticker-bot.html">Build a free Telegram sticker tag bot</a>, I detailed the process of integrating various online services to create a sticker tag bot.
@@ -74,8 +74,8 @@ At the conclusion of that post, I hinted at a second functionality I had in mind
 </p>
 </div>
 </div>
-<div id="outline-container-org0d7541b" class="outline-2">
-<h2 id="org0d7541b"><span class="section-number-2">2.</span> Why do I need a Mensa bot</h2>
+<div id="outline-container-org3be2547" class="outline-2">
+<h2 id="org3be2547"><span class="section-number-2">2.</span> Why do I need a Mensa bot</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 One mobile app I frequently use on weekdays is <a href="https://github.com/famoser/Mensa">Mensa</a>, which lists daily menus for each Zürich Mensa to help people make their most important decision of the day.
@@ -85,8 +85,8 @@ To fix this, I decide to add the meal images myself.
 </p>
 </div>
 </div>
-<div id="outline-container-org8ce79e5" class="outline-2">
-<h2 id="org8ce79e5"><span class="section-number-2">3.</span> How to get the data</h2>
+<div id="outline-container-orgdb88c92" class="outline-2">
+<h2 id="orgdb88c92"><span class="section-number-2">3.</span> How to get the data</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 I couldn&rsquo;t find an official API for this, so I decided to scrape the webpage myself.
@@ -94,8 +94,8 @@ Here&rsquo;s where things got tricky: the Mensa web pages use JavaScript to rend
 This meant I couldn&rsquo;t just grab the page - I needed a browser to run the JavaScript first.
 </p>
 </div>
-<div id="outline-container-org305692d" class="outline-3">
-<h3 id="org305692d"><span class="section-number-3">3.1.</span> Scrape menus locally</h3>
+<div id="outline-container-org0a2800a" class="outline-3">
+<h3 id="org0a2800a"><span class="section-number-3">3.1.</span> Scrape menus locally</h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
 On a local machine, it&rsquo;s pretty straightforward.
@@ -104,8 +104,8 @@ After you&rsquo;ve snagged the page, you can use an HTML parser like <a href="ht
 </p>
 </div>
 </div>
-<div id="outline-container-org9b59469" class="outline-3">
-<h3 id="org9b59469"><span class="section-number-3">3.2.</span> Scrape menus on Render</h3>
+<div id="outline-container-orgd2ff214" class="outline-3">
+<h3 id="orgd2ff214"><span class="section-number-3">3.2.</span> Scrape menus on Render</h3>
 <div class="outline-text-3" id="text-3-2">
 <p>
 The only snag with <code>go-rod</code> is it&rsquo;s too bulky for a Render free account.
@@ -130,8 +130,8 @@ So I had to clean it up before <code>goquery</code> can make sense of it.
 </div>
 </div>
 </div>
-<div id="outline-container-org761b316" class="outline-2">
-<h2 id="org761b316"><span class="section-number-2">4.</span> Performance</h2>
+<div id="outline-container-org36f6131" class="outline-2">
+<h2 id="org36f6131"><span class="section-number-2">4.</span> Performance</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 AbstractAPI&rsquo;s free plan only lets you make one request per second.
@@ -147,8 +147,8 @@ So, I end up scraping fresh data for each Mensa every single time.
 </p>
 </div>
 </div>
-<div id="outline-container-orgab206e1" class="outline-2">
-<h2 id="orgab206e1"><span class="section-number-2">5.</span> Conclusion</h2>
+<div id="outline-container-org3e53350" class="outline-2">
+<h2 id="org3e53350"><span class="section-number-2">5.</span> Conclusion</h2>
 <div class="outline-text-2" id="text-5">
 <p>
 Here&rsquo;s a quick look at what the bot can do now: it tags stickers and scrapes Mensa menus.
@@ -156,7 +156,7 @@ Keep in mind the GIF is sped up to twice the normal speed.
 </p>
 
 
-<figure id="orgc879d3a">
+<figure id="org85a53db">
 <img src="./static/telegram.gif" alt="telegram.gif" align="center" width="700px" style="border: 1px solid black;">
 
 <figcaption><span class="figure-number">Figure 1: </span>The current Telegram bot</figcaption>
@@ -179,23 +179,23 @@ The <a href="https://github.com/chenyo-17/pbaobot">repository</a> is also public
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgd1e133b">1. What happened</a></li>
-<li><a href="#orgfd29d0e">2. What do I need</a></li>
-<li><a href="#org8aa667d">3. How to build a bot</a>
+<li><a href="#orgc861b35">1. What happened</a></li>
+<li><a href="#orgfd6d509">2. What do I need</a></li>
+<li><a href="#orge256bde">3. How to build a bot</a>
 <ul>
-<li><a href="#org254b26e">3.1. How to build a sticker tag bot</a></li>
-<li><a href="#org1286733">3.2. How to make the bot private</a></li>
+<li><a href="#org9cd67f8">3.1. How to build a sticker tag bot</a></li>
+<li><a href="#org2dd28c4">3.2. How to make the bot private</a></li>
 </ul>
 </li>
-<li><a href="#org0dc7c69">4. How to deploy the bot on Render</a></li>
-<li><a href="#org5c4479e">5. How to connect to the Firebase</a></li>
-<li><a href="#org1ec6cca">6. How to configure UptimeRobot</a></li>
-<li><a href="#org6d20a51">7. Conclusion</a></li>
+<li><a href="#org445c8e2">4. How to deploy the bot on Render</a></li>
+<li><a href="#orge5152d6">5. How to connect to the Firebase</a></li>
+<li><a href="#orgc70c80e">6. How to configure UptimeRobot</a></li>
+<li><a href="#org6e130c1">7. Conclusion</a></li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-orgd1e133b" class="outline-2">
-<h2 id="orgd1e133b"><span class="section-number-2">1.</span> What happened</h2>
+<div id="outline-container-orgc861b35" class="outline-2">
+<h2 id="orgc861b35"><span class="section-number-2">1.</span> What happened</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 When I started to use Telegram, I really missed being able to search stickers by text, like I can in WeChat.
@@ -215,8 +215,8 @@ So, I decided to build my own Telegram bot.
 </p>
 </div>
 </div>
-<div id="outline-container-orgfd29d0e" class="outline-2">
-<h2 id="orgfd29d0e"><span class="section-number-2">2.</span> What do I need</h2>
+<div id="outline-container-orgfd6d509" class="outline-2">
+<h2 id="orgfd6d509"><span class="section-number-2">2.</span> What do I need</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 My goal was to create a bot using only free services, including cloud storage for key-value pairs and a hosting platform to keep the bot running.
@@ -253,8 +253,8 @@ However, these services do not work together automatically. Gluing them together
 </p>
 </div>
 </div>
-<div id="outline-container-org8aa667d" class="outline-2">
-<h2 id="org8aa667d"><span class="section-number-2">3.</span> How to build a bot</h2>
+<div id="outline-container-orge256bde" class="outline-2">
+<h2 id="orge256bde"><span class="section-number-2">3.</span> How to build a bot</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 The first step in building any bot is asking BotFather for a new bot and keeping the bot token secure.
@@ -269,8 +269,8 @@ This includes learning how to handle messages effectively.
 For example, I used <a href="https://github.com/go-telegram-bot-api/telegram-bot-api">tgbotapi(Golang)</a>.
 </p>
 </div>
-<div id="outline-container-org254b26e" class="outline-3">
-<h3 id="org254b26e"><span class="section-number-3">3.1.</span> How to build a sticker tag bot</h3>
+<div id="outline-container-org9cd67f8" class="outline-3">
+<h3 id="org9cd67f8"><span class="section-number-3">3.1.</span> How to build a sticker tag bot</h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
 A sticker tag bot needs two main functionalities:
@@ -303,8 +303,8 @@ To address this, I added a <code>/delete</code> method to remove tags when neede
 </p>
 </div>
 </div>
-<div id="outline-container-org1286733" class="outline-3">
-<h3 id="org1286733"><span class="section-number-3">3.2.</span> How to make the bot private</h3>
+<div id="outline-container-org2dd28c4" class="outline-3">
+<h3 id="org2dd28c4"><span class="section-number-3">3.2.</span> How to make the bot private</h3>
 <div class="outline-text-3" id="text-3-2">
 <p>
 I couldn&rsquo;t find an official way to make a bot visible only to me.
@@ -314,8 +314,8 @@ Then I performed a sanity check before handling any messages.
 </div>
 </div>
 </div>
-<div id="outline-container-org0dc7c69" class="outline-2">
-<h2 id="org0dc7c69"><span class="section-number-2">4.</span> How to deploy the bot on Render</h2>
+<div id="outline-container-org445c8e2" class="outline-2">
+<h2 id="org445c8e2"><span class="section-number-2">4.</span> How to deploy the bot on Render</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 Deploying a service on Render with a free account is challenging due to the lack of shell access, disk access, and non-so-live logs.
@@ -351,8 +351,8 @@ This URL informs Telegram where to send and receive all messages for the bot.
 </p>
 </div>
 </div>
-<div id="outline-container-org5c4479e" class="outline-2">
-<h2 id="org5c4479e"><span class="section-number-2">5.</span> How to connect to the Firebase</h2>
+<div id="outline-container-orge5152d6" class="outline-2">
+<h2 id="orge5152d6"><span class="section-number-2">5.</span> How to connect to the Firebase</h2>
 <div class="outline-text-2" id="text-5">
 <p>
 The Firebase Realtime database stores key-value pairs in the JSON format.
@@ -376,8 +376,8 @@ During this initialization period, the log may display a <code>502 Bad Gateway</
 </p>
 </div>
 </div>
-<div id="outline-container-org1ec6cca" class="outline-2">
-<h2 id="org1ec6cca"><span class="section-number-2">6.</span> How to configure UptimeRobot</h2>
+<div id="outline-container-orgc70c80e" class="outline-2">
+<h2 id="orgc70c80e"><span class="section-number-2">6.</span> How to configure UptimeRobot</h2>
 <div class="outline-text-2" id="text-6">
 <p>
 Before configuring UptimeRobot, an attempt was made to ping the bot from within itself, but this approach did not function for Render.
@@ -392,8 +392,8 @@ Using UptimeRobot to maintain the bot&rsquo;s active status involves two primary
 </ol>
 </div>
 </div>
-<div id="outline-container-org6d20a51" class="outline-2">
-<h2 id="org6d20a51"><span class="section-number-2">7.</span> Conclusion</h2>
+<div id="outline-container-org6e130c1" class="outline-2">
+<h2 id="org6e130c1"><span class="section-number-2">7.</span> Conclusion</h2>
 <div class="outline-text-2" id="text-7">
 <p>
 This post isn&rsquo;t meant to be a step-by-step guide for building a Telegram bot.
@@ -419,17 +419,17 @@ Right now, the repository is private since I plan to add a second functionality 
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org967b036">1. Assumptions</a></li>
-<li><a href="#org9d97c4c">2. Install prerequisite packages</a></li>
-<li><a href="#org98ff32c">3. Install Emacs 29.4</a>
+<li><a href="#orge91b227">1. Assumptions</a></li>
+<li><a href="#org8201261">2. Install prerequisite packages</a></li>
+<li><a href="#orgda5f7b6">3. Install Emacs 29.4</a>
 <ul>
-<li><a href="#org140f84e">3.1. Before building</a></li>
-<li><a href="#org702e974">3.2. Build Emacs 29.4 with native-comp</a></li>
+<li><a href="#org244f9bd">3.1. Before building</a></li>
+<li><a href="#org3ef3440">3.2. Build Emacs 29.4 with native-comp</a></li>
 </ul>
 </li>
-<li><a href="#orge6212e6">4. Install <code>ripgrep</code></a></li>
-<li><a href="#org5750277">5. Install Doom Emacs</a></li>
-<li><a href="#org219c7a4">6. Some issues with running Emacs in WSL2</a></li>
+<li><a href="#org2281547">4. Install <code>ripgrep</code></a></li>
+<li><a href="#org0af8d00">5. Install Doom Emacs</a></li>
+<li><a href="#org4a4cfc4">6. Some issues with running Emacs in WSL2</a></li>
 </ul>
 </div>
 </nav>
@@ -438,16 +438,16 @@ Today I installed Doom Emacs for my husband on his WSL2.
 Although the entire process was guided by Claude, there were some back-and-forth during the interaction.
 Therefore I would like to record the full commands I have used here in sequence for any potential reference.
 </p>
-<div id="outline-container-org967b036" class="outline-2">
-<h2 id="org967b036"><span class="section-number-2">1.</span> Assumptions</h2>
+<div id="outline-container-orge91b227" class="outline-2">
+<h2 id="orge91b227"><span class="section-number-2">1.</span> Assumptions</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 This installation guide assumes a fresh installation of WSL2 Ubuntu 22.04 on Windows 11 in 2024 September.
 </p>
 </div>
 </div>
-<div id="outline-container-org9d97c4c" class="outline-2">
-<h2 id="org9d97c4c"><span class="section-number-2">2.</span> Install prerequisite packages</h2>
+<div id="outline-container-org8201261" class="outline-2">
+<h2 id="org8201261"><span class="section-number-2">2.</span> Install prerequisite packages</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 According to the Doom Emacs <a href="https://github.com/doomemacs/doomemacs#prerequisites">documentation</a>, the following packages are recommended:
@@ -461,12 +461,12 @@ According to the Doom Emacs <a href="https://github.com/doomemacs/doomemacs#prer
 </ul>
 </div>
 </div>
-<div id="outline-container-org98ff32c" class="outline-2">
-<h2 id="org98ff32c"><span class="section-number-2">3.</span> Install Emacs 29.4</h2>
+<div id="outline-container-orgda5f7b6" class="outline-2">
+<h2 id="orgda5f7b6"><span class="section-number-2">3.</span> Install Emacs 29.4</h2>
 <div class="outline-text-2" id="text-3">
 </div>
-<div id="outline-container-org140f84e" class="outline-3">
-<h3 id="org140f84e"><span class="section-number-3">3.1.</span> Before building</h3>
+<div id="outline-container-org244f9bd" class="outline-3">
+<h3 id="org244f9bd"><span class="section-number-3">3.1.</span> Before building</h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
 First, let&rsquo;s install some build dependencies:
@@ -529,8 +529,8 @@ tiff, gif, jpeg, png and xpm.
 </blockquote>
 </div>
 </div>
-<div id="outline-container-org702e974" class="outline-3">
-<h3 id="org702e974"><span class="section-number-3">3.2.</span> Build Emacs 29.4 with native-comp</h3>
+<div id="outline-container-org3ef3440" class="outline-3">
+<h3 id="org3ef3440"><span class="section-number-3">3.2.</span> Build Emacs 29.4 with native-comp</h3>
 <div class="outline-text-3" id="text-3-2">
 <p>
 At this moment, we can start to download Emacs source code:
@@ -618,8 +618,8 @@ Congratulations! You have now installed the latest and fastest Emacs on WSL2.
 </div>
 </div>
 </div>
-<div id="outline-container-orge6212e6" class="outline-2">
-<h2 id="orge6212e6"><span class="section-number-2">4.</span> Install <code>ripgrep</code></h2>
+<div id="outline-container-org2281547" class="outline-2">
+<h2 id="org2281547"><span class="section-number-2">4.</span> Install <code>ripgrep</code></h2>
 <div class="outline-text-2" id="text-4">
 <p>
 As mentioned in ripgrep <a href="https://github.com/BurntSushi/ripgrep?tab=readme-ov-file#installation">documentation</a>, for Debian/Ubuntu users, one should
@@ -643,8 +643,8 @@ The installed ripgrep binary was not built with support for PCRE lookaheads.
 </blockquote>
 </div>
 </div>
-<div id="outline-container-org5750277" class="outline-2">
-<h2 id="org5750277"><span class="section-number-2">5.</span> Install Doom Emacs</h2>
+<div id="outline-container-org0af8d00" class="outline-2">
+<h2 id="org0af8d00"><span class="section-number-2">5.</span> Install Doom Emacs</h2>
 <div class="outline-text-2" id="text-5">
 <p>
 Installing Doom Emacs is straightforward, but before that, one should first remove the default Emacs configuration folder:
@@ -688,8 +688,8 @@ To fix that, run <code>M-x nerd-icons-install-font</code> inside the Emacs, then
 </div>
 </div>
 </div>
-<div id="outline-container-org219c7a4" class="outline-2">
-<h2 id="org219c7a4"><span class="section-number-2">6.</span> Some issues with running Emacs in WSL2</h2>
+<div id="outline-container-org4a4cfc4" class="outline-2">
+<h2 id="org4a4cfc4"><span class="section-number-2">6.</span> Some issues with running Emacs in WSL2</h2>
 <div class="outline-text-2" id="text-6">
 <ul class="org-ul">
 <li><p>
@@ -713,41 +713,41 @@ The first thing is I cannot reload the configuration with <code>M-x doom/reload<
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org37fc08e">1. i3</a>
+<li><a href="#org4295e4f">1. i3</a>
 <ul>
-<li><a href="#org4045976">1.1. Move specific workspaces between different monitors (ref)</a></li>
+<li><a href="#org6d4480c">1.1. Move specific workspaces between different monitors (ref)</a></li>
 </ul>
 </li>
-<li><a href="#orgea6949f">2. Org</a>
+<li><a href="#org67db899">2. Org</a>
 <ul>
-<li><a href="#orgb3984b6">2.1. Format code blocks</a></li>
+<li><a href="#orgf55dd61">2.1. Format code blocks</a></li>
 </ul>
 </li>
-<li><a href="#orgb39b55f">3. Emacs</a>
+<li><a href="#org8b3676f">3. Emacs</a>
 <ul>
-<li><a href="#org86284de">3.1. Prefix argument</a></li>
-<li><a href="#org6be7689">3.2. Help functions</a></li>
+<li><a href="#org884271c">3.1. Prefix argument</a></li>
+<li><a href="#org269c400">3.2. Help functions</a></li>
 </ul>
 </li>
-<li><a href="#org2c7ccba">4. Vim</a>
+<li><a href="#org47ea020">4. Vim</a>
 <ul>
-<li><a href="#org807aae2">4.1. Delete a word backwards</a></li>
+<li><a href="#org738a838">4.1. Delete a word backwards</a></li>
 </ul>
 </li>
-<li><a href="#org2426f93">5. Firefox</a>
+<li><a href="#org2735990">5. Firefox</a>
 <ul>
-<li><a href="#orgebec975">5.1. Cache bypass refresh</a></li>
+<li><a href="#org1a17489">5.1. Cache bypass refresh</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-org37fc08e" class="outline-2">
-<h2 id="org37fc08e"><span class="section-number-2">1.</span> i3</h2>
+<div id="outline-container-org4295e4f" class="outline-2">
+<h2 id="org4295e4f"><span class="section-number-2">1.</span> i3</h2>
 <div class="outline-text-2" id="text-1">
 </div>
-<div id="outline-container-org4045976" class="outline-3">
-<h3 id="org4045976"><span class="section-number-3">1.1.</span> Move specific workspaces between different monitors <a href="https://i3wm.org/docs/user-contributed/swapping-workspaces.html">(ref)</a></h3>
+<div id="outline-container-org6d4480c" class="outline-3">
+<h3 id="org6d4480c"><span class="section-number-3">1.1.</span> Move specific workspaces between different monitors <a href="https://i3wm.org/docs/user-contributed/swapping-workspaces.html">(ref)</a></h3>
 <div class="outline-text-3" id="text-1-1">
 <ol class="org-ol">
 <li>Adjust the monitor relative positions.</li>
@@ -756,12 +756,12 @@ The first thing is I cannot reload the configuration with <code>M-x doom/reload<
 </div>
 </div>
 </div>
-<div id="outline-container-orgea6949f" class="outline-2">
-<h2 id="orgea6949f"><span class="section-number-2">2.</span> Org</h2>
+<div id="outline-container-org67db899" class="outline-2">
+<h2 id="org67db899"><span class="section-number-2">2.</span> Org</h2>
 <div class="outline-text-2" id="text-2">
 </div>
-<div id="outline-container-orgb3984b6" class="outline-3">
-<h3 id="orgb3984b6"><span class="section-number-3">2.1.</span> Format code blocks</h3>
+<div id="outline-container-orgf55dd61" class="outline-3">
+<h3 id="orgf55dd61"><span class="section-number-3">2.1.</span> Format code blocks</h3>
 <div class="outline-text-3" id="text-2-1">
 <ul class="org-ul">
 <li>Use the shortcut <code>&lt; s &lt;TAB&gt;</code> to create a code block.</li>
@@ -770,20 +770,20 @@ The first thing is I cannot reload the configuration with <code>M-x doom/reload<
 </div>
 </div>
 </div>
-<div id="outline-container-orgb39b55f" class="outline-2">
-<h2 id="orgb39b55f"><span class="section-number-2">3.</span> Emacs</h2>
+<div id="outline-container-org8b3676f" class="outline-2">
+<h2 id="org8b3676f"><span class="section-number-2">3.</span> Emacs</h2>
 <div class="outline-text-2" id="text-3">
 </div>
-<div id="outline-container-org86284de" class="outline-3">
-<h3 id="org86284de"><span class="section-number-3">3.1.</span> Prefix argument</h3>
+<div id="outline-container-org884271c" class="outline-3">
+<h3 id="org884271c"><span class="section-number-3">3.1.</span> Prefix argument</h3>
 <div class="outline-text-3" id="text-3-1">
 <ul class="org-ul">
 <li>When the function includes <code>(interactive "P")</code>, it means one can add a prefix argument <code>C-u 1</code> (or any integer) to trigger some effect.</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org6be7689" class="outline-3">
-<h3 id="org6be7689"><span class="section-number-3">3.2.</span> Help functions</h3>
+<div id="outline-container-org269c400" class="outline-3">
+<h3 id="org269c400"><span class="section-number-3">3.2.</span> Help functions</h3>
 <div class="outline-text-3" id="text-3-2">
 <ul class="org-ul">
 <li><code>Ctrl-h K</code> get the function name given a shortcut</li>
@@ -791,12 +791,12 @@ The first thing is I cannot reload the configuration with <code>M-x doom/reload<
 </div>
 </div>
 </div>
-<div id="outline-container-org2c7ccba" class="outline-2">
-<h2 id="org2c7ccba"><span class="section-number-2">4.</span> Vim</h2>
+<div id="outline-container-org47ea020" class="outline-2">
+<h2 id="org47ea020"><span class="section-number-2">4.</span> Vim</h2>
 <div class="outline-text-2" id="text-4">
 </div>
-<div id="outline-container-org807aae2" class="outline-3">
-<h3 id="org807aae2"><span class="section-number-3">4.1.</span> Delete a word backwards</h3>
+<div id="outline-container-org738a838" class="outline-3">
+<h3 id="org738a838"><span class="section-number-3">4.1.</span> Delete a word backwards</h3>
 <div class="outline-text-3" id="text-4-1">
 <ul class="org-ul">
 <li><code>diw</code> or <code>daw</code></li>
@@ -804,12 +804,12 @@ The first thing is I cannot reload the configuration with <code>M-x doom/reload<
 </div>
 </div>
 </div>
-<div id="outline-container-org2426f93" class="outline-2">
-<h2 id="org2426f93"><span class="section-number-2">5.</span> Firefox</h2>
+<div id="outline-container-org2735990" class="outline-2">
+<h2 id="org2735990"><span class="section-number-2">5.</span> Firefox</h2>
 <div class="outline-text-2" id="text-5">
 </div>
-<div id="outline-container-orgebec975" class="outline-3">
-<h3 id="orgebec975"><span class="section-number-3">5.1.</span> Cache bypass refresh</h3>
+<div id="outline-container-org1a17489" class="outline-3">
+<h3 id="org1a17489"><span class="section-number-3">5.1.</span> Cache bypass refresh</h3>
 <div class="outline-text-3" id="text-5-1">
 <ul class="org-ul">
 <li><code>Ctrl+Shift+R</code></li>
@@ -839,6 +839,7 @@ The first thing is I cannot reload the configuration with <code>M-x doom/reload<
             <i class="fab fa-github"></i>
       </a>
       </div>
+      <script src="assets/toggle.js"></script>
       </footer></div>
 </body>
 </html>

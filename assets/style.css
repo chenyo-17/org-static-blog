@@ -20,6 +20,13 @@ header h1 {
     margin: 0;
 }
 
+h3,
+h4,
+h5,
+h6 {
+    cursor: pointer;
+}
+
 a {
     color: #073642;
     text-decoration: none;
@@ -69,6 +76,23 @@ code {
     padding: 2px 4px;
     border-radius: 3px;
 }
+
+.fold-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 1em;
+}
+
+.fold-button:hover {
+    color: #268bd2;
+}
+
+/* .fold-button::selection { */
+/*     background-color: #b58900; /\* Solarized Light yellow *\/ */
+/*     color: #fdf6e3; /\* Solarized Light base3 *\/ */
+/* } */
 
 footer {
     text-align: center;

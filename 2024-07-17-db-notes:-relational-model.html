@@ -41,50 +41,50 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org0988b3b">1. Terminology</a>
+<li><a href="#org2933f8c">1. Terminology</a>
 <ul>
-<li><a href="#orgafe1e7b">1.1. Database</a></li>
-<li><a href="#orgfa88ed7">1.2. Database design consideration</a></li>
-<li><a href="#org7b00496">1.3. Database management system (DBMS)</a></li>
-<li><a href="#org9b084c3">1.4. Data model</a></li>
-<li><a href="#org7732301">1.5. Schema</a></li>
-<li><a href="#orgbf932ec">1.6. Entities and Tables</a></li>
-<li><a href="#org6432073">1.7. Attributes and Fields</a></li>
-<li><a href="#org6101d96">1.8. Logical layer</a></li>
-<li><a href="#org1ae97b4">1.9. Physical layer</a></li>
-<li><a href="#orgd2d39e0">1.10. Data manipulation languages (DMLs)</a></li>
-<li><a href="#orgd41205b">1.11. SQL (Structured Query Language) and relational model</a></li>
+<li><a href="#org3510e63">1.1. Database</a></li>
+<li><a href="#org03bd07a">1.2. Database design consideration</a></li>
+<li><a href="#org1128de4">1.3. Database management system (DBMS)</a></li>
+<li><a href="#org1b16526">1.4. Data model</a></li>
+<li><a href="#org44051ee">1.5. Schema</a></li>
+<li><a href="#orgba1de6b">1.6. Entities and Tables</a></li>
+<li><a href="#orgee44502">1.7. Attributes and Fields</a></li>
+<li><a href="#org6b5249d">1.8. Logical layer</a></li>
+<li><a href="#orga96906e">1.9. Physical layer</a></li>
+<li><a href="#org4583cb2">1.10. Data manipulation languages (DMLs)</a></li>
+<li><a href="#org5f03fbd">1.11. SQL (Structured Query Language) and relational model</a></li>
 </ul>
 </li>
-<li><a href="#org22f6309">2. Relational model</a>
+<li><a href="#orga05f5ff">2. Relational model</a>
 <ul>
-<li><a href="#orga17f6ef">2.1. A relation</a></li>
-<li><a href="#orga621154">2.2. A domain</a></li>
-<li><a href="#org886107b">2.3. A tuple</a></li>
-<li><a href="#orgc11a67e">2.4. Keys</a></li>
+<li><a href="#org47300d7">2.1. A relation</a></li>
+<li><a href="#org8c855da">2.2. A domain</a></li>
+<li><a href="#org9b5f329">2.3. A tuple</a></li>
+<li><a href="#orgf39cd2a">2.4. Keys</a></li>
 </ul>
 </li>
-<li><a href="#org80ab087">3. Relational Algebra</a></li>
+<li><a href="#org6b7b1b9">3. Relational Algebra</a></li>
 </ul>
 </div>
 </nav>
 <p>
 This is a personal note for the <a href="https://www.youtube.com/watch?v=uikbtpVZS2s&amp;list=PLSE8ODhjZXjaKScG3l0nuOiDTTqpfnWFf&amp;index=2">CMU 15-445 L1 video</a> and <a href="https://15445.courses.cs.cmu.edu/fall2022/notes/01-introduction.pdf">CMU 15-445 L1 notes</a>, along with some terminology explained by <a href="https://claude.ai/chat/14f3c4ec-0ca8-495e-ac70-dd13f9eab5ea">Claude.ai</a>.
 </p>
-<div id="outline-container-org0988b3b" class="outline-2">
-<h2 id="org0988b3b"><span class="section-number-2">1.</span> Terminology</h2>
+<div id="outline-container-org2933f8c" class="outline-2">
+<h2 id="org2933f8c"><span class="section-number-2">1.</span> Terminology</h2>
 <div class="outline-text-2" id="text-1">
 </div>
-<div id="outline-container-orgafe1e7b" class="outline-3">
-<h3 id="orgafe1e7b"><span class="section-number-3">1.1.</span> Database</h3>
+<div id="outline-container-org3510e63" class="outline-3">
+<h3 id="org3510e63"><span class="section-number-3">1.1.</span> Database</h3>
 <div class="outline-text-3" id="text-1-1">
 <ul class="org-ul">
 <li>An organized collection of inter-related data that models some aspect of the real-world.</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-orgfa88ed7" class="outline-3">
-<h3 id="orgfa88ed7"><span class="section-number-3">1.2.</span> Database design consideration</h3>
+<div id="outline-container-org03bd07a" class="outline-3">
+<h3 id="org03bd07a"><span class="section-number-3">1.2.</span> Database design consideration</h3>
 <div class="outline-text-3" id="text-1-2">
 <ul class="org-ul">
 <li>Data integrity: protect invalid writing.</li>
@@ -93,8 +93,8 @@ This is a personal note for the <a href="https://www.youtube.com/watch?v=uikbtpV
 </ul>
 </div>
 </div>
-<div id="outline-container-org7b00496" class="outline-3">
-<h3 id="org7b00496"><span class="section-number-3">1.3.</span> Database management system (DBMS)</h3>
+<div id="outline-container-org1128de4" class="outline-3">
+<h3 id="org1128de4"><span class="section-number-3">1.3.</span> Database management system (DBMS)</h3>
 <div class="outline-text-3" id="text-1-3">
 <ul class="org-ul">
 <li>A software that manages a database.</li>
@@ -102,8 +102,8 @@ This is a personal note for the <a href="https://www.youtube.com/watch?v=uikbtpV
 </ul>
 </div>
 </div>
-<div id="outline-container-org9b084c3" class="outline-3">
-<h3 id="org9b084c3"><span class="section-number-3">1.4.</span> Data model</h3>
+<div id="outline-container-org1b16526" class="outline-3">
+<h3 id="org1b16526"><span class="section-number-3">1.4.</span> Data model</h3>
 <div class="outline-text-3" id="text-1-4">
 <ul class="org-ul">
 <li>A conceptual, high-level representation of how data is structured</li>
@@ -111,8 +111,8 @@ This is a personal note for the <a href="https://www.youtube.com/watch?v=uikbtpV
 </ul>
 </div>
 </div>
-<div id="outline-container-org7732301" class="outline-3">
-<h3 id="org7732301"><span class="section-number-3">1.5.</span> Schema</h3>
+<div id="outline-container-org44051ee" class="outline-3">
+<h3 id="org44051ee"><span class="section-number-3">1.5.</span> Schema</h3>
 <div class="outline-text-3" id="text-1-5">
 <ul class="org-ul">
 <li>A concrete implementation of a data model.</li>
@@ -121,8 +121,8 @@ This is a personal note for the <a href="https://www.youtube.com/watch?v=uikbtpV
 </ul>
 </div>
 </div>
-<div id="outline-container-orgbf932ec" class="outline-3">
-<h3 id="orgbf932ec"><span class="section-number-3">1.6.</span> Entities and Tables</h3>
+<div id="outline-container-orgba1de6b" class="outline-3">
+<h3 id="orgba1de6b"><span class="section-number-3">1.6.</span> Entities and Tables</h3>
 <div class="outline-text-3" id="text-1-6">
 <ul class="org-ul">
 <li>Entities: conceptual representations of objects in the logical data model.</li>
@@ -130,8 +130,8 @@ This is a personal note for the <a href="https://www.youtube.com/watch?v=uikbtpV
 </ul>
 </div>
 </div>
-<div id="outline-container-org6432073" class="outline-3">
-<h3 id="org6432073"><span class="section-number-3">1.7.</span> Attributes and Fields</h3>
+<div id="outline-container-orgee44502" class="outline-3">
+<h3 id="orgee44502"><span class="section-number-3">1.7.</span> Attributes and Fields</h3>
 <div class="outline-text-3" id="text-1-7">
 <ul class="org-ul">
 <li>Attributes: properties of an entity.</li>
@@ -139,24 +139,24 @@ This is a personal note for the <a href="https://www.youtube.com/watch?v=uikbtpV
 </ul>
 </div>
 </div>
-<div id="outline-container-org6101d96" class="outline-3">
-<h3 id="org6101d96"><span class="section-number-3">1.8.</span> Logical layer</h3>
+<div id="outline-container-org6b5249d" class="outline-3">
+<h3 id="org6b5249d"><span class="section-number-3">1.8.</span> Logical layer</h3>
 <div class="outline-text-3" id="text-1-8">
 <ul class="org-ul">
 <li>The entities and attributes the database has.</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org1ae97b4" class="outline-3">
-<h3 id="org1ae97b4"><span class="section-number-3">1.9.</span> Physical layer</h3>
+<div id="outline-container-orga96906e" class="outline-3">
+<h3 id="orga96906e"><span class="section-number-3">1.9.</span> Physical layer</h3>
 <div class="outline-text-3" id="text-1-9">
 <ul class="org-ul">
 <li>How are entities and attributes stored in the database.</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-orgd2d39e0" class="outline-3">
-<h3 id="orgd2d39e0"><span class="section-number-3">1.10.</span> Data manipulation languages (DMLs)</h3>
+<div id="outline-container-org4583cb2" class="outline-3">
+<h3 id="org4583cb2"><span class="section-number-3">1.10.</span> Data manipulation languages (DMLs)</h3>
 <div class="outline-text-3" id="text-1-10">
 <ul class="org-ul">
 <li>Methods to store and retrieve information from a database.</li>
@@ -165,8 +165,8 @@ This is a personal note for the <a href="https://www.youtube.com/watch?v=uikbtpV
 </ul>
 </div>
 </div>
-<div id="outline-container-orgd41205b" class="outline-3">
-<h3 id="orgd41205b"><span class="section-number-3">1.11.</span> SQL (Structured Query Language) and relational model</h3>
+<div id="outline-container-org5f03fbd" class="outline-3">
+<h3 id="org5f03fbd"><span class="section-number-3">1.11.</span> SQL (Structured Query Language) and relational model</h3>
 <div class="outline-text-3" id="text-1-11">
 <ul class="org-ul">
 <li>SQL <b><b>implements</b></b> the relational model in DBMS and provides a standard way to create, manipulate and query relational databases.</li>
@@ -175,8 +175,8 @@ This is a personal note for the <a href="https://www.youtube.com/watch?v=uikbtpV
 </div>
 </div>
 </div>
-<div id="outline-container-org22f6309" class="outline-2">
-<h2 id="org22f6309"><span class="section-number-2">2.</span> Relational model</h2>
+<div id="outline-container-orga05f5ff" class="outline-2">
+<h2 id="orga05f5ff"><span class="section-number-2">2.</span> Relational model</h2>
 <div class="outline-text-2" id="text-2">
 <ul class="org-ul">
 <li>A <b><b>data model</b></b> that defines a database <b><b>abstraction</b></b> to avoid maintenance overhead when changing the physical layer.</li>
@@ -185,14 +185,14 @@ This is a personal note for the <a href="https://www.youtube.com/watch?v=uikbtpV
 </ul>
 
 
-<figure id="orgfc4ba41">
+<figure id="org98fe676">
 <img src="https://www.guru99.com/images/1/091318_0803_RelationalD1.png" alt="091318_0803_RelationalD1.png" align="center" width="500px">
 
 <figcaption><span class="figure-number">Figure 1: </span>Relational model concepts (<a href="https://www.guru99.com/images/1/091318_0803_RelationalD1.png">Source</a>)</figcaption>
 </figure>
 </div>
-<div id="outline-container-orga17f6ef" class="outline-3">
-<h3 id="orga17f6ef"><span class="section-number-3">2.1.</span> A relation</h3>
+<div id="outline-container-org47300d7" class="outline-3">
+<h3 id="org47300d7"><span class="section-number-3">2.1.</span> A relation</h3>
 <div class="outline-text-3" id="text-2-1">
 <ul class="org-ul">
 <li>An unordered set that contains the relationship of attributes that represent entities.</li>
@@ -200,16 +200,16 @@ This is a personal note for the <a href="https://www.youtube.com/watch?v=uikbtpV
 </ul>
 </div>
 </div>
-<div id="outline-container-orga621154" class="outline-3">
-<h3 id="orga621154"><span class="section-number-3">2.2.</span> A domain</h3>
+<div id="outline-container-org8c855da" class="outline-3">
+<h3 id="org8c855da"><span class="section-number-3">2.2.</span> A domain</h3>
 <div class="outline-text-3" id="text-2-2">
 <ul class="org-ul">
 <li>A named set of allowable values for a specific attribute.</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org886107b" class="outline-3">
-<h3 id="org886107b"><span class="section-number-3">2.3.</span> A tuple</h3>
+<div id="outline-container-org9b5f329" class="outline-3">
+<h3 id="org9b5f329"><span class="section-number-3">2.3.</span> A tuple</h3>
 <div class="outline-text-3" id="text-2-3">
 <ul class="org-ul">
 <li>A set of attribute values in the relation.</li>
@@ -219,8 +219,8 @@ This is a personal note for the <a href="https://www.youtube.com/watch?v=uikbtpV
 </ul>
 </div>
 </div>
-<div id="outline-container-orgc11a67e" class="outline-3">
-<h3 id="orgc11a67e"><span class="section-number-3">2.4.</span> Keys</h3>
+<div id="outline-container-orgf39cd2a" class="outline-3">
+<h3 id="orgf39cd2a"><span class="section-number-3">2.4.</span> Keys</h3>
 <div class="outline-text-3" id="text-2-4">
 <ul class="org-ul">
 <li>Primary key: uniquely identifies a single tuple.</li>
@@ -229,8 +229,8 @@ This is a personal note for the <a href="https://www.youtube.com/watch?v=uikbtpV
 </div>
 </div>
 </div>
-<div id="outline-container-org80ab087" class="outline-2">
-<h2 id="org80ab087"><span class="section-number-2">3.</span> Relational Algebra</h2>
+<div id="outline-container-org6b7b1b9" class="outline-2">
+<h2 id="org6b7b1b9"><span class="section-number-2">3.</span> Relational Algebra</h2>
 <div class="outline-text-2" id="text-3">
 <ul class="org-ul">
 <li>A set of fundamental operations to retrieve and manipulate tuples in a relation.</li>
@@ -259,6 +259,7 @@ This is a personal note for the <a href="https://www.youtube.com/watch?v=uikbtpV
             <i class="fab fa-github"></i>
       </a>
       </div>
+      <script src="assets/toggle.js"></script>
       </footer></div>
 </body>
 </html>

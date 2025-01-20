@@ -41,21 +41,21 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org9c416c5">1. Previously on my Telegram bot</a></li>
-<li><a href="#org0d7541b">2. Why do I need a Mensa bot</a></li>
-<li><a href="#org8ce79e5">3. How to get the data</a>
+<li><a href="#org4663c8f">1. Previously on my Telegram bot</a></li>
+<li><a href="#org3be2547">2. Why do I need a Mensa bot</a></li>
+<li><a href="#orgdb88c92">3. How to get the data</a>
 <ul>
-<li><a href="#org305692d">3.1. Scrape menus locally</a></li>
-<li><a href="#org9b59469">3.2. Scrape menus on Render</a></li>
+<li><a href="#org0a2800a">3.1. Scrape menus locally</a></li>
+<li><a href="#orgd2ff214">3.2. Scrape menus on Render</a></li>
 </ul>
 </li>
-<li><a href="#org761b316">4. Performance</a></li>
-<li><a href="#orgab206e1">5. Conclusion</a></li>
+<li><a href="#org36f6131">4. Performance</a></li>
+<li><a href="#org3e53350">5. Conclusion</a></li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-org9c416c5" class="outline-2">
-<h2 id="org9c416c5"><span class="section-number-2">1.</span> Previously on my Telegram bot</h2>
+<div id="outline-container-org4663c8f" class="outline-2">
+<h2 id="org4663c8f"><span class="section-number-2">1.</span> Previously on my Telegram bot</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 In the post <a href="https://chenyo.me/2024-09-08-build-a-free-telegram-sticker-bot.html">Build a free Telegram sticker tag bot</a>, I detailed the process of integrating various online services to create a sticker tag bot.
@@ -74,8 +74,8 @@ At the conclusion of that post, I hinted at a second functionality I had in mind
 </p>
 </div>
 </div>
-<div id="outline-container-org0d7541b" class="outline-2">
-<h2 id="org0d7541b"><span class="section-number-2">2.</span> Why do I need a Mensa bot</h2>
+<div id="outline-container-org3be2547" class="outline-2">
+<h2 id="org3be2547"><span class="section-number-2">2.</span> Why do I need a Mensa bot</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 One mobile app I frequently use on weekdays is <a href="https://github.com/famoser/Mensa">Mensa</a>, which lists daily menus for each Zürich Mensa to help people make their most important decision of the day.
@@ -85,8 +85,8 @@ To fix this, I decide to add the meal images myself.
 </p>
 </div>
 </div>
-<div id="outline-container-org8ce79e5" class="outline-2">
-<h2 id="org8ce79e5"><span class="section-number-2">3.</span> How to get the data</h2>
+<div id="outline-container-orgdb88c92" class="outline-2">
+<h2 id="orgdb88c92"><span class="section-number-2">3.</span> How to get the data</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 I couldn&rsquo;t find an official API for this, so I decided to scrape the webpage myself.
@@ -94,8 +94,8 @@ Here&rsquo;s where things got tricky: the Mensa web pages use JavaScript to rend
 This meant I couldn&rsquo;t just grab the page - I needed a browser to run the JavaScript first.
 </p>
 </div>
-<div id="outline-container-org305692d" class="outline-3">
-<h3 id="org305692d"><span class="section-number-3">3.1.</span> Scrape menus locally</h3>
+<div id="outline-container-org0a2800a" class="outline-3">
+<h3 id="org0a2800a"><span class="section-number-3">3.1.</span> Scrape menus locally</h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
 On a local machine, it&rsquo;s pretty straightforward.
@@ -104,8 +104,8 @@ After you&rsquo;ve snagged the page, you can use an HTML parser like <a href="ht
 </p>
 </div>
 </div>
-<div id="outline-container-org9b59469" class="outline-3">
-<h3 id="org9b59469"><span class="section-number-3">3.2.</span> Scrape menus on Render</h3>
+<div id="outline-container-orgd2ff214" class="outline-3">
+<h3 id="orgd2ff214"><span class="section-number-3">3.2.</span> Scrape menus on Render</h3>
 <div class="outline-text-3" id="text-3-2">
 <p>
 The only snag with <code>go-rod</code> is it&rsquo;s too bulky for a Render free account.
@@ -130,8 +130,8 @@ So I had to clean it up before <code>goquery</code> can make sense of it.
 </div>
 </div>
 </div>
-<div id="outline-container-org761b316" class="outline-2">
-<h2 id="org761b316"><span class="section-number-2">4.</span> Performance</h2>
+<div id="outline-container-org36f6131" class="outline-2">
+<h2 id="org36f6131"><span class="section-number-2">4.</span> Performance</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 AbstractAPI&rsquo;s free plan only lets you make one request per second.
@@ -147,8 +147,8 @@ So, I end up scraping fresh data for each Mensa every single time.
 </p>
 </div>
 </div>
-<div id="outline-container-orgab206e1" class="outline-2">
-<h2 id="orgab206e1"><span class="section-number-2">5.</span> Conclusion</h2>
+<div id="outline-container-org3e53350" class="outline-2">
+<h2 id="org3e53350"><span class="section-number-2">5.</span> Conclusion</h2>
 <div class="outline-text-2" id="text-5">
 <p>
 Here&rsquo;s a quick look at what the bot can do now: it tags stickers and scrapes Mensa menus.
@@ -156,7 +156,7 @@ Keep in mind the GIF is sped up to twice the normal speed.
 </p>
 
 
-<figure id="orgc879d3a">
+<figure id="org85a53db">
 <img src="./static/telegram.gif" alt="telegram.gif" align="center" width="700px" style="border: 1px solid black;">
 
 <figcaption><span class="figure-number">Figure 1: </span>The current Telegram bot</figcaption>
@@ -192,6 +192,7 @@ The <a href="https://github.com/chenyo-17/pbaobot">repository</a> is also public
             <i class="fab fa-github"></i>
       </a>
       </div>
+      <script src="assets/toggle.js"></script>
       </footer></div>
 </body>
 </html>

@@ -41,23 +41,23 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org515af77">1. Terminology</a>
+<li><a href="#org8ba4a82">1. Terminology</a>
 <ul>
-<li><a href="#org64b79f9">1.1. SQL and relational algebra</a></li>
-<li><a href="#orge60a6d0">1.2. SQL commands</a></li>
+<li><a href="#org3f0d751">1.1. SQL and relational algebra</a></li>
+<li><a href="#org5b28cd9">1.2. SQL commands</a></li>
 </ul>
 </li>
-<li><a href="#org45902cc">2. SQL syntax</a>
+<li><a href="#orgf8c217f">2. SQL syntax</a>
 <ul>
-<li><a href="#org694562e">2.1. Join</a></li>
-<li><a href="#org459a7a6">2.2. Aggregation function</a></li>
-<li><a href="#org7f18130">2.3. String operation</a></li>
-<li><a href="#org7494271">2.4. Date and time</a></li>
-<li><a href="#orgb771158">2.5. Output redirection</a></li>
-<li><a href="#org1bda50d">2.6. Output control</a></li>
-<li><a href="#orga836acd">2.7. Nested queries</a></li>
-<li><a href="#org6d91bf7">2.8. Window functions</a></li>
-<li><a href="#orgc124c24">2.9. Common Table Expressions (CTE)</a></li>
+<li><a href="#orgee091df">2.1. Join</a></li>
+<li><a href="#org452ec55">2.2. Aggregation function</a></li>
+<li><a href="#orgdf14d0d">2.3. String operation</a></li>
+<li><a href="#orgac555a7">2.4. Date and time</a></li>
+<li><a href="#org75cb8c8">2.5. Output redirection</a></li>
+<li><a href="#org4e6aed2">2.6. Output control</a></li>
+<li><a href="#org94f486f">2.7. Nested queries</a></li>
+<li><a href="#orgeba7448">2.8. Window functions</a></li>
+<li><a href="#org1728602">2.9. Common Table Expressions (CTE)</a></li>
 </ul>
 </li>
 </ul>
@@ -66,12 +66,12 @@
 <p>
 This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall2022/notes/02-modernsql.pdf">CMU 15-445 L2 notes</a>, along with some SQL command explained by <a href="https://claude.ai/chat/a2f07962-eb31-4f76-9a31-5e408722894b">Claude.ai</a>.
 </p>
-<div id="outline-container-org515af77" class="outline-2">
-<h2 id="org515af77"><span class="section-number-2">1.</span> Terminology</h2>
+<div id="outline-container-org8ba4a82" class="outline-2">
+<h2 id="org8ba4a82"><span class="section-number-2">1.</span> Terminology</h2>
 <div class="outline-text-2" id="text-1">
 </div>
-<div id="outline-container-org64b79f9" class="outline-3">
-<h3 id="org64b79f9"><span class="section-number-3">1.1.</span> SQL and relational algebra</h3>
+<div id="outline-container-org3f0d751" class="outline-3">
+<h3 id="org3f0d751"><span class="section-number-3">1.1.</span> SQL and relational algebra</h3>
 <div class="outline-text-3" id="text-1-1">
 <ul class="org-ul">
 <li>Relational algebra is based on sets (unordered, no duplicates); SQL is based on bags (unordered, allows duplicates).</li>
@@ -79,8 +79,8 @@ This is a personal note for the <a href="https://15445.courses.cs.cmu.edu/fall20
 </ul>
 </div>
 </div>
-<div id="outline-container-orge60a6d0" class="outline-3">
-<h3 id="orge60a6d0"><span class="section-number-3">1.2.</span> SQL commands</h3>
+<div id="outline-container-org5b28cd9" class="outline-3">
+<h3 id="org5b28cd9"><span class="section-number-3">1.2.</span> SQL commands</h3>
 <div class="outline-text-3" id="text-1-2">
 <ul class="org-ul">
 <li>Data manipulation language (DML): <code>SELECT</code>, <code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code>.</li>
@@ -102,12 +102,12 @@ Data definition language (DDL): <code>CREATE</code>.
 </div>
 </div>
 </div>
-<div id="outline-container-org45902cc" class="outline-2">
-<h2 id="org45902cc"><span class="section-number-2">2.</span> SQL syntax</h2>
+<div id="outline-container-orgf8c217f" class="outline-2">
+<h2 id="orgf8c217f"><span class="section-number-2">2.</span> SQL syntax</h2>
 <div class="outline-text-2" id="text-2">
 </div>
-<div id="outline-container-org694562e" class="outline-3">
-<h3 id="org694562e"><span class="section-number-3">2.1.</span> Join</h3>
+<div id="outline-container-orgee091df" class="outline-3">
+<h3 id="orgee091df"><span class="section-number-3">2.1.</span> Join</h3>
 <div class="outline-text-3" id="text-2-1">
 <ul class="org-ul">
 <li><p>
@@ -124,8 +124,8 @@ Combine columns from one or more tables and produces a new table.
 </ul>
 </div>
 </div>
-<div id="outline-container-org459a7a6" class="outline-3">
-<h3 id="org459a7a6"><span class="section-number-3">2.2.</span> Aggregation function</h3>
+<div id="outline-container-org452ec55" class="outline-3">
+<h3 id="org452ec55"><span class="section-number-3">2.2.</span> Aggregation function</h3>
 <div class="outline-text-3" id="text-2-2">
 <ul class="org-ul">
 <li><code>AVG(COL)</code>, <code>MIN(COL)</code>, <code>MAX(COL)</code>, <code>COUNT(COL)</code>.</li>
@@ -164,8 +164,8 @@ Non-aggregated values in <code>SELECT</code> output must appear in <code>GROUP B
 </ul>
 </div>
 </div>
-<div id="outline-container-org7f18130" class="outline-3">
-<h3 id="org7f18130"><span class="section-number-3">2.3.</span> String operation</h3>
+<div id="outline-container-orgdf14d0d" class="outline-3">
+<h3 id="orgdf14d0d"><span class="section-number-3">2.3.</span> String operation</h3>
 <div class="outline-text-3" id="text-2-3">
 <ul class="org-ul">
 <li>Strings are case sensitive and single-quotes only in the SQL standard.</li>
@@ -179,8 +179,8 @@ Non-aggregated values in <code>SELECT</code> output must appear in <code>GROUP B
 </ul>
 </div>
 </div>
-<div id="outline-container-org7494271" class="outline-3">
-<h3 id="org7494271"><span class="section-number-3">2.4.</span> Date and time</h3>
+<div id="outline-container-orgac555a7" class="outline-3">
+<h3 id="orgac555a7"><span class="section-number-3">2.4.</span> Date and time</h3>
 <div class="outline-text-3" id="text-2-4">
 <ul class="org-ul">
 <li>Attributes: <code>DATE</code>, <code>TIME</code>.</li>
@@ -188,8 +188,8 @@ Non-aggregated values in <code>SELECT</code> output must appear in <code>GROUP B
 </ul>
 </div>
 </div>
-<div id="outline-container-orgb771158" class="outline-3">
-<h3 id="orgb771158"><span class="section-number-3">2.5.</span> Output redirection</h3>
+<div id="outline-container-org75cb8c8" class="outline-3">
+<h3 id="org75cb8c8"><span class="section-number-3">2.5.</span> Output redirection</h3>
 <div class="outline-text-3" id="text-2-5">
 <ul class="org-ul">
 <li><p>
@@ -206,8 +206,8 @@ One can store the results into another table
 </ul>
 </div>
 </div>
-<div id="outline-container-org1bda50d" class="outline-3">
-<h3 id="org1bda50d"><span class="section-number-3">2.6.</span> Output control</h3>
+<div id="outline-container-org4e6aed2" class="outline-3">
+<h3 id="org4e6aed2"><span class="section-number-3">2.6.</span> Output control</h3>
 <div class="outline-text-3" id="text-2-6">
 <ul class="org-ul">
 <li>Use <code>ORDER</code>, <code>ASC</code> and <code>DESC</code> to sort the output tuples; otherwise the output could have different order every time.</li>
@@ -223,8 +223,8 @@ Use <code>LIMIT</code>, <code>OFFSET</code> to restrict the output number.
 </ul>
 </div>
 </div>
-<div id="outline-container-orga836acd" class="outline-3">
-<h3 id="orga836acd"><span class="section-number-3">2.7.</span> Nested queries</h3>
+<div id="outline-container-org94f486f" class="outline-3">
+<h3 id="org94f486f"><span class="section-number-3">2.7.</span> Nested queries</h3>
 <div class="outline-text-3" id="text-2-7">
 <ul class="org-ul">
 <li>Nested queries are often difficult to optimize.</li>
@@ -293,16 +293,16 @@ Inner queries can appear anywhere.
 </ul>
 </div>
 </div>
-<div id="outline-container-org6d91bf7" class="outline-3">
-<h3 id="org6d91bf7"><span class="section-number-3">2.8.</span> Window functions</h3>
+<div id="outline-container-orgeba7448" class="outline-3">
+<h3 id="orgeba7448"><span class="section-number-3">2.8.</span> Window functions</h3>
 <div class="outline-text-3" id="text-2-8">
 <ul class="org-ul">
 <li>Perform sliding calculation across a set of tuples.</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-orgc124c24" class="outline-3">
-<h3 id="orgc124c24"><span class="section-number-3">2.9.</span> Common Table Expressions (CTE)</h3>
+<div id="outline-container-org1728602" class="outline-3">
+<h3 id="org1728602"><span class="section-number-3">2.9.</span> Common Table Expressions (CTE)</h3>
 <div class="outline-text-3" id="text-2-9">
 <ul class="org-ul">
 <li>An alternative to windows or nested queries when writing more complex queries.</li>
@@ -339,6 +339,7 @@ CTEs use <code>WITH</code> to bind the output of an inner query to a temporary t
             <i class="fab fa-github"></i>
       </a>
       </div>
+      <script src="assets/toggle.js"></script>
       </footer></div>
 </body>
 </html>

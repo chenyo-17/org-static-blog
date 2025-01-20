@@ -41,48 +41,48 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org20950c8">1. Blockchain fundamentals</a>
+<li><a href="#org14e43c3">1. Blockchain fundamentals</a>
 <ul>
-<li><a href="#orgf59b06d">1.1. Ethereum engine API</a></li>
-<li><a href="#org6a6169c">1.2. Foundry</a></li>
-<li><a href="#org97695c9">1.3. Revm</a></li>
-<li><a href="#org97ce1ae">1.4. Alloy</a></li>
-<li><a href="#org88dd316">1.5. Erigon &amp; Staged sync</a></li>
-<li><a href="#org21fc794">1.6. Storage engines</a>
+<li><a href="#org2ed73c3">1.1. Ethereum engine API</a></li>
+<li><a href="#org4eecc0e">1.2. Foundry</a></li>
+<li><a href="#orgada97c2">1.3. Revm</a></li>
+<li><a href="#org7979b64">1.4. Alloy</a></li>
+<li><a href="#orgada29d4">1.5. Erigon &amp; Staged sync</a></li>
+<li><a href="#org485b8d9">1.6. Storage engines</a>
 <ul>
-<li><a href="#orgf604566">1.6.1. ACID</a></li>
-<li><a href="#org737338e">1.6.2. MVCC (Multi-version concurrency control)</a></li>
-<li><a href="#orge0cbff7">1.6.3. Common database models</a></li>
-<li><a href="#orgceb3dd0">1.6.4. Common storage engines</a></li>
+<li><a href="#org74d55ea">1.6.1. ACID</a></li>
+<li><a href="#org6a4e519">1.6.2. MVCC (Multi-version concurrency control)</a></li>
+<li><a href="#org0552070">1.6.3. Common database models</a></li>
+<li><a href="#org67478c1">1.6.4. Common storage engines</a></li>
 </ul>
 </li>
-<li><a href="#org6b0a87a">1.7. Reth</a></li>
-<li><a href="#org478ab9b">1.8. Why gas per second as the performance metric</a></li>
-<li><a href="#org3e971b2">1.9. EVM cost models</a></li>
-<li><a href="#orged77b07">1.10. TPC benchmark</a></li>
-<li><a href="#org89f5af9">1.11. State growth</a></li>
-<li><a href="#orgdf456e7">1.12. JIT (Just-In-Time) and AOT (Ahead-of-Time) EVM</a></li>
-<li><a href="#orgf3797a6">1.13. Actor model</a></li>
-<li><a href="#orge6bfe92">1.14. Storage trie</a></li>
-<li><a href="#org9662699">1.15. Serverless database</a></li>
+<li><a href="#org7333675">1.7. Reth</a></li>
+<li><a href="#org669fdff">1.8. Why gas per second as the performance metric</a></li>
+<li><a href="#orgbd41f95">1.9. EVM cost models</a></li>
+<li><a href="#org576a1be">1.10. TPC benchmark</a></li>
+<li><a href="#org23607f8">1.11. State growth</a></li>
+<li><a href="#orgdba6eb1">1.12. JIT (Just-In-Time) and AOT (Ahead-of-Time) EVM</a></li>
+<li><a href="#org0fe236b">1.13. Actor model</a></li>
+<li><a href="#org67c1822">1.14. Storage trie</a></li>
+<li><a href="#org95ef93e">1.15. Serverless database</a></li>
 </ul>
 </li>
-<li><a href="#orgb4b09e9">2. Reth scaling plan</a>
+<li><a href="#org7610d61">2. Reth scaling plan</a>
 <ul>
-<li><a href="#org1900484">2.1. Vertical scaling (2024)</a>
+<li><a href="#orgbc723d9">2.1. Vertical scaling (2024)</a>
 <ul>
-<li><a href="#org61d0655">2.1.1. JIT/AOT EVM</a></li>
-<li><a href="#org05122cc">2.1.2. Parallel EVM</a></li>
-<li><a href="#org6bffaf9">2.1.3. Optimized state commitment</a></li>
+<li><a href="#orgfbcc5f1">2.1.1. JIT/AOT EVM</a></li>
+<li><a href="#orgb36991e">2.1.2. Parallel EVM</a></li>
+<li><a href="#org9cd06d3">2.1.3. Optimized state commitment</a></li>
 </ul>
 </li>
-<li><a href="#org266842c">2.2. Horizontal scaling (2025)</a>
+<li><a href="#orgfa94edc">2.2. Horizontal scaling (2025)</a>
 <ul>
-<li><a href="#org729b06d">2.2.1. Multi-Rollup (?)</a></li>
-<li><a href="#orgb4aacf1">2.2.2. Cloud-Native nodes.</a></li>
+<li><a href="#org4619f9b">2.2.1. Multi-Rollup (?)</a></li>
+<li><a href="#orgb569cc7">2.2.2. Cloud-Native nodes.</a></li>
 </ul>
 </li>
-<li><a href="#org2b8c868">2.3. Open questions</a></li>
+<li><a href="#org8f4e1f7">2.3. Open questions</a></li>
 </ul>
 </li>
 </ul>
@@ -91,12 +91,12 @@
 <p>
 This is a personal note for <a href="https://www.paradigm.xyz/2024/04/reth-perf">Reth-performance-blog</a> as well as some terminology explain online, e.g., <a href="https://github.com/paradigmxyz/reth">Reth-repo</a> and <a href="https://claude.ai/chat/6364436f-d279-4c6b-947e-237bfea26409">Claude.ai</a>.
 </p>
-<div id="outline-container-org20950c8" class="outline-2">
-<h2 id="org20950c8"><span class="section-number-2">1.</span> Blockchain fundamentals</h2>
+<div id="outline-container-org14e43c3" class="outline-2">
+<h2 id="org14e43c3"><span class="section-number-2">1.</span> Blockchain fundamentals</h2>
 <div class="outline-text-2" id="text-1">
 </div>
-<div id="outline-container-orgf59b06d" class="outline-3">
-<h3 id="orgf59b06d"><span class="section-number-3">1.1.</span> <a href="https://github.com/ethereum/execution-apis/blob/a0d03086564ab1838b462befbc083f873dcf0c0f/src/engine/paris.md">Ethereum engine API</a></h3>
+<div id="outline-container-org2ed73c3" class="outline-3">
+<h3 id="org2ed73c3"><span class="section-number-3">1.1.</span> <a href="https://github.com/ethereum/execution-apis/blob/a0d03086564ab1838b462befbc083f873dcf0c0f/src/engine/paris.md">Ethereum engine API</a></h3>
 <div class="outline-text-3" id="text-1-1">
 <ul class="org-ul">
 <li>A collection of JSON-RPC methods that all execution clients implement.</li>
@@ -104,8 +104,8 @@ This is a personal note for <a href="https://www.paradigm.xyz/2024/04/reth-perf"
 </ul>
 </div>
 </div>
-<div id="outline-container-org6a6169c" class="outline-3">
-<h3 id="org6a6169c"><span class="section-number-3">1.2.</span> <a href="https://github.com/foundry-rs/foundry/">Foundry</a></h3>
+<div id="outline-container-org4eecc0e" class="outline-3">
+<h3 id="org4eecc0e"><span class="section-number-3">1.2.</span> <a href="https://github.com/foundry-rs/foundry/">Foundry</a></h3>
 <div class="outline-text-3" id="text-1-2">
 <ul class="org-ul">
 <li>A Rust-written toolkit for Ethereum application development.</li>
@@ -113,24 +113,24 @@ This is a personal note for <a href="https://www.paradigm.xyz/2024/04/reth-perf"
 </ul>
 </div>
 </div>
-<div id="outline-container-org97695c9" class="outline-3">
-<h3 id="org97695c9"><span class="section-number-3">1.3.</span> <a href="https://github.com/bluealloy/revm/">Revm</a></h3>
+<div id="outline-container-orgada97c2" class="outline-3">
+<h3 id="orgada97c2"><span class="section-number-3">1.3.</span> <a href="https://github.com/bluealloy/revm/">Revm</a></h3>
 <div class="outline-text-3" id="text-1-3">
 <ul class="org-ul">
 <li>A Rust-written EVM; responsible for executing transactions and contracts.</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org97ce1ae" class="outline-3">
-<h3 id="org97ce1ae"><span class="section-number-3">1.4.</span> <a href="https://github.com/alloy-rs">Alloy</a></h3>
+<div id="outline-container-org7979b64" class="outline-3">
+<h3 id="org7979b64"><span class="section-number-3">1.4.</span> <a href="https://github.com/alloy-rs">Alloy</a></h3>
 <div class="outline-text-3" id="text-1-4">
 <ul class="org-ul">
 <li>A library to interact with the Ethereum and other EVM-base chains.</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org88dd316" class="outline-3">
-<h3 id="org88dd316"><span class="section-number-3">1.5.</span> <a href="https://erigon.tech/">Erigon</a> &amp; Staged sync</h3>
+<div id="outline-container-orgada29d4" class="outline-3">
+<h3 id="orgada29d4"><span class="section-number-3">1.5.</span> <a href="https://erigon.tech/">Erigon</a> &amp; Staged sync</h3>
 <div class="outline-text-3" id="text-1-5">
 <ul class="org-ul">
 <li>Erigon: a Go-written Ethereum client implementation (execution layer).</li>
@@ -138,12 +138,12 @@ This is a personal note for <a href="https://www.paradigm.xyz/2024/04/reth-perf"
 </ul>
 </div>
 </div>
-<div id="outline-container-org21fc794" class="outline-3">
-<h3 id="org21fc794"><span class="section-number-3">1.6.</span> Storage engines</h3>
+<div id="outline-container-org485b8d9" class="outline-3">
+<h3 id="org485b8d9"><span class="section-number-3">1.6.</span> Storage engines</h3>
 <div class="outline-text-3" id="text-1-6">
 </div>
-<div id="outline-container-orgf604566" class="outline-4">
-<h4 id="orgf604566"><span class="section-number-4">1.6.1.</span> ACID</h4>
+<div id="outline-container-org74d55ea" class="outline-4">
+<h4 id="org74d55ea"><span class="section-number-4">1.6.1.</span> ACID</h4>
 <div class="outline-text-4" id="text-1-6-1">
 <ul class="org-ul">
 <li>A set of properties for database transactions: atomicity, consistency, isolation, duration.</li>
@@ -154,8 +154,8 @@ This is a personal note for <a href="https://www.paradigm.xyz/2024/04/reth-perf"
 </ul>
 </div>
 </div>
-<div id="outline-container-org737338e" class="outline-4">
-<h4 id="org737338e"><span class="section-number-4">1.6.2.</span> MVCC (Multi-version concurrency control)</h4>
+<div id="outline-container-org6a4e519" class="outline-4">
+<h4 id="org6a4e519"><span class="section-number-4">1.6.2.</span> MVCC (Multi-version concurrency control)</h4>
 <div class="outline-text-4" id="text-1-6-2">
 <ul class="org-ul">
 <li>A concurrency control model used in DBMS.</li>
@@ -163,8 +163,8 @@ This is a personal note for <a href="https://www.paradigm.xyz/2024/04/reth-perf"
 </ul>
 </div>
 </div>
-<div id="outline-container-orge0cbff7" class="outline-4">
-<h4 id="orge0cbff7"><span class="section-number-4">1.6.3.</span> Common database models</h4>
+<div id="outline-container-org0552070" class="outline-4">
+<h4 id="org0552070"><span class="section-number-4">1.6.3.</span> Common database models</h4>
 <div class="outline-text-4" id="text-1-6-3">
 <ul class="org-ul">
 <li>Relational model, e.g., SQL.</li>
@@ -174,8 +174,8 @@ This is a personal note for <a href="https://www.paradigm.xyz/2024/04/reth-perf"
 </ul>
 </div>
 </div>
-<div id="outline-container-orgceb3dd0" class="outline-4">
-<h4 id="orgceb3dd0"><span class="section-number-4">1.6.4.</span> Common storage engines</h4>
+<div id="outline-container-org67478c1" class="outline-4">
+<h4 id="org67478c1"><span class="section-number-4">1.6.4.</span> Common storage engines</h4>
 <div class="outline-text-4" id="text-1-6-4">
 <ul class="org-ul">
 <li>MDBX: Ultra-fate key-value embedded database with ACID and MVCC supported.</li>
@@ -188,8 +188,8 @@ This is a personal note for <a href="https://www.paradigm.xyz/2024/04/reth-perf"
 </div>
 </div>
 </div>
-<div id="outline-container-org6b0a87a" class="outline-3">
-<h3 id="org6b0a87a"><span class="section-number-3">1.7.</span> Reth</h3>
+<div id="outline-container-org7333675" class="outline-3">
+<h3 id="org7333675"><span class="section-number-3">1.7.</span> Reth</h3>
 <div class="outline-text-3" id="text-1-7">
 <ul class="org-ul">
 <li>A Rust implementation of an Ethereum full node; allows users to interact with the Ethereum blockchain.</li>
@@ -200,8 +200,8 @@ This is a personal note for <a href="https://www.paradigm.xyz/2024/04/reth-perf"
 </ul>
 </div>
 </div>
-<div id="outline-container-org478ab9b" class="outline-3">
-<h3 id="org478ab9b"><span class="section-number-3">1.8.</span> Why gas per second as the performance metric</h3>
+<div id="outline-container-org669fdff" class="outline-3">
+<h3 id="org669fdff"><span class="section-number-3">1.8.</span> Why gas per second as the performance metric</h3>
 <div class="outline-text-3" id="text-1-8">
 <ul class="org-ul">
 <li>More nuanced than TPS.</li>
@@ -210,8 +210,8 @@ This is a personal note for <a href="https://www.paradigm.xyz/2024/04/reth-perf"
 </ul>
 </div>
 </div>
-<div id="outline-container-org3e971b2" class="outline-3">
-<h3 id="org3e971b2"><span class="section-number-3">1.9.</span> EVM cost models</h3>
+<div id="outline-container-orgbd41f95" class="outline-3">
+<h3 id="orgbd41f95"><span class="section-number-3">1.9.</span> EVM cost models</h3>
 <div class="outline-text-3" id="text-1-9">
 <ul class="org-ul">
 <li>Determines the computational and storage costs for the execution.</li>
@@ -219,8 +219,8 @@ This is a personal note for <a href="https://www.paradigm.xyz/2024/04/reth-perf"
 </ul>
 </div>
 </div>
-<div id="outline-container-orged77b07" class="outline-3">
-<h3 id="orged77b07"><span class="section-number-3">1.10.</span> TPC benchmark</h3>
+<div id="outline-container-org576a1be" class="outline-3">
+<h3 id="org576a1be"><span class="section-number-3">1.10.</span> TPC benchmark</h3>
 <div class="outline-text-3" id="text-1-10">
 <ul class="org-ul">
 <li>Standardized performance tests for transaction processing and databases, e.g., how many transactions a system can process in a given period.</li>
@@ -228,8 +228,8 @@ This is a personal note for <a href="https://www.paradigm.xyz/2024/04/reth-perf"
 </ul>
 </div>
 </div>
-<div id="outline-container-org89f5af9" class="outline-3">
-<h3 id="org89f5af9"><span class="section-number-3">1.11.</span> State growth</h3>
+<div id="outline-container-org23607f8" class="outline-3">
+<h3 id="org23607f8"><span class="section-number-3">1.11.</span> State growth</h3>
 <div class="outline-text-3" id="text-1-11">
 <ul class="org-ul">
 <li>State: the set of data for building and validating new Ethereum blocks.</li>
@@ -237,8 +237,8 @@ This is a personal note for <a href="https://www.paradigm.xyz/2024/04/reth-perf"
 </ul>
 </div>
 </div>
-<div id="outline-container-orgdf456e7" class="outline-3">
-<h3 id="orgdf456e7"><span class="section-number-3">1.12.</span> JIT (Just-In-Time) and AOT (Ahead-of-Time) EVM</h3>
+<div id="outline-container-orgdba6eb1" class="outline-3">
+<h3 id="orgdba6eb1"><span class="section-number-3">1.12.</span> JIT (Just-In-Time) and AOT (Ahead-of-Time) EVM</h3>
 <div class="outline-text-3" id="text-1-12">
 <ul class="org-ul">
 <li>JIT: convert bytecode to native machine code just before execution to bypass the VM&rsquo;s interpretative process.</li>
@@ -246,8 +246,8 @@ This is a personal note for <a href="https://www.paradigm.xyz/2024/04/reth-perf"
 </ul>
 </div>
 </div>
-<div id="outline-container-orgf3797a6" class="outline-3">
-<h3 id="orgf3797a6"><span class="section-number-3">1.13.</span> Actor model</h3>
+<div id="outline-container-org0fe236b" class="outline-3">
+<h3 id="org0fe236b"><span class="section-number-3">1.13.</span> Actor model</h3>
 <div class="outline-text-3" id="text-1-13">
 <ul class="org-ul">
 <li>A paradigm/framework for designing distributed systems.</li>
@@ -255,16 +255,16 @@ This is a personal note for <a href="https://www.paradigm.xyz/2024/04/reth-perf"
 </ul>
 </div>
 </div>
-<div id="outline-container-orge6bfe92" class="outline-3">
-<h3 id="orge6bfe92"><span class="section-number-3">1.14.</span> Storage trie</h3>
+<div id="outline-container-org67c1822" class="outline-3">
+<h3 id="org67c1822"><span class="section-number-3">1.14.</span> Storage trie</h3>
 <div class="outline-text-3" id="text-1-14">
 <ul class="org-ul">
 <li>Each contract account has its own storage trie, which is usually stored in a KV database.</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org9662699" class="outline-3">
-<h3 id="org9662699"><span class="section-number-3">1.15.</span> Serverless database</h3>
+<div id="outline-container-org95ef93e" class="outline-3">
+<h3 id="org95ef93e"><span class="section-number-3">1.15.</span> Serverless database</h3>
 <div class="outline-text-3" id="text-1-15">
 <ul class="org-ul">
 <li>Allow developers to focus on writing queries without managing database servers.</li>
@@ -274,23 +274,23 @@ This is a personal note for <a href="https://www.paradigm.xyz/2024/04/reth-perf"
 </div>
 </div>
 </div>
-<div id="outline-container-orgb4b09e9" class="outline-2">
-<h2 id="orgb4b09e9"><span class="section-number-2">2.</span> Reth scaling plan</h2>
+<div id="outline-container-org7610d61" class="outline-2">
+<h2 id="org7610d61"><span class="section-number-2">2.</span> Reth scaling plan</h2>
 <div class="outline-text-2" id="text-2">
 <ul class="org-ul">
 <li>Current status (April 2024): achieves 100-200 mg/s during live sync, including sender recovery, transaction execution and block trie calculation.</li>
 <li>The scaling plan does not involve solving state growth.</li>
 </ul>
 </div>
-<div id="outline-container-org1900484" class="outline-3">
-<h3 id="org1900484"><span class="section-number-3">2.1.</span> Vertical scaling (2024)</h3>
+<div id="outline-container-orgbc723d9" class="outline-3">
+<h3 id="orgbc723d9"><span class="section-number-3">2.1.</span> Vertical scaling (2024)</h3>
 <div class="outline-text-3" id="text-2-1">
 <ul class="org-ul">
 <li>Optimize how each system handle transactions and data.</li>
 </ul>
 </div>
-<div id="outline-container-org61d0655" class="outline-4">
-<h4 id="org61d0655"><span class="section-number-4">2.1.1.</span> JIT/AOT EVM</h4>
+<div id="outline-container-orgfbcc5f1" class="outline-4">
+<h4 id="orgfbcc5f1"><span class="section-number-4">2.1.1.</span> JIT/AOT EVM</h4>
 <div class="outline-text-4" id="text-2-1-1">
 <ul class="org-ul">
 <li>Reduce EVM interpreter overhead to speed up single-threaded transaction processing.</li>
@@ -299,15 +299,15 @@ This is a personal note for <a href="https://www.paradigm.xyz/2024/04/reth-perf"
 </ul>
 
 
-<figure id="org2993c7d">
+<figure id="orgfb3dde8">
 <img src="https://www.paradigm.xyz/static/reth-perf/3.png" alt="3.png" align="center" width="500px">
 
 <figcaption><span class="figure-number">Figure 1: </span>The JIT/AOT compiler (<a href="https://www.paradigm.xyz/static/reth-perf/3.png">source</a>)</figcaption>
 </figure>
 </div>
 </div>
-<div id="outline-container-org05122cc" class="outline-4">
-<h4 id="org05122cc"><span class="section-number-4">2.1.2.</span> Parallel EVM</h4>
+<div id="outline-container-orgb36991e" class="outline-4">
+<h4 id="orgb36991e"><span class="section-number-4">2.1.2.</span> Parallel EVM</h4>
 <div class="outline-text-4" id="text-2-1-2">
 <ul class="org-ul">
 <li>Utilize multiple cores during EVM execution.</li>
@@ -317,8 +317,8 @@ This is a personal note for <a href="https://www.paradigm.xyz/2024/04/reth-perf"
 </ul>
 </div>
 </div>
-<div id="outline-container-org6bffaf9" class="outline-4">
-<h4 id="org6bffaf9"><span class="section-number-4">2.1.3.</span> Optimized state commitment</h4>
+<div id="outline-container-org9cd06d3" class="outline-4">
+<h4 id="org9cd06d3"><span class="section-number-4">2.1.3.</span> Optimized state commitment</h4>
 <div class="outline-text-4" id="text-2-1-3">
 <ul class="org-ul">
 <li>Traditional EVM implementation <b><b>couples</b></b> the transaction execution and the state root computation: the state root is updated whenever a transaction updates a trie, since the state root computation has to be sequential from the updated node to the root, this is slow.</li>
@@ -344,23 +344,23 @@ This is a personal note for <a href="https://www.paradigm.xyz/2024/04/reth-perf"
 </div>
 </div>
 </div>
-<div id="outline-container-org266842c" class="outline-3">
-<h3 id="org266842c"><span class="section-number-3">2.2.</span> Horizontal scaling (2025)</h3>
+<div id="outline-container-orgfa94edc" class="outline-3">
+<h3 id="orgfa94edc"><span class="section-number-3">2.2.</span> Horizontal scaling (2025)</h3>
 <div class="outline-text-3" id="text-2-2">
 <ul class="org-ul">
 <li>Spread the workload across multiple systems.</li>
 </ul>
 </div>
-<div id="outline-container-org729b06d" class="outline-4">
-<h4 id="org729b06d"><span class="section-number-4">2.2.1.</span> Multi-Rollup (?)</h4>
+<div id="outline-container-org4619f9b" class="outline-4">
+<h4 id="org4619f9b"><span class="section-number-4">2.2.1.</span> Multi-Rollup (?)</h4>
 <div class="outline-text-4" id="text-2-2-1">
 <ul class="org-ul">
 <li>Reduce operational overhead of running multiple rollups.</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-orgb4aacf1" class="outline-4">
-<h4 id="orgb4aacf1"><span class="section-number-4">2.2.2.</span> Cloud-Native nodes.</h4>
+<div id="outline-container-orgb569cc7" class="outline-4">
+<h4 id="orgb569cc7"><span class="section-number-4">2.2.2.</span> Cloud-Native nodes.</h4>
 <div class="outline-text-4" id="text-2-2-2">
 <ul class="org-ul">
 <li>Deploy the heavy node (e.g., sequencer) as a service stack that can autoscale with compute demand and use cloud storage for persistence.</li>
@@ -369,8 +369,8 @@ This is a personal note for <a href="https://www.paradigm.xyz/2024/04/reth-perf"
 </div>
 </div>
 </div>
-<div id="outline-container-org2b8c868" class="outline-3">
-<h3 id="org2b8c868"><span class="section-number-3">2.3.</span> Open questions</h3>
+<div id="outline-container-org8f4e1f7" class="outline-3">
+<h3 id="org8f4e1f7"><span class="section-number-3">2.3.</span> Open questions</h3>
 <div class="outline-text-3" id="text-2-3">
 <ul class="org-ul">
 <li>Second order effects of above changes, e.g., on light clients.</li>
@@ -401,6 +401,7 @@ This is a personal note for <a href="https://www.paradigm.xyz/2024/04/reth-perf"
             <i class="fab fa-github"></i>
       </a>
       </div>
+      <script src="assets/toggle.js"></script>
       </footer></div>
 </body>
 </html>

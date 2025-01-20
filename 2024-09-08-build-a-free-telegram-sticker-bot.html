@@ -41,23 +41,23 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgd1e133b">1. What happened</a></li>
-<li><a href="#orgfd29d0e">2. What do I need</a></li>
-<li><a href="#org8aa667d">3. How to build a bot</a>
+<li><a href="#orgc861b35">1. What happened</a></li>
+<li><a href="#orgfd6d509">2. What do I need</a></li>
+<li><a href="#orge256bde">3. How to build a bot</a>
 <ul>
-<li><a href="#org254b26e">3.1. How to build a sticker tag bot</a></li>
-<li><a href="#org1286733">3.2. How to make the bot private</a></li>
+<li><a href="#org9cd67f8">3.1. How to build a sticker tag bot</a></li>
+<li><a href="#org2dd28c4">3.2. How to make the bot private</a></li>
 </ul>
 </li>
-<li><a href="#org0dc7c69">4. How to deploy the bot on Render</a></li>
-<li><a href="#org5c4479e">5. How to connect to the Firebase</a></li>
-<li><a href="#org1ec6cca">6. How to configure UptimeRobot</a></li>
-<li><a href="#org6d20a51">7. Conclusion</a></li>
+<li><a href="#org445c8e2">4. How to deploy the bot on Render</a></li>
+<li><a href="#orge5152d6">5. How to connect to the Firebase</a></li>
+<li><a href="#orgc70c80e">6. How to configure UptimeRobot</a></li>
+<li><a href="#org6e130c1">7. Conclusion</a></li>
 </ul>
 </div>
 </nav>
-<div id="outline-container-orgd1e133b" class="outline-2">
-<h2 id="orgd1e133b"><span class="section-number-2">1.</span> What happened</h2>
+<div id="outline-container-orgc861b35" class="outline-2">
+<h2 id="orgc861b35"><span class="section-number-2">1.</span> What happened</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 When I started to use Telegram, I really missed being able to search stickers by text, like I can in WeChat.
@@ -77,8 +77,8 @@ So, I decided to build my own Telegram bot.
 </p>
 </div>
 </div>
-<div id="outline-container-orgfd29d0e" class="outline-2">
-<h2 id="orgfd29d0e"><span class="section-number-2">2.</span> What do I need</h2>
+<div id="outline-container-orgfd6d509" class="outline-2">
+<h2 id="orgfd6d509"><span class="section-number-2">2.</span> What do I need</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 My goal was to create a bot using only free services, including cloud storage for key-value pairs and a hosting platform to keep the bot running.
@@ -115,8 +115,8 @@ However, these services do not work together automatically. Gluing them together
 </p>
 </div>
 </div>
-<div id="outline-container-org8aa667d" class="outline-2">
-<h2 id="org8aa667d"><span class="section-number-2">3.</span> How to build a bot</h2>
+<div id="outline-container-orge256bde" class="outline-2">
+<h2 id="orge256bde"><span class="section-number-2">3.</span> How to build a bot</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 The first step in building any bot is asking BotFather for a new bot and keeping the bot token secure.
@@ -131,8 +131,8 @@ This includes learning how to handle messages effectively.
 For example, I used <a href="https://github.com/go-telegram-bot-api/telegram-bot-api">tgbotapi(Golang)</a>.
 </p>
 </div>
-<div id="outline-container-org254b26e" class="outline-3">
-<h3 id="org254b26e"><span class="section-number-3">3.1.</span> How to build a sticker tag bot</h3>
+<div id="outline-container-org9cd67f8" class="outline-3">
+<h3 id="org9cd67f8"><span class="section-number-3">3.1.</span> How to build a sticker tag bot</h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
 A sticker tag bot needs two main functionalities:
@@ -165,8 +165,8 @@ To address this, I added a <code>/delete</code> method to remove tags when neede
 </p>
 </div>
 </div>
-<div id="outline-container-org1286733" class="outline-3">
-<h3 id="org1286733"><span class="section-number-3">3.2.</span> How to make the bot private</h3>
+<div id="outline-container-org2dd28c4" class="outline-3">
+<h3 id="org2dd28c4"><span class="section-number-3">3.2.</span> How to make the bot private</h3>
 <div class="outline-text-3" id="text-3-2">
 <p>
 I couldn&rsquo;t find an official way to make a bot visible only to me.
@@ -176,8 +176,8 @@ Then I performed a sanity check before handling any messages.
 </div>
 </div>
 </div>
-<div id="outline-container-org0dc7c69" class="outline-2">
-<h2 id="org0dc7c69"><span class="section-number-2">4.</span> How to deploy the bot on Render</h2>
+<div id="outline-container-org445c8e2" class="outline-2">
+<h2 id="org445c8e2"><span class="section-number-2">4.</span> How to deploy the bot on Render</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 Deploying a service on Render with a free account is challenging due to the lack of shell access, disk access, and non-so-live logs.
@@ -213,8 +213,8 @@ This URL informs Telegram where to send and receive all messages for the bot.
 </p>
 </div>
 </div>
-<div id="outline-container-org5c4479e" class="outline-2">
-<h2 id="org5c4479e"><span class="section-number-2">5.</span> How to connect to the Firebase</h2>
+<div id="outline-container-orge5152d6" class="outline-2">
+<h2 id="orge5152d6"><span class="section-number-2">5.</span> How to connect to the Firebase</h2>
 <div class="outline-text-2" id="text-5">
 <p>
 The Firebase Realtime database stores key-value pairs in the JSON format.
@@ -238,8 +238,8 @@ During this initialization period, the log may display a <code>502 Bad Gateway</
 </p>
 </div>
 </div>
-<div id="outline-container-org1ec6cca" class="outline-2">
-<h2 id="org1ec6cca"><span class="section-number-2">6.</span> How to configure UptimeRobot</h2>
+<div id="outline-container-orgc70c80e" class="outline-2">
+<h2 id="orgc70c80e"><span class="section-number-2">6.</span> How to configure UptimeRobot</h2>
 <div class="outline-text-2" id="text-6">
 <p>
 Before configuring UptimeRobot, an attempt was made to ping the bot from within itself, but this approach did not function for Render.
@@ -254,8 +254,8 @@ Using UptimeRobot to maintain the bot&rsquo;s active status involves two primary
 </ol>
 </div>
 </div>
-<div id="outline-container-org6d20a51" class="outline-2">
-<h2 id="org6d20a51"><span class="section-number-2">7.</span> Conclusion</h2>
+<div id="outline-container-org6e130c1" class="outline-2">
+<h2 id="org6e130c1"><span class="section-number-2">7.</span> Conclusion</h2>
 <div class="outline-text-2" id="text-7">
 <p>
 This post isn&rsquo;t meant to be a step-by-step guide for building a Telegram bot.
@@ -294,6 +294,7 @@ Right now, the repository is private since I plan to add a second functionality 
             <i class="fab fa-github"></i>
       </a>
       </div>
+      <script src="assets/toggle.js"></script>
       </footer></div>
 </body>
 </html>

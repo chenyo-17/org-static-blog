@@ -43,6 +43,7 @@ Here is the Doom Emacs configuration this blog uses, one should at least change 
             <i class=\"fab fa-github\"></i>
       </a>
       </div>
+      <script src=\"assets/toggle.js\"></script>
       </footer>")
 
 ;; Preamble for every page (e.g., navigation)

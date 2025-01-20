@@ -41,33 +41,33 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgf153467">1. Namespace</a></li>
-<li><a href="#org40232d3">2. Wrapper class</a></li>
-<li><a href="#orgc9d8f4f">3. Iterator</a>
+<li><a href="#org3319f27">1. Namespace</a></li>
+<li><a href="#org6c5ab6f">2. Wrapper class</a></li>
+<li><a href="#orge28eb5f">3. Iterator</a>
 <ul>
-<li><a href="#org94cb86d">3.1. A doubly linked list (DLL) iterator</a></li>
+<li><a href="#org22b3188">3.1. A doubly linked list (DLL) iterator</a></li>
 </ul>
 </li>
-<li><a href="#org4c18899">4. STL containers</a>
+<li><a href="#orgabecb8b">4. STL containers</a>
 <ul>
-<li><a href="#org6dcfbeb">4.1. Vector</a></li>
-<li><a href="#orgfc95fbf">4.2. Set</a></li>
-<li><a href="#org5038e7e">4.3. Unordered maps</a></li>
+<li><a href="#org125b0e5">4.1. Vector</a></li>
+<li><a href="#orgb13b64e">4.2. Set</a></li>
+<li><a href="#org7084f8e">4.3. Unordered maps</a></li>
 </ul>
 </li>
-<li><a href="#org644b019">5. <code>auto</code></a></li>
-<li><a href="#org6876e1c">6. Smart pointers</a>
+<li><a href="#org4aebc03">5. <code>auto</code></a></li>
+<li><a href="#org9a35959">6. Smart pointers</a>
 <ul>
-<li><a href="#org03a407c">6.1. <code>std::unique_ptr</code></a></li>
-<li><a href="#orga17c160">6.2. <code>std::shared_ptr</code></a></li>
+<li><a href="#org3f34e9b">6.1. <code>std::unique_ptr</code></a></li>
+<li><a href="#orga6f4d50">6.2. <code>std::shared_ptr</code></a></li>
 </ul>
 </li>
-<li><a href="#orgff9d615">7. Synchronization</a>
+<li><a href="#org0b2f277">7. Synchronization</a>
 <ul>
-<li><a href="#org720a20f">7.1. <code>std::mutex</code></a></li>
-<li><a href="#org972445b">7.2. <code>std::scoped_lock</code></a></li>
-<li><a href="#org9630937">7.3. <code>std::condition_variable</code></a></li>
-<li><a href="#org45ff32d">7.4. Reader-writer lock</a></li>
+<li><a href="#org2b7c7db">7.1. <code>std::mutex</code></a></li>
+<li><a href="#orgace0084">7.2. <code>std::scoped_lock</code></a></li>
+<li><a href="#org00ab3e7">7.3. <code>std::condition_variable</code></a></li>
+<li><a href="#org4f057cc">7.4. Reader-writer lock</a></li>
 </ul>
 </li>
 </ul>
@@ -76,8 +76,8 @@
 <p>
 This is a personal not for the <a href="https://github.com/cmu-db/15445-bootcamp">CMU 15-445 C++ bootcamp</a> along with some explanation from Claude.ai.
 </p>
-<div id="outline-container-orgf153467" class="outline-2">
-<h2 id="orgf153467"><span class="section-number-2">1.</span> Namespace</h2>
+<div id="outline-container-org3319f27" class="outline-2">
+<h2 id="org3319f27"><span class="section-number-2">1.</span> Namespace</h2>
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
 <li>Provides scopes to identifiers with <code>::</code>.</li>
@@ -85,27 +85,27 @@ This is a personal not for the <a href="https://github.com/cmu-db/15445-bootcamp
 Namespaces can be nested.
 </p>
 <div class="org-src-container">
-<pre class="src src-cpp"><span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;iostream&gt;</span>
-<span style="color: #51afef;">namespace</span> <span style="color: #a9a1e1;">ABC</span> {
-    <span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">spam</span>(<span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">a</span>) { <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"Hello from ABC::spam"</span> &lt;&lt; <span style="color: #a9a1e1;">std</span>::endl; }
+<pre class="src src-cpp"><span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #51afef;">&lt;</span><span style="color: #98be65;">iostream</span><span style="color: #51afef;">&gt;</span>
+<span style="color: #51afef;">namespace</span> <span style="color: #a9a1e1;">ABC</span> <span style="color: #51afef;">{</span>
+    <span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">spam</span><span style="color: #c678dd;">(</span><span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">a</span><span style="color: #c678dd;">)</span> <span style="color: #c678dd;">{</span> <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"Hello from ABC::spam"</span> &lt;&lt; <span style="color: #a9a1e1;">std</span>::endl; <span style="color: #c678dd;">}</span>
     <span style="color: #5B6268;">// </span><span style="color: #5B6268;">declare a nested namespace</span>
-    <span style="color: #51afef;">namespace</span> <span style="color: #a9a1e1;">DEF</span> {
-    <span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">bar</span>(<span style="color: #ECBE7B;">float</span> <span style="color: #dcaeea;">a</span>) { <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"Hello from ABC::DEF::bar"</span> &lt;&lt; <span style="color: #a9a1e1;">std</span>::endl; }
-    <span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">use_spam</span>(<span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">a</span>) {
-    <span style="color: #a9a1e1;">ABC</span>::spam(a);
+    <span style="color: #51afef;">namespace</span> <span style="color: #a9a1e1;">DEF</span> <span style="color: #c678dd;">{</span>
+    <span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">bar</span><span style="color: #98be65;">(</span><span style="color: #ECBE7B;">float</span> <span style="color: #dcaeea;">a</span><span style="color: #98be65;">)</span> <span style="color: #98be65;">{</span> <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"Hello from ABC::DEF::bar"</span> &lt;&lt; <span style="color: #a9a1e1;">std</span>::endl; <span style="color: #98be65;">}</span>
+    <span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">use_spam</span><span style="color: #98be65;">(</span><span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">a</span><span style="color: #98be65;">)</span> <span style="color: #98be65;">{</span>
+    <span style="color: #a9a1e1;">ABC</span>::spam<span style="color: #a9a1e1;">(</span>a<span style="color: #a9a1e1;">)</span>;
     <span style="color: #5B6268;">// </span><span style="color: #5B6268;">no difference with ABC::spam(a) if DEF</span>
     <span style="color: #5B6268;">// </span><span style="color: #5B6268;">does not have a spam function</span>
-    spam(a);
-    }
-} <span style="color: #5B6268;">// </span><span style="color: #5B6268;">namespace DEF</span>
+    spam<span style="color: #a9a1e1;">(</span>a<span style="color: #a9a1e1;">)</span>;
+    <span style="color: #98be65;">}</span>
+<span style="color: #c678dd;">}</span> <span style="color: #5B6268;">// </span><span style="color: #5B6268;">namespace DEF</span>
 
-    <span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">use_DEF_bar</span>(<span style="color: #ECBE7B;">float</span> <span style="color: #dcaeea;">a</span>) {
+    <span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">use_DEF_bar</span><span style="color: #c678dd;">(</span><span style="color: #ECBE7B;">float</span> <span style="color: #dcaeea;">a</span><span style="color: #c678dd;">)</span> <span style="color: #c678dd;">{</span>
     <span style="color: #5B6268;">// </span><span style="color: #5B6268;">if a namespace outside of DEF wants to use DEF::bar</span>
     <span style="color: #5B6268;">// </span><span style="color: #5B6268;">it must use the full namespace path ABC::DEF::bar</span>
-    <span style="color: #a9a1e1;">DEF</span>::bar(a);
-    }
+    <span style="color: #a9a1e1;">DEF</span>::bar<span style="color: #98be65;">(</span>a<span style="color: #98be65;">)</span>;
+    <span style="color: #c678dd;">}</span>
 
-} <span style="color: #5B6268;">// </span><span style="color: #5B6268;">namespace ABC</span>
+<span style="color: #51afef;">}</span> <span style="color: #5B6268;">// </span><span style="color: #5B6268;">namespace ABC</span>
 </pre>
 </div></li>
 <li>Two namespaces can define functions with the same name and signatures.</li>
@@ -115,19 +115,19 @@ Namespaces can be nested.
 </ul>
 </div>
 </div>
-<div id="outline-container-org40232d3" class="outline-2">
-<h2 id="org40232d3"><span class="section-number-2">2.</span> Wrapper class</h2>
+<div id="outline-container-org6c5ab6f" class="outline-2">
+<h2 id="org6c5ab6f"><span class="section-number-2">2.</span> Wrapper class</h2>
 <div class="outline-text-2" id="text-2">
 <ul class="org-ul">
 <li><p>
 Used to manage a resource, e.g., memory, file sockets, network connections.
 </p>
 <div class="org-src-container">
-<pre class="src src-cpp"><span style="color: #51afef;">class</span> <span style="color: #ECBE7B;">IntPtrManager</span> {
+<pre class="src src-cpp"><span style="color: #51afef;">class</span> <span style="color: #ECBE7B;">IntPtrManager</span> <span style="color: #51afef;">{</span>
 <span style="color: #51afef;">private</span>:
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">manages an int* to access the dynamic memory</span>
   <span style="color: #ECBE7B;">int</span> *<span style="color: #dcaeea;">ptr_</span>;
-};
+<span style="color: #51afef;">}</span>;
 </pre>
 </div></li>
 
@@ -138,36 +138,36 @@ Used to manage a resource, e.g., memory, file sockets, network connections.
 Acquisition: resources are acquired in the constructor.
 </p>
 <div class="org-src-container">
-<pre class="src src-cpp"><span style="color: #51afef;">class</span> <span style="color: #ECBE7B;">IntPtrManager</span> {
+<pre class="src src-cpp"><span style="color: #51afef;">class</span> <span style="color: #ECBE7B;">IntPtrManager</span> <span style="color: #51afef;">{</span>
 <span style="color: #51afef;">public</span>:
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">the constructor initializes a resource</span>
-  <span style="color: #c678dd;">IntPtrManager</span>() {
+  <span style="color: #c678dd;">IntPtrManager</span><span style="color: #c678dd;">()</span> <span style="color: #c678dd;">{</span>
     ptr_ = <span style="color: #51afef;">new</span> <span style="color: #ECBE7B;">int</span>;  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">allocate the memory</span>
     *ptr_ = <span style="color: #da8548; font-weight: bold;">0</span>;  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">set the default value</span>
-  }
+  <span style="color: #c678dd;">}</span>
 
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">the second constructor takes an initial value</span>
-  <span style="color: #c678dd;">IntPtrManager</span>(<span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">val</span>) {
+  <span style="color: #c678dd;">IntPtrManager</span><span style="color: #c678dd;">(</span><span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">val</span><span style="color: #c678dd;">)</span> <span style="color: #c678dd;">{</span>
     ptr_ = <span style="color: #51afef;">new</span> <span style="color: #ECBE7B;">int</span>;
     *ptr_ = val;
-  }
-};
+  <span style="color: #c678dd;">}</span>
+<span style="color: #51afef;">}</span>;
 </pre>
 </div></li>
 <li><p>
 Release: resources are released in the destructor.
 </p>
 <div class="org-src-container">
-<pre class="src src-cpp"><span style="color: #51afef;">class</span> <span style="color: #ECBE7B;">IntPtrManager</span> {
+<pre class="src src-cpp"><span style="color: #51afef;">class</span> <span style="color: #ECBE7B;">IntPtrManager</span> <span style="color: #51afef;">{</span>
 <span style="color: #51afef;">public</span>:
-  ~<span style="color: #c678dd;">IntPtrManager</span>() {
+  ~<span style="color: #c678dd;">IntPtrManager</span><span style="color: #c678dd;">()</span> <span style="color: #c678dd;">{</span>
     <span style="color: #5B6268;">// </span><span style="color: #5B6268;">ptr_ may be null after the move</span>
     <span style="color: #5B6268;">// </span><span style="color: #5B6268;">don't delete a null pointer</span>
-    <span style="color: #51afef;">if</span> (ptr_) {
+    <span style="color: #51afef;">if</span> <span style="color: #98be65;">(</span>ptr_<span style="color: #98be65;">)</span> <span style="color: #98be65;">{</span>
       <span style="color: #51afef;">delete</span> ptr_;
-    }
-  }
-};
+    <span style="color: #98be65;">}</span>
+  <span style="color: #c678dd;">}</span>
+<span style="color: #51afef;">}</span>;
 </pre>
 </div></li>
 </ul></li>
@@ -176,13 +176,13 @@ Release: resources are released in the destructor.
 A wrapper class should not be copyable to avoid double deletion of the same resource in two destructors.
 </p>
 <div class="org-src-container">
-<pre class="src src-cpp"><span style="color: #51afef;">class</span> <span style="color: #ECBE7B;">IntPtrManager</span> {
+<pre class="src src-cpp"><span style="color: #51afef;">class</span> <span style="color: #ECBE7B;">IntPtrManager</span> <span style="color: #51afef;">{</span>
 <span style="color: #51afef;">public</span>:
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">delete copy constructor</span>
-  <span style="color: #c678dd;">IntPtrManager</span>(<span style="color: #51afef;">const</span> <span style="color: #ECBE7B;">IntPtrManager</span> &amp;) = <span style="color: #51afef;">delete</span>;
+  <span style="color: #c678dd;">IntPtrManager</span><span style="color: #c678dd;">(</span><span style="color: #51afef;">const</span> <span style="color: #ECBE7B;">IntPtrManager</span> &amp;<span style="color: #c678dd;">)</span> = <span style="color: #51afef;">delete</span>;
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">delete copy assignment operator</span>
-  <span style="color: #ECBE7B;">IntPtrManager</span> &amp;<span style="color: #51afef;">operator</span><span style="color: #c678dd;">=</span>(<span style="color: #51afef;">const</span> <span style="color: #ECBE7B;">IntPtrManager</span> &amp;) = <span style="color: #51afef;">delete</span>;
-};
+  <span style="color: #ECBE7B;">IntPtrManager</span> &amp;<span style="color: #51afef;">operator</span><span style="color: #c678dd;">=</span><span style="color: #c678dd;">(</span><span style="color: #51afef;">const</span> <span style="color: #ECBE7B;">IntPtrManager</span> &amp;<span style="color: #c678dd;">)</span> = <span style="color: #51afef;">delete</span>;
+<span style="color: #51afef;">}</span>;
 </pre>
 </div></li>
 
@@ -190,49 +190,49 @@ A wrapper class should not be copyable to avoid double deletion of the same reso
 A wrapper class is still moveable from different lvalues/owners.
 </p>
 <div class="org-src-container">
-<pre class="src src-cpp"><span style="color: #51afef;">class</span> <span style="color: #ECBE7B;">IntPtrManager</span> {
+<pre class="src src-cpp"><span style="color: #51afef;">class</span> <span style="color: #ECBE7B;">IntPtrManager</span> <span style="color: #51afef;">{</span>
 <span style="color: #51afef;">public</span>:
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">a move constructor</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">called by IntPtrManager b(std::move(a))</span>
-  <span style="color: #c678dd;">IntPtrManager</span>(<span style="color: #ECBE7B;">IntPtrManager</span> &amp;&amp;<span style="color: #dcaeea;">other</span>) {
+  <span style="color: #c678dd;">IntPtrManager</span><span style="color: #c678dd;">(</span><span style="color: #ECBE7B;">IntPtrManager</span> &amp;&amp;<span style="color: #dcaeea;">other</span><span style="color: #c678dd;">)</span> <span style="color: #c678dd;">{</span>
     <span style="color: #5B6268;">// </span><span style="color: #5B6268;">while other is a rvalue reference, other.ptr_ is a lvalue</span>
     <span style="color: #5B6268;">// </span><span style="color: #5B6268;">therefore a copy happens here, not a move</span>
     <span style="color: #5B6268;">// </span><span style="color: #5B6268;">in the constructor this.ptr_ has not pointed to anything</span>
     <span style="color: #5B6268;">// </span><span style="color: #5B6268;">so no need to delete ptr_</span>
     ptr = other.ptr_;
     other.ptr_ = <span style="color: #a9a1e1;">nullptr</span>;  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">other.ptr_ becomes invalud</span>
-  }
+  <span style="color: #c678dd;">}</span>
 
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">move assignment operator</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">this function is used by c = std::move(b) operation</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">note that calling std::move() does not require implementing this operator</span>
-  <span style="color: #ECBE7B;">IntPtrManager</span> &amp;<span style="color: #51afef;">operator</span><span style="color: #c678dd;">=</span>(<span style="color: #ECBE7B;">IntPtrManager</span> &amp;&amp;<span style="color: #dcaeea;">other</span>) {
+  <span style="color: #ECBE7B;">IntPtrManager</span> &amp;<span style="color: #51afef;">operator</span><span style="color: #c678dd;">=</span><span style="color: #c678dd;">(</span><span style="color: #ECBE7B;">IntPtrManager</span> &amp;&amp;<span style="color: #dcaeea;">other</span><span style="color: #c678dd;">)</span> <span style="color: #c678dd;">{</span>
     <span style="color: #5B6268;">// </span><span style="color: #5B6268;">a self assignment should not delete its ptr_</span>
-    <span style="color: #51afef;">if</span> (ptr_ == other.ptr_) {
+    <span style="color: #51afef;">if</span> <span style="color: #98be65;">(</span>ptr_ == other.ptr_<span style="color: #98be65;">)</span> <span style="color: #98be65;">{</span>
       <span style="color: #51afef;">return</span> *<span style="color: #51afef;">this</span>;
-    }
-    <span style="color: #51afef;">if</span> (ptr_) {
+    <span style="color: #98be65;">}</span>
+    <span style="color: #51afef;">if</span> <span style="color: #98be65;">(</span>ptr_<span style="color: #98be65;">)</span> <span style="color: #98be65;">{</span>
       <span style="color: #51afef;">delete</span> ptr_; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">release old resource to avoid leak</span>
-    }
+    <span style="color: #98be65;">}</span>
     ptr_ = other.ptr_;
     other.ptr_ = <span style="color: #a9a1e1;">nullptr</span>;  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">invalidate other.ptr_</span>
     <span style="color: #51afef;">return</span> *<span style="color: #51afef;">this</span>;
-  }
-};
+  <span style="color: #c678dd;">}</span>
+<span style="color: #51afef;">}</span>;
 </pre>
 </div></li>
 </ul>
 </div>
 </div>
-<div id="outline-container-orgc9d8f4f" class="outline-2">
-<h2 id="orgc9d8f4f"><span class="section-number-2">3.</span> Iterator</h2>
+<div id="outline-container-orge28eb5f" class="outline-2">
+<h2 id="orge28eb5f"><span class="section-number-2">3.</span> Iterator</h2>
 <div class="outline-text-2" id="text-3">
 <ul class="org-ul">
 <li><p>
 Iterators, e.g., pointers, are objects that point to an element inside a container.
 </p>
 <div class="org-src-container">
-<pre class="src src-cpp"><span style="color: #ECBE7B;">int</span> *<span style="color: #dcaeea;">array</span> = malloc(<span style="color: #51afef;">sizeof</span>(<span style="color: #ECBE7B;">int</span>) * <span style="color: #da8548; font-weight: bold;">10</span>);
+<pre class="src src-cpp"><span style="color: #ECBE7B;">int</span> *<span style="color: #dcaeea;">array</span> = malloc<span style="color: #51afef;">(</span><span style="color: #51afef;">sizeof</span><span style="color: #c678dd;">(</span><span style="color: #ECBE7B;">int</span><span style="color: #c678dd;">)</span> * <span style="color: #da8548; font-weight: bold;">10</span><span style="color: #51afef;">)</span>;
 <span style="color: #ECBE7B;">int</span> *<span style="color: #dcaeea;">iter</span> = array;
 <span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">zero_elem</span> = *iter;
 <span style="color: #5B6268;">// </span><span style="color: #5B6268;">use ++ to iterate through the C style array</span>
@@ -254,22 +254,22 @@ iter++;
 <li>Often used to access and modify elements in C++ STL containers.</li>
 </ul>
 </div>
-<div id="outline-container-org94cb86d" class="outline-3">
-<h3 id="org94cb86d"><span class="section-number-3">3.1.</span> A doubly linked list (DLL) iterator</h3>
+<div id="outline-container-org22b3188" class="outline-3">
+<h3 id="org22b3188"><span class="section-number-3">3.1.</span> A doubly linked list (DLL) iterator</h3>
 <div class="outline-text-3" id="text-3-1">
 <ul class="org-ul">
 <li><p>
 Define a link node:
 </p>
 <div class="org-src-container">
-<pre class="src src-cpp"><span style="color: #51afef;">struct</span> <span style="color: #ECBE7B;">Node</span> {
+<pre class="src src-cpp"><span style="color: #51afef;">struct</span> <span style="color: #ECBE7B;">Node</span> <span style="color: #51afef;">{</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">member initializer list, e.g., next_(nullptr) equals to next_ = nullptr</span>
-  <span style="color: #c678dd;">Node</span>(<span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">val</span>) : next_(<span style="color: #a9a1e1;">nullptr</span>), prev_(<span style="color: #a9a1e1;">nullptr</span>), value_(val) {}
+  <span style="color: #c678dd;">Node</span><span style="color: #c678dd;">(</span><span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">val</span><span style="color: #c678dd;">)</span> : next_<span style="color: #c678dd;">(</span><span style="color: #a9a1e1;">nullptr</span><span style="color: #c678dd;">)</span>, prev_<span style="color: #c678dd;">(</span><span style="color: #a9a1e1;">nullptr</span><span style="color: #c678dd;">)</span>, value_<span style="color: #c678dd;">(</span>val<span style="color: #c678dd;">)</span> <span style="color: #c678dd;">{}</span>
 
   <span style="color: #ECBE7B;">Node</span> *<span style="color: #dcaeea;">next_</span>;
   <span style="color: #ECBE7B;">Node</span> *<span style="color: #dcaeea;">prev_</span>;
   <span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">value_</span>;
-};
+<span style="color: #51afef;">}</span>;
 </pre>
 </div></li>
 
@@ -277,23 +277,23 @@ Define a link node:
 Define the iterator for the DLL:
 </p>
 <div class="org-src-container">
-<pre class="src src-cpp"><span style="color: #51afef;">class</span> <span style="color: #ECBE7B;">DLLIterator</span> {
+<pre class="src src-cpp"><span style="color: #51afef;">class</span> <span style="color: #ECBE7B;">DLLIterator</span> <span style="color: #51afef;">{</span>
 <span style="color: #51afef;">public</span>:
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">takes in a node to mark the start of the iteration</span>
-  <span style="color: #c678dd;">DLLIterator</span>(<span style="color: #ECBE7B;">Node</span> *<span style="color: #dcaeea;">head</span>) : curr_(head) {}
+  <span style="color: #c678dd;">DLLIterator</span><span style="color: #c678dd;">(</span><span style="color: #ECBE7B;">Node</span> *<span style="color: #dcaeea;">head</span><span style="color: #c678dd;">)</span> : curr_<span style="color: #c678dd;">(</span>head<span style="color: #c678dd;">)</span> <span style="color: #c678dd;">{}</span>
 
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">prefix increment operator (++iter)</span>
-  <span style="color: #ECBE7B;">DLLIterator</span> &amp;<span style="color: #51afef;">operator</span><span style="color: #c678dd;">++</span>() {
+  <span style="color: #ECBE7B;">DLLIterator</span> &amp;<span style="color: #51afef;">operator</span><span style="color: #c678dd;">++</span><span style="color: #c678dd;">()</span> <span style="color: #c678dd;">{</span>
     <span style="color: #5B6268;">// </span><span style="color: #5B6268;">must use -&gt; to access the member of a pointer!</span>
     <span style="color: #5B6268;">// </span><span style="color: #5B6268;">use . if accessing the object itself</span>
     curr_ = curr_-&gt;next_;
     <span style="color: #51afef;">return</span> *<span style="color: #51afef;">this</span>;
-  }
+  <span style="color: #c678dd;">}</span>
 
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">postfix increment operator (iter++)</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">the (int) is a dummy parameter to differentiate</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">the prefix and postfix increment</span>
-  <span style="color: #ECBE7B;">DLLIterator</span> <span style="color: #51afef;">operator</span><span style="color: #c678dd;">++</span>(<span style="color: #ECBE7B;">int</span>) {
+  <span style="color: #ECBE7B;">DLLIterator</span> <span style="color: #51afef;">operator</span><span style="color: #c678dd;">++</span><span style="color: #c678dd;">(</span><span style="color: #ECBE7B;">int</span><span style="color: #c678dd;">)</span> <span style="color: #c678dd;">{</span>
     <span style="color: #ECBE7B;">DLLIterator</span> <span style="color: #dcaeea;">temp</span> = *<span style="color: #51afef;">this</span>;
     <span style="color: #5B6268;">// </span><span style="color: #5B6268;">this is a pointer to the current object</span>
     <span style="color: #5B6268;">// </span><span style="color: #5B6268;">*this returns the iterator object</span>
@@ -301,7 +301,7 @@ Define the iterator for the DLL:
     <span style="color: #5B6268;">// </span><span style="color: #5B6268;">which equals to `this-&gt;operator++()`</span>
     ++*<span style="color: #51afef;">this</span>;
     <span style="color: #51afef;">return</span> temp;
-  }
+  <span style="color: #c678dd;">}</span>
 
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">implement the equality operator</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">an lvalue reference argument avoids the copy</span>
@@ -309,17 +309,17 @@ Define the iterator for the DLL:
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">cannot modify the argument</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">the `const` outside the parameter list means</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">the function cannot modify `this`</span>
-  <span style="color: #ECBE7B;">bool</span> <span style="color: #51afef;">operator</span><span style="color: #c678dd;">==</span>(<span style="color: #51afef;">const</span> <span style="color: #ECBE7B;">DLLIterator</span> &amp;<span style="color: #dcaeea;">str</span>) <span style="color: #51afef;">const</span> {
+  <span style="color: #ECBE7B;">bool</span> <span style="color: #51afef;">operator</span><span style="color: #c678dd;">==</span><span style="color: #c678dd;">(</span><span style="color: #51afef;">const</span> <span style="color: #ECBE7B;">DLLIterator</span> &amp;<span style="color: #dcaeea;">str</span><span style="color: #c678dd;">)</span> <span style="color: #51afef;">const</span> <span style="color: #c678dd;">{</span>
     <span style="color: #51afef;">return</span> itr.curr_ == <span style="color: #51afef;">this</span>-&gt;curr_;
-  }
+  <span style="color: #c678dd;">}</span>
 
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">implement the dereference operator to return the value</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">at the current iterator position</span>
-  <span style="color: #ECBE7B;">int</span> <span style="color: #51afef;">operator</span><span style="color: #c678dd;">*</span>() { <span style="color: #51afef;">return</span> curr_-&gt;value_; }
+  <span style="color: #ECBE7B;">int</span> <span style="color: #51afef;">operator</span><span style="color: #c678dd;">*</span><span style="color: #c678dd;">()</span> <span style="color: #c678dd;">{</span> <span style="color: #51afef;">return</span> curr_-&gt;value_; <span style="color: #c678dd;">}</span>
 
 <span style="color: #51afef;">private</span>:
   <span style="color: #ECBE7B;">Node</span> *<span style="color: #dcaeea;">curr_</span>;
-};
+<span style="color: #51afef;">}</span>;
 </pre>
 </div></li>
 
@@ -327,54 +327,54 @@ Define the iterator for the DLL:
 Define DLL:
 </p>
 <div class="org-src-container">
-<pre class="src src-cpp"><span style="color: #51afef;">class</span> <span style="color: #ECBE7B;">DLL</span> {
+<pre class="src src-cpp"><span style="color: #51afef;">class</span> <span style="color: #ECBE7B;">DLL</span> <span style="color: #51afef;">{</span>
 <span style="color: #51afef;">public</span>:
-  <span style="color: #c678dd;">DLL</span>() : head_(<span style="color: #a9a1e1;">nullptr</span>), size_(<span style="color: #da8548; font-weight: bold;">0</span>) {}
+  <span style="color: #c678dd;">DLL</span><span style="color: #c678dd;">()</span> : head_<span style="color: #c678dd;">(</span><span style="color: #a9a1e1;">nullptr</span><span style="color: #c678dd;">)</span>, size_<span style="color: #c678dd;">(</span><span style="color: #da8548; font-weight: bold;">0</span><span style="color: #c678dd;">)</span> <span style="color: #c678dd;">{}</span>
 
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">the destructor deletes nodes one by one</span>
-  ~<span style="color: #c678dd;">DLL</span>() {
+  ~<span style="color: #c678dd;">DLL</span><span style="color: #c678dd;">()</span> <span style="color: #c678dd;">{</span>
     <span style="color: #ECBE7B;">Node</span> *<span style="color: #dcaeea;">current</span> = head_;
-    <span style="color: #51afef;">while</span> (current != <span style="color: #a9a1e1;">nullptr</span>) {
+    <span style="color: #51afef;">while</span> <span style="color: #98be65;">(</span>current != <span style="color: #a9a1e1;">nullptr</span><span style="color: #98be65;">)</span> <span style="color: #98be65;">{</span>
       <span style="color: #ECBE7B;">Node</span> *<span style="color: #dcaeea;">next</span> = current-&gt;next_;
       <span style="color: #51afef;">delete</span> current;
       current = next;
-    }
+    <span style="color: #98be65;">}</span>
     head_ = <span style="color: #a9a1e1;">nullptr</span>;
-  }
+  <span style="color: #c678dd;">}</span>
 
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">after the insertion `new_node` becomes the new head</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">`head` is just a pointer to the node</span>
-  <span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">InsertAtHead</span>(<span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">val</span>) {
-    <span style="color: #ECBE7B;">Node</span> *<span style="color: #dcaeea;">new_node</span> = <span style="color: #51afef;">new</span> <span style="color: #ECBE7B;">Node</span>(val);
+  <span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">InsertAtHead</span><span style="color: #c678dd;">(</span><span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">val</span><span style="color: #c678dd;">)</span> <span style="color: #c678dd;">{</span>
+    <span style="color: #ECBE7B;">Node</span> *<span style="color: #dcaeea;">new_node</span> = <span style="color: #51afef;">new</span> <span style="color: #ECBE7B;">Node</span><span style="color: #98be65;">(</span>val<span style="color: #98be65;">)</span>;
     <span style="color: #5B6268;">// </span><span style="color: #5B6268;">new_node-&gt;next points to the object pointed by head_</span>
     new_node-&gt;next_ = head_;
 
-    <span style="color: #51afef;">if</span> (head_ != <span style="color: #a9a1e1;">nullptr</span>) {
+    <span style="color: #51afef;">if</span> <span style="color: #98be65;">(</span>head_ != <span style="color: #a9a1e1;">nullptr</span><span style="color: #98be65;">)</span> <span style="color: #98be65;">{</span>
       head_-&gt;prev_ = new_node;
-    }
+    <span style="color: #98be65;">}</span>
 
     head_ = new_node;
     size_ += <span style="color: #da8548; font-weight: bold;">1</span>;
-  }
+  <span style="color: #c678dd;">}</span>
 
-  <span style="color: #ECBE7B;">DLLIterator</span> <span style="color: #c678dd;">Begin</span>() { <span style="color: #51afef;">return</span> DLLIterator(head_); }
+  <span style="color: #ECBE7B;">DLLIterator</span> <span style="color: #c678dd;">Begin</span><span style="color: #c678dd;">()</span> <span style="color: #c678dd;">{</span> <span style="color: #51afef;">return</span> DLLIterator<span style="color: #98be65;">(</span>head_<span style="color: #98be65;">)</span>; <span style="color: #c678dd;">}</span>
 
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">returns the pointer pointing one after the last element</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">used in the loop to determine whether the iteration ends</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">e.g., `for (DLLIterator iter = dll.Begin(); iter != dll.End(); ++iter)`</span>
-  <span style="color: #ECBE7B;">DLLIterator</span> <span style="color: #c678dd;">End</span>() { <span style="color: #51afef;">return</span> DLLIterator(<span style="color: #a9a1e1;">nullptr</span>); }
+  <span style="color: #ECBE7B;">DLLIterator</span> <span style="color: #c678dd;">End</span><span style="color: #c678dd;">()</span> <span style="color: #c678dd;">{</span> <span style="color: #51afef;">return</span> DLLIterator<span style="color: #98be65;">(</span><span style="color: #a9a1e1;">nullptr</span><span style="color: #98be65;">)</span>; <span style="color: #c678dd;">}</span>
 
-  <span style="color: #ECBE7B;">Node</span> *<span style="color: #dcaeea;">head_</span>{<span style="color: #a9a1e1;">nullptr</span>};  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">in-class initializers</span>
+  <span style="color: #ECBE7B;">Node</span> *<span style="color: #dcaeea;">head_</span><span style="color: #c678dd;">{</span><span style="color: #a9a1e1;">nullptr</span><span style="color: #c678dd;">}</span>;  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">in-class initializers</span>
   <span style="color: #ECBE7B;">size_t</span> <span style="color: #dcaeea;">size_</span>;
-};
+<span style="color: #51afef;">}</span>;
 </pre>
 </div></li>
 </ul>
 </div>
 </div>
 </div>
-<div id="outline-container-org4c18899" class="outline-2">
-<h2 id="org4c18899"><span class="section-number-2">4.</span> STL containers</h2>
+<div id="outline-container-orgabecb8b" class="outline-2">
+<h2 id="orgabecb8b"><span class="section-number-2">4.</span> STL containers</h2>
 <div class="outline-text-2" id="text-4">
 <ul class="org-ul">
 <li>The C++ STL (standard library) is a generic collection of data structure and algorithm implementations, e.g., stacks, queues, hash tables.</li>
@@ -382,233 +382,233 @@ Define DLL:
 <li>The <code>std::set</code> is implemented as a red-black tree.</li>
 </ul>
 </div>
-<div id="outline-container-org6dcfbeb" class="outline-3">
-<h3 id="org6dcfbeb"><span class="section-number-3">4.1.</span> Vector</h3>
+<div id="outline-container-org125b0e5" class="outline-3">
+<h3 id="org125b0e5"><span class="section-number-3">4.1.</span> Vector</h3>
 <div class="outline-text-3" id="text-4-1">
 <div class="org-src-container">
-<pre class="src src-cpp"><span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;algorithm&gt;</span> <span style="color: #5B6268;">// </span><span style="color: #5B6268;">to use std::remove_if</span>
-<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;iostream&gt;</span>  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">to use std::cout</span>
-<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;vector&gt;</span>
+<pre class="src src-cpp"><span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #51afef;">&lt;</span><span style="color: #98be65;">algorithm</span><span style="color: #51afef;">&gt;</span> <span style="color: #5B6268;">// </span><span style="color: #5B6268;">to use std::remove_if</span>
+<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #51afef;">&lt;</span><span style="color: #98be65;">iostream</span><span style="color: #51afef;">&gt;</span>  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">to use std::cout</span>
+<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #51afef;">&lt;</span><span style="color: #98be65;">vector</span><span style="color: #51afef;">&gt;</span>
 <span style="color: #5B6268;">// </span><span style="color: #5B6268;">A helper class used for vector</span>
-<span style="color: #51afef;">class</span> <span style="color: #ECBE7B;">Point</span> {
+<span style="color: #51afef;">class</span> <span style="color: #ECBE7B;">Point</span> <span style="color: #51afef;">{</span>
 <span style="color: #51afef;">public</span>:
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">constructors</span>
-  <span style="color: #c678dd;">Point</span>() : x_(<span style="color: #da8548; font-weight: bold;">0</span>), y_(<span style="color: #da8548; font-weight: bold;">0</span>) {}
-  <span style="color: #c678dd;">Point</span>(<span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">x</span>, <span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">y</span>) : x_(x), y_(y) {}
+  <span style="color: #c678dd;">Point</span><span style="color: #c678dd;">()</span> : x_<span style="color: #c678dd;">(</span><span style="color: #da8548; font-weight: bold;">0</span><span style="color: #c678dd;">)</span>, y_<span style="color: #c678dd;">(</span><span style="color: #da8548; font-weight: bold;">0</span><span style="color: #c678dd;">)</span> <span style="color: #c678dd;">{}</span>
+  <span style="color: #c678dd;">Point</span><span style="color: #c678dd;">(</span><span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">x</span>, <span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">y</span><span style="color: #c678dd;">)</span> : x_<span style="color: #c678dd;">(</span>x<span style="color: #c678dd;">)</span>, y_<span style="color: #c678dd;">(</span>y<span style="color: #c678dd;">)</span> <span style="color: #c678dd;">{}</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">inline asks the compiler to substitute the function</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">directly at the calling location instead of performing</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">a normal function call, to improve performance for small functions</span>
-  <span style="color: #51afef;">inline</span> <span style="color: #ECBE7B;">int</span> <span style="color: #c678dd;">GetX</span>() <span style="color: #51afef;">const</span> { <span style="color: #51afef;">return</span> x_; }
-  <span style="color: #51afef;">inline</span> <span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">SetX</span>(<span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">x</span>) { x_ = x; }
+  <span style="color: #51afef;">inline</span> <span style="color: #ECBE7B;">int</span> <span style="color: #c678dd;">GetX</span><span style="color: #c678dd;">()</span> <span style="color: #51afef;">const</span> <span style="color: #c678dd;">{</span> <span style="color: #51afef;">return</span> x_; <span style="color: #c678dd;">}</span>
+  <span style="color: #51afef;">inline</span> <span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">SetX</span><span style="color: #c678dd;">(</span><span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">x</span><span style="color: #c678dd;">)</span> <span style="color: #c678dd;">{</span> x_ = x; <span style="color: #c678dd;">}</span>
 
-  <span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">PrintPoint</span>() <span style="color: #51afef;">const</span> {
+  <span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">PrintPoint</span><span style="color: #c678dd;">()</span> <span style="color: #51afef;">const</span> <span style="color: #c678dd;">{</span>
     <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"Point: ("</span> &lt;&lt; x_ &lt;&lt; <span style="color: #98be65;">", "</span> &lt;&lt; <span style="color: #98be65;">"y_"</span> &lt;&lt; <span style="color: #98be65;">")\n"</span>;
-  }
+  <span style="color: #c678dd;">}</span>
 
 <span style="color: #51afef;">private</span>:
   <span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">x_</span>;
   <span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">y_</span>;
-};
+<span style="color: #51afef;">}</span>;
 
-<span style="color: #ECBE7B;">int</span> <span style="color: #c678dd;">main</span>() {
-  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">vector</span>&lt;<span style="color: #ECBE7B;">Point</span>&gt; <span style="color: #dcaeea;">point_vector</span>;
+<span style="color: #ECBE7B;">int</span> <span style="color: #c678dd;">main</span><span style="color: #51afef;">()</span> <span style="color: #51afef;">{</span>
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">vector</span><span style="color: #c678dd;">&lt;</span><span style="color: #ECBE7B;">Point</span><span style="color: #c678dd;">&gt;</span> <span style="color: #dcaeea;">point_vector</span>;
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">approach 1 to append to a vector</span>
-  point_vector.push_back(Point(<span style="color: #da8548; font-weight: bold;">35</span>, <span style="color: #da8548; font-weight: bold;">36</span>));
+  point_vector.push_back<span style="color: #c678dd;">(</span>Point<span style="color: #98be65;">(</span><span style="color: #da8548; font-weight: bold;">35</span>, <span style="color: #da8548; font-weight: bold;">36</span><span style="color: #98be65;">)</span><span style="color: #c678dd;">)</span>;
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">approach 2, pass the argument to Point(x,y) constructor</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">slightly faster than push_back</span>
-  point_vector.emplace_back(<span style="color: #da8548; font-weight: bold;">37</span>, <span style="color: #da8548; font-weight: bold;">38</span>);
+  point_vector.emplace_back<span style="color: #c678dd;">(</span><span style="color: #da8548; font-weight: bold;">37</span>, <span style="color: #da8548; font-weight: bold;">38</span><span style="color: #c678dd;">)</span>;
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">iterate through index</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">size_t: unsigned integers specifially used in loop or counting</span>
-  <span style="color: #51afef;">for</span> (<span style="color: #ECBE7B;">size_t</span> <span style="color: #dcaeea;">i</span> = <span style="color: #da8548; font-weight: bold;">0</span>; i &lt; point_vector.size(); ++i) {
-    point_vector[i].PrintPoint();
-  }
+  <span style="color: #51afef;">for</span> <span style="color: #c678dd;">(</span><span style="color: #ECBE7B;">size_t</span> <span style="color: #dcaeea;">i</span> = <span style="color: #da8548; font-weight: bold;">0</span>; i &lt; point_vector.size<span style="color: #98be65;">()</span>; ++i<span style="color: #c678dd;">)</span> <span style="color: #c678dd;">{</span>
+    point_vector<span style="color: #98be65;">[</span>i<span style="color: #98be65;">]</span>.PrintPoint<span style="color: #98be65;">()</span>;
+  <span style="color: #c678dd;">}</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">iterate through mutable reference</span>
-  <span style="color: #51afef;">for</span> (<span style="color: #ECBE7B;">Point</span> &amp;<span style="color: #dcaeea;">item</span> : point_vector) {
-    item.SetX(<span style="color: #da8548; font-weight: bold;">10</span>);
-  }
+  <span style="color: #51afef;">for</span> <span style="color: #c678dd;">(</span><span style="color: #ECBE7B;">Point</span> &amp;<span style="color: #dcaeea;">item</span> : point_vector<span style="color: #c678dd;">)</span> <span style="color: #c678dd;">{</span>
+    item.SetX<span style="color: #98be65;">(</span><span style="color: #da8548; font-weight: bold;">10</span><span style="color: #98be65;">)</span>;
+  <span style="color: #c678dd;">}</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">iterate through immutable reference</span>
-  <span style="color: #51afef;">for</span> (<span style="color: #51afef;">const</span> <span style="color: #ECBE7B;">Point</span> &amp;<span style="color: #dcaeea;">item</span> : point_vector) {
-    item.GetX();
-  }
+  <span style="color: #51afef;">for</span> <span style="color: #c678dd;">(</span><span style="color: #51afef;">const</span> <span style="color: #ECBE7B;">Point</span> &amp;<span style="color: #dcaeea;">item</span> : point_vector<span style="color: #c678dd;">)</span> <span style="color: #c678dd;">{</span>
+    item.GetX<span style="color: #98be65;">()</span>;
+  <span style="color: #c678dd;">}</span>
 
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">initialize the vector with an initializer list</span>
-  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">vector</span>&lt;<span style="color: #ECBE7B;">int</span>&gt; <span style="color: #dcaeea;">int_vector</span> = {<span style="color: #da8548; font-weight: bold;">0</span>, <span style="color: #da8548; font-weight: bold;">1</span>, <span style="color: #da8548; font-weight: bold;">2</span>, <span style="color: #da8548; font-weight: bold;">3</span>};
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">vector</span><span style="color: #c678dd;">&lt;</span><span style="color: #ECBE7B;">int</span><span style="color: #c678dd;">&gt;</span> <span style="color: #dcaeea;">int_vector</span> = <span style="color: #c678dd;">{</span><span style="color: #da8548; font-weight: bold;">0</span>, <span style="color: #da8548; font-weight: bold;">1</span>, <span style="color: #da8548; font-weight: bold;">2</span>, <span style="color: #da8548; font-weight: bold;">3</span><span style="color: #c678dd;">}</span>;
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">erase element given its index</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">int_vector.begin() returns a std::vector&lt;int&gt;::iterator</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">pointing to the first elemnt in the vector</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">the vector iterator has a plus iterator</span>
-  int_vector.erase(int_vector.begin() + <span style="color: #da8548; font-weight: bold;">2</span>); <span style="color: #5B6268;">// </span><span style="color: #5B6268;">{0, 1, 3}</span>
+  int_vector.erase<span style="color: #c678dd;">(</span>int_vector.begin<span style="color: #98be65;">()</span> + <span style="color: #da8548; font-weight: bold;">2</span><span style="color: #c678dd;">)</span>; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">{0, 1, 3}</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">erase a range of elements</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">int_vector.end() points to the end of a vector (not the last element)</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">and cannot be accessed.</span>
-  int_vector.erase(int_vector.begin() + <span style="color: #da8548; font-weight: bold;">1</span>, int_vector.end()); <span style="color: #5B6268;">// </span><span style="color: #5B6268;">{0}</span>
+  int_vector.erase<span style="color: #c678dd;">(</span>int_vector.begin<span style="color: #98be65;">()</span> + <span style="color: #da8548; font-weight: bold;">1</span>, int_vector.end<span style="color: #98be65;">()</span><span style="color: #c678dd;">)</span>; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">{0}</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">erase elements via filtering</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">std::remove_if(range_begin, range_end, condition) returns an iterator</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">pointing to the first element to be erased</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">remove_if() also partitions point_vector so that unsatisfied elements are</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">moved before the point_vector.begin(), i.e., the vector is reordered</span>
-  point_vector.erase(
-      <span style="color: #a9a1e1;">std</span>::remove_if(point_vector.begin(), point_vector.end(),
-                     [](<span style="color: #51afef;">const</span> <span style="color: #ECBE7B;">Point</span> &amp;<span style="color: #dcaeea;">point</span>) { <span style="color: #51afef;">return</span> point.GetX() == <span style="color: #da8548; font-weight: bold;">10</span>; }),
-      point_vector.end());
+  point_vector.erase<span style="color: #c678dd;">(</span>
+      <span style="color: #a9a1e1;">std</span>::remove_if<span style="color: #98be65;">(</span>point_vector.begin<span style="color: #a9a1e1;">()</span>, point_vector.end<span style="color: #a9a1e1;">()</span>,
+                     <span style="color: #a9a1e1;">[](</span><span style="color: #51afef;">const</span> <span style="color: #ECBE7B;">Point</span> &amp;<span style="color: #dcaeea;">point</span><span style="color: #a9a1e1;">)</span> <span style="color: #a9a1e1;">{</span> <span style="color: #51afef;">return</span> point.GetX<span style="color: #51afef;">()</span> == <span style="color: #da8548; font-weight: bold;">10</span>; <span style="color: #a9a1e1;">}</span><span style="color: #98be65;">)</span>,
+      point_vector.end<span style="color: #98be65;">()</span><span style="color: #c678dd;">)</span>;
 
   <span style="color: #51afef;">return</span> <span style="color: #da8548; font-weight: bold;">0</span>;
-}
+<span style="color: #51afef;">}</span>
 </pre>
 </div>
 </div>
 </div>
-<div id="outline-container-orgfc95fbf" class="outline-3">
-<h3 id="orgfc95fbf"><span class="section-number-3">4.2.</span> Set</h3>
+<div id="outline-container-orgb13b64e" class="outline-3">
+<h3 id="orgb13b64e"><span class="section-number-3">4.2.</span> Set</h3>
 <div class="outline-text-3" id="text-4-2">
 <div class="org-src-container">
-<pre class="src src-cpp"><span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;iostream&gt;</span>
-<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;set&gt;</span>
+<pre class="src src-cpp"><span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #51afef;">&lt;</span><span style="color: #98be65;">iostream</span><span style="color: #51afef;">&gt;</span>
+<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #51afef;">&lt;</span><span style="color: #98be65;">set</span><span style="color: #51afef;">&gt;</span>
 
-<span style="color: #ECBE7B;">int</span> <span style="color: #c678dd;">main</span>() {
-  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">set</span>&lt;<span style="color: #ECBE7B;">int</span>&gt; <span style="color: #dcaeea;">int_set</span>;
+<span style="color: #ECBE7B;">int</span> <span style="color: #c678dd;">main</span><span style="color: #51afef;">()</span> <span style="color: #51afef;">{</span>
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">set</span><span style="color: #c678dd;">&lt;</span><span style="color: #ECBE7B;">int</span><span style="color: #c678dd;">&gt;</span> <span style="color: #dcaeea;">int_set</span>;
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">can insert element with .insert() or .emplace()</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">.emplace() allows to construct the object in place</span>
-  <span style="color: #51afef;">for</span> (<span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">i</span> = <span style="color: #da8548; font-weight: bold;">1</span>; i &lt;= <span style="color: #da8548; font-weight: bold;">5</span>; ++i) {
-    int_set.insert(i);
-  }
-  <span style="color: #51afef;">for</span> (<span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">i</span> = <span style="color: #da8548; font-weight: bold;">6</span>; i &lt;= <span style="color: #da8548; font-weight: bold;">10</span>; ++i) {
-    int_set.emplace(i);
-  }
+  <span style="color: #51afef;">for</span> <span style="color: #c678dd;">(</span><span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">i</span> = <span style="color: #da8548; font-weight: bold;">1</span>; i &lt;= <span style="color: #da8548; font-weight: bold;">5</span>; ++i<span style="color: #c678dd;">)</span> <span style="color: #c678dd;">{</span>
+    int_set.insert<span style="color: #98be65;">(</span>i<span style="color: #98be65;">)</span>;
+  <span style="color: #c678dd;">}</span>
+  <span style="color: #51afef;">for</span> <span style="color: #c678dd;">(</span><span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">i</span> = <span style="color: #da8548; font-weight: bold;">6</span>; i &lt;= <span style="color: #da8548; font-weight: bold;">10</span>; ++i<span style="color: #c678dd;">)</span> <span style="color: #c678dd;">{</span>
+    int_set.emplace<span style="color: #98be65;">(</span>i<span style="color: #98be65;">)</span>;
+  <span style="color: #c678dd;">}</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">iterate the set</span>
-  <span style="color: #51afef;">for</span> (<span style="color: #a9a1e1;">std</span>::<span style="color: #a9a1e1;">set</span>&lt;<span style="color: #ECBE7B;">int</span>&gt;::<span style="color: #ECBE7B;">iterator</span> <span style="color: #dcaeea;">it</span> = int_set.begin(); it != int_set.end();
-       ++it) {
+  <span style="color: #51afef;">for</span> <span style="color: #c678dd;">(</span><span style="color: #a9a1e1;">std</span>::<span style="color: #a9a1e1;">set</span><span style="color: #98be65;">&lt;</span><span style="color: #ECBE7B;">int</span><span style="color: #98be65;">&gt;</span>::<span style="color: #ECBE7B;">iterator</span> <span style="color: #dcaeea;">it</span> = int_set.begin<span style="color: #98be65;">()</span>; it != int_set.end<span style="color: #98be65;">()</span>;
+       ++it<span style="color: #c678dd;">)</span> <span style="color: #c678dd;">{</span>
     <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; *it &lt;&lt; <span style="color: #98be65;">" "</span>;
-  }
+  <span style="color: #c678dd;">}</span>
   <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"\n"</span>;
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">.find(key) returns an iterator pointing to the key</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">if it is in the set, otherwise returns .end()</span>
-  <span style="color: #a9a1e1;">std</span>::<span style="color: #a9a1e1;">set</span>&lt;<span style="color: #ECBE7B;">int</span>&gt;::<span style="color: #ECBE7B;">iterator</span> <span style="color: #dcaeea;">search</span> = int_set.find(<span style="color: #da8548; font-weight: bold;">2</span>);
-  <span style="color: #51afef;">if</span> (search != int_set.end()) {
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #a9a1e1;">set</span><span style="color: #c678dd;">&lt;</span><span style="color: #ECBE7B;">int</span><span style="color: #c678dd;">&gt;</span>::<span style="color: #ECBE7B;">iterator</span> <span style="color: #dcaeea;">search</span> = int_set.find<span style="color: #c678dd;">(</span><span style="color: #da8548; font-weight: bold;">2</span><span style="color: #c678dd;">)</span>;
+  <span style="color: #51afef;">if</span> <span style="color: #c678dd;">(</span>search != int_set.end<span style="color: #98be65;">()</span><span style="color: #c678dd;">)</span> <span style="color: #c678dd;">{</span>
     <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"2 is not found\n"</span>;
-  }
+  <span style="color: #c678dd;">}</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">check whether the set contains a key with .count()</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">it returns either 0 or 1 as each key is unique</span>
-  <span style="color: #51afef;">if</span> (int_set.count(<span style="color: #da8548; font-weight: bold;">11</span>) == <span style="color: #da8548; font-weight: bold;">0</span>) {
+  <span style="color: #51afef;">if</span> <span style="color: #c678dd;">(</span>int_set.count<span style="color: #98be65;">(</span><span style="color: #da8548; font-weight: bold;">11</span><span style="color: #98be65;">)</span> == <span style="color: #da8548; font-weight: bold;">0</span><span style="color: #c678dd;">)</span> <span style="color: #c678dd;">{</span>
     <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"11 is not in the set.\n"</span>;
-  }
+  <span style="color: #c678dd;">}</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">erase a key, returns the count of removed elements 0 or 1</span>
-  int_set.erase(<span style="color: #da8548; font-weight: bold;">4</span>);
+  int_set.erase<span style="color: #c678dd;">(</span><span style="color: #da8548; font-weight: bold;">4</span><span style="color: #c678dd;">)</span>;
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">erase a key given its position, returns the iterator to the next element</span>
-  int_set.erase(int_set.begin());
+  int_set.erase<span style="color: #c678dd;">(</span>int_set.begin<span style="color: #98be65;">()</span><span style="color: #c678dd;">)</span>;
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">erase a range of elements</span>
-  int_set.erase(int_set.find(<span style="color: #da8548; font-weight: bold;">9</span>), int_set.end());
-}
+  int_set.erase<span style="color: #c678dd;">(</span>int_set.find<span style="color: #98be65;">(</span><span style="color: #da8548; font-weight: bold;">9</span><span style="color: #98be65;">)</span>, int_set.end<span style="color: #98be65;">()</span><span style="color: #c678dd;">)</span>;
+<span style="color: #51afef;">}</span>
 </pre>
 </div>
 </div>
 </div>
-<div id="outline-container-org5038e7e" class="outline-3">
-<h3 id="org5038e7e"><span class="section-number-3">4.3.</span> Unordered maps</h3>
+<div id="outline-container-org7084f8e" class="outline-3">
+<h3 id="org7084f8e"><span class="section-number-3">4.3.</span> Unordered maps</h3>
 <div class="outline-text-3" id="text-4-3">
 <div class="org-src-container">
-<pre class="src src-cpp"><span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;iostream&gt;</span>
-<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;string&gt;</span>
-<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;unordered_map&gt;</span>
-<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;utility&gt;</span> <span style="color: #5B6268;">// </span><span style="color: #5B6268;">to use std::make_pair</span>
+<pre class="src src-cpp"><span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #51afef;">&lt;</span><span style="color: #98be65;">iostream</span><span style="color: #51afef;">&gt;</span>
+<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #51afef;">&lt;</span><span style="color: #98be65;">string</span><span style="color: #51afef;">&gt;</span>
+<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #51afef;">&lt;</span><span style="color: #98be65;">unordered_map</span><span style="color: #51afef;">&gt;</span>
+<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #51afef;">&lt;</span><span style="color: #98be65;">utility</span><span style="color: #51afef;">&gt;</span> <span style="color: #5B6268;">// </span><span style="color: #5B6268;">to use std::make_pair</span>
 
-<span style="color: #ECBE7B;">int</span> <span style="color: #c678dd;">main</span>() {
-  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">unordered_map</span>&lt;<span style="color: #a9a1e1;">std</span>::string, <span style="color: #ECBE7B;">int</span>&gt; <span style="color: #dcaeea;">map</span>;
+<span style="color: #ECBE7B;">int</span> <span style="color: #c678dd;">main</span><span style="color: #51afef;">()</span> <span style="color: #51afef;">{</span>
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">unordered_map</span><span style="color: #c678dd;">&lt;</span><span style="color: #a9a1e1;">std</span>::string, <span style="color: #ECBE7B;">int</span><span style="color: #c678dd;">&gt;</span> <span style="color: #dcaeea;">map</span>;
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">insert items</span>
-  map.insert({<span style="color: #98be65;">"foo"</span>, <span style="color: #da8548; font-weight: bold;">2</span>});
-  map.insert({{<span style="color: #98be65;">"bar"</span>, <span style="color: #da8548; font-weight: bold;">1</span>}, {<span style="color: #98be65;">"eggs"</span>, <span style="color: #da8548; font-weight: bold;">2</span>}});
+  map.insert<span style="color: #c678dd;">(</span><span style="color: #98be65;">{</span><span style="color: #98be65;">"foo"</span>, <span style="color: #da8548; font-weight: bold;">2</span><span style="color: #98be65;">}</span><span style="color: #c678dd;">)</span>;
+  map.insert<span style="color: #c678dd;">(</span><span style="color: #98be65;">{</span><span style="color: #a9a1e1;">{</span><span style="color: #98be65;">"bar"</span>, <span style="color: #da8548; font-weight: bold;">1</span><span style="color: #a9a1e1;">}</span>, <span style="color: #a9a1e1;">{</span><span style="color: #98be65;">"eggs"</span>, <span style="color: #da8548; font-weight: bold;">2</span><span style="color: #a9a1e1;">}</span><span style="color: #98be65;">}</span><span style="color: #c678dd;">)</span>;
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">insert items via pairs</span>
-  map.insert(<span style="color: #a9a1e1;">std</span>::make_pair(<span style="color: #98be65;">"hello"</span>, <span style="color: #da8548; font-weight: bold;">10</span>));
+  map.insert<span style="color: #c678dd;">(</span><span style="color: #a9a1e1;">std</span>::make_pair<span style="color: #98be65;">(</span><span style="color: #98be65;">"hello"</span>, <span style="color: #da8548; font-weight: bold;">10</span><span style="color: #98be65;">)</span><span style="color: #c678dd;">)</span>;
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">insert items in an array-style</span>
-  <span style="color: #ECBE7B;">map</span>[<span style="color: #98be65;">"world"</span>] = <span style="color: #da8548; font-weight: bold;">3</span>;
+  <span style="color: #ECBE7B;">map</span><span style="color: #c678dd;">[</span><span style="color: #98be65;">"world"</span><span style="color: #c678dd;">]</span> = <span style="color: #da8548; font-weight: bold;">3</span>;
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">update the value</span>
-  <span style="color: #ECBE7B;">map</span>[<span style="color: #98be65;">"foo"</span>] = <span style="color: #da8548; font-weight: bold;">9</span>;
+  <span style="color: #ECBE7B;">map</span><span style="color: #c678dd;">[</span><span style="color: #98be65;">"foo"</span><span style="color: #c678dd;">]</span> = <span style="color: #da8548; font-weight: bold;">9</span>;
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">.find() returns an iterator pointing to the item</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">or the end</span>
-  <span style="color: #a9a1e1;">std</span>::<span style="color: #a9a1e1;">unordered_map</span>&lt;<span style="color: #a9a1e1;">std</span>::string, <span style="color: #ECBE7B;">int</span>&gt;::<span style="color: #ECBE7B;">iterator</span> <span style="color: #dcaeea;">result</span> = map.find(<span style="color: #98be65;">"bar"</span>);
-  <span style="color: #51afef;">if</span> (result != map.end()) {
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #a9a1e1;">unordered_map</span><span style="color: #c678dd;">&lt;</span><span style="color: #a9a1e1;">std</span>::string, <span style="color: #ECBE7B;">int</span><span style="color: #c678dd;">&gt;</span>::<span style="color: #ECBE7B;">iterator</span> <span style="color: #dcaeea;">result</span> = map.find<span style="color: #c678dd;">(</span><span style="color: #98be65;">"bar"</span><span style="color: #c678dd;">)</span>;
+  <span style="color: #51afef;">if</span> <span style="color: #c678dd;">(</span>result != map.end<span style="color: #98be65;">()</span><span style="color: #c678dd;">)</span> <span style="color: #c678dd;">{</span>
     <span style="color: #5B6268;">// </span><span style="color: #5B6268;">one way to access the item</span>
     <span style="color: #5B6268;">// </span><span style="color: #5B6268;">both '\n' and std::endl prints newliine, but std::endl</span>
     <span style="color: #5B6268;">// </span><span style="color: #5B6268;">also flushes the output buffer, so use '\n' is better</span>
     <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"key: "</span> &lt;&lt; result-&gt;first &lt;&lt; <span style="color: #98be65;">" value: "</span> &lt;&lt; result-&gt;second
               &lt;&lt; <span style="color: #a9a1e1;">std</span>::endl;
     <span style="color: #5B6268;">// </span><span style="color: #5B6268;">another way is dereferencing</span>
-    <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">pair</span>&lt;<span style="color: #a9a1e1;">std</span>::string, <span style="color: #ECBE7B;">int</span>&gt; <span style="color: #dcaeea;">pair</span> = *result;
+    <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">pair</span><span style="color: #98be65;">&lt;</span><span style="color: #a9a1e1;">std</span>::string, <span style="color: #ECBE7B;">int</span><span style="color: #98be65;">&gt;</span> <span style="color: #dcaeea;">pair</span> = *result;
     <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"key: "</span> &lt;&lt; pair.first &lt;&lt; <span style="color: #98be65;">" value: "</span> &lt;&lt; pair.second
               &lt;&lt; <span style="color: #a9a1e1;">std</span>::endl;
     <span style="color: #5B6268;">// </span><span style="color: #5B6268;">check whether a key exists with .count()</span>
-    <span style="color: #51afef;">if</span> (map.count(<span style="color: #98be65;">"foo"</span>) == <span style="color: #da8548; font-weight: bold;">0</span>) {
+    <span style="color: #51afef;">if</span> <span style="color: #98be65;">(</span>map.count<span style="color: #a9a1e1;">(</span><span style="color: #98be65;">"foo"</span><span style="color: #a9a1e1;">)</span> == <span style="color: #da8548; font-weight: bold;">0</span><span style="color: #98be65;">)</span> <span style="color: #98be65;">{</span>
       <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"foo does not exist\n"</span>;
-    }
+    <span style="color: #98be65;">}</span>
     <span style="color: #5B6268;">// </span><span style="color: #5B6268;">erase an item via a key</span>
-    map.erase(<span style="color: #98be65;">"world"</span>);
+    map.erase<span style="color: #98be65;">(</span><span style="color: #98be65;">"world"</span><span style="color: #98be65;">)</span>;
     <span style="color: #5B6268;">// </span><span style="color: #5B6268;">or via an iterator</span>
-    map.erase(map.find(<span style="color: #98be65;">"bar"</span>));
+    map.erase<span style="color: #98be65;">(</span>map.find<span style="color: #a9a1e1;">(</span><span style="color: #98be65;">"bar"</span><span style="color: #a9a1e1;">)</span><span style="color: #98be65;">)</span>;
     <span style="color: #5B6268;">// </span><span style="color: #5B6268;">can iterate the map via iterator or via for-each</span>
-    <span style="color: #51afef;">for</span> (<span style="color: #a9a1e1;">std</span>::<span style="color: #a9a1e1;">unordered_map</span>&lt;<span style="color: #a9a1e1;">std</span>::string, <span style="color: #ECBE7B;">int</span>&gt;::<span style="color: #ECBE7B;">iterator</span> <span style="color: #dcaeea;">it</span> = map.begin();
-         it != map.end(); ++it) {
+    <span style="color: #51afef;">for</span> <span style="color: #98be65;">(</span><span style="color: #a9a1e1;">std</span>::<span style="color: #a9a1e1;">unordered_map</span><span style="color: #a9a1e1;">&lt;</span><span style="color: #a9a1e1;">std</span>::string, <span style="color: #ECBE7B;">int</span><span style="color: #a9a1e1;">&gt;</span>::<span style="color: #ECBE7B;">iterator</span> <span style="color: #dcaeea;">it</span> = map.begin<span style="color: #a9a1e1;">()</span>;
+         it != map.end<span style="color: #a9a1e1;">()</span>; ++it<span style="color: #98be65;">)</span> <span style="color: #98be65;">{</span>
       <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"("</span> &lt;&lt; it-&gt;first &lt;&lt; <span style="color: #98be65;">", "</span> &lt;&lt; it-&gt;second &lt;&lt; <span style="color: #98be65;">"), "</span>;
-    }
+    <span style="color: #98be65;">}</span>
     <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"\n"</span>;
-  }
-}
+  <span style="color: #c678dd;">}</span>
+<span style="color: #51afef;">}</span>
 </pre>
 </div>
 </div>
 </div>
 </div>
-<div id="outline-container-org644b019" class="outline-2">
-<h2 id="org644b019"><span class="section-number-2">5.</span> <code>auto</code></h2>
+<div id="outline-container-org4aebc03" class="outline-2">
+<h2 id="org4aebc03"><span class="section-number-2">5.</span> <code>auto</code></h2>
 <div class="outline-text-2" id="text-5">
 <ul class="org-ul">
 <li><code>auto</code> keyword tells the compiler to infer the type via its initialization expression.</li>
 </ul>
 <div class="org-src-container">
-<pre class="src src-cpp"><span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;vector&gt;</span>
-<span style="color: #51afef; font-weight: bold;">#include</span><span style="color: #98be65;">&lt;unordered_map&gt;</span>
-<span style="color: #51afef; font-weight: bold;">#include</span><span style="color: #98be65;">&lt;string&gt;</span>
-<span style="color: #51afef; font-weight: bold;">#include</span><span style="color: #98be65;">&lt;iostream&gt;</span>
+<pre class="src src-cpp"><span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #51afef;">&lt;</span><span style="color: #98be65;">vector</span><span style="color: #51afef;">&gt;</span>
+<span style="color: #51afef; font-weight: bold;">#include</span><span style="color: #51afef;">&lt;</span><span style="color: #98be65;">unordered_map</span><span style="color: #51afef;">&gt;</span>
+<span style="color: #51afef; font-weight: bold;">#include</span><span style="color: #51afef;">&lt;</span><span style="color: #98be65;">string</span><span style="color: #51afef;">&gt;</span>
+<span style="color: #51afef; font-weight: bold;">#include</span><span style="color: #51afef;">&lt;</span><span style="color: #98be65;">iostream</span><span style="color: #51afef;">&gt;</span>
 <span style="color: #5B6268;">// </span><span style="color: #5B6268;">create very long class and function</span>
-<span style="color: #51afef;">template</span> &lt;<span style="color: #51afef;">typename</span> <span style="color: #ECBE7B;">T</span>, <span style="color: #51afef;">typename</span> <span style="color: #ECBE7B;">U</span>&gt; <span style="color: #51afef;">class</span> <span style="color: #ECBE7B;">VeryLongTemplateClass</span> {
+<span style="color: #51afef;">template</span> <span style="color: #51afef;">&lt;</span><span style="color: #51afef;">typename</span> <span style="color: #ECBE7B;">T</span>, <span style="color: #51afef;">typename</span> <span style="color: #ECBE7B;">U</span><span style="color: #51afef;">&gt;</span> <span style="color: #51afef;">class</span> <span style="color: #ECBE7B;">VeryLongTemplateClass</span> <span style="color: #51afef;">{</span>
 <span style="color: #51afef;">public</span>:
-  <span style="color: #c678dd;">VeryLongTemplateClass</span>(<span style="color: #ECBE7B;">T</span> <span style="color: #dcaeea;">instance1</span>, <span style="color: #ECBE7B;">U</span> <span style="color: #dcaeea;">instance2</span>)
-      : instance1_(instance1), instance2_(instance2) {}
+  <span style="color: #c678dd;">VeryLongTemplateClass</span><span style="color: #c678dd;">(</span><span style="color: #ECBE7B;">T</span> <span style="color: #dcaeea;">instance1</span>, <span style="color: #ECBE7B;">U</span> <span style="color: #dcaeea;">instance2</span><span style="color: #c678dd;">)</span>
+      : instance1_<span style="color: #c678dd;">(</span>instance1<span style="color: #c678dd;">)</span>, instance2_<span style="color: #c678dd;">(</span>instance2<span style="color: #c678dd;">)</span> <span style="color: #c678dd;">{}</span>
 
 <span style="color: #51afef;">private</span>:
   <span style="color: #ECBE7B;">T</span> <span style="color: #dcaeea;">instance1_</span>;
   <span style="color: #ECBE7B;">U</span> <span style="color: #dcaeea;">instance2_</span>;
-};
+<span style="color: #51afef;">}</span>;
 
-<span style="color: #51afef;">template</span> &lt;<span style="color: #51afef;">typename</span> <span style="color: #ECBE7B;">T</span>&gt; <span style="color: #ECBE7B;">VeryLongTemplateClass</span>&lt;<span style="color: #ECBE7B;">T</span>, <span style="color: #ECBE7B;">T</span>&gt; <span style="color: #c678dd;">construct_obj</span>(<span style="color: #ECBE7B;">T</span> <span style="color: #dcaeea;">instance</span>) {
-  <span style="color: #51afef;">return</span> VeryLongTemplateClass&lt;<span style="color: #ECBE7B;">T</span>, <span style="color: #ECBE7B;">T</span>&gt;(instance, instance);
-}
+<span style="color: #51afef;">template</span> <span style="color: #51afef;">&lt;</span><span style="color: #51afef;">typename</span> <span style="color: #ECBE7B;">T</span><span style="color: #51afef;">&gt;</span> <span style="color: #ECBE7B;">VeryLongTemplateClass</span><span style="color: #51afef;">&lt;</span><span style="color: #ECBE7B;">T</span>, <span style="color: #ECBE7B;">T</span><span style="color: #51afef;">&gt;</span> <span style="color: #c678dd;">construct_obj</span><span style="color: #51afef;">(</span><span style="color: #ECBE7B;">T</span> <span style="color: #dcaeea;">instance</span><span style="color: #51afef;">)</span> <span style="color: #51afef;">{</span>
+  <span style="color: #51afef;">return</span> VeryLongTemplateClass<span style="color: #c678dd;">&lt;</span><span style="color: #ECBE7B;">T</span>, <span style="color: #ECBE7B;">T</span><span style="color: #c678dd;">&gt;(</span>instance, instance<span style="color: #c678dd;">)</span>;
+<span style="color: #51afef;">}</span>
 
-<span style="color: #ECBE7B;">int</span> <span style="color: #c678dd;">main</span>() {
+<span style="color: #ECBE7B;">int</span> <span style="color: #c678dd;">main</span><span style="color: #51afef;">()</span> <span style="color: #51afef;">{</span>
   <span style="color: #51afef;">auto</span> <span style="color: #dcaeea;">a</span> = <span style="color: #da8548; font-weight: bold;">1</span>;                        <span style="color: #5B6268;">// </span><span style="color: #5B6268;">a is int</span>
-  <span style="color: #51afef;">auto</span> <span style="color: #dcaeea;">obj1</span> = construct_obj&lt;<span style="color: #ECBE7B;">int</span>&gt;(<span style="color: #da8548; font-weight: bold;">2</span>); <span style="color: #5B6268;">// </span><span style="color: #5B6268;">can infer</span>
+  <span style="color: #51afef;">auto</span> <span style="color: #dcaeea;">obj1</span> = construct_obj<span style="color: #c678dd;">&lt;</span><span style="color: #ECBE7B;">int</span><span style="color: #c678dd;">&gt;(</span><span style="color: #da8548; font-weight: bold;">2</span><span style="color: #c678dd;">)</span>; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">can infer</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">auto defaults to copy objects rather than taking the reference</span>
-  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">vector</span>&lt;<span style="color: #ECBE7B;">int</span>&gt; <span style="color: #dcaeea;">int_values</span> = {<span style="color: #da8548; font-weight: bold;">1</span>, <span style="color: #da8548; font-weight: bold;">2</span>, <span style="color: #da8548; font-weight: bold;">3</span>, <span style="color: #da8548; font-weight: bold;">4</span>};
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">vector</span><span style="color: #c678dd;">&lt;</span><span style="color: #ECBE7B;">int</span><span style="color: #c678dd;">&gt;</span> <span style="color: #dcaeea;">int_values</span> = <span style="color: #c678dd;">{</span><span style="color: #da8548; font-weight: bold;">1</span>, <span style="color: #da8548; font-weight: bold;">2</span>, <span style="color: #da8548; font-weight: bold;">3</span>, <span style="color: #da8548; font-weight: bold;">4</span><span style="color: #c678dd;">}</span>;
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">a deep-copy happens</span>
   <span style="color: #51afef;">auto</span> <span style="color: #dcaeea;">copy_int_values</span> = int_values;
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">this creates a reference</span>
   <span style="color: #51afef;">auto</span> &amp;<span style="color: #dcaeea;">ref_int_values</span> = int_values;
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">use auto in the for loop is very common</span>
-  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">unordered_map</span>&lt;<span style="color: #a9a1e1;">std</span>::string, <span style="color: #ECBE7B;">int</span>&gt; <span style="color: #dcaeea;">map</span>;
-  <span style="color: #51afef;">for</span> (<span style="color: #51afef;">auto</span> <span style="color: #dcaeea;">it</span> = map.begin(); it != map.end(); ++it) {
-  }
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">unordered_map</span><span style="color: #c678dd;">&lt;</span><span style="color: #a9a1e1;">std</span>::string, <span style="color: #ECBE7B;">int</span><span style="color: #c678dd;">&gt;</span> <span style="color: #dcaeea;">map</span>;
+  <span style="color: #51afef;">for</span> <span style="color: #c678dd;">(</span><span style="color: #51afef;">auto</span> <span style="color: #dcaeea;">it</span> = map.begin<span style="color: #98be65;">()</span>; it != map.end<span style="color: #98be65;">()</span>; ++it<span style="color: #c678dd;">)</span> <span style="color: #c678dd;">{</span>
+  <span style="color: #c678dd;">}</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">another exmaple</span>
-  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">vector</span>&lt;<span style="color: #ECBE7B;">int</span>&gt; <span style="color: #dcaeea;">vec</span> = {<span style="color: #da8548; font-weight: bold;">1</span>, <span style="color: #da8548; font-weight: bold;">2</span>, <span style="color: #da8548; font-weight: bold;">3</span>, <span style="color: #da8548; font-weight: bold;">4</span>};
-  <span style="color: #51afef;">for</span> (<span style="color: #51afef;">const</span> <span style="color: #51afef;">auto</span> &amp;<span style="color: #dcaeea;">elem</span> : vec) {
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">vector</span><span style="color: #c678dd;">&lt;</span><span style="color: #ECBE7B;">int</span><span style="color: #c678dd;">&gt;</span> <span style="color: #dcaeea;">vec</span> = <span style="color: #c678dd;">{</span><span style="color: #da8548; font-weight: bold;">1</span>, <span style="color: #da8548; font-weight: bold;">2</span>, <span style="color: #da8548; font-weight: bold;">3</span>, <span style="color: #da8548; font-weight: bold;">4</span><span style="color: #c678dd;">}</span>;
+  <span style="color: #51afef;">for</span> <span style="color: #c678dd;">(</span><span style="color: #51afef;">const</span> <span style="color: #51afef;">auto</span> &amp;<span style="color: #dcaeea;">elem</span> : vec<span style="color: #c678dd;">)</span> <span style="color: #c678dd;">{</span>
     <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; elem &lt;&lt; <span style="color: #98be65;">" "</span>;
-  }
+  <span style="color: #c678dd;">}</span>
   <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #a9a1e1;">std</span>::endl;
-}
+<span style="color: #51afef;">}</span>
 </pre>
 </div>
 </div>
 </div>
-<div id="outline-container-org6876e1c" class="outline-2">
-<h2 id="org6876e1c"><span class="section-number-2">6.</span> Smart pointers</h2>
+<div id="outline-container-org9a35959" class="outline-2">
+<h2 id="org9a35959"><span class="section-number-2">6.</span> Smart pointers</h2>
 <div class="outline-text-2" id="text-6">
 <ul class="org-ul">
 <li>A smart pointer is a data structure used in languages that do not have built-in memory management (e.g., with garbage collection, e.g., Python, Java) to handle memory allocation and deallocation.</li>
@@ -617,38 +617,38 @@ Define DLL:
 <li><code>std::shared_ptr</code> retains shared ownership of an object, i.e., multiple shared pointers can own the same object and can be copied.</li>
 </ul>
 </div>
-<div id="outline-container-org03a407c" class="outline-3">
-<h3 id="org03a407c"><span class="section-number-3">6.1.</span> <code>std::unique_ptr</code></h3>
+<div id="outline-container-org3f34e9b" class="outline-3">
+<h3 id="org3f34e9b"><span class="section-number-3">6.1.</span> <code>std::unique_ptr</code></h3>
 <div class="outline-text-3" id="text-6-1">
 <div class="org-src-container">
-<pre class="src src-cpp"><span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;iostream&gt;</span>
-<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;memory&gt;</span>  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">to use std::unique_ptr</span>
-<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;utility&gt;</span> <span style="color: #5B6268;">// </span><span style="color: #5B6268;">to use std::move</span>
+<pre class="src src-cpp"><span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #51afef;">&lt;</span><span style="color: #98be65;">iostream</span><span style="color: #51afef;">&gt;</span>
+<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #51afef;">&lt;</span><span style="color: #98be65;">memory</span><span style="color: #51afef;">&gt;</span>  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">to use std::unique_ptr</span>
+<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #51afef;">&lt;</span><span style="color: #98be65;">utility</span><span style="color: #51afef;">&gt;</span> <span style="color: #5B6268;">// </span><span style="color: #5B6268;">to use std::move</span>
 
 <span style="color: #5B6268;">// </span><span style="color: #5B6268;">class Point is the same as before</span>
 
 <span style="color: #5B6268;">// </span><span style="color: #5B6268;">takes in a unique point reference and changes its x value</span>
-<span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">SetXTo10</span>(<span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">unique_ptr</span>&lt;Point&gt; &amp;<span style="color: #dcaeea;">ptr</span>) { ptr-&gt;SetX(<span style="color: #da8548; font-weight: bold;">10</span>); }
-<span style="color: #ECBE7B;">int</span> <span style="color: #c678dd;">main</span>() {
+<span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">SetXTo10</span><span style="color: #51afef;">(</span><span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">unique_ptr</span><span style="color: #c678dd;">&lt;</span>Point<span style="color: #c678dd;">&gt;</span> &amp;<span style="color: #dcaeea;">ptr</span><span style="color: #51afef;">)</span> <span style="color: #51afef;">{</span> ptr-&gt;SetX<span style="color: #c678dd;">(</span><span style="color: #da8548; font-weight: bold;">10</span><span style="color: #c678dd;">)</span>; <span style="color: #51afef;">}</span>
+<span style="color: #ECBE7B;">int</span> <span style="color: #c678dd;">main</span><span style="color: #51afef;">()</span> <span style="color: #51afef;">{</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">initialize an empty unique pointer</span>
-  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">unique_ptr</span>&lt;Point&gt; <span style="color: #dcaeea;">u1</span>;
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">unique_ptr</span><span style="color: #c678dd;">&lt;</span>Point<span style="color: #c678dd;">&gt;</span> <span style="color: #dcaeea;">u1</span>;
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">initialize a unique pointer with constructors</span>
-  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">unique_ptr</span>&lt;Point&gt; <span style="color: #dcaeea;">u2</span> = <span style="color: #a9a1e1;">std</span>::make_unique&lt;Point&gt;();
-  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">unique_ptr</span>&lt;Point&gt; <span style="color: #dcaeea;">u3</span> = <span style="color: #a9a1e1;">std</span>::make_unique&lt;Point&gt;(<span style="color: #da8548; font-weight: bold;">2</span>, <span style="color: #da8548; font-weight: bold;">3</span>);
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">unique_ptr</span><span style="color: #c678dd;">&lt;</span>Point<span style="color: #c678dd;">&gt;</span> <span style="color: #dcaeea;">u2</span> = <span style="color: #a9a1e1;">std</span>::make_unique<span style="color: #c678dd;">&lt;</span>Point<span style="color: #c678dd;">&gt;()</span>;
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">unique_ptr</span><span style="color: #c678dd;">&lt;</span>Point<span style="color: #c678dd;">&gt;</span> <span style="color: #dcaeea;">u3</span> = <span style="color: #a9a1e1;">std</span>::make_unique<span style="color: #c678dd;">&lt;</span>Point<span style="color: #c678dd;">&gt;(</span><span style="color: #da8548; font-weight: bold;">2</span>, <span style="color: #da8548; font-weight: bold;">3</span><span style="color: #c678dd;">)</span>;
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">can treat a unique pointer as a boolean to determine whether</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">the pointer contains data</span>
-  <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"Pointer u1 is "</span> &lt;&lt; (u1 ? <span style="color: #98be65;">"not empty"</span> : <span style="color: #98be65;">"empty"</span>) &lt;&lt; <span style="color: #a9a1e1;">std</span>::endl;
-  <span style="color: #51afef;">if</span> (u2) {
-    <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; u2-&gt;GetX() &lt;&lt; <span style="color: #a9a1e1;">std</span>::endl;
-  }
+  <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"Pointer u1 is "</span> &lt;&lt; <span style="color: #c678dd;">(</span>u1 ? <span style="color: #98be65;">"not empty"</span> : <span style="color: #98be65;">"empty"</span><span style="color: #c678dd;">)</span> &lt;&lt; <span style="color: #a9a1e1;">std</span>::endl;
+  <span style="color: #51afef;">if</span> <span style="color: #c678dd;">(</span>u2<span style="color: #c678dd;">)</span> <span style="color: #c678dd;">{</span>
+    <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; u2-&gt;GetX<span style="color: #98be65;">()</span> &lt;&lt; <span style="color: #a9a1e1;">std</span>::endl;
+  <span style="color: #c678dd;">}</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">unique_ptr has no copy constructor!</span>
-  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">unique_ptr</span>&lt;Point&gt; <span style="color: #dcaeea;">u4</span> = u3; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">won't compile!</span>
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">unique_ptr</span><span style="color: #c678dd;">&lt;</span>Point<span style="color: #c678dd;">&gt;</span> <span style="color: #dcaeea;">u4</span> = u3; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">won't compile!</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">can transfer ownership with std::move</span>
-  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">unique_ptr</span>&lt;Point&gt; <span style="color: #dcaeea;">u5</span> = <span style="color: #a9a1e1;">std</span>::move(u3); <span style="color: #5B6268;">// </span><span style="color: #5B6268;">then u3 becomes empty!</span>
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">unique_ptr</span><span style="color: #c678dd;">&lt;</span>Point<span style="color: #c678dd;">&gt;</span> <span style="color: #dcaeea;">u5</span> = <span style="color: #a9a1e1;">std</span>::move<span style="color: #c678dd;">(</span>u3<span style="color: #c678dd;">)</span>; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">then u3 becomes empty!</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">pass the pointer as a reference so the ownership does not change</span>
-  SetXTo10(u5); <span style="color: #5B6268;">// </span><span style="color: #5B6268;">can still access u5 afterwards</span>
+  SetXTo10<span style="color: #c678dd;">(</span>u5<span style="color: #c678dd;">)</span>; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">can still access u5 afterwards</span>
   <span style="color: #51afef;">return</span> <span style="color: #da8548; font-weight: bold;">0</span>;
-}
+<span style="color: #51afef;">}</span>
 </pre>
 </div>
 
@@ -658,109 +658,109 @@ Define DLL:
 <div class="org-src-container">
 <pre class="src src-cpp"><span style="color: #5B6268;">// </span><span style="color: #5B6268;">the following code can compile</span>
 <span style="color: #5B6268;">// </span><span style="color: #5B6268;">but it causes a double deletion!</span>
-<span style="color: #ECBE7B;">MyClass</span> *<span style="color: #dcaeea;">obj</span> = <span style="color: #51afef;">new</span> <span style="color: #ECBE7B;">MyClass</span>();
-<span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">unique_ptr</span>&lt;<span style="color: #ECBE7B;">MyClass</span>&gt; <span style="color: #c678dd;">ptr1</span>(obj);
-<span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">unique_ptr</span>&lt;<span style="color: #ECBE7B;">MyClass</span>&gt; <span style="color: #c678dd;">ptr2</span>(obj);
+<span style="color: #ECBE7B;">MyClass</span> *<span style="color: #dcaeea;">obj</span> = <span style="color: #51afef;">new</span> <span style="color: #ECBE7B;">MyClass</span><span style="color: #51afef;">()</span>;
+<span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">unique_ptr</span><span style="color: #51afef;">&lt;</span><span style="color: #ECBE7B;">MyClass</span><span style="color: #51afef;">&gt;</span> <span style="color: #c678dd;">ptr1</span><span style="color: #51afef;">(</span>obj<span style="color: #51afef;">)</span>;
+<span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">unique_ptr</span><span style="color: #51afef;">&lt;</span><span style="color: #ECBE7B;">MyClass</span><span style="color: #51afef;">&gt;</span> <span style="color: #c678dd;">ptr2</span><span style="color: #51afef;">(</span>obj<span style="color: #51afef;">)</span>;
 </pre>
 </div>
 </div>
 </div>
-<div id="outline-container-orga17c160" class="outline-3">
-<h3 id="orga17c160"><span class="section-number-3">6.2.</span> <code>std::shared_ptr</code></h3>
+<div id="outline-container-orga6f4d50" class="outline-3">
+<h3 id="orga6f4d50"><span class="section-number-3">6.2.</span> <code>std::shared_ptr</code></h3>
 <div class="outline-text-3" id="text-6-2">
 <div class="org-src-container">
-<pre class="src src-cpp"><span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;iostream&gt;</span>
-<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;memory&gt;</span>
-<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;utility&gt;</span>
+<pre class="src src-cpp"><span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #51afef;">&lt;</span><span style="color: #98be65;">iostream</span><span style="color: #51afef;">&gt;</span>
+<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #51afef;">&lt;</span><span style="color: #98be65;">memory</span><span style="color: #51afef;">&gt;</span>
+<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #51afef;">&lt;</span><span style="color: #98be65;">utility</span><span style="color: #51afef;">&gt;</span>
 
 <span style="color: #5B6268;">// </span><span style="color: #5B6268;">class Point is the same as before</span>
 
 <span style="color: #5B6268;">// </span><span style="color: #5B6268;">modify a Point inside a shared_ptr by passing the reference</span>
-<span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">modify_ptr_via_ref</span>(<span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">shared_ptr</span>&lt;Point&gt; &amp;<span style="color: #dcaeea;">point</span>) { point-&gt;SetX(<span style="color: #da8548; font-weight: bold;">10</span>); }
+<span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">modify_ptr_via_ref</span><span style="color: #51afef;">(</span><span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">shared_ptr</span><span style="color: #c678dd;">&lt;</span>Point<span style="color: #c678dd;">&gt;</span> &amp;<span style="color: #dcaeea;">point</span><span style="color: #51afef;">)</span> <span style="color: #51afef;">{</span> point-&gt;SetX<span style="color: #c678dd;">(</span><span style="color: #da8548; font-weight: bold;">10</span><span style="color: #c678dd;">)</span>; <span style="color: #51afef;">}</span>
 <span style="color: #5B6268;">// </span><span style="color: #5B6268;">modify a Point inside a shared_ptr by passing the rvalue reference</span>
 <span style="color: #5B6268;">// </span><span style="color: #5B6268;">If an object is passed by rvalue reference, one should assume the ownership</span>
 <span style="color: #5B6268;">// </span><span style="color: #5B6268;">is moved after the function call, so the original object cannot be used</span>
-<span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">modify_ptr_via_rvalue_ref</span>(<span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">shared_ptr</span>&lt;Point&gt; &amp;&amp;<span style="color: #dcaeea;">point</span>) {
-  point-&gt;SetY(<span style="color: #da8548; font-weight: bold;">11</span>);
-}
+<span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">modify_ptr_via_rvalue_ref</span><span style="color: #51afef;">(</span><span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">shared_ptr</span><span style="color: #c678dd;">&lt;</span>Point<span style="color: #c678dd;">&gt;</span> &amp;&amp;<span style="color: #dcaeea;">point</span><span style="color: #51afef;">)</span> <span style="color: #51afef;">{</span>
+  point-&gt;SetY<span style="color: #c678dd;">(</span><span style="color: #da8548; font-weight: bold;">11</span><span style="color: #c678dd;">)</span>;
+<span style="color: #51afef;">}</span>
 <span style="color: #5B6268;">// </span><span style="color: #5B6268;">copy a shared_pointer with the default constructor</span>
 <span style="color: #5B6268;">// </span><span style="color: #5B6268;">so one should define own copy constructor and assignment when an object</span>
 <span style="color: #5B6268;">// </span><span style="color: #5B6268;">contains pointers</span>
-<span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">copy_shard_ptr_in_function</span>(<span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">shared_ptr</span>&lt;Point&gt; <span style="color: #dcaeea;">point</span>) {
-  <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"Use count of the shared pointer: "</span> &lt;&lt; point.use_count()
+<span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">copy_shard_ptr_in_function</span><span style="color: #51afef;">(</span><span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">shared_ptr</span><span style="color: #c678dd;">&lt;</span>Point<span style="color: #c678dd;">&gt;</span> <span style="color: #dcaeea;">point</span><span style="color: #51afef;">)</span> <span style="color: #51afef;">{</span>
+  <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"Use count of the shared pointer: "</span> &lt;&lt; point.use_count<span style="color: #c678dd;">()</span>
             &lt;&lt; <span style="color: #a9a1e1;">std</span>::endl; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">add by 1</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">the copy is destroyed at the end, so the count is decremented</span>
-}
+<span style="color: #51afef;">}</span>
 
-<span style="color: #ECBE7B;">int</span> <span style="color: #c678dd;">main</span>() {
+<span style="color: #ECBE7B;">int</span> <span style="color: #c678dd;">main</span><span style="color: #51afef;">()</span> <span style="color: #51afef;">{</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">the pointer constructors are the same as unique_ptr</span>
-  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">shared_ptr</span>&lt;Point&gt; <span style="color: #dcaeea;">s1</span>;
-  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">shared_ptr</span>&lt;Point&gt; <span style="color: #dcaeea;">s2</span> = <span style="color: #a9a1e1;">std</span>::make_shared&lt;Point&gt;();
-  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">shared_ptr</span>&lt;Point&gt; <span style="color: #dcaeea;">s3</span> = <span style="color: #a9a1e1;">std</span>::make_shared&lt;Point&gt;(<span style="color: #da8548; font-weight: bold;">2</span>, <span style="color: #da8548; font-weight: bold;">3</span>);
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">shared_ptr</span><span style="color: #c678dd;">&lt;</span>Point<span style="color: #c678dd;">&gt;</span> <span style="color: #dcaeea;">s1</span>;
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">shared_ptr</span><span style="color: #c678dd;">&lt;</span>Point<span style="color: #c678dd;">&gt;</span> <span style="color: #dcaeea;">s2</span> = <span style="color: #a9a1e1;">std</span>::make_shared<span style="color: #c678dd;">&lt;</span>Point<span style="color: #c678dd;">&gt;()</span>;
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">shared_ptr</span><span style="color: #c678dd;">&lt;</span>Point<span style="color: #c678dd;">&gt;</span> <span style="color: #dcaeea;">s3</span> = <span style="color: #a9a1e1;">std</span>::make_shared<span style="color: #c678dd;">&lt;</span>Point<span style="color: #c678dd;">&gt;(</span><span style="color: #da8548; font-weight: bold;">2</span>, <span style="color: #da8548; font-weight: bold;">3</span><span style="color: #c678dd;">)</span>;
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">copy a shared pointer via copy assignment or copy constructor</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">increment the reference count, which can be tracked by .use_count</span>
-  <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"Use count of s3"</span> &lt;&lt; s3.use_count() &lt;&lt; <span style="color: #a9a1e1;">std</span>::endl; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">1</span>
-  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">shared_ptr</span>&lt;Point&gt; <span style="color: #dcaeea;">s4</span> = s3; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">copy assignment</span>
-  <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"Use count of s3"</span> &lt;&lt; s3.use_count() &lt;&lt; <span style="color: #a9a1e1;">std</span>::endl; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">2</span>
-  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">shared_ptr</span>&lt;Point&gt; <span style="color: #dcaeea;">s5</span>(s4);
-  <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"Use count of s3"</span> &lt;&lt; s3.use_count() &lt;&lt; <span style="color: #a9a1e1;">std</span>::endl; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">3</span>
-  s3-&gt;SetX(<span style="color: #da8548; font-weight: bold;">100</span>); <span style="color: #5B6268;">// </span><span style="color: #5B6268;">also changes the data in s4 and s5</span>
-  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">shared_ptr</span>&lt;Point&gt; <span style="color: #dcaeea;">s6</span> = <span style="color: #a9a1e1;">std</span>::move(s5); <span style="color: #5B6268;">// </span><span style="color: #5B6268;">s5 transfer the ownership to s6</span>
-  <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"Use count of s3"</span> &lt;&lt; s3.use_count()
+  <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"Use count of s3"</span> &lt;&lt; s3.use_count<span style="color: #c678dd;">()</span> &lt;&lt; <span style="color: #a9a1e1;">std</span>::endl; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">1</span>
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">shared_ptr</span><span style="color: #c678dd;">&lt;</span>Point<span style="color: #c678dd;">&gt;</span> <span style="color: #dcaeea;">s4</span> = s3; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">copy assignment</span>
+  <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"Use count of s3"</span> &lt;&lt; s3.use_count<span style="color: #c678dd;">()</span> &lt;&lt; <span style="color: #a9a1e1;">std</span>::endl; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">2</span>
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">shared_ptr</span><span style="color: #c678dd;">&lt;</span>Point<span style="color: #c678dd;">&gt;</span> <span style="color: #dcaeea;">s5</span><span style="color: #c678dd;">(</span>s4<span style="color: #c678dd;">)</span>;
+  <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"Use count of s3"</span> &lt;&lt; s3.use_count<span style="color: #c678dd;">()</span> &lt;&lt; <span style="color: #a9a1e1;">std</span>::endl; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">3</span>
+  s3-&gt;SetX<span style="color: #c678dd;">(</span><span style="color: #da8548; font-weight: bold;">100</span><span style="color: #c678dd;">)</span>; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">also changes the data in s4 and s5</span>
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">shared_ptr</span><span style="color: #c678dd;">&lt;</span>Point<span style="color: #c678dd;">&gt;</span> <span style="color: #dcaeea;">s6</span> = <span style="color: #a9a1e1;">std</span>::move<span style="color: #c678dd;">(</span>s5<span style="color: #c678dd;">)</span>; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">s5 transfer the ownership to s6</span>
+  <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"Use count of s3"</span> &lt;&lt; s3.use_count<span style="color: #c678dd;">()</span>
             &lt;&lt; <span style="color: #a9a1e1;">std</span>::endl; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">still 3: s3, s4, s6</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">as unique_ptr, shared_ptr can be passed by references and rvalue references</span>
-  modify_ptr_via_ref(s2);                   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">setX(11)</span>
-  modify_ptr_via_rvalue_ref(<span style="color: #a9a1e1;">std</span>::move(s2)); <span style="color: #5B6268;">// </span><span style="color: #5B6268;">setY(12)</span>
-  <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"s2.x = "</span> &lt;&lt; s2-&gt;GetX()
-            &lt;&lt; <span style="color: #98be65;">" , s2.y = "</span> &lt;&lt; s2-&gt;GetY(); <span style="color: #5B6268;">// </span><span style="color: #5B6268;">(11, 12)</span>
+  modify_ptr_via_ref<span style="color: #c678dd;">(</span>s2<span style="color: #c678dd;">)</span>;                   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">setX(11)</span>
+  modify_ptr_via_rvalue_ref<span style="color: #c678dd;">(</span><span style="color: #a9a1e1;">std</span>::move<span style="color: #98be65;">(</span>s2<span style="color: #98be65;">)</span><span style="color: #c678dd;">)</span>; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">setY(12)</span>
+  <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"s2.x = "</span> &lt;&lt; s2-&gt;GetX<span style="color: #c678dd;">()</span>
+            &lt;&lt; <span style="color: #98be65;">" , s2.y = "</span> &lt;&lt; s2-&gt;GetY<span style="color: #c678dd;">()</span>; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">(11, 12)</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">shared_ptr can also be passed by value/copy</span>
-  <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"Use count of s2"</span> &lt;&lt; s2.use_count() &lt;&lt; <span style="color: #a9a1e1;">std</span>::endl; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">1</span>
-  copy_shared_ptr_in_function(s2); <span style="color: #5B6268;">// </span><span style="color: #5B6268;">inside the function, the use count is 2</span>
-  <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"Use count of s2"</span> &lt;&lt; s2.use_count()
+  <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"Use count of s2"</span> &lt;&lt; s2.use_count<span style="color: #c678dd;">()</span> &lt;&lt; <span style="color: #a9a1e1;">std</span>::endl; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">1</span>
+  copy_shared_ptr_in_function<span style="color: #c678dd;">(</span>s2<span style="color: #c678dd;">)</span>; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">inside the function, the use count is 2</span>
+  <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"Use count of s2"</span> &lt;&lt; s2.use_count<span style="color: #c678dd;">()</span>
             &lt;&lt; <span style="color: #a9a1e1;">std</span>::endl; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">1 again as the copy is detroyed</span>
   <span style="color: #51afef;">return</span> <span style="color: #da8548; font-weight: bold;">0</span>;
-}
+<span style="color: #51afef;">}</span>
 </pre>
 </div>
 </div>
 </div>
 </div>
-<div id="outline-container-orgff9d615" class="outline-2">
-<h2 id="orgff9d615"><span class="section-number-2">7.</span> Synchronization</h2>
+<div id="outline-container-org0b2f277" class="outline-2">
+<h2 id="org0b2f277"><span class="section-number-2">7.</span> Synchronization</h2>
 <div class="outline-text-2" id="text-7">
 </div>
-<div id="outline-container-org720a20f" class="outline-3">
-<h3 id="org720a20f"><span class="section-number-3">7.1.</span> <code>std::mutex</code></h3>
+<div id="outline-container-org2b7c7db" class="outline-3">
+<h3 id="org2b7c7db"><span class="section-number-3">7.1.</span> <code>std::mutex</code></h3>
 <div class="outline-text-3" id="text-7-1">
 <div class="org-src-container">
-<pre class="src src-cpp"><span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;iostream&gt;</span>
-<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;mutex&gt;</span>
-<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;thread&gt;</span>
+<pre class="src src-cpp"><span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #51afef;">&lt;</span><span style="color: #98be65;">iostream</span><span style="color: #51afef;">&gt;</span>
+<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #51afef;">&lt;</span><span style="color: #98be65;">mutex</span><span style="color: #51afef;">&gt;</span>
+<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #51afef;">&lt;</span><span style="color: #98be65;">thread</span><span style="color: #51afef;">&gt;</span>
 
 <span style="color: #5B6268;">// </span><span style="color: #5B6268;">define a global variable to be modified</span>
 <span style="color: #5B6268;">// </span><span style="color: #5B6268;">by multiple threads</span>
 <span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">count</span> = <span style="color: #da8548; font-weight: bold;">0</span>;
 <span style="color: #5B6268;">// </span><span style="color: #5B6268;">declare a mutex</span>
 <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">mutex</span> <span style="color: #dcaeea;">m</span>;
-<span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">add_count</span>() {
-  m.lock(); <span style="color: #5B6268;">// </span><span style="color: #5B6268;">acquire the lock</span>
+<span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">add_count</span><span style="color: #51afef;">()</span> <span style="color: #51afef;">{</span>
+  m.lock<span style="color: #c678dd;">()</span>; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">acquire the lock</span>
   count += <span style="color: #da8548; font-weight: bold;">1</span>;
-  m.unlock(); <span style="color: #5B6268;">// </span><span style="color: #5B6268;">release the lock</span>
-}
-<span style="color: #ECBE7B;">int</span> <span style="color: #c678dd;">main</span>() {
-  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">thread</span> <span style="color: #dcaeea;">t1</span>(add_count);
-  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">thread</span> <span style="color: #dcaeea;">t2</span>(add_count);
-  t1.join();
-  t2.join();
+  m.unlock<span style="color: #c678dd;">()</span>; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">release the lock</span>
+<span style="color: #51afef;">}</span>
+<span style="color: #ECBE7B;">int</span> <span style="color: #c678dd;">main</span><span style="color: #51afef;">()</span> <span style="color: #51afef;">{</span>
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">thread</span> <span style="color: #dcaeea;">t1</span><span style="color: #c678dd;">(</span>add_count<span style="color: #c678dd;">)</span>;
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">thread</span> <span style="color: #dcaeea;">t2</span><span style="color: #c678dd;">(</span>add_count<span style="color: #c678dd;">)</span>;
+  t1.join<span style="color: #c678dd;">()</span>;
+  t2.join<span style="color: #c678dd;">()</span>;
   <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; count &lt;&lt; <span style="color: #a9a1e1;">std</span>::endl; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">always 2</span>
   <span style="color: #51afef;">return</span> <span style="color: #da8548; font-weight: bold;">0</span>;
-}
+<span style="color: #51afef;">}</span>
 </pre>
 </div>
 </div>
 </div>
-<div id="outline-container-org972445b" class="outline-3">
-<h3 id="org972445b"><span class="section-number-3">7.2.</span> <code>std::scoped_lock</code></h3>
+<div id="outline-container-orgace0084" class="outline-3">
+<h3 id="orgace0084"><span class="section-number-3">7.2.</span> <code>std::scoped_lock</code></h3>
 <div class="outline-text-3" id="text-7-2">
 <ul class="org-ul">
 <li>A mutex wrapper that provides a RAII-style of obtaining and releasing the lock.</li>
@@ -768,25 +768,25 @@ Define DLL:
 <li>Better than <code>std::mutex</code> since it provides exception safety.</li>
 </ul>
 <div class="org-src-container">
-<pre class="src src-cpp"><span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;iostream&gt;</span>
-<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;mutex&gt;</span>
+<pre class="src src-cpp"><span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #51afef;">&lt;</span><span style="color: #98be65;">iostream</span><span style="color: #51afef;">&gt;</span>
+<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #51afef;">&lt;</span><span style="color: #98be65;">mutex</span><span style="color: #51afef;">&gt;</span>
 
 <span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">count</span> = <span style="color: #da8548; font-weight: bold;">0</span>;
 <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">mutex</span> <span style="color: #dcaeea;">m</span>;
-<span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">add_count</span>() {
+<span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">add_count</span><span style="color: #51afef;">()</span> <span style="color: #51afef;">{</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">the scoped_lock constructor allows for the thread</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">to acquire the mutex m</span>
-  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">scoped_lock</span> <span style="color: #dcaeea;">slk</span>(m);
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">scoped_lock</span> <span style="color: #dcaeea;">slk</span><span style="color: #c678dd;">(</span>m<span style="color: #c678dd;">)</span>;
   count += <span style="color: #da8548; font-weight: bold;">1</span>;
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">once the function finishes, slk is destructurd and</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">m is released</span>
-}
+<span style="color: #51afef;">}</span>
 </pre>
 </div>
 </div>
 </div>
-<div id="outline-container-org9630937" class="outline-3">
-<h3 id="org9630937"><span class="section-number-3">7.3.</span> <code>std::condition_variable</code></h3>
+<div id="outline-container-org00ab3e7" class="outline-3">
+<h3 id="org00ab3e7"><span class="section-number-3">7.3.</span> <code>std::condition_variable</code></h3>
 <div class="outline-text-3" id="text-7-3">
 <ul class="org-ul">
 <li>Allow threads to wait until a particular condition before acquiring a mutex.</li>
@@ -794,51 +794,51 @@ Define DLL:
 <code>notify_one</code></li>
 </ul>
 <div class="org-src-container">
-<pre class="src src-cpp"><span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;condition_variable&gt;</span>
-<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;iostream&gt;</span>
-<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;mutex&gt;</span>
-<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;thread&gt;</span>
+<pre class="src src-cpp"><span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #51afef;">&lt;</span><span style="color: #98be65;">condition_variable</span><span style="color: #51afef;">&gt;</span>
+<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #51afef;">&lt;</span><span style="color: #98be65;">iostream</span><span style="color: #51afef;">&gt;</span>
+<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #51afef;">&lt;</span><span style="color: #98be65;">mutex</span><span style="color: #51afef;">&gt;</span>
+<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #51afef;">&lt;</span><span style="color: #98be65;">thread</span><span style="color: #51afef;">&gt;</span>
 
 <span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">count</span> = <span style="color: #da8548; font-weight: bold;">0</span>;
 <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">mutex</span> <span style="color: #dcaeea;">m</span>;
 <span style="color: #5B6268;">// </span><span style="color: #5B6268;">declare a condition variable</span>
 <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">condition_variable</span> <span style="color: #dcaeea;">cv</span>;
-<span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">add_count_and_notify</span>() {
-  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">scoped_lock</span> <span style="color: #dcaeea;">slk</span>(m);
+<span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">add_count_and_notify</span><span style="color: #51afef;">()</span> <span style="color: #51afef;">{</span>
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">scoped_lock</span> <span style="color: #dcaeea;">slk</span><span style="color: #c678dd;">(</span>m<span style="color: #c678dd;">)</span>;
   count += <span style="color: #da8548; font-weight: bold;">1</span>;
-  <span style="color: #51afef;">if</span> (count == <span style="color: #da8548; font-weight: bold;">2</span>) {
+  <span style="color: #51afef;">if</span> <span style="color: #c678dd;">(</span>count == <span style="color: #da8548; font-weight: bold;">2</span><span style="color: #c678dd;">)</span> <span style="color: #c678dd;">{</span>
     <span style="color: #5B6268;">// </span><span style="color: #5B6268;">notidy one waiting thread</span>
     <span style="color: #5B6268;">// </span><span style="color: #5B6268;">otherwise the waiter thread hangs forever</span>
-    cv.notify_one();
-  }
-}
-<span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">waiter_thread</span>() {
+    cv.notify_one<span style="color: #98be65;">()</span>;
+  <span style="color: #c678dd;">}</span>
+<span style="color: #51afef;">}</span>
+<span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">waiter_thread</span><span style="color: #51afef;">()</span> <span style="color: #51afef;">{</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">a unique_lock is movable but not copiable</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">more flexible than scoped_lock as it can unlock</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">and relock manually, while scoped_lock can only be</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">unlocked automatically.</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">scoped_lock cannot be used with condition variables</span>
-  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">unique_lock</span> <span style="color: #dcaeea;">lk</span>(m);
-  cv.wait(lk, [] { <span style="color: #51afef;">return</span> count == <span style="color: #da8548; font-weight: bold;">2</span>; });
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">unique_lock</span> <span style="color: #dcaeea;">lk</span><span style="color: #c678dd;">(</span>m<span style="color: #c678dd;">)</span>;
+  cv.wait<span style="color: #c678dd;">(</span>lk, <span style="color: #98be65;">[]</span> <span style="color: #98be65;">{</span> <span style="color: #51afef;">return</span> count == <span style="color: #da8548; font-weight: bold;">2</span>; <span style="color: #98be65;">}</span><span style="color: #c678dd;">)</span>;
   <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; count &lt;&lt; <span style="color: #a9a1e1;">std</span>::endl;
-}
-<span style="color: #ECBE7B;">int</span> <span style="color: #c678dd;">main</span>() {
-  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">thread</span> <span style="color: #dcaeea;">t1</span>(waiter_thread);
+<span style="color: #51afef;">}</span>
+<span style="color: #ECBE7B;">int</span> <span style="color: #c678dd;">main</span><span style="color: #51afef;">()</span> <span style="color: #51afef;">{</span>
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">thread</span> <span style="color: #dcaeea;">t1</span><span style="color: #c678dd;">(</span>waiter_thread<span style="color: #c678dd;">)</span>;
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">make t1 really waits</span>
-  <span style="color: #a9a1e1;">std</span>::<span style="color: #a9a1e1;">this_thread</span>::sleep_for(<span style="color: #a9a1e1;">std</span>::<span style="color: #a9a1e1;">chrono</span>::milliseconds(<span style="color: #da8548; font-weight: bold;">100</span>));
-  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">thread</span> <span style="color: #dcaeea;">t2</span>(add_count_and_notify);
-  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">thread</span> <span style="color: #dcaeea;">t3</span>(add_count_and_notify);
-  t1.join();
-  t2.join();
-  t3.join();
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #a9a1e1;">this_thread</span>::sleep_for<span style="color: #c678dd;">(</span><span style="color: #a9a1e1;">std</span>::<span style="color: #a9a1e1;">chrono</span>::milliseconds<span style="color: #98be65;">(</span><span style="color: #da8548; font-weight: bold;">100</span><span style="color: #98be65;">)</span><span style="color: #c678dd;">)</span>;
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">thread</span> <span style="color: #dcaeea;">t2</span><span style="color: #c678dd;">(</span>add_count_and_notify<span style="color: #c678dd;">)</span>;
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">thread</span> <span style="color: #dcaeea;">t3</span><span style="color: #c678dd;">(</span>add_count_and_notify<span style="color: #c678dd;">)</span>;
+  t1.join<span style="color: #c678dd;">()</span>;
+  t2.join<span style="color: #c678dd;">()</span>;
+  t3.join<span style="color: #c678dd;">()</span>;
   <span style="color: #51afef;">return</span> <span style="color: #da8548; font-weight: bold;">0</span>;
-}
+<span style="color: #51afef;">}</span>
 </pre>
 </div>
 </div>
 </div>
-<div id="outline-container-org45ff32d" class="outline-3">
-<h3 id="org45ff32d"><span class="section-number-3">7.4.</span> Reader-writer lock</h3>
+<div id="outline-container-org4f057cc" class="outline-3">
+<h3 id="org4f057cc"><span class="section-number-3">7.4.</span> Reader-writer lock</h3>
 <div class="outline-text-3" id="text-7-4">
 <ul class="org-ul">
 <li>A reader-writer lock allows multiple threads to have shared read access (no writers are allowed during read operations) and exclusive write access, i.e., no other readers or writers are allowed during the write.</li>
@@ -849,35 +849,35 @@ Define DLL:
 <code>std::unique_lock</code> can be used a RAII-style exclusive write lock.
 </p>
 <div class="org-src-container">
-<pre class="src src-cpp"><span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;iostream&gt;</span>
-<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;mutex&gt;</span>
-<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;shared_mutex&gt;</span>
-<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #98be65;">&lt;thread&gt;</span>
+<pre class="src src-cpp"><span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #51afef;">&lt;</span><span style="color: #98be65;">iostream</span><span style="color: #51afef;">&gt;</span>
+<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #51afef;">&lt;</span><span style="color: #98be65;">mutex</span><span style="color: #51afef;">&gt;</span>
+<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #51afef;">&lt;</span><span style="color: #98be65;">shared_mutex</span><span style="color: #51afef;">&gt;</span>
+<span style="color: #51afef; font-weight: bold;">#include</span> <span style="color: #51afef;">&lt;</span><span style="color: #98be65;">thread</span><span style="color: #51afef;">&gt;</span>
 
 <span style="color: #ECBE7B;">int</span> <span style="color: #dcaeea;">count</span> = <span style="color: #da8548; font-weight: bold;">0</span>; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">resource</span>
 <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">shared_mutex</span> <span style="color: #dcaeea;">m</span>;
-<span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">read_value</span>() {
+<span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">read_value</span><span style="color: #51afef;">()</span> <span style="color: #51afef;">{</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">use shared_lock to gain read-only, shared access</span>
-  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">shared_lock</span> <span style="color: #dcaeea;">lk</span>(m);
-  <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"Reading "</span> + <span style="color: #a9a1e1;">std</span>::to_string(count) &lt;&lt; <span style="color: #a9a1e1;">std</span>::endl;
-}
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">shared_lock</span> <span style="color: #dcaeea;">lk</span><span style="color: #c678dd;">(</span>m<span style="color: #c678dd;">)</span>;
+  <span style="color: #a9a1e1;">std</span>::cout &lt;&lt; <span style="color: #98be65;">"Reading "</span> + <span style="color: #a9a1e1;">std</span>::to_string<span style="color: #c678dd;">(</span>count<span style="color: #c678dd;">)</span> &lt;&lt; <span style="color: #a9a1e1;">std</span>::endl;
+<span style="color: #51afef;">}</span>
 
-<span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">write_value</span>() {
+<span style="color: #ECBE7B;">void</span> <span style="color: #c678dd;">write_value</span><span style="color: #51afef;">()</span> <span style="color: #51afef;">{</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">use unique_lock to gain exclusive access</span>
-  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">unique_lock</span> <span style="color: #dcaeea;">lk</span>(m);
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">unique_lock</span> <span style="color: #dcaeea;">lk</span><span style="color: #c678dd;">(</span>m<span style="color: #c678dd;">)</span>;
   count += <span style="color: #da8548; font-weight: bold;">3</span>;
-}
-<span style="color: #ECBE7B;">int</span> <span style="color: #c678dd;">main</span>() {
+<span style="color: #51afef;">}</span>
+<span style="color: #ECBE7B;">int</span> <span style="color: #c678dd;">main</span><span style="color: #51afef;">()</span> <span style="color: #51afef;">{</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">since all 3 threads run in parallel,</span>
   <span style="color: #5B6268;">// </span><span style="color: #5B6268;">the output is not deterministic</span>
-  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">thread</span> <span style="color: #dcaeea;">t1</span>(read_value);
-  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">thread</span> <span style="color: #dcaeea;">t2</span>(write_value);
-  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">thread</span> <span style="color: #dcaeea;">t3</span>(read_value);
-  t1.join();
-  t2.join();
-  t3.join();
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">thread</span> <span style="color: #dcaeea;">t1</span><span style="color: #c678dd;">(</span>read_value<span style="color: #c678dd;">)</span>;
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">thread</span> <span style="color: #dcaeea;">t2</span><span style="color: #c678dd;">(</span>write_value<span style="color: #c678dd;">)</span>;
+  <span style="color: #a9a1e1;">std</span>::<span style="color: #ECBE7B;">thread</span> <span style="color: #dcaeea;">t3</span><span style="color: #c678dd;">(</span>read_value<span style="color: #c678dd;">)</span>;
+  t1.join<span style="color: #c678dd;">()</span>;
+  t2.join<span style="color: #c678dd;">()</span>;
+  t3.join<span style="color: #c678dd;">()</span>;
   <span style="color: #51afef;">return</span> <span style="color: #da8548; font-weight: bold;">0</span>;
-}
+<span style="color: #51afef;">}</span>
 </pre>
 </div></li>
 </ul>
@@ -903,6 +903,7 @@ Define DLL:
             <i class="fab fa-github"></i>
       </a>
       </div>
+      <script src="assets/toggle.js"></script>
       </footer></div>
 </body>
 </html>

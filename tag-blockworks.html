@@ -41,32 +41,32 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orga587ecd">1. Terminology</a>
+<li><a href="#org0c5e7c0">1. Terminology</a>
 <ul>
-<li><a href="#org5f410f3">1.1. Ethereum sharding</a></li>
-<li><a href="#org17f2a79">1.2. Blob</a></li>
-<li><a href="#org83bbc3a">1.3. Erasure coding</a></li>
-<li><a href="#org51c3b10">1.4. Data availability sampling (DAS)</a></li>
-<li><a href="#orgcd92788">1.5. Danksharding (L2 optimization)</a></li>
-<li><a href="#org3dd14bd">1.6. Relations between L1 and L2 scaling</a></li>
-<li><a href="#orgb76173b">1.7. Double spending prevention</a></li>
-<li><a href="#org826e3b0">1.8. Sealevel (Solana)</a></li>
+<li><a href="#org0184f8e">1.1. Ethereum sharding</a></li>
+<li><a href="#org6e11b92">1.2. Blob</a></li>
+<li><a href="#orgac91774">1.3. Erasure coding</a></li>
+<li><a href="#org1b1a305">1.4. Data availability sampling (DAS)</a></li>
+<li><a href="#org26b287a">1.5. Danksharding (L2 optimization)</a></li>
+<li><a href="#org130582f">1.6. Relations between L1 and L2 scaling</a></li>
+<li><a href="#org86f58af">1.7. Double spending prevention</a></li>
+<li><a href="#orga5bdb9b">1.8. Sealevel (Solana)</a></li>
 </ul>
 </li>
-<li><a href="#org471cb12">2. Ways to achieve parallel processing</a></li>
-<li><a href="#orge5e259b">3. Production-ready parallelized EVM projects (Jan 2024)</a></li>
+<li><a href="#org4c7cc53">2. Ways to achieve parallel processing</a></li>
+<li><a href="#orge20781b">3. Production-ready parallelized EVM projects (Jan 2024)</a></li>
 </ul>
 </div>
 </nav>
 <p>
 This is a personal note for <a href="https://blockworks.co/news/parallelized-evms-gaining-popularity">Blockworks news (12.01.2024)</a> as well as some terminology explained online, e.g., <a href="https://www.coindesk.com/learn/what-is-ethereum-sharding-a-beginners-guide/">Coindesk</a> and <a href="https://chatgpt.com/c/824f05c9-dc75-4eb6-aeda-59d057baf83a">GPT-4o</a>.
 </p>
-<div id="outline-container-orga587ecd" class="outline-2">
-<h2 id="orga587ecd"><span class="section-number-2">1.</span> Terminology</h2>
+<div id="outline-container-org0c5e7c0" class="outline-2">
+<h2 id="org0c5e7c0"><span class="section-number-2">1.</span> Terminology</h2>
 <div class="outline-text-2" id="text-1">
 </div>
-<div id="outline-container-org5f410f3" class="outline-3">
-<h3 id="org5f410f3"><span class="section-number-3">1.1.</span> Ethereum sharding</h3>
+<div id="outline-container-org0184f8e" class="outline-3">
+<h3 id="org0184f8e"><span class="section-number-3">1.1.</span> Ethereum sharding</h3>
 <div class="outline-text-3" id="text-1-1">
 <ul class="org-ul">
 <li>The Ethereum mainnet is divided into smaller interconnected networks called shards.</li>
@@ -76,8 +76,8 @@ This is a personal note for <a href="https://blockworks.co/news/parallelized-evm
 </ul>
 </div>
 </div>
-<div id="outline-container-org17f2a79" class="outline-3">
-<h3 id="org17f2a79"><span class="section-number-3">1.2.</span> Blob</h3>
+<div id="outline-container-org6e11b92" class="outline-3">
+<h3 id="org6e11b92"><span class="section-number-3">1.2.</span> Blob</h3>
 <div class="outline-text-3" id="text-1-2">
 <ul class="org-ul">
 <li>Rather than storing each transaction data directly in the blockchain, the data is aggregated into a blob (binary object).</li>
@@ -87,16 +87,16 @@ This is a personal note for <a href="https://blockworks.co/news/parallelized-evm
 </ul>
 </div>
 </div>
-<div id="outline-container-org83bbc3a" class="outline-3">
-<h3 id="org83bbc3a"><span class="section-number-3">1.3.</span> Erasure coding</h3>
+<div id="outline-container-orgac91774" class="outline-3">
+<h3 id="orgac91774"><span class="section-number-3">1.3.</span> Erasure coding</h3>
 <div class="outline-text-3" id="text-1-3">
 <ul class="org-ul">
 <li>Allows one to encode blobs such that if at least half of the data in the blob is published, anyone in the network can reconstruct and re-publish the rest of the data.</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org51c3b10" class="outline-3">
-<h3 id="org51c3b10"><span class="section-number-3">1.4.</span> Data availability sampling (DAS)</h3>
+<div id="outline-container-org1b1a305" class="outline-3">
+<h3 id="org1b1a305"><span class="section-number-3">1.4.</span> Data availability sampling (DAS)</h3>
 <div class="outline-text-3" id="text-1-4">
 <ul class="org-ul">
 <li>Validators randomly sample blob pieces to confirm the data can be reconstructed.g</li>
@@ -104,8 +104,8 @@ This is a personal note for <a href="https://blockworks.co/news/parallelized-evm
 </ul>
 </div>
 </div>
-<div id="outline-container-orgcd92788" class="outline-3">
-<h3 id="orgcd92788"><span class="section-number-3">1.5.</span> Danksharding (L2 optimization)</h3>
+<div id="outline-container-org26b287a" class="outline-3">
+<h3 id="org26b287a"><span class="section-number-3">1.5.</span> Danksharding (L2 optimization)</h3>
 <div class="outline-text-3" id="text-1-5">
 <ul class="org-ul">
 <li>A specific sharding implementation proposal.</li>
@@ -114,8 +114,8 @@ This is a personal note for <a href="https://blockworks.co/news/parallelized-evm
 </ul>
 </div>
 </div>
-<div id="outline-container-org3dd14bd" class="outline-3">
-<h3 id="org3dd14bd"><span class="section-number-3">1.6.</span> Relations between L1 and L2 scaling</h3>
+<div id="outline-container-org130582f" class="outline-3">
+<h3 id="org130582f"><span class="section-number-3">1.6.</span> Relations between L1 and L2 scaling</h3>
 <div class="outline-text-3" id="text-1-6">
 <ul class="org-ul">
 <li>L1 scaling: optimizations directly to the Ethereum mainnet and core infrastructure, e.g., parallel EVM.</li>
@@ -123,8 +123,8 @@ This is a personal note for <a href="https://blockworks.co/news/parallelized-evm
 </ul>
 </div>
 </div>
-<div id="outline-container-orgb76173b" class="outline-3">
-<h3 id="orgb76173b"><span class="section-number-3">1.7.</span> Double spending prevention</h3>
+<div id="outline-container-org86f58af" class="outline-3">
+<h3 id="org86f58af"><span class="section-number-3">1.7.</span> Double spending prevention</h3>
 <div class="outline-text-3" id="text-1-7">
 <ul class="org-ul">
 <li>Bitcoin: uses UTXOs to track which inputs have been spent (no need to go through the entire chain).</li>
@@ -132,8 +132,8 @@ This is a personal note for <a href="https://blockworks.co/news/parallelized-evm
 </ul>
 </div>
 </div>
-<div id="outline-container-org826e3b0" class="outline-3">
-<h3 id="org826e3b0"><span class="section-number-3">1.8.</span> Sealevel (Solana)</h3>
+<div id="outline-container-orga5bdb9b" class="outline-3">
+<h3 id="orga5bdb9b"><span class="section-number-3">1.8.</span> Sealevel (Solana)</h3>
 <div class="outline-text-3" id="text-1-8">
 <ul class="org-ul">
 <li>Solana&rsquo;s parallel smart contract runtime to process thousands of contracts in parallel.</li>
@@ -142,8 +142,8 @@ This is a personal note for <a href="https://blockworks.co/news/parallelized-evm
 </div>
 </div>
 </div>
-<div id="outline-container-org471cb12" class="outline-2">
-<h2 id="org471cb12"><span class="section-number-2">2.</span> Ways to achieve parallel processing</h2>
+<div id="outline-container-org4c7cc53" class="outline-2">
+<h2 id="org4c7cc53"><span class="section-number-2">2.</span> Ways to achieve parallel processing</h2>
 <div class="outline-text-2" id="text-2">
 <ul class="org-ul">
 <li>Process independent transactions in parallel.</li>
@@ -151,8 +151,8 @@ This is a personal note for <a href="https://blockworks.co/news/parallelized-evm
 </ul>
 </div>
 </div>
-<div id="outline-container-orge5e259b" class="outline-2">
-<h2 id="orge5e259b"><span class="section-number-2">3.</span> Production-ready parallelized EVM projects (Jan 2024)</h2>
+<div id="outline-container-orge20781b" class="outline-2">
+<h2 id="orge20781b"><span class="section-number-2">3.</span> Production-ready parallelized EVM projects (Jan 2024)</h2>
 <div class="outline-text-2" id="text-3">
 <ul class="org-ul">
 <li>Sei: optimistic parallel execution.</li>
@@ -187,6 +187,7 @@ This is a personal note for <a href="https://blockworks.co/news/parallelized-evm
             <i class="fab fa-github"></i>
       </a>
       </div>
+      <script src="assets/toggle.js"></script>
       </footer></div>
 </body>
 </html>

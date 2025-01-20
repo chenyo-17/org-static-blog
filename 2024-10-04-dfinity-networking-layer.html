@@ -41,66 +41,66 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org2f9bacb">1. Terminology</a>
+<li><a href="#orgb3fa791">1. Terminology</a>
 <ul>
-<li><a href="#orge61e168">1.1. IC design principle</a></li>
-<li><a href="#org3bb5e65">1.2. IC protocol stack</a>
+<li><a href="#orgd9ad074">1.1. IC design principle</a></li>
+<li><a href="#org3aeea39">1.2. IC protocol stack</a>
 <ul>
-<li><a href="#orgf4bbfe9">1.2.1. Execution layer</a></li>
-<li><a href="#orgefb086d">1.2.2. Message routing layer</a></li>
-<li><a href="#orgc008fd4">1.2.3. Consensus layer</a></li>
-<li><a href="#org1202791">1.2.4. P2P layer</a></li>
+<li><a href="#org833bb8f">1.2.1. Execution layer</a></li>
+<li><a href="#org9743eca">1.2.2. Message routing layer</a></li>
+<li><a href="#org98cbd22">1.2.3. Consensus layer</a></li>
+<li><a href="#orgb0017e0">1.2.4. P2P layer</a></li>
 </ul>
 </li>
-<li><a href="#org8078573">1.3. State sync</a></li>
-<li><a href="#org3a05ca3">1.4. QUIC protocol</a></li>
-<li><a href="#org18b65c6">1.5. Backpressure in blockchain</a></li>
+<li><a href="#org1125642">1.3. State sync</a></li>
+<li><a href="#org0686c84">1.4. QUIC protocol</a></li>
+<li><a href="#org86435d1">1.5. Backpressure in blockchain</a></li>
 </ul>
 </li>
-<li><a href="#org829e630">2. P2P layer</a>
+<li><a href="#org83ccea0">2. P2P layer</a>
 <ul>
-<li><a href="#org571c9f3">2.1. Gossip protocol</a></li>
-<li><a href="#org722f0c7">2.2. Artifacts</a></li>
-<li><a href="#orgb1b4646">2.3. Constraints</a></li>
-<li><a href="#org3b96b60">2.4. Adverts</a>
+<li><a href="#org62678a1">2.1. Gossip protocol</a></li>
+<li><a href="#orge37e9da">2.2. Artifacts</a></li>
+<li><a href="#org1dc925b">2.3. Constraints</a></li>
+<li><a href="#orgc1e2be6">2.4. Adverts</a>
 <ul>
-<li><a href="#org2ea3d9b">2.4.1. Advert priority</a></li>
+<li><a href="#orgd3871ab">2.4.1. Advert priority</a></li>
 </ul>
 </li>
-<li><a href="#org804eeb4">2.5. Artifact pool</a></li>
-<li><a href="#org2f8f707">2.6. Peer context</a></li>
-<li><a href="#org6dbbbb1">2.7. Gossip protocol events</a>
+<li><a href="#org75a5a00">2.5. Artifact pool</a></li>
+<li><a href="#org96fdae6">2.6. Peer context</a></li>
+<li><a href="#orgd5d43ee">2.7. Gossip protocol events</a>
 <ul>
-<li><a href="#orgc11963e">2.7.1. Process a new advert received from peer \(i\)</a></li>
-<li><a href="#org5466c45">2.7.2. Process a new received artifact from peer \(i\)</a></li>
+<li><a href="#orgb88b30b">2.7.1. Process a new advert received from peer \(i\)</a></li>
+<li><a href="#orgbf423b6">2.7.2. Process a new received artifact from peer \(i\)</a></li>
 </ul>
 </li>
-<li><a href="#orgee01a65">2.8. Common attacks</a>
+<li><a href="#org6c517fa">2.8. Common attacks</a>
 <ul>
-<li><a href="#org962b49f">2.8.1. Sybil attack</a></li>
-<li><a href="#org150081f">2.8.2. Eclipse attack</a></li>
-<li><a href="#org9da9cee">2.8.3. Routing table poisoning</a></li>
-<li><a href="#orgec2eb1a">2.8.4. Bandwidth hogging</a></li>
+<li><a href="#orgfd1d522">2.8.1. Sybil attack</a></li>
+<li><a href="#org870ea28">2.8.2. Eclipse attack</a></li>
+<li><a href="#orgdba1aff">2.8.3. Routing table poisoning</a></li>
+<li><a href="#org53f86f9">2.8.4. Bandwidth hogging</a></li>
 </ul>
 </li>
-<li><a href="#org71a026f">2.9. Security</a></li>
+<li><a href="#org91251d1">2.9. Security</a></li>
 </ul>
 </li>
-<li><a href="#orgd35eb30">3. Transport component</a>
+<li><a href="#orga591c0f">3. Transport component</a>
 <ul>
-<li><a href="#org7547aab">3.1. Transient connection disturbances</a></li>
-<li><a href="#org9a38d6d">3.2. Long disconnection with full TX queue</a></li>
+<li><a href="#org5a5bb2f">3.1. Transient connection disturbances</a></li>
+<li><a href="#org90425a4">3.2. Long disconnection with full TX queue</a></li>
 </ul>
 </li>
-<li><a href="#org2301ac7">4. State sync protocol</a>
+<li><a href="#orgca3424d">4. State sync protocol</a>
 <ul>
-<li><a href="#orgeb4205a">4.1. Monolithic P2P layer not suitable for the state sync</a></li>
+<li><a href="#org3c8ed8a">4.1. Monolithic P2P layer not suitable for the state sync</a></li>
 </ul>
 </li>
-<li><a href="#orgef1fedd">5. Fully QUIC-based P2P layer</a>
+<li><a href="#orga14cf38">5. Fully QUIC-based P2P layer</a>
 <ul>
-<li><a href="#org6b246b2">5.1. Properties for consensus-related clients</a></li>
-<li><a href="#org9be0596">5.2. Slot table</a></li>
+<li><a href="#org82401b7">5.1. Properties for consensus-related clients</a></li>
+<li><a href="#orgaa2f888">5.2. Slot table</a></li>
 </ul>
 </li>
 </ul>
@@ -122,12 +122,12 @@ The learning resources include:
 <li><a href="https://www.youtube.com/watch?v=31J8PoLW9iM">Youtube: QUIC Tutorial (SIGCOMM 2020)</a>;</li>
 <li><a href="https://medium.com/dfinity/a-new-p2p-layer-is-coming-to-the-internet-computer-772ac2a29484">Medium: Fully asynchronous IC P2P layer (Jan 2024)</a>.</li>
 </ul>
-<div id="outline-container-org2f9bacb" class="outline-2">
-<h2 id="org2f9bacb"><span class="section-number-2">1.</span> Terminology</h2>
+<div id="outline-container-orgb3fa791" class="outline-2">
+<h2 id="orgb3fa791"><span class="section-number-2">1.</span> Terminology</h2>
 <div class="outline-text-2" id="text-1">
 </div>
-<div id="outline-container-orge61e168" class="outline-3">
-<h3 id="orge61e168"><span class="section-number-3">1.1.</span> IC design principle</h3>
+<div id="outline-container-orgd9ad074" class="outline-3">
+<h3 id="orgd9ad074"><span class="section-number-3">1.1.</span> IC design principle</h3>
 <div class="outline-text-3" id="text-1-1">
 <ul class="org-ul">
 <li>Secure, reliable and scalable.</li>
@@ -135,23 +135,23 @@ The learning resources include:
 </ul>
 </div>
 </div>
-<div id="outline-container-org3bb5e65" class="outline-3">
-<h3 id="org3bb5e65"><span class="section-number-3">1.2.</span> IC protocol stack</h3>
+<div id="outline-container-org3aeea39" class="outline-3">
+<h3 id="org3aeea39"><span class="section-number-3">1.2.</span> IC protocol stack</h3>
 <div class="outline-text-3" id="text-1-2">
 <ul class="org-ul">
 <li>From top to down: execution, message routing, consensus, P2P.</li>
 </ul>
 </div>
-<div id="outline-container-orgf4bbfe9" class="outline-4">
-<h4 id="orgf4bbfe9"><span class="section-number-4">1.2.1.</span> Execution layer</h4>
+<div id="outline-container-org833bb8f" class="outline-4">
+<h4 id="org833bb8f"><span class="section-number-4">1.2.1.</span> Execution layer</h4>
 <div class="outline-text-4" id="text-1-2-1">
 <ul class="org-ul">
 <li>Manages a safe environment for deterministic execution of software messages.</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-orgefb086d" class="outline-4">
-<h4 id="orgefb086d"><span class="section-number-4">1.2.2.</span> Message routing layer</h4>
+<div id="outline-container-org9743eca" class="outline-4">
+<h4 id="org9743eca"><span class="section-number-4">1.2.2.</span> Message routing layer</h4>
 <div class="outline-text-4" id="text-1-2-2">
 <ul class="org-ul">
 <li>Routes user and system-generated messages between subnets.</li>
@@ -160,16 +160,16 @@ The learning resources include:
 </ul>
 </div>
 </div>
-<div id="outline-container-orgc008fd4" class="outline-4">
-<h4 id="orgc008fd4"><span class="section-number-4">1.2.3.</span> Consensus layer</h4>
+<div id="outline-container-org98cbd22" class="outline-4">
+<h4 id="org98cbd22"><span class="section-number-4">1.2.3.</span> Consensus layer</h4>
 <div class="outline-text-4" id="text-1-2-3">
 <ul class="org-ul">
 <li>Arranges messages received from users and different subnets into blocks before delivering them to the message routing layer.</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org1202791" class="outline-4">
-<h4 id="org1202791"><span class="section-number-4">1.2.4.</span> P2P layer</h4>
+<div id="outline-container-orgb0017e0" class="outline-4">
+<h4 id="orgb0017e0"><span class="section-number-4">1.2.4.</span> P2P layer</h4>
 <div class="outline-text-4" id="text-1-2-4">
 <ul class="org-ul">
 <li>Collects and advertises messages from users and other nodes in the same subnet, e.g., IC consensus protocol, the state sync protocol.</li>
@@ -178,8 +178,8 @@ The learning resources include:
 </div>
 </div>
 </div>
-<div id="outline-container-org8078573" class="outline-3">
-<h3 id="org8078573"><span class="section-number-3">1.3.</span> State sync</h3>
+<div id="outline-container-org1125642" class="outline-3">
+<h3 id="org1125642"><span class="section-number-3">1.3.</span> State sync</h3>
 <div class="outline-text-3" id="text-1-3">
 <ul class="org-ul">
 <li>Enables nodes to synchronize the replicated state of the subnet by downloading the required state and verify its authenticity relative to the subnet&rsquo;s chain key with the state sync protocol.</li>
@@ -190,8 +190,8 @@ The learning resources include:
 </ul>
 </div>
 </div>
-<div id="outline-container-org3a05ca3" class="outline-3">
-<h3 id="org3a05ca3"><span class="section-number-3">1.4.</span> QUIC protocol</h3>
+<div id="outline-container-org0686c84" class="outline-3">
+<h3 id="org0686c84"><span class="section-number-3">1.4.</span> QUIC protocol</h3>
 <div class="outline-text-3" id="text-1-4">
 <ul class="org-ul">
 <li>A new transport protocol with TLS 1.3, new handshake, new packet structure, encryption, uni/bi-directional streams, etc.</li>
@@ -213,8 +213,8 @@ The learning resources include:
 </ul>
 </div>
 </div>
-<div id="outline-container-org18b65c6" class="outline-3">
-<h3 id="org18b65c6"><span class="section-number-3">1.5.</span> Backpressure in blockchain</h3>
+<div id="outline-container-org86435d1" class="outline-3">
+<h3 id="org86435d1"><span class="section-number-3">1.5.</span> Backpressure in blockchain</h3>
 <div class="outline-text-3" id="text-1-5">
 <ul class="org-ul">
 <li>If the receiver slows down the message consumption, the sender&rsquo;s buffer fills up and the sender&rsquo;s networking layer must take one of the three paths:
@@ -227,8 +227,8 @@ The learning resources include:
 </div>
 </div>
 </div>
-<div id="outline-container-org829e630" class="outline-2">
-<h2 id="org829e630"><span class="section-number-2">2.</span> P2P layer</h2>
+<div id="outline-container-org83ccea0" class="outline-2">
+<h2 id="org83ccea0"><span class="section-number-2">2.</span> P2P layer</h2>
 <div class="outline-text-2" id="text-2">
 <ul class="org-ul">
 <li>Send out artifacts created by the above layers.</li>
@@ -240,8 +240,8 @@ The learning resources include:
 </ul></li>
 </ul>
 </div>
-<div id="outline-container-org571c9f3" class="outline-3">
-<h3 id="org571c9f3"><span class="section-number-3">2.1.</span> Gossip protocol</h3>
+<div id="outline-container-org62678a1" class="outline-3">
+<h3 id="org62678a1"><span class="section-number-3">2.1.</span> Gossip protocol</h3>
 <div class="outline-text-3" id="text-2-1">
 <ul class="org-ul">
 <li>When a subnet node creates an artifact or receives it from its peer, it gossips this artifact to all its peers, i.e., other connected subnet nodes.
@@ -251,8 +251,8 @@ The learning resources include:
 </ul>
 </div>
 </div>
-<div id="outline-container-org722f0c7" class="outline-3">
-<h3 id="org722f0c7"><span class="section-number-3">2.2.</span> Artifacts</h3>
+<div id="outline-container-orge37e9da" class="outline-3">
+<h3 id="orge37e9da"><span class="section-number-3">2.2.</span> Artifacts</h3>
 <div class="outline-text-3" id="text-2-2">
 <ul class="org-ul">
 <li>Network messages to be broadcast in the subnet, e.g.,
@@ -263,8 +263,8 @@ The learning resources include:
 </ul>
 </div>
 </div>
-<div id="outline-container-orgb1b4646" class="outline-3">
-<h3 id="orgb1b4646"><span class="section-number-3">2.3.</span> Constraints</h3>
+<div id="outline-container-org1dc925b" class="outline-3">
+<h3 id="org1dc925b"><span class="section-number-3">2.3.</span> Constraints</h3>
 <div class="outline-text-3" id="text-2-3">
 <ul class="org-ul">
 <li>P2P layer should provide the above guarantee under the following constraints:
@@ -279,8 +279,8 @@ The learning resources include:
 </ul>
 </div>
 </div>
-<div id="outline-container-org3b96b60" class="outline-3">
-<h3 id="org3b96b60"><span class="section-number-3">2.4.</span> Adverts</h3>
+<div id="outline-container-orgc1e2be6" class="outline-3">
+<h3 id="orgc1e2be6"><span class="section-number-3">2.4.</span> Adverts</h3>
 <div class="outline-text-3" id="text-2-4">
 <ul class="org-ul">
 <li>Simply flooding all artifacts consumes unnecessary network bandwidth, instead artifacts previews called adverts are sent first.</li>
@@ -289,8 +289,8 @@ The learning resources include:
 <li>In the new P2P layer, if the artifact is small enough (&lt; 1KB), adverts are not used.</li>
 </ul>
 </div>
-<div id="outline-container-org2ea3d9b" class="outline-4">
-<h4 id="org2ea3d9b"><span class="section-number-4">2.4.1.</span> Advert priority</h4>
+<div id="outline-container-orgd3871ab" class="outline-4">
+<h4 id="orgd3871ab"><span class="section-number-4">2.4.1.</span> Advert priority</h4>
 <div class="outline-text-4" id="text-2-4-1">
 <ul class="org-ul">
 <li>Consensus provides the gossip protocol with a priority function, which takes an advert and its attributes and returns a priority value.</li>
@@ -299,8 +299,8 @@ The learning resources include:
 </div>
 </div>
 </div>
-<div id="outline-container-org804eeb4" class="outline-3">
-<h3 id="org804eeb4"><span class="section-number-3">2.5.</span> Artifact pool</h3>
+<div id="outline-container-org75a5a00" class="outline-3">
+<h3 id="org75a5a00"><span class="section-number-3">2.5.</span> Artifact pool</h3>
 <div class="outline-text-3" id="text-2-5">
 <ul class="org-ul">
 <li>A data structure maintained by the gossip protocol.</li>
@@ -314,8 +314,8 @@ The learning resources include:
 </ul>
 </div>
 </div>
-<div id="outline-container-org2f8f707" class="outline-3">
-<h3 id="org2f8f707"><span class="section-number-3">2.6.</span> Peer context</h3>
+<div id="outline-container-org96fdae6" class="outline-3">
+<h3 id="org96fdae6"><span class="section-number-3">2.6.</span> Peer context</h3>
 <div class="outline-text-3" id="text-2-6">
 <ul class="org-ul">
 <li>Advert queue: a priority queue of all adverts the peer has received from another peer, ordered by their priority.</li>
@@ -324,8 +324,8 @@ The learning resources include:
 </ul>
 </div>
 </div>
-<div id="outline-container-org6dbbbb1" class="outline-3">
-<h3 id="org6dbbbb1"><span class="section-number-3">2.7.</span> Gossip protocol events</h3>
+<div id="outline-container-orgd5d43ee" class="outline-3">
+<h3 id="orgd5d43ee"><span class="section-number-3">2.7.</span> Gossip protocol events</h3>
 <div class="outline-text-3" id="text-2-7">
 <ul class="org-ul">
 <li>Create a new advert for a new artifact added by application component locally and sends to all peers;</li>
@@ -334,8 +334,8 @@ The learning resources include:
 <li>Handle recovery and reconnection.</li>
 </ul>
 </div>
-<div id="outline-container-orgc11963e" class="outline-4">
-<h4 id="orgc11963e"><span class="section-number-4">2.7.1.</span> Process a new advert received from peer \(i\)</h4>
+<div id="outline-container-orgb88b30b" class="outline-4">
+<h4 id="orgb88b30b"><span class="section-number-4">2.7.1.</span> Process a new advert received from peer \(i\)</h4>
 <div class="outline-text-4" id="text-2-7-1">
 <ul class="org-ul">
 <li>If the advert is already in peer \(i\)&rsquo;s received check cache, or the priority is &ldquo;drop&rdquo;, ignore;</li>
@@ -346,8 +346,8 @@ The learning resources include:
 </ul>
 </div>
 </div>
-<div id="outline-container-org5466c45" class="outline-4">
-<h4 id="org5466c45"><span class="section-number-4">2.7.2.</span> Process a new received artifact from peer \(i\)</h4>
+<div id="outline-container-orgbf423b6" class="outline-4">
+<h4 id="orgbf423b6"><span class="section-number-4">2.7.2.</span> Process a new received artifact from peer \(i\)</h4>
 <div class="outline-text-4" id="text-2-7-2">
 <ul class="org-ul">
 <li>First check the received artifact has been requested and verify its integrity;</li>
@@ -362,20 +362,20 @@ The learning resources include:
 </div>
 </div>
 </div>
-<div id="outline-container-orgee01a65" class="outline-3">
-<h3 id="orgee01a65"><span class="section-number-3">2.8.</span> Common attacks</h3>
+<div id="outline-container-org6c517fa" class="outline-3">
+<h3 id="org6c517fa"><span class="section-number-3">2.8.</span> Common attacks</h3>
 <div class="outline-text-3" id="text-2-8">
 </div>
-<div id="outline-container-org962b49f" class="outline-4">
-<h4 id="org962b49f"><span class="section-number-4">2.8.1.</span> Sybil attack</h4>
+<div id="outline-container-orgfd1d522" class="outline-4">
+<h4 id="orgfd1d522"><span class="section-number-4">2.8.1.</span> Sybil attack</h4>
 <div class="outline-text-4" id="text-2-8-1">
 <ul class="org-ul">
 <li>An attack creates multiple nodes to gain influences.</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org150081f" class="outline-4">
-<h4 id="org150081f"><span class="section-number-4">2.8.2.</span> Eclipse attack</h4>
+<div id="outline-container-org870ea28" class="outline-4">
+<h4 id="org870ea28"><span class="section-number-4">2.8.2.</span> Eclipse attack</h4>
 <div class="outline-text-4" id="text-2-8-2">
 <ul class="org-ul">
 <li>All peers of a correct node are byzantine nodes to disconnect the correct node from the subnet (though they cannot send spoofed artifacts due to artifact authentication).</li>
@@ -387,16 +387,16 @@ The learning resources include:
 </ul>
 </div>
 </div>
-<div id="outline-container-org9da9cee" class="outline-4">
-<h4 id="org9da9cee"><span class="section-number-4">2.8.3.</span> Routing table poisoning</h4>
+<div id="outline-container-orgdba1aff" class="outline-4">
+<h4 id="orgdba1aff"><span class="section-number-4">2.8.3.</span> Routing table poisoning</h4>
 <div class="outline-text-4" id="text-2-8-3">
 <ul class="org-ul">
 <li>Malicious nodes provide false routing information to disrupt network topology.</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-orgec2eb1a" class="outline-4">
-<h4 id="orgec2eb1a"><span class="section-number-4">2.8.4.</span> Bandwidth hogging</h4>
+<div id="outline-container-org53f86f9" class="outline-4">
+<h4 id="org53f86f9"><span class="section-number-4">2.8.4.</span> Bandwidth hogging</h4>
 <div class="outline-text-4" id="text-2-8-4">
 <ul class="org-ul">
 <li>Attackers consume excessive network resources.</li>
@@ -404,8 +404,8 @@ The learning resources include:
 </div>
 </div>
 </div>
-<div id="outline-container-org71a026f" class="outline-3">
-<h3 id="org71a026f"><span class="section-number-3">2.9.</span> Security</h3>
+<div id="outline-container-org91251d1" class="outline-3">
+<h3 id="org91251d1"><span class="section-number-3">2.9.</span> Security</h3>
 <div class="outline-text-3" id="text-2-9">
 <ul class="org-ul">
 <li>NNS manages the subnet membership, each node only requests and accepts connections with nodes in the same subnet to prevent DoS attack.</li>
@@ -414,8 +414,8 @@ The learning resources include:
 </div>
 </div>
 </div>
-<div id="outline-container-orgd35eb30" class="outline-2">
-<h2 id="orgd35eb30"><span class="section-number-2">3.</span> Transport component</h2>
+<div id="outline-container-orga591c0f" class="outline-2">
+<h2 id="orga591c0f"><span class="section-number-2">3.</span> Transport component</h2>
 <div class="outline-text-2" id="text-3">
 <ul class="org-ul">
 <li>Below the P2P component to main the actual network connections between peers.</li>
@@ -423,8 +423,8 @@ The learning resources include:
 <li>Frame gossip message with its own 7 headers.</li>
 </ul>
 </div>
-<div id="outline-container-org7547aab" class="outline-3">
-<h3 id="org7547aab"><span class="section-number-3">3.1.</span> Transient connection disturbances</h3>
+<div id="outline-container-org5a5bb2f" class="outline-3">
+<h3 id="org5a5bb2f"><span class="section-number-3">3.1.</span> Transient connection disturbances</h3>
 <div class="outline-text-3" id="text-3-1">
 <ul class="org-ul">
 <li>Transport keeps buffering ongoing messages in TX queues;</li>
@@ -432,8 +432,8 @@ The learning resources include:
 </ul>
 </div>
 </div>
-<div id="outline-container-org9a38d6d" class="outline-3">
-<h3 id="org9a38d6d"><span class="section-number-3">3.2.</span> Long disconnection with full TX queue</h3>
+<div id="outline-container-org90425a4" class="outline-3">
+<h3 id="org90425a4"><span class="section-number-3">3.2.</span> Long disconnection with full TX queue</h3>
 <div class="outline-text-3" id="text-3-2">
 <ul class="org-ul">
 <li>Transport notifies the receiver gossip protocol, sends retransmission request with artifact filter to tell the sender the latest advert the receiver has seen;
@@ -446,8 +446,8 @@ The learning resources include:
 </div>
 </div>
 </div>
-<div id="outline-container-org2301ac7" class="outline-2">
-<h2 id="org2301ac7"><span class="section-number-2">4.</span> State sync protocol</h2>
+<div id="outline-container-orgca3424d" class="outline-2">
+<h2 id="orgca3424d"><span class="section-number-2">4.</span> State sync protocol</h2>
 <div class="outline-text-2" id="text-4">
 <ul class="org-ul">
 <li>Nodes periodically advertise all locally available state versions with adverts;
@@ -467,8 +467,8 @@ The learning resources include:
 <li>The node then request missing chunks from multiple peers.</li>
 </ul>
 </div>
-<div id="outline-container-orgeb4205a" class="outline-3">
-<h3 id="orgeb4205a"><span class="section-number-3">4.1.</span> Monolithic P2P layer not suitable for the state sync</h3>
+<div id="outline-container-org3c8ed8a" class="outline-3">
+<h3 id="org3c8ed8a"><span class="section-number-3">4.1.</span> Monolithic P2P layer not suitable for the state sync</h3>
 <div class="outline-text-3" id="text-4-1">
 <ul class="org-ul">
 <li>P2P layer is designed to distribute small messages, which is not the case for the state sync protocol.</li>
@@ -488,8 +488,8 @@ The learning resources include:
 </div>
 </div>
 </div>
-<div id="outline-container-orgef1fedd" class="outline-2">
-<h2 id="orgef1fedd"><span class="section-number-2">5.</span> Fully QUIC-based P2P layer</h2>
+<div id="outline-container-orga14cf38" class="outline-2">
+<h2 id="orga14cf38"><span class="section-number-2">5.</span> Fully QUIC-based P2P layer</h2>
 <div class="outline-text-2" id="text-5">
 <ul class="org-ul">
 <li>IC&rsquo;s P2P layer stops using TCP altogether, which means a shift to a fully asynchronous implementation of the P2P layer.
@@ -502,8 +502,8 @@ The learning resources include:
 <li>Will eventually shift all clients to use the new P2P layer.</li>
 </ul>
 </div>
-<div id="outline-container-org6b246b2" class="outline-3">
-<h3 id="org6b246b2"><span class="section-number-3">5.1.</span> Properties for consensus-related clients</h3>
+<div id="outline-container-org82401b7" class="outline-3">
+<h3 id="org82401b7"><span class="section-number-3">5.1.</span> Properties for consensus-related clients</h3>
 <div class="outline-text-3" id="text-5-1">
 <ul class="org-ul">
 <li>Bounded number of active artifacts in the validated artifact pool; the consensus protocol uses checkpoints to purge artifacts periodically, hence a maximal pool size \(C\).</li>
@@ -515,8 +515,8 @@ The learning resources include:
 </ul>
 </div>
 </div>
-<div id="outline-container-org9be0596" class="outline-3">
-<h3 id="org9be0596"><span class="section-number-3">5.2.</span> Slot table</h3>
+<div id="outline-container-orgaa2f888" class="outline-3">
+<h3 id="orgaa2f888"><span class="section-number-3">5.2.</span> Slot table</h3>
 <div class="outline-text-3" id="text-5-2">
 <ul class="org-ul">
 <li>Maintained on the sender side and inferred on the receiver side.</li>
@@ -555,6 +555,7 @@ The learning resources include:
             <i class="fab fa-github"></i>
       </a>
       </div>
+      <script src="assets/toggle.js"></script>
       </footer></div>
 </body>
 </html>
