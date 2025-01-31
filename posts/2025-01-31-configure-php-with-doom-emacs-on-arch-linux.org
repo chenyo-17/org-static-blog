@@ -1,0 +1,44 @@
+#+title: Configure PHP with Doom Emacs on Arch Linux
+#+date: <2025-01-31 16:31>
+#+description: This post records the steps of configuring PHP with Doom Emacs and Arch Linux.
+#+filetags: php linux emacs
+
+This post records my steps of installing and configuring basic PHP with Doom Emacs and Arch Linux.
+
+
+* Terminal Installation
+1. ~yay php~: install PHP.
+2. ~yay composer~: install PHP package manager.
+3. ~yay phpactor~: install the language server.
+4. Install the following packages with `composer` globally so any project can use it:
+   - ~composer global require phpunit/phpunit~: install PHP test framework.
+   - ~composer global require techlivezheng/phpctags~: better code completion.
+   - ~composer global require friendsofphp/php-cs-fixer~: code formatting.
+5. Export the ~composer~ global path with ~export PATH="$PATH:$HOME/.config/composer/vendor/bin" >> ~/.zshrc~.
+6. Configure ~phpactor~ to auto-load global packages:
+   - Create file ~~/.config/phpactor/phpactor.yml~ and write to file:
+     #+begin_src yaml
+composer.autoloader_path:
+  - ~/.config/composer/vendor/autoload.php
+     #+end_src
+
+* Emacs Configuration
+1. Uncomment ~(php +lsp)~ in  ~init.el~.
+2. Add packages ~(package! phpactor)~ and ~(package! php-cs-fixer)~ to ~packages.el~ to use their interfaces in Emacs.
+3. Configure ~config.el~ as following:
+   #+begin_src lisp
+(after! lsp-mode
+    (setq lsp-disabled-clients '(intelephense php-ls))  ;; disable other language servers
+  (setq lsp-php-server 'phpactor)  ;; set the language explicitly
+  (setq lsp-phpactor-path (executable-find "phpactor")))
+
+(use-package! php-mode
+  :hook (php-mode . lsp-deferred))  ;; defer lsp loading
+   #+end_src
+4. run ~doom sync~ and restart the Emacs.
+
+
+* Usage
+- Use ~M-x lsp-describe-session~ to verify ~phpactor~ is in use.
+- Use ~M-x php-cs-fixer-fix~ to format the current PHP buffer.
+- Use ~M-x phpunit-current-test~ to run the tests in the current buffer.

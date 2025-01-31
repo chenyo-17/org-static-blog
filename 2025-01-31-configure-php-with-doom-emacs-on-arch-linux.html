@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="description" content="This post records the steps of configuring PHP with Doom Emacs and Arch Linux.">
+<link rel="alternate"
+      type="application/rss+xml"
+      href="https://chenyo.me/rss.xml"
+      title="RSS feed for https://chenyo.me">
+<title>Configure PHP with Doom Emacs on Arch Linux</title>
+<script type="text/javascript"
+             src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+       </script>
+       <script type="text/x-mathjax-config">
+             MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'],['\\(','\\)']]}});
+       </script>
+       <meta name="author" content="chenyo">
+      <meta name="referrer" content="no-referrer">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="stylesheet" href="assets/style.css" type="text/css"/>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+      <link rel="favicon" type="image/x-icon" href="favicon.ico">
+      <script src="assets/search.js"></script></head>
+<body>
+<div id="preamble" class="status">
+      <header>
+      <h1><a href="https://chenyo.me">Chenyo's org-static-blog</a></h1>
+      <nav>
+      <a href="https://chenyo.me">Home</a>
+      <a href="archive.html">Archive</a>
+      <a href="tags.html">Tags</a>
+      <div id="search-container">
+        <input type="text" id="search-input" placeholder="Search anywhere...">
+        <i class="fas fa-search search-icon"></i>
+      </div>
+      </nav>
+      </header></div>
+<div id="content">
+<div class="post-date">31 Jan 2025</div><h1 class="post-title"><a href="https://chenyo.me/2025-01-31-configure-php-with-doom-emacs-on-arch-linux.html">Configure PHP with Doom Emacs on Arch Linux</a></h1>
+<nav id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#orgdaa9a42">1. Terminal Installation</a></li>
+<li><a href="#orgd9c9899">2. Emacs Configuration</a></li>
+<li><a href="#orgb4089a7">3. Usage</a></li>
+</ul>
+</div>
+</nav>
+<p>
+This post records my steps of installing and configuring basic PHP with Doom Emacs and Arch Linux.
+</p>
+<div id="outline-container-orgdaa9a42" class="outline-2">
+<h2 id="orgdaa9a42"><span class="section-number-2">1.</span> Terminal Installation</h2>
+<div class="outline-text-2" id="text-1">
+<ol class="org-ol">
+<li><code>yay php</code>: install PHP.</li>
+<li><code>yay composer</code>: install PHP package manager.</li>
+<li><code>yay phpactor</code>: install the language server.</li>
+<li>Install the following packages with `composer` globally so any project can use it:
+<ul class="org-ul">
+<li><code>composer global require phpunit/phpunit</code>: install PHP test framework.</li>
+<li><code>composer global require techlivezheng/phpctags</code>: better code completion.</li>
+<li><code>composer global require friendsofphp/php-cs-fixer</code>: code formatting.</li>
+</ul></li>
+<li>Export the <code>composer</code> global path with <code>export PATH="$PATH:$HOME/.config/composer/vendor/bin" &gt;&gt; ~/.zshrc</code>.</li>
+<li>Configure <code>phpactor</code> to auto-load global packages:
+<ul class="org-ul">
+<li><p>
+Create file <code>~/.config/phpactor/phpactor.yml</code> and write to file:
+</p>
+<div class="org-src-container">
+<pre class="src src-yaml"><span style="color: #dcaeea;">composer.autoloader_path</span>:
+  - ~/.config/composer/vendor/autoload.php
+</pre>
+</div></li>
+</ul></li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgd9c9899" class="outline-2">
+<h2 id="orgd9c9899"><span class="section-number-2">2.</span> Emacs Configuration</h2>
+<div class="outline-text-2" id="text-2">
+<ol class="org-ol">
+<li>Uncomment <code>(php +lsp)</code> in  <code>init.el</code>.</li>
+<li>Add packages <code>(package! phpactor)</code> and <code>(package! php-cs-fixer)</code> to <code>packages.el</code> to use their interfaces in Emacs.</li>
+<li><p>
+Configure <code>config.el</code> as following:
+</p>
+<div class="org-src-container">
+<pre class="src src-lisp">(after! lsp-mode
+    (setq lsp-disabled-clients '(intelephense php-ls))  <span style="color: #5B6268;">;; </span><span style="color: #5B6268;">disable other language servers</span>
+  (setq lsp-php-server 'phpactor)  <span style="color: #5B6268;">;; </span><span style="color: #5B6268;">set the language explicitly</span>
+  (setq lsp-phpactor-path (executable-find <span style="color: #98be65;">"phpactor"</span>)))
+
+(use-package! php-mode
+  <span style="color: #c678dd;">:hook</span> (php-mode . lsp-deferred))  <span style="color: #5B6268;">;; </span><span style="color: #5B6268;">defer lsp loading</span>
+</pre>
+</div></li>
+<li>run <code>doom sync</code> and restart the Emacs.</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgb4089a7" class="outline-2">
+<h2 id="orgb4089a7"><span class="section-number-2">3.</span> Usage</h2>
+<div class="outline-text-2" id="text-3">
+<ul class="org-ul">
+<li>Use <code>M-x lsp-describe-session</code> to verify <code>phpactor</code> is in use.</li>
+<li>Use <code>M-x php-cs-fixer-fix</code> to format the current PHP buffer.</li>
+<li>Use <code>M-x phpunit-current-test</code> to run the tests in the current buffer.</li>
+</ul>
+</div>
+</div>
+<div class="taglist"><a href="https://chenyo.me/tags.html">Tags</a>: <a href="https://chenyo.me/tag-php.html">php</a> <a href="https://chenyo.me/tag-linux.html">linux</a> <a href="https://chenyo.me/tag-emacs.html">emacs</a> </div></div>
+<div id="postamble" class="status"><div id="search-results"></div>
+      <footer>
+        <div class="footer-content">
+        <div class="footer-left">
+        <p>© 2024 chenyo. Some rights reserved.</p>
+        <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">
+        <img alt="Creative Commons License" style="border-width: 0"
+        src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png"/>
+        </a>
+        </div>
+        <div class="social-links">
+          <a href="https://t.me/chenyo17" target="_blank" rel="noopener noreferrer">
+          <i class="fab fa-telegram"></i>
+          </a>
+          <a href="https://github.com/chenyo-17" target="_blank" rel="noopener noreferrer">
+            <i class="fab fa-github"></i>
+      </a>
+      </div>
+      <script src="assets/toggle.js"></script>
+      </footer></div>
+</body>
+</html>
