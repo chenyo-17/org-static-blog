@@ -1,0 +1,71 @@
+#+title: Org static blog in Neovim
+#+date: <2025-08-03 17:08>
+#+description: This post records how I use org static blog in Neovim.
+#+filetags: vim org
+
+This post records how I use org static blog in Neovim with [[https://github.com/nvim-orgmode/orgmode][nvim-orgmode]].
+
+* Emacs non-interactive commands
+  The emacs [[https://www.gnu.org/software/emacs/manual/html_node/elisp/Batch-Mode.html][batch mode]] does not really work for me.
+  So I use the [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Invoking-emacsclient.html][emacsclient]] instead. The basic usage is like following:
+
+  #+begin_src bash
+emacsclient -e "(org-static-blog-publish)" # no arguments
+emacsclient -e '(progn (org-static-blog-create-new-post-non-interactive "New Post Title"))' # with arguments
+  #+end_src
+
+* Correct HTML export
+
+  While I can start a daemon with ~emacs --daemon~ to run ~emacsclient~, the HTML export done by ~org-static-blog-publish~ lacks correct syntax highlighting in code block and messes up other page layout.
+  It seems due to under the daemon mode some packages are not properly initialized.
+  I don't have enough knowledge for this, so I take a brutal way: open the Emacs GUI, run the command, and close GUI. 
+  On OSX, the commands look like this:
+
+  #+begin_src bash
+# ~/.config/nvim/scripts/org-static-blog-publish.sh
+open -n /Applications/Emacs.app --args --eval "(server-start)"
+sleep 1  # necessary, otherwise emacsclient command is not received
+emacsclient -e "(org-static-blog-publish)"
+emacsclient -e "(kill-emacs)"
+  #+end_src
+
+  Then in the Neovim config, execute it like following (don't forget ~chmod +x~ first):
+
+  #+begin_src lua
+vim.fn.jobstart(vim.fn.expand("~/.config/nvim/scripts/org-static-blog-publish.sh"), {})
+  #+end_src
+
+* Modify Emacs function
+
+  In the original function, ~org-static-blog-create-new-post~ is an interactive command that requires users to input and confirm a title. 
+  To use ~emacsclient~, I wrap it with a non-interactive function like following:
+
+  #+BEGIN_SRC lisp
+(defun org-static-blog-create-new-post-non-interactive (title)
+(require 'org-static-blog)
+(let ((filename (concat (format-time-string "%Y-%m-%d-" (current-time))
+                        (replace-regexp-in-string org-static-blog-suggested-filename-cleaning-regexp
+                                                  "-" (downcase title))
+                        ".org")))
+  (find-file (concat-to-dir
+              org-static-blog-posts-directory
+              filename))
+  (save-buffer)))
+  #+END_SRC 
+
+* Create Neovim functions
+
+  Finally, add the Neovim commands as following:
+  #+BEGIN_SRC lua
+local M = {}
+vim.api.nvim_create_user_command("OrgBlogNewPost", function(opts)
+  local title = table.concat(opts.fargs, " ")
+  M.create_post_with_title(title)
+end, { nargs = "*", desc = "Create new org static blog post" })
+
+vim.api.nvim_create_user_command(
+  "OrgBlogPublish",
+  function() M.publish_blog() end,
+  { desc = "Publish org static blog" }
+)
+  #+END_SRC 

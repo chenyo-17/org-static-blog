@@ -397,6 +397,10 @@ tr:nth-child(even) {
   content: "sql";
 }
 
+.org-src-container pre.src-lua::before {
+  content: "lua";
+}
+
 .org-src-container pre.src::before {
   position: absolute;
   top: 0;

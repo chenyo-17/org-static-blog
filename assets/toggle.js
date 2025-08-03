@@ -6,20 +6,20 @@ document.querySelectorAll("h3, h4, h5, h6").forEach((header) => {
 
 document.querySelectorAll(".org-src-container").forEach((codeSection) => {
   const button = document.createElement("button");
-  button.textContent = "▶ Show code";
+  button.textContent = "▼ Hide code";
   button.className = "fold-button";
   button.onclick = () => toggleCode(button);
   codeSection.parentNode.insertBefore(button, codeSection);
-  codeSection.style.display = "none";
+  codeSection.style.display = "block";
 });
 
 document.querySelectorAll(".latex").forEach((latex) => {
   const button = document.createElement("button");
-  button.textContent = "▶ Show latex";
+  button.textContent = "▼ Hide latex";
   button.className = "fold-button";
   button.onclick = () => toggleLatex(button);
   latex.parentNode.insertBefore(button, latex);
-  latex.style.display = "none";
+  latex.style.display = "block";
 });
 
 function toggleSection(header) {

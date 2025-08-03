@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="description" content="This post records how I use org static blog in Neovim.">
+<link rel="alternate"
+      type="application/rss+xml"
+      href="https://chenyo.me/rss.xml"
+      title="RSS feed for https://chenyo.me">
+<title>Org static blog in Neovim</title>
+<script type="text/javascript"
+             src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+       </script>
+       <script type="text/x-mathjax-config">
+             MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'],['\\(','\\)']]}});
+       </script>
+       <meta name="author" content="chenyo">
+      <meta name="referrer" content="no-referrer">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="stylesheet" href="assets/style.css" type="text/css"/>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+      <link rel="favicon" type="image/x-icon" href="favicon.ico">
+      <script src="assets/search.js"></script></head>
+<body>
+<div id="preamble" class="status">
+      <header>
+      <h1><a href="https://chenyo.me">Chenyo's org-static-blog</a></h1>
+      <nav>
+      <a href="https://chenyo.me">Home</a>
+      <a href="archive.html">Archive</a>
+      <a href="tags.html">Tags</a>
+      <div id="search-container">
+        <input type="text" id="search-input" placeholder="Search anywhere...">
+        <i class="fas fa-search search-icon"></i>
+      </div>
+      </nav>
+      </header></div>
+<div id="content">
+<div class="post-date">03 Aug 2025</div><h1 class="post-title"><a href="https://chenyo.me/2025-08-03-org-static-blog-in-neovim.html">Org static blog in Neovim</a></h1>
+<nav id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#orge231a4b">1. Emacs non-interactive commands</a></li>
+<li><a href="#orga95bd42">2. Correct HTML export</a></li>
+<li><a href="#org5e86d09">3. Modify Emacs function</a></li>
+<li><a href="#org7ec5462">4. Create Neovim functions</a></li>
+</ul>
+</div>
+</nav>
+<p>
+This post records how I use org static blog in Neovim with <a href="https://github.com/nvim-orgmode/orgmode">nvim-orgmode</a>.
+</p>
+<div id="outline-container-orge231a4b" class="outline-2">
+<h2 id="orge231a4b"><span class="section-number-2">1.</span> Emacs non-interactive commands</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+The emacs <a href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Batch-Mode.html">batch mode</a> does not really work for me.
+So I use the <a href="https://www.gnu.org/software/emacs/manual/html_node/emacs/Invoking-emacsclient.html">emacsclient</a> instead. The basic usage is like following:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">emacsclient -e <span style="color: #98be65;">"(org-static-blog-publish)"</span> <span style="color: #5B6268;"># </span><span style="color: #5B6268;">no arguments</span>
+emacsclient -e <span style="color: #98be65;">'(progn (org-static-blog-create-new-post-non-interactive "New Post Title"))'</span> <span style="color: #5B6268;"># </span><span style="color: #5B6268;">with arguments</span>
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orga95bd42" class="outline-2">
+<h2 id="orga95bd42"><span class="section-number-2">2.</span> Correct HTML export</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+While I can start a daemon with <code>emacs --daemon</code> to run <code>emacsclient</code>, the HTML export done by <code>org-static-blog-publish</code> lacks correct syntax highlighting in code block and messes up other page layout.
+It seems due to under the daemon mode some packages are not properly initialized.
+I don&rsquo;t have enough knowledge for this, so I take a brutal way: open the Emacs GUI, run the command, and close GUI.
+On OSX, the commands look like this:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #5B6268;"># </span><span style="color: #5B6268;">~/.config/nvim/scripts/org-static-blog-publish.sh</span>
+open -n /Applications/Emacs.app --args --eval <span style="color: #98be65;">"(server-start)"</span>
+<span style="color: #ECBE7B;">sleep</span> 1  <span style="color: #5B6268;"># </span><span style="color: #5B6268;">necessary, otherwise emacsclient command is not received</span>
+emacsclient -e <span style="color: #98be65;">"(org-static-blog-publish)"</span>
+emacsclient -e <span style="color: #98be65;">"(kill-emacs)"</span>
+</pre>
+</div>
+
+<p>
+Then in the Neovim config, execute it like following (don&rsquo;t forget <code>chmod +x</code> first):
+</p>
+
+<div class="org-src-container">
+<pre class="src src-lua">vim.fn.jobstart(vim.fn.expand(<span style="color: #98be65;">"~/.config/nvim/scripts/org-static-blog-publish.sh"</span>), {})
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org5e86d09" class="outline-2">
+<h2 id="org5e86d09"><span class="section-number-2">3.</span> Modify Emacs function</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+In the original function, <code>org-static-blog-create-new-post</code> is an interactive command that requires users to input and confirm a title.
+To use <code>emacsclient</code>, I wrap it with a non-interactive function like following:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-lisp">(<span style="color: #51afef;">defun</span> <span style="color: #c678dd;">org-static-blog-create-new-post-non-interactive</span> (title)
+(<span style="color: #51afef;">require</span> '<span style="color: #a9a1e1;">org-static-blog</span>)
+(<span style="color: #51afef;">let</span> ((filename (concat (format-time-string <span style="color: #98be65;">"%Y-%m-%d-"</span> (current-time))
+                        (replace-regexp-in-string org-static-blog-suggested-filename-cleaning-regexp
+                                                  <span style="color: #98be65;">"-"</span> (downcase title))
+                        <span style="color: #98be65;">".org"</span>)))
+  (find-file (concat-to-dir
+              org-static-blog-posts-directory
+              filename))
+  (save-buffer)))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org7ec5462" class="outline-2">
+<h2 id="org7ec5462"><span class="section-number-2">4.</span> Create Neovim functions</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+Finally, add the Neovim commands as following:
+</p>
+<div class="org-src-container">
+<pre class="src src-lua"><span style="color: #51afef;">local</span> <span style="color: #dcaeea;">M</span> = {}
+vim.api.nvim_create_user_command(<span style="color: #98be65;">"OrgBlogNewPost"</span>, <span style="color: #51afef;">function</span>(<span style="color: #dcaeea;">opts</span>)
+  <span style="color: #51afef;">local</span> <span style="color: #dcaeea;">title</span> = <span style="color: #c678dd;">table</span>.<span style="color: #c678dd;">concat</span>(opts.fargs, <span style="color: #98be65;">" "</span>)
+  M.create_post_with_title(title)
+<span style="color: #51afef;">end</span>, { nargs = <span style="color: #98be65;">"*"</span>, desc = <span style="color: #98be65;">"Create new org static blog post"</span> })
+
+vim.api.nvim_create_user_command(
+  <span style="color: #98be65;">"OrgBlogPublish"</span>,
+  <span style="color: #51afef;">function</span>() M.publish_blog() <span style="color: #51afef;">end</span>,
+  { desc = <span style="color: #98be65;">"Publish org static blog"</span> }
+)
+</pre>
+</div>
+</div>
+</div>
+<div class="taglist"><a href="https://chenyo.me/tags.html">Tags</a>: <a href="https://chenyo.me/tag-vim.html">vim</a> <a href="https://chenyo.me/tag-org.html">org</a> </div></div>
+<div id="postamble" class="status"><div id="search-results"></div>
+      <footer>
+        <div class="footer-content">
+        <div class="footer-left">
+        <p>© 2025 chenyo. Some rights reserved.</p>
+        <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">
+        <img alt="Creative Commons License" style="border-width: 0"
+        src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png"/>
+        </a>
+      </a>
+      </div>
+      <script src="assets/toggle.js"></script>
+      </footer></div>
+</body>
+</html>
