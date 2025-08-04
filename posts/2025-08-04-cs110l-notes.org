@@ -1,0 +1,115 @@
+#+title: CS110L Notes
+#+date: <2025-08-04 20:38>
+#+description: Notes for CS110L: Safety in Systems Programming 
+#+filetags: study rust stanford
+
+Notes for CS110L Safety in Systems Programming.
+Mostly follow [[https://reberhardt.com/cs110l/spring-2020/][Spring 2020]], also include [[https://reberhardt.com/cs110l/spring-2021/][Spring 2021]]. 
+
+Not complete, only started taking notes since Lec 10 (2020).
+
+* Channel
+
+  - Golang: Do not communicate by sharing memory; instead, share memory by communicating.
+  - **Message passing**: each thread has its own memory, they communicate only by message exchanging.
+    - In theory, this implies: no shared memory -> no data races -> each thread needs to copy the data -> expensive
+    - In practice, goroutines share heap memory and only make shallow copies into channels -> pass pointers to channel is dangerous!
+  - In Rust, passing pointers, e.g., ~Box~ is always safe due to ownership transfer
+  - An ideal channel: MCMC (multi-producer, multi-consumer).
+
+** Mutex-based channel implementation
+
+   #+BEGIN_SRC rust
+pub struct SemaPlusPlus<T> {
+    queue_and_cv: Arc<(Mutex<VecDeque<T>>, Condvar)>,
+}
+
+impl<T> SemaPlusPlus<T> {
+    pub fn send(&self, message: T) {
+        let (queue_lock, cv) = &*self.queue_and_cv;
+        let mut queue = queue_lock.lock().unwrap();
+        let queue_was_empty = queue.is_empty();
+        queue.push_back(message);
+        // if a queue is not empty, then another thread must have notified and main()
+        // must be awake
+        if queue_was_empty {
+            cv.notify_all();
+        }
+    }
+
+    pub fn recv(&self) -> T {
+        let (queue_lock, cv) = &*self.queue_and_cv;
+        // wait_while dereferences the guard and pass the protected data to the closure,
+        // when the condition is true, it releases the lock and sleep until another thread
+        // notify_all
+        let mut queue = cv
+            .wait_while(queue_lock.lock().unwrap(), |queue| queue.is_empty())
+            .unwrap();
+        queue.pop_front().unwrap()
+    }
+}
+
+fn main() {
+    let sem: SemaPlusPlus<String> = SemaPlusPlus::new();
+    let mut handlers = Vec::new();
+    for i in 0..NUM_THREADS {
+        let sem_clone = sem.clone();
+        let handle = thread::spawn(move || {
+            rand_sleep();
+            sem_clone.send(format!("thread {} just finished!", i))
+        });
+        handlers.push(handle);
+    }
+    // main is the only consumer of the queue,
+    // it wakes up when some thread notify_all, locks the queue, consume the message
+    // and release the lock until it is notified again
+    for _ in 0..NUM_THREADS {
+        println!("{}", sem.recv())
+    }
+
+    for handle in handlers {
+        handle.join().unwrap();
+    }
+}
+   #+END_SRC
+  - Mutex-based channel is inefficient:
+    - it does not allow the queue producer and consumer modify the queue simultaneously.
+    - It involves system calls.
+  - Go channels are MCMC, but it essentially implement ~Mutex<VecDeque<>>~ with [[https://eli.thegreenplace.net/2018/basics-of-futexes/][fuxtex]].
+
+** Rust [[https://docs.rs/crossbeam/latest/crossbeam/channel/index.html][crossbeam]] channel implementation
+
+   - Minimal lock usage.
+   - Channels are not the best choice for global values -> lock still required.
+
+   #+BEGIN_SRC rust
+/// Factor the number while receiving numbers from stdin
+fn main() {
+    let (sender, receiver) = crossbeam_channel::unbounded();
+    let mut threads = Vec::new();
+    for _ in 0..num_cpus::get() {
+        // The channel maintains a reference counter for senders and for receivers
+        // when receiver.clone(), the receiver counter increments.
+        let receiver = receiver.clone();
+        threads.push(thread::spawn(move || {
+            while let Ok(next_num) = receiver.recv() {
+                factor_number(next_num);
+            }
+        }));
+    }
+
+    let stdin = std::io::stdin();
+    for line in stdin.lock().lines() {
+        let num = line.unwrap().parse::<u32>().unwrap();
+        sender.send(num).expect("Cannot send to channel when there is no receiver");
+    }
+
+    // decrement the sender counter, when no sender, the channel is closed
+    drop(sender);
+
+    for thread in threads {
+        thread.join().expect("panic");
+    }
+}
+   #+END_SRC
+

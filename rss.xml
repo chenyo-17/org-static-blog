@@ -4,7 +4,162 @@
 <title><![CDATA[Chenyo's Blog]]></title>
 <description><![CDATA[Chenyo's Blog]]></description>
 <link>https://chenyo.me</link>
-<lastBuildDate>Sun, 03 Aug 2025 22:37:32 +0200</lastBuildDate>
+<lastBuildDate>Mon, 04 Aug 2025 22:31:49 +0200</lastBuildDate>
+<item>
+  <title><![CDATA[CS110L Notes]]></title>
+  <description><![CDATA[
+<nav id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#orgec3c74b">1. Channel</a>
+<ul>
+<li><a href="#orgfbfa330">1.1. Mutex-based channel implementation</a></li>
+<li><a href="#orge1c93f9">1.2. Rust crossbeam channel implementation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</nav>
+<p>
+Notes for CS110L Safety in Systems Programming.
+Mostly follow <a href="https://reberhardt.com/cs110l/spring-2020/">Spring 2020</a>, also include <a href="https://reberhardt.com/cs110l/spring-2021/">Spring 2021</a>.
+</p>
+
+<p>
+Not complete, only started taking notes since Lec 10 (2020).
+</p>
+<div id="outline-container-orgec3c74b" class="outline-2">
+<h2 id="orgec3c74b"><span class="section-number-2">1.</span> Channel</h2>
+<div class="outline-text-2" id="text-1">
+<ul class="org-ul">
+<li>Golang: Do not communicate by sharing memory; instead, share memory by communicating.</li>
+<li><b><b>Message passing</b></b>: each thread has its own memory, they communicate only by message exchanging.
+<ul class="org-ul">
+<li>In theory, this implies: no shared memory -&gt; no data races -&gt; each thread needs to copy the data -&gt; expensive</li>
+<li>In practice, goroutines share heap memory and only make shallow copies into channels -&gt; pass pointers to channel is dangerous!</li>
+</ul></li>
+<li>In Rust, passing pointers, e.g., <code>Box</code> is always safe due to ownership transfer</li>
+<li>An ideal channel: MCMC (multi-producer, multi-consumer).</li>
+</ul>
+</div>
+<div id="outline-container-orgfbfa330" class="outline-3">
+<h3 id="orgfbfa330"><span class="section-number-3">1.1.</span> Mutex-based channel implementation</h3>
+<div class="outline-text-3" id="text-1-1">
+<div class="org-src-container">
+<pre class="src src-rust"><span style="color: #51afef;">pub</span> <span style="color: #51afef;">struct</span> <span style="color: #ECBE7B;">SemaPlusPlus</span>&lt;<span style="color: #ECBE7B;">T</span>&gt; {
+    <span style="color: #dcaeea;">queue_and_cv</span>: <span style="color: #ECBE7B;">Arc</span>&lt;(<span style="color: #ECBE7B;">Mutex</span>&lt;<span style="color: #ECBE7B;">VecDeque</span>&lt;<span style="color: #ECBE7B;">T</span>&gt;&gt;, <span style="color: #ECBE7B;">Condvar</span>)&gt;,
+}
+
+<span style="color: #51afef;">impl</span>&lt;<span style="color: #ECBE7B;">T</span>&gt; <span style="color: #ECBE7B;">SemaPlusPlus</span>&lt;<span style="color: #ECBE7B;">T</span>&gt; {
+    <span style="color: #51afef;">pub</span> <span style="color: #51afef;">fn</span> <span style="color: #c678dd;">send</span>(<span style="color: #bbc2cf; background-color: #282c34;">&amp;</span><span style="color: #51afef;">self</span>, <span style="color: #dcaeea;">message</span>: <span style="color: #ECBE7B;">T</span>) {
+        <span style="color: #51afef;">let</span> (queue_lock, cv) = <span style="color: #bbc2cf; background-color: #282c34;">&amp;</span>*<span style="color: #51afef;">self</span>.queue_and_cv;
+        <span style="color: #51afef;">let</span> <span style="color: #51afef;">mut</span> <span style="color: #dcaeea;">queue</span> = queue_lock.lock().unwrap();
+        <span style="color: #51afef;">let</span> <span style="color: #dcaeea;">queue_was_empty</span> = queue.is_empty();
+        queue.push_back(message);
+        <span style="color: #5B6268;">// </span><span style="color: #5B6268;">if a queue is not empty, then another thread must have notified and main()</span>
+        <span style="color: #5B6268;">// </span><span style="color: #5B6268;">must be awake</span>
+        <span style="color: #51afef;">if</span> queue_was_empty {
+            cv.notify_all();
+        }
+    }
+
+    <span style="color: #51afef;">pub</span> <span style="color: #51afef;">fn</span> <span style="color: #c678dd;">recv</span>(<span style="color: #bbc2cf; background-color: #282c34;">&amp;</span><span style="color: #51afef;">self</span>) -&gt; <span style="color: #ECBE7B;">T</span> {
+        <span style="color: #51afef;">let</span> (queue_lock, cv) = <span style="color: #bbc2cf; background-color: #282c34;">&amp;</span>*<span style="color: #51afef;">self</span>.queue_and_cv;
+        <span style="color: #5B6268;">// </span><span style="color: #5B6268;">wait_while dereferences the guard and pass the protected data to the closure,</span>
+        <span style="color: #5B6268;">// </span><span style="color: #5B6268;">when the condition is true, it releases the lock and sleep until another thread</span>
+        <span style="color: #5B6268;">// </span><span style="color: #5B6268;">notify_all</span>
+        <span style="color: #51afef;">let</span> <span style="color: #51afef;">mut</span> <span style="color: #dcaeea;">queue</span> = cv
+            .wait_while(queue_lock.lock().unwrap(), |queue| queue.is_empty())
+            .unwrap();
+        queue.pop_front().unwrap()
+    }
+}
+
+<span style="color: #51afef;">fn</span> <span style="color: #c678dd;">main</span>() {
+    <span style="color: #51afef;">let</span> <span style="color: #dcaeea;">sem</span>: <span style="color: #ECBE7B;">SemaPlusPlus</span>&lt;<span style="color: #ECBE7B;">String</span>&gt; = <span style="color: #ECBE7B;">SemaPlusPlus</span>::new();
+    <span style="color: #51afef;">let</span> <span style="color: #51afef;">mut</span> <span style="color: #dcaeea;">handlers</span> = <span style="color: #ECBE7B;">Vec</span>::new();
+    <span style="color: #51afef;">for</span> <span style="color: #dcaeea;">i</span> <span style="color: #51afef;">in</span> 0..<span style="color: #ECBE7B;">NUM_THREADS</span> {
+        <span style="color: #51afef;">let</span> <span style="color: #dcaeea;">sem_clone</span> = sem.clone();
+        <span style="color: #51afef;">let</span> <span style="color: #dcaeea;">handle</span> = <span style="color: #a9a1e1;">thread</span>::spawn(<span style="color: #51afef;">move</span> || {
+            rand_sleep();
+            sem_clone.send(<span style="color: #c678dd;">format!</span>(<span style="color: #98be65;">"thread </span><span style="color: #98be65; font-style: italic;">{}</span><span style="color: #98be65;"> just finished!"</span>, i))
+        });
+        handlers.push(handle);
+    }
+    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">main is the only consumer of the queue,</span>
+    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">it wakes up when some thread notify_all, locks the queue, consume the message</span>
+    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">and release the lock until it is notified again</span>
+    <span style="color: #51afef;">for</span> <span style="color: #dcaeea;">_</span> <span style="color: #51afef;">in</span> 0..<span style="color: #ECBE7B;">NUM_THREADS</span> {
+        <span style="color: #c678dd;">println!</span>(<span style="color: #98be65;">"</span><span style="color: #98be65; font-style: italic;">{}</span><span style="color: #98be65;">"</span>, sem.recv())
+    }
+
+    <span style="color: #51afef;">for</span> <span style="color: #dcaeea;">handle</span> <span style="color: #51afef;">in</span> handlers {
+        handle.join().unwrap();
+    }
+}
+</pre>
+</div>
+<ul class="org-ul">
+<li>Mutex-based channel is inefficient:
+<ul class="org-ul">
+<li>it does not allow the queue producer and consumer modify the queue simultaneously.</li>
+<li>It involves system calls.</li>
+</ul></li>
+<li>Go channels are MCMC, but it essentially implement <code>Mutex&lt;VecDeque&lt;&gt;&gt;</code> with <a href="https://eli.thegreenplace.net/2018/basics-of-futexes/">fuxtex</a>.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orge1c93f9" class="outline-3">
+<h3 id="orge1c93f9"><span class="section-number-3">1.2.</span> Rust <a href="https://docs.rs/crossbeam/latest/crossbeam/channel/index.html">crossbeam</a> channel implementation</h3>
+<div class="outline-text-3" id="text-1-2">
+<ul class="org-ul">
+<li>Minimal lock usage.</li>
+<li>Channels are not the best choice for global values -&gt; lock still required.</li>
+</ul>
+
+<div class="org-src-container">
+<pre class="src src-rust"><span style="color: #83898d;">/// Factor the number while receiving numbers from stdin</span>
+<span style="color: #51afef;">fn</span> <span style="color: #c678dd;">main</span>() {
+    <span style="color: #51afef;">let</span> (sender, receiver) = <span style="color: #a9a1e1;">crossbeam_channel</span>::unbounded();
+    <span style="color: #51afef;">let</span> <span style="color: #51afef;">mut</span> <span style="color: #dcaeea;">threads</span> = <span style="color: #ECBE7B;">Vec</span>::new();
+    <span style="color: #51afef;">for</span> <span style="color: #dcaeea;">_</span> <span style="color: #51afef;">in</span> 0..<span style="color: #a9a1e1;">num_cpus</span>::get() {
+        <span style="color: #5B6268;">// </span><span style="color: #5B6268;">The channel maintains a reference counter for senders and for receivers</span>
+        <span style="color: #5B6268;">// </span><span style="color: #5B6268;">when receiver.clone(), the receiver counter increments.</span>
+        <span style="color: #51afef;">let</span> <span style="color: #dcaeea;">receiver</span> = receiver.clone();
+        threads.push(<span style="color: #a9a1e1;">thread</span>::spawn(<span style="color: #51afef;">move</span> || {
+            <span style="color: #51afef;">while</span> <span style="color: #51afef;">let</span> <span style="color: #ECBE7B;">Ok</span>(next_num) = receiver.recv() {
+                factor_number(next_num);
+            }
+        }));
+    }
+
+    <span style="color: #51afef;">let</span> <span style="color: #dcaeea;">stdin</span> = <span style="color: #a9a1e1;">std</span>::<span style="color: #a9a1e1;">io</span>::stdin();
+    <span style="color: #51afef;">for</span> <span style="color: #dcaeea;">line</span> <span style="color: #51afef;">in</span> stdin.lock().lines() {
+        <span style="color: #51afef;">let</span> <span style="color: #dcaeea;">num</span> = line.unwrap().parse::&lt;<span style="color: #ECBE7B;">u32</span>&gt;().unwrap();
+        sender.send(num).expect(<span style="color: #98be65;">"Cannot send to channel when there is no receiver"</span>);
+    }
+
+    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">decrement the sender counter, when no sender, the channel is closed</span>
+    drop(sender);
+
+    <span style="color: #51afef;">for</span> <span style="color: #dcaeea;">thread</span> <span style="color: #51afef;">in</span> threads {
+        thread.join().expect(<span style="color: #98be65;">"panic"</span>);
+    }
+}
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div class="taglist"><a href="https://chenyo.me/tags.html">Tags</a>: <a href="https://chenyo.me/tag-study.html">study</a> <a href="https://chenyo.me/tag-rust.html">rust</a> <a href="https://chenyo.me/tag-stanford.html">stanford</a> </div>]]></description>
+  <category><![CDATA[study]]></category>
+  <category><![CDATA[rust]]></category>
+  <category><![CDATA[stanford]]></category>
+  <link>https://chenyo.me/2025-08-04-cs110l-notes.html</link>
+  <guid>https://chenyo.me/2025-08-04-cs110l-notes.html</guid>
+  <pubDate>Mon, 04 Aug 2025 20:38:00 +0200</pubDate>
+</item>
 <item>
   <title><![CDATA[Org static blog in Neovim]]></title>
   <description><![CDATA[
@@ -12,18 +167,18 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orge231a4b">1. Emacs non-interactive commands</a></li>
-<li><a href="#orga95bd42">2. Correct HTML export</a></li>
-<li><a href="#org5e86d09">3. Modify Emacs function</a></li>
-<li><a href="#org7ec5462">4. Create Neovim functions</a></li>
+<li><a href="#orga1a43d0">1. Emacs non-interactive commands</a></li>
+<li><a href="#orgc088ca2">2. Correct HTML export</a></li>
+<li><a href="#org9dbe8bc">3. Modify Emacs function</a></li>
+<li><a href="#org2058482">4. Create Neovim functions</a></li>
 </ul>
 </div>
 </nav>
 <p>
 This post records how I use org static blog in Neovim with <a href="https://github.com/nvim-orgmode/orgmode">nvim-orgmode</a>.
 </p>
-<div id="outline-container-orge231a4b" class="outline-2">
-<h2 id="orge231a4b"><span class="section-number-2">1.</span> Emacs non-interactive commands</h2>
+<div id="outline-container-orga1a43d0" class="outline-2">
+<h2 id="orga1a43d0"><span class="section-number-2">1.</span> Emacs non-interactive commands</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 The emacs <a href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Batch-Mode.html">batch mode</a> does not really work for me.
@@ -37,8 +192,8 @@ emacsclient -e <span style="color: #98be65;">'(progn (org-static-blog-create-new
 </div>
 </div>
 </div>
-<div id="outline-container-orga95bd42" class="outline-2">
-<h2 id="orga95bd42"><span class="section-number-2">2.</span> Correct HTML export</h2>
+<div id="outline-container-orgc088ca2" class="outline-2">
+<h2 id="orgc088ca2"><span class="section-number-2">2.</span> Correct HTML export</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 While I can start a daemon with <code>emacs --daemon</code> to run <code>emacsclient</code>, the HTML export done by <code>org-static-blog-publish</code> lacks correct syntax highlighting in code block and messes up other page layout.
@@ -66,8 +221,8 @@ Then in the Neovim config, execute it like following (don&rsquo;t forget <code>c
 </div>
 </div>
 </div>
-<div id="outline-container-org5e86d09" class="outline-2">
-<h2 id="org5e86d09"><span class="section-number-2">3.</span> Modify Emacs function</h2>
+<div id="outline-container-org9dbe8bc" class="outline-2">
+<h2 id="org9dbe8bc"><span class="section-number-2">3.</span> Modify Emacs function</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 In the original function, <code>org-static-blog-create-new-post</code> is an interactive command that requires users to input and confirm a title.
@@ -89,8 +244,8 @@ To use <code>emacsclient</code>, I wrap it with a non-interactive function like 
 </div>
 </div>
 </div>
-<div id="outline-container-org7ec5462" class="outline-2">
-<h2 id="org7ec5462"><span class="section-number-2">4.</span> Create Neovim functions</h2>
+<div id="outline-container-org2058482" class="outline-2">
+<h2 id="org2058482"><span class="section-number-2">4.</span> Create Neovim functions</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 Finally, add the Neovim commands as following:
@@ -125,17 +280,17 @@ vim.api.nvim_create_user_command(
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgdaa9a42">1. Terminal Installation</a></li>
-<li><a href="#orgd9c9899">2. Emacs Configuration</a></li>
-<li><a href="#orgb4089a7">3. Usage</a></li>
+<li><a href="#orgcce816f">1. Terminal Installation</a></li>
+<li><a href="#orgfa6c37e">2. Emacs Configuration</a></li>
+<li><a href="#org784f9f4">3. Usage</a></li>
 </ul>
 </div>
 </nav>
 <p>
 This post records my steps of installing and configuring basic PHP with Doom Emacs and Arch Linux.
 </p>
-<div id="outline-container-orgdaa9a42" class="outline-2">
-<h2 id="orgdaa9a42"><span class="section-number-2">1.</span> Terminal Installation</h2>
+<div id="outline-container-orgcce816f" class="outline-2">
+<h2 id="orgcce816f"><span class="section-number-2">1.</span> Terminal Installation</h2>
 <div class="outline-text-2" id="text-1">
 <ol class="org-ol">
 <li><code>yay php</code>: install PHP.</li>
@@ -162,8 +317,8 @@ Create file <code>~/.config/phpactor/phpactor.yml</code> and write to file:
 </ol>
 </div>
 </div>
-<div id="outline-container-orgd9c9899" class="outline-2">
-<h2 id="orgd9c9899"><span class="section-number-2">2.</span> Emacs Configuration</h2>
+<div id="outline-container-orgfa6c37e" class="outline-2">
+<h2 id="orgfa6c37e"><span class="section-number-2">2.</span> Emacs Configuration</h2>
 <div class="outline-text-2" id="text-2">
 <ol class="org-ol">
 <li>Uncomment <code>(php +lsp)</code> in  <code>init.el</code>.</li>
@@ -185,8 +340,8 @@ Configure <code>config.el</code> as following:
 </ol>
 </div>
 </div>
-<div id="outline-container-orgb4089a7" class="outline-2">
-<h2 id="orgb4089a7"><span class="section-number-2">3.</span> Usage</h2>
+<div id="outline-container-org784f9f4" class="outline-2">
+<h2 id="org784f9f4"><span class="section-number-2">3.</span> Usage</h2>
 <div class="outline-text-2" id="text-3">
 <ul class="org-ul">
 <li>Use <code>M-x lsp-describe-session</code> to verify <code>phpactor</code> is in use.</li>

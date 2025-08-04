@@ -41,18 +41,18 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orge231a4b">1. Emacs non-interactive commands</a></li>
-<li><a href="#orga95bd42">2. Correct HTML export</a></li>
-<li><a href="#org5e86d09">3. Modify Emacs function</a></li>
-<li><a href="#org7ec5462">4. Create Neovim functions</a></li>
+<li><a href="#orga1a43d0">1. Emacs non-interactive commands</a></li>
+<li><a href="#orgc088ca2">2. Correct HTML export</a></li>
+<li><a href="#org9dbe8bc">3. Modify Emacs function</a></li>
+<li><a href="#org2058482">4. Create Neovim functions</a></li>
 </ul>
 </div>
 </nav>
 <p>
 This post records how I use org static blog in Neovim with <a href="https://github.com/nvim-orgmode/orgmode">nvim-orgmode</a>.
 </p>
-<div id="outline-container-orge231a4b" class="outline-2">
-<h2 id="orge231a4b"><span class="section-number-2">1.</span> Emacs non-interactive commands</h2>
+<div id="outline-container-orga1a43d0" class="outline-2">
+<h2 id="orga1a43d0"><span class="section-number-2">1.</span> Emacs non-interactive commands</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 The emacs <a href="https://www.gnu.org/software/emacs/manual/html_node/elisp/Batch-Mode.html">batch mode</a> does not really work for me.
@@ -66,8 +66,8 @@ emacsclient -e <span style="color: #98be65;">'(progn (org-static-blog-create-new
 </div>
 </div>
 </div>
-<div id="outline-container-orga95bd42" class="outline-2">
-<h2 id="orga95bd42"><span class="section-number-2">2.</span> Correct HTML export</h2>
+<div id="outline-container-orgc088ca2" class="outline-2">
+<h2 id="orgc088ca2"><span class="section-number-2">2.</span> Correct HTML export</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 While I can start a daemon with <code>emacs --daemon</code> to run <code>emacsclient</code>, the HTML export done by <code>org-static-blog-publish</code> lacks correct syntax highlighting in code block and messes up other page layout.
@@ -95,8 +95,8 @@ Then in the Neovim config, execute it like following (don&rsquo;t forget <code>c
 </div>
 </div>
 </div>
-<div id="outline-container-org5e86d09" class="outline-2">
-<h2 id="org5e86d09"><span class="section-number-2">3.</span> Modify Emacs function</h2>
+<div id="outline-container-org9dbe8bc" class="outline-2">
+<h2 id="org9dbe8bc"><span class="section-number-2">3.</span> Modify Emacs function</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 In the original function, <code>org-static-blog-create-new-post</code> is an interactive command that requires users to input and confirm a title.
@@ -118,8 +118,8 @@ To use <code>emacsclient</code>, I wrap it with a non-interactive function like 
 </div>
 </div>
 </div>
-<div id="outline-container-org7ec5462" class="outline-2">
-<h2 id="org7ec5462"><span class="section-number-2">4.</span> Create Neovim functions</h2>
+<div id="outline-container-org2058482" class="outline-2">
+<h2 id="org2058482"><span class="section-number-2">4.</span> Create Neovim functions</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 Finally, add the Neovim commands as following:

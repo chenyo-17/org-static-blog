@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="alternate"
+      type="application/rss+xml"
+      href="https://chenyo.me/rss.xml"
+      title="RSS feed for https://chenyo.me">
+<title>Chenyo's Blog</title>
+<script type="text/javascript"
+             src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+       </script>
+       <script type="text/x-mathjax-config">
+             MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'],['\\(','\\)']]}});
+       </script>
+       <meta name="author" content="chenyo">
+      <meta name="referrer" content="no-referrer">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="stylesheet" href="assets/style.css" type="text/css"/>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+      <link rel="favicon" type="image/x-icon" href="favicon.ico">
+      <script src="assets/search.js"></script></head>
+<body>
+<div id="preamble" class="status">
+      <header>
+      <h1><a href="https://chenyo.me">Chenyo's org-static-blog</a></h1>
+      <nav>
+      <a href="https://chenyo.me">Home</a>
+      <a href="archive.html">Archive</a>
+      <a href="tags.html">Tags</a>
+      <div id="search-container">
+        <input type="text" id="search-input" placeholder="Search anywhere...">
+        <i class="fas fa-search search-icon"></i>
+      </div>
+      </nav>
+      </header></div>
+<div id="content">
+<h1 class="title">Posts tagged "stanford":</h1>
+<div class="post-date">04 Aug 2025</div><h1 class="post-title"><a href="https://chenyo.me/2025-08-04-cs110l-notes.html">CS110L Notes</a></h1>
+<nav id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#orgec3c74b">1. Channel</a>
+<ul>
+<li><a href="#orgfbfa330">1.1. Mutex-based channel implementation</a></li>
+<li><a href="#orge1c93f9">1.2. Rust crossbeam channel implementation</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</nav>
+<p>
+Notes for CS110L Safety in Systems Programming.
+Mostly follow <a href="https://reberhardt.com/cs110l/spring-2020/">Spring 2020</a>, also include <a href="https://reberhardt.com/cs110l/spring-2021/">Spring 2021</a>.
+</p>
+
+<p>
+Not complete, only started taking notes since Lec 10 (2020).
+</p>
+<div id="outline-container-orgec3c74b" class="outline-2">
+<h2 id="orgec3c74b"><span class="section-number-2">1.</span> Channel</h2>
+<div class="outline-text-2" id="text-1">
+<ul class="org-ul">
+<li>Golang: Do not communicate by sharing memory; instead, share memory by communicating.</li>
+<li><b><b>Message passing</b></b>: each thread has its own memory, they communicate only by message exchanging.
+<ul class="org-ul">
+<li>In theory, this implies: no shared memory -&gt; no data races -&gt; each thread needs to copy the data -&gt; expensive</li>
+<li>In practice, goroutines share heap memory and only make shallow copies into channels -&gt; pass pointers to channel is dangerous!</li>
+</ul></li>
+<li>In Rust, passing pointers, e.g., <code>Box</code> is always safe due to ownership transfer</li>
+<li>An ideal channel: MCMC (multi-producer, multi-consumer).</li>
+</ul>
+</div>
+<div id="outline-container-orgfbfa330" class="outline-3">
+<h3 id="orgfbfa330"><span class="section-number-3">1.1.</span> Mutex-based channel implementation</h3>
+<div class="outline-text-3" id="text-1-1">
+<div class="org-src-container">
+<pre class="src src-rust"><span style="color: #51afef;">pub</span> <span style="color: #51afef;">struct</span> <span style="color: #ECBE7B;">SemaPlusPlus</span>&lt;<span style="color: #ECBE7B;">T</span>&gt; {
+    <span style="color: #dcaeea;">queue_and_cv</span>: <span style="color: #ECBE7B;">Arc</span>&lt;(<span style="color: #ECBE7B;">Mutex</span>&lt;<span style="color: #ECBE7B;">VecDeque</span>&lt;<span style="color: #ECBE7B;">T</span>&gt;&gt;, <span style="color: #ECBE7B;">Condvar</span>)&gt;,
+}
+
+<span style="color: #51afef;">impl</span>&lt;<span style="color: #ECBE7B;">T</span>&gt; <span style="color: #ECBE7B;">SemaPlusPlus</span>&lt;<span style="color: #ECBE7B;">T</span>&gt; {
+    <span style="color: #51afef;">pub</span> <span style="color: #51afef;">fn</span> <span style="color: #c678dd;">send</span>(<span style="color: #bbc2cf; background-color: #282c34;">&amp;</span><span style="color: #51afef;">self</span>, <span style="color: #dcaeea;">message</span>: <span style="color: #ECBE7B;">T</span>) {
+        <span style="color: #51afef;">let</span> (queue_lock, cv) = <span style="color: #bbc2cf; background-color: #282c34;">&amp;</span>*<span style="color: #51afef;">self</span>.queue_and_cv;
+        <span style="color: #51afef;">let</span> <span style="color: #51afef;">mut</span> <span style="color: #dcaeea;">queue</span> = queue_lock.lock().unwrap();
+        <span style="color: #51afef;">let</span> <span style="color: #dcaeea;">queue_was_empty</span> = queue.is_empty();
+        queue.push_back(message);
+        <span style="color: #5B6268;">// </span><span style="color: #5B6268;">if a queue is not empty, then another thread must have notified and main()</span>
+        <span style="color: #5B6268;">// </span><span style="color: #5B6268;">must be awake</span>
+        <span style="color: #51afef;">if</span> queue_was_empty {
+            cv.notify_all();
+        }
+    }
+
+    <span style="color: #51afef;">pub</span> <span style="color: #51afef;">fn</span> <span style="color: #c678dd;">recv</span>(<span style="color: #bbc2cf; background-color: #282c34;">&amp;</span><span style="color: #51afef;">self</span>) -&gt; <span style="color: #ECBE7B;">T</span> {
+        <span style="color: #51afef;">let</span> (queue_lock, cv) = <span style="color: #bbc2cf; background-color: #282c34;">&amp;</span>*<span style="color: #51afef;">self</span>.queue_and_cv;
+        <span style="color: #5B6268;">// </span><span style="color: #5B6268;">wait_while dereferences the guard and pass the protected data to the closure,</span>
+        <span style="color: #5B6268;">// </span><span style="color: #5B6268;">when the condition is true, it releases the lock and sleep until another thread</span>
+        <span style="color: #5B6268;">// </span><span style="color: #5B6268;">notify_all</span>
+        <span style="color: #51afef;">let</span> <span style="color: #51afef;">mut</span> <span style="color: #dcaeea;">queue</span> = cv
+            .wait_while(queue_lock.lock().unwrap(), |queue| queue.is_empty())
+            .unwrap();
+        queue.pop_front().unwrap()
+    }
+}
+
+<span style="color: #51afef;">fn</span> <span style="color: #c678dd;">main</span>() {
+    <span style="color: #51afef;">let</span> <span style="color: #dcaeea;">sem</span>: <span style="color: #ECBE7B;">SemaPlusPlus</span>&lt;<span style="color: #ECBE7B;">String</span>&gt; = <span style="color: #ECBE7B;">SemaPlusPlus</span>::new();
+    <span style="color: #51afef;">let</span> <span style="color: #51afef;">mut</span> <span style="color: #dcaeea;">handlers</span> = <span style="color: #ECBE7B;">Vec</span>::new();
+    <span style="color: #51afef;">for</span> <span style="color: #dcaeea;">i</span> <span style="color: #51afef;">in</span> 0..<span style="color: #ECBE7B;">NUM_THREADS</span> {
+        <span style="color: #51afef;">let</span> <span style="color: #dcaeea;">sem_clone</span> = sem.clone();
+        <span style="color: #51afef;">let</span> <span style="color: #dcaeea;">handle</span> = <span style="color: #a9a1e1;">thread</span>::spawn(<span style="color: #51afef;">move</span> || {
+            rand_sleep();
+            sem_clone.send(<span style="color: #c678dd;">format!</span>(<span style="color: #98be65;">"thread </span><span style="color: #98be65; font-style: italic;">{}</span><span style="color: #98be65;"> just finished!"</span>, i))
+        });
+        handlers.push(handle);
+    }
+    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">main is the only consumer of the queue,</span>
+    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">it wakes up when some thread notify_all, locks the queue, consume the message</span>
+    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">and release the lock until it is notified again</span>
+    <span style="color: #51afef;">for</span> <span style="color: #dcaeea;">_</span> <span style="color: #51afef;">in</span> 0..<span style="color: #ECBE7B;">NUM_THREADS</span> {
+        <span style="color: #c678dd;">println!</span>(<span style="color: #98be65;">"</span><span style="color: #98be65; font-style: italic;">{}</span><span style="color: #98be65;">"</span>, sem.recv())
+    }
+
+    <span style="color: #51afef;">for</span> <span style="color: #dcaeea;">handle</span> <span style="color: #51afef;">in</span> handlers {
+        handle.join().unwrap();
+    }
+}
+</pre>
+</div>
+<ul class="org-ul">
+<li>Mutex-based channel is inefficient:
+<ul class="org-ul">
+<li>it does not allow the queue producer and consumer modify the queue simultaneously.</li>
+<li>It involves system calls.</li>
+</ul></li>
+<li>Go channels are MCMC, but it essentially implement <code>Mutex&lt;VecDeque&lt;&gt;&gt;</code> with <a href="https://eli.thegreenplace.net/2018/basics-of-futexes/">fuxtex</a>.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orge1c93f9" class="outline-3">
+<h3 id="orge1c93f9"><span class="section-number-3">1.2.</span> Rust <a href="https://docs.rs/crossbeam/latest/crossbeam/channel/index.html">crossbeam</a> channel implementation</h3>
+<div class="outline-text-3" id="text-1-2">
+<ul class="org-ul">
+<li>Minimal lock usage.</li>
+<li>Channels are not the best choice for global values -&gt; lock still required.</li>
+</ul>
+
+<div class="org-src-container">
+<pre class="src src-rust"><span style="color: #83898d;">/// Factor the number while receiving numbers from stdin</span>
+<span style="color: #51afef;">fn</span> <span style="color: #c678dd;">main</span>() {
+    <span style="color: #51afef;">let</span> (sender, receiver) = <span style="color: #a9a1e1;">crossbeam_channel</span>::unbounded();
+    <span style="color: #51afef;">let</span> <span style="color: #51afef;">mut</span> <span style="color: #dcaeea;">threads</span> = <span style="color: #ECBE7B;">Vec</span>::new();
+    <span style="color: #51afef;">for</span> <span style="color: #dcaeea;">_</span> <span style="color: #51afef;">in</span> 0..<span style="color: #a9a1e1;">num_cpus</span>::get() {
+        <span style="color: #5B6268;">// </span><span style="color: #5B6268;">The channel maintains a reference counter for senders and for receivers</span>
+        <span style="color: #5B6268;">// </span><span style="color: #5B6268;">when receiver.clone(), the receiver counter increments.</span>
+        <span style="color: #51afef;">let</span> <span style="color: #dcaeea;">receiver</span> = receiver.clone();
+        threads.push(<span style="color: #a9a1e1;">thread</span>::spawn(<span style="color: #51afef;">move</span> || {
+            <span style="color: #51afef;">while</span> <span style="color: #51afef;">let</span> <span style="color: #ECBE7B;">Ok</span>(next_num) = receiver.recv() {
+                factor_number(next_num);
+            }
+        }));
+    }
+
+    <span style="color: #51afef;">let</span> <span style="color: #dcaeea;">stdin</span> = <span style="color: #a9a1e1;">std</span>::<span style="color: #a9a1e1;">io</span>::stdin();
+    <span style="color: #51afef;">for</span> <span style="color: #dcaeea;">line</span> <span style="color: #51afef;">in</span> stdin.lock().lines() {
+        <span style="color: #51afef;">let</span> <span style="color: #dcaeea;">num</span> = line.unwrap().parse::&lt;<span style="color: #ECBE7B;">u32</span>&gt;().unwrap();
+        sender.send(num).expect(<span style="color: #98be65;">"Cannot send to channel when there is no receiver"</span>);
+    }
+
+    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">decrement the sender counter, when no sender, the channel is closed</span>
+    drop(sender);
+
+    <span style="color: #51afef;">for</span> <span style="color: #dcaeea;">thread</span> <span style="color: #51afef;">in</span> threads {
+        thread.join().expect(<span style="color: #98be65;">"panic"</span>);
+    }
+}
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div class="taglist"><a href="https://chenyo.me/tags.html">Tags</a>: <a href="https://chenyo.me/tag-study.html">study</a> <a href="https://chenyo.me/tag-rust.html">rust</a> <a href="https://chenyo.me/tag-stanford.html">stanford</a> </div><div id="archive">
+<a href="https://chenyo.me/archive.html">Other posts</a>
+</div>
+</div>
+<div id="postamble" class="status"><div id="search-results"></div>
+      <footer>
+        <div class="footer-content">
+        <div class="footer-left">
+        <p>© 2025 chenyo. Some rights reserved.</p>
+        <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">
+        <img alt="Creative Commons License" style="border-width: 0"
+        src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png"/>
+        </a>
+      </a>
+      </div>
+      <script src="assets/toggle.js"></script>
+      </footer></div>
+</body>
+</html>
