@@ -15,7 +15,7 @@ Not complete, only started taking notes since Lec 10 (2020).
     - In theory, this implies: no shared memory -> no data races -> each thread needs to copy the data -> expensive
     - In practice, goroutines share heap memory and only make shallow copies into channels -> pass pointers to channel is dangerous!
   - In Rust, passing pointers, e.g., ~Box~ is always safe due to ownership transfer
-  - An ideal channel: MCMC (multi-producer, multi-consumer).
+  - An ideal channel: MPMC (multi-producer, multi-consumer).
 
 ** Mutex-based channel implementation
 
@@ -75,7 +75,7 @@ fn main() {
   - Mutex-based channel is inefficient:
     - it does not allow the queue producer and consumer modify the queue simultaneously.
     - It involves system calls.
-  - Go channels are MCMC, but it essentially implement ~Mutex<VecDeque<>>~ with [[https://eli.thegreenplace.net/2018/basics-of-futexes/][fuxtex]].
+  - Go channels are MPMC, but it essentially implement ~Mutex<VecDeque<>>~ with [[https://eli.thegreenplace.net/2018/basics-of-futexes/][fuxtex]].
 
 ** Rust [[https://docs.rs/crossbeam/latest/crossbeam/channel/index.html][crossbeam]] channel implementation
 
@@ -113,3 +113,44 @@ fn main() {
 }
    #+END_SRC
 
+
+* Networking systems
+
+** System
+*** File system
+   - Open file (OF) table: system-wide table, stores file position, access mode (read/write) and reference count.
+   - File descriptor (FD) table: process-specific table, maps file descriptor integers to references in the OF table; multiple FD entries can point to the same OF entry (e.g., parent and child processes share file positions).
+   - Vnode table: system-wide table, contains file (e.g., terminal, socket) size, permissions, timestamps, disk block locations; multiple  OF entries can reference the same vnode entry, indicating same file opened multiple times.
+
+*** Start a server
+   - A process creates a socket file descriptor with a queue for connection requests.
+   - The process binds the socket with specific IP and port.
+   - The process listens and accepts connections in a loop.
+
+*** Connect to a server (ignore networking details)
+   - The client creates a socket and send the socket address in the SYN packet.
+   - The server accpets the request and start a new clinet-specific socket to establish a bidirectional communication channel.
+
+** Scalability and avilability
+   - Internet traffic has grown faster than hardware has increased in power.
+   - Two machines with commodity performance is much cheaper than one machine with 2x performance.
+   - Need to distribute a system's functionality over servers using networking.
+   - Scale out: separate stateless computation and data storage.
+   - [[https://blog.codinghorror.com/working-with-the-chaos-monkey/][Chaos engineering]]: intentionally introduce failures on production, e.g., randomly terminates an entire datacenter or even a region.
+
+*** Load balancers
+   - Relay client requests to one compute node; health check each compute node.
+   - Load balancing load balancers: 
+    - Round-robin DNS; DNS return multiple IPs for the same hostname.
+      - Hard to consistently rotate IPs if the DNS responses are cached.
+      - DNS has no idea of IP health. 
+    - Geographic routing: DNS servers respond with the load balancer IP closest to the client. 
+      - If the cloest data center is done, availability is still broken. 
+    - IP anycast: multiple computers announce they own the same IP (BGP).
+
+** Security
+   - Authentication: who are you? Authorization: are you allowed? 
+   - Prevent confidential data leakage: use a framework to handle every request, check authenticartion/authorization; use type systems.
+   - Elasticsearch: distributed, open source search and analytics engine for all types of data; involved in multiple [[https://www.troyhunt.com/the-unattributable-db8151dd-data-breach/][data breach]] incidents.
+     - Why: bad default settings, e.g., default username and password; accept all connections by default.
+   -  Design principles: needs to be harder to do things wrong than to do thing right.

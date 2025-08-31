@@ -41,10 +41,27 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgec3c74b">1. Channel</a>
+<li><a href="#orga7e256c">1. Channel</a>
 <ul>
-<li><a href="#orgfbfa330">1.1. Mutex-based channel implementation</a></li>
-<li><a href="#orge1c93f9">1.2. Rust crossbeam channel implementation</a></li>
+<li><a href="#org13bd44f">1.1. Mutex-based channel implementation</a></li>
+<li><a href="#org3df6d68">1.2. Rust crossbeam channel implementation</a></li>
+</ul>
+</li>
+<li><a href="#orga16d717">2. Networking systems</a>
+<ul>
+<li><a href="#org651b63b">2.1. System</a>
+<ul>
+<li><a href="#orgae75c98">2.1.1. File system</a></li>
+<li><a href="#org7246df5">2.1.2. Start a server</a></li>
+<li><a href="#orga05f0f8">2.1.3. Connect to a server (ignore networking details)</a></li>
+</ul>
+</li>
+<li><a href="#orge1eb81b">2.2. Scalability and avilability</a>
+<ul>
+<li><a href="#org1883334">2.2.1. Load balancers</a></li>
+</ul>
+</li>
+<li><a href="#org07ae995">2.3. Security</a></li>
 </ul>
 </li>
 </ul>
@@ -58,8 +75,8 @@ Mostly follow <a href="https://reberhardt.com/cs110l/spring-2020/">Spring 2020</
 <p>
 Not complete, only started taking notes since Lec 10 (2020).
 </p>
-<div id="outline-container-orgec3c74b" class="outline-2">
-<h2 id="orgec3c74b"><span class="section-number-2">1.</span> Channel</h2>
+<div id="outline-container-orga7e256c" class="outline-2">
+<h2 id="orga7e256c"><span class="section-number-2">1.</span> Channel</h2>
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
 <li>Golang: Do not communicate by sharing memory; instead, share memory by communicating.</li>
@@ -69,11 +86,11 @@ Not complete, only started taking notes since Lec 10 (2020).
 <li>In practice, goroutines share heap memory and only make shallow copies into channels -&gt; pass pointers to channel is dangerous!</li>
 </ul></li>
 <li>In Rust, passing pointers, e.g., <code>Box</code> is always safe due to ownership transfer</li>
-<li>An ideal channel: MCMC (multi-producer, multi-consumer).</li>
+<li>An ideal channel: MPMC (multi-producer, multi-consumer).</li>
 </ul>
 </div>
-<div id="outline-container-orgfbfa330" class="outline-3">
-<h3 id="orgfbfa330"><span class="section-number-3">1.1.</span> Mutex-based channel implementation</h3>
+<div id="outline-container-org13bd44f" class="outline-3">
+<h3 id="org13bd44f"><span class="section-number-3">1.1.</span> Mutex-based channel implementation</h3>
 <div class="outline-text-3" id="text-1-1">
 <div class="org-src-container">
 <pre class="src src-rust"><span style="color: #51afef;">pub</span> <span style="color: #51afef;">struct</span> <span style="color: #ECBE7B;">SemaPlusPlus</span>&lt;<span style="color: #ECBE7B;">T</span>&gt; {
@@ -135,12 +152,12 @@ Not complete, only started taking notes since Lec 10 (2020).
 <li>it does not allow the queue producer and consumer modify the queue simultaneously.</li>
 <li>It involves system calls.</li>
 </ul></li>
-<li>Go channels are MCMC, but it essentially implement <code>Mutex&lt;VecDeque&lt;&gt;&gt;</code> with <a href="https://eli.thegreenplace.net/2018/basics-of-futexes/">fuxtex</a>.</li>
+<li>Go channels are MPMC, but it essentially implement <code>Mutex&lt;VecDeque&lt;&gt;&gt;</code> with <a href="https://eli.thegreenplace.net/2018/basics-of-futexes/">fuxtex</a>.</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-orge1c93f9" class="outline-3">
-<h3 id="orge1c93f9"><span class="section-number-3">1.2.</span> Rust <a href="https://docs.rs/crossbeam/latest/crossbeam/channel/index.html">crossbeam</a> channel implementation</h3>
+<div id="outline-container-org3df6d68" class="outline-3">
+<h3 id="org3df6d68"><span class="section-number-3">1.2.</span> Rust <a href="https://docs.rs/crossbeam/latest/crossbeam/channel/index.html">crossbeam</a> channel implementation</h3>
 <div class="outline-text-3" id="text-1-2">
 <ul class="org-ul">
 <li>Minimal lock usage.</li>
@@ -178,6 +195,92 @@ Not complete, only started taking notes since Lec 10 (2020).
 }
 </pre>
 </div>
+</div>
+</div>
+</div>
+<div id="outline-container-orga16d717" class="outline-2">
+<h2 id="orga16d717"><span class="section-number-2">2.</span> Networking systems</h2>
+<div class="outline-text-2" id="text-2">
+</div>
+<div id="outline-container-org651b63b" class="outline-3">
+<h3 id="org651b63b"><span class="section-number-3">2.1.</span> System</h3>
+<div class="outline-text-3" id="text-2-1">
+</div>
+<div id="outline-container-orgae75c98" class="outline-4">
+<h4 id="orgae75c98"><span class="section-number-4">2.1.1.</span> File system</h4>
+<div class="outline-text-4" id="text-2-1-1">
+<ul class="org-ul">
+<li>Open file (OF) table: system-wide table, stores file position, access mode (read/write) and reference count.</li>
+<li>File descriptor (FD) table: process-specific table, maps file descriptor integers to references in the OF table; multiple FD entries can point to the same OF entry (e.g., parent and child processes share file positions).</li>
+<li>Vnode table: system-wide table, contains file (e.g., terminal, socket) size, permissions, timestamps, disk block locations; multiple  OF entries can reference the same vnode entry, indicating same file opened multiple times.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org7246df5" class="outline-4">
+<h4 id="org7246df5"><span class="section-number-4">2.1.2.</span> Start a server</h4>
+<div class="outline-text-4" id="text-2-1-2">
+<ul class="org-ul">
+<li>A process creates a socket file descriptor with a queue for connection requests.</li>
+<li>The process binds the socket with specific IP and port.</li>
+<li>The process listens and accepts connections in a loop.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orga05f0f8" class="outline-4">
+<h4 id="orga05f0f8"><span class="section-number-4">2.1.3.</span> Connect to a server (ignore networking details)</h4>
+<div class="outline-text-4" id="text-2-1-3">
+<ul class="org-ul">
+<li>The client creates a socket and send the socket address in the SYN packet.</li>
+<li>The server accpets the request and start a new clinet-specific socket to establish a bidirectional communication channel.</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-orge1eb81b" class="outline-3">
+<h3 id="orge1eb81b"><span class="section-number-3">2.2.</span> Scalability and avilability</h3>
+<div class="outline-text-3" id="text-2-2">
+<ul class="org-ul">
+<li>Internet traffic has grown faster than hardware has increased in power.</li>
+<li>Two machines with commodity performance is much cheaper than one machine with 2x performance.</li>
+<li>Need to distribute a system&rsquo;s functionality over servers using networking.</li>
+<li>Scale out: separate stateless computation and data storage.</li>
+<li><a href="https://blog.codinghorror.com/working-with-the-chaos-monkey/">Chaos engineering</a>: intentionally introduce failures on production, e.g., randomly terminates an entire datacenter or even a region.</li>
+</ul>
+</div>
+<div id="outline-container-org1883334" class="outline-4">
+<h4 id="org1883334"><span class="section-number-4">2.2.1.</span> Load balancers</h4>
+<div class="outline-text-4" id="text-2-2-1">
+<ul class="org-ul">
+<li>Relay client requests to one compute node; health check each compute node.</li>
+<li>Load balancing load balancers:
+<ul class="org-ul">
+<li>Round-robin DNS; DNS return multiple IPs for the same hostname.
+<ul class="org-ul">
+<li>Hard to consistently rotate IPs if the DNS responses are cached.</li>
+<li>DNS has no idea of IP health.</li>
+</ul></li>
+<li>Geographic routing: DNS servers respond with the load balancer IP closest to the client.
+<ul class="org-ul">
+<li>If the cloest data center is done, availability is still broken.</li>
+</ul></li>
+<li>IP anycast: multiple computers announce they own the same IP (BGP).</li>
+</ul></li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-org07ae995" class="outline-3">
+<h3 id="org07ae995"><span class="section-number-3">2.3.</span> Security</h3>
+<div class="outline-text-3" id="text-2-3">
+<ul class="org-ul">
+<li>Authentication: who are you? Authorization: are you allowed?</li>
+<li>Prevent confidential data leakage: use a framework to handle every request, check authenticartion/authorization; use type systems.</li>
+<li>Elasticsearch: distributed, open source search and analytics engine for all types of data; involved in multiple <a href="https://www.troyhunt.com/the-unattributable-db8151dd-data-breach/">data breach</a> incidents.
+<ul class="org-ul">
+<li>Why: bad default settings, e.g., default username and password; accept all connections by default.</li>
+</ul></li>
+<li>Design principles: needs to be harder to do things wrong than to do thing right.</li>
+</ul>
 </div>
 </div>
 </div>
