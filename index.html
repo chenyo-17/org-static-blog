@@ -42,27 +42,36 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orga7e256c">1. Channel</a>
+<li><a href="#org81a7d84">1. Channel</a>
 <ul>
-<li><a href="#org13bd44f">1.1. Mutex-based channel implementation</a></li>
-<li><a href="#org3df6d68">1.2. Rust crossbeam channel implementation</a></li>
+<li><a href="#org8997157">1.1. Mutex-based channel implementation</a></li>
+<li><a href="#org6d3ef54">1.2. Rust crossbeam channel implementation</a></li>
 </ul>
 </li>
-<li><a href="#orga16d717">2. Networking systems</a>
+<li><a href="#org9914dfa">2. Networking systems</a>
 <ul>
-<li><a href="#org651b63b">2.1. System</a>
+<li><a href="#orgb08d582">2.1. System</a>
 <ul>
-<li><a href="#orgae75c98">2.1.1. File system</a></li>
-<li><a href="#org7246df5">2.1.2. Start a server</a></li>
-<li><a href="#orga05f0f8">2.1.3. Connect to a server (ignore networking details)</a></li>
+<li><a href="#org2201978">2.1.1. File system</a></li>
+<li><a href="#orgf97f3a1">2.1.2. Start a server</a></li>
+<li><a href="#org005ec17">2.1.3. Connect to a server (ignore networking details)</a></li>
 </ul>
 </li>
-<li><a href="#orge1eb81b">2.2. Scalability and avilability</a>
+<li><a href="#orga4c0329">2.2. Scalability and avilability</a>
 <ul>
-<li><a href="#org1883334">2.2.1. Load balancers</a></li>
+<li><a href="#orgb2ff3b1">2.2.1. Load balancers</a></li>
 </ul>
 </li>
-<li><a href="#org07ae995">2.3. Security</a></li>
+<li><a href="#orgb28e1e4">2.3. Security</a></li>
+</ul>
+</li>
+<li><a href="#orgbd033cd">3. Event-driven programming</a>
+<ul>
+<li><a href="#org88935d1">3.1. Rust future</a>
+<ul>
+<li><a href="#org5151745">3.1.1. Executor</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -76,8 +85,8 @@ Mostly follow <a href="https://reberhardt.com/cs110l/spring-2020/">Spring 2020</
 <p>
 Not complete, only started taking notes since Lec 10 (2020).
 </p>
-<div id="outline-container-orga7e256c" class="outline-2">
-<h2 id="orga7e256c"><span class="section-number-2">1.</span> Channel</h2>
+<div id="outline-container-org81a7d84" class="outline-2">
+<h2 id="org81a7d84"><span class="section-number-2">1.</span> Channel</h2>
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
 <li>Golang: Do not communicate by sharing memory; instead, share memory by communicating.</li>
@@ -90,8 +99,8 @@ Not complete, only started taking notes since Lec 10 (2020).
 <li>An ideal channel: MPMC (multi-producer, multi-consumer).</li>
 </ul>
 </div>
-<div id="outline-container-org13bd44f" class="outline-3">
-<h3 id="org13bd44f"><span class="section-number-3">1.1.</span> Mutex-based channel implementation</h3>
+<div id="outline-container-org8997157" class="outline-3">
+<h3 id="org8997157"><span class="section-number-3">1.1.</span> Mutex-based channel implementation</h3>
 <div class="outline-text-3" id="text-1-1">
 <div class="org-src-container">
 <pre class="src src-rust"><span style="color: #51afef;">pub</span> <span style="color: #51afef;">struct</span> <span style="color: #ECBE7B;">SemaPlusPlus</span>&lt;<span style="color: #ECBE7B;">T</span>&gt; {
@@ -157,8 +166,8 @@ Not complete, only started taking notes since Lec 10 (2020).
 </ul>
 </div>
 </div>
-<div id="outline-container-org3df6d68" class="outline-3">
-<h3 id="org3df6d68"><span class="section-number-3">1.2.</span> Rust <a href="https://docs.rs/crossbeam/latest/crossbeam/channel/index.html">crossbeam</a> channel implementation</h3>
+<div id="outline-container-org6d3ef54" class="outline-3">
+<h3 id="org6d3ef54"><span class="section-number-3">1.2.</span> Rust <a href="https://docs.rs/crossbeam/latest/crossbeam/channel/index.html">crossbeam</a> channel implementation</h3>
 <div class="outline-text-3" id="text-1-2">
 <ul class="org-ul">
 <li>Minimal lock usage.</li>
@@ -199,16 +208,16 @@ Not complete, only started taking notes since Lec 10 (2020).
 </div>
 </div>
 </div>
-<div id="outline-container-orga16d717" class="outline-2">
-<h2 id="orga16d717"><span class="section-number-2">2.</span> Networking systems</h2>
+<div id="outline-container-org9914dfa" class="outline-2">
+<h2 id="org9914dfa"><span class="section-number-2">2.</span> Networking systems</h2>
 <div class="outline-text-2" id="text-2">
 </div>
-<div id="outline-container-org651b63b" class="outline-3">
-<h3 id="org651b63b"><span class="section-number-3">2.1.</span> System</h3>
+<div id="outline-container-orgb08d582" class="outline-3">
+<h3 id="orgb08d582"><span class="section-number-3">2.1.</span> System</h3>
 <div class="outline-text-3" id="text-2-1">
 </div>
-<div id="outline-container-orgae75c98" class="outline-4">
-<h4 id="orgae75c98"><span class="section-number-4">2.1.1.</span> File system</h4>
+<div id="outline-container-org2201978" class="outline-4">
+<h4 id="org2201978"><span class="section-number-4">2.1.1.</span> File system</h4>
 <div class="outline-text-4" id="text-2-1-1">
 <ul class="org-ul">
 <li>Open file (OF) table: system-wide table, stores file position, access mode (read/write) and reference count.</li>
@@ -217,8 +226,8 @@ Not complete, only started taking notes since Lec 10 (2020).
 </ul>
 </div>
 </div>
-<div id="outline-container-org7246df5" class="outline-4">
-<h4 id="org7246df5"><span class="section-number-4">2.1.2.</span> Start a server</h4>
+<div id="outline-container-orgf97f3a1" class="outline-4">
+<h4 id="orgf97f3a1"><span class="section-number-4">2.1.2.</span> Start a server</h4>
 <div class="outline-text-4" id="text-2-1-2">
 <ul class="org-ul">
 <li>A process creates a socket file descriptor with a queue for connection requests.</li>
@@ -227,8 +236,8 @@ Not complete, only started taking notes since Lec 10 (2020).
 </ul>
 </div>
 </div>
-<div id="outline-container-orga05f0f8" class="outline-4">
-<h4 id="orga05f0f8"><span class="section-number-4">2.1.3.</span> Connect to a server (ignore networking details)</h4>
+<div id="outline-container-org005ec17" class="outline-4">
+<h4 id="org005ec17"><span class="section-number-4">2.1.3.</span> Connect to a server (ignore networking details)</h4>
 <div class="outline-text-4" id="text-2-1-3">
 <ul class="org-ul">
 <li>The client creates a socket and send the socket address in the SYN packet.</li>
@@ -237,8 +246,8 @@ Not complete, only started taking notes since Lec 10 (2020).
 </div>
 </div>
 </div>
-<div id="outline-container-orge1eb81b" class="outline-3">
-<h3 id="orge1eb81b"><span class="section-number-3">2.2.</span> Scalability and avilability</h3>
+<div id="outline-container-orga4c0329" class="outline-3">
+<h3 id="orga4c0329"><span class="section-number-3">2.2.</span> Scalability and avilability</h3>
 <div class="outline-text-3" id="text-2-2">
 <ul class="org-ul">
 <li>Internet traffic has grown faster than hardware has increased in power.</li>
@@ -248,8 +257,8 @@ Not complete, only started taking notes since Lec 10 (2020).
 <li><a href="https://blog.codinghorror.com/working-with-the-chaos-monkey/">Chaos engineering</a>: intentionally introduce failures on production, e.g., randomly terminates an entire datacenter or even a region.</li>
 </ul>
 </div>
-<div id="outline-container-org1883334" class="outline-4">
-<h4 id="org1883334"><span class="section-number-4">2.2.1.</span> Load balancers</h4>
+<div id="outline-container-orgb2ff3b1" class="outline-4">
+<h4 id="orgb2ff3b1"><span class="section-number-4">2.2.1.</span> Load balancers</h4>
 <div class="outline-text-4" id="text-2-2-1">
 <ul class="org-ul">
 <li>Relay client requests to one compute node; health check each compute node.</li>
@@ -270,8 +279,8 @@ Not complete, only started taking notes since Lec 10 (2020).
 </div>
 </div>
 </div>
-<div id="outline-container-org07ae995" class="outline-3">
-<h3 id="org07ae995"><span class="section-number-3">2.3.</span> Security</h3>
+<div id="outline-container-orgb28e1e4" class="outline-3">
+<h3 id="orgb28e1e4"><span class="section-number-3">2.3.</span> Security</h3>
 <div class="outline-text-3" id="text-2-3">
 <ul class="org-ul">
 <li>Authentication: who are you? Authorization: are you allowed?</li>
@@ -282,6 +291,100 @@ Not complete, only started taking notes since Lec 10 (2020).
 </ul></li>
 <li>Design principles: needs to be harder to do things wrong than to do thing right.</li>
 </ul>
+</div>
+</div>
+</div>
+<div id="outline-container-orgbd033cd" class="outline-2">
+<h2 id="orgbd033cd"><span class="section-number-2">3.</span> Event-driven programming</h2>
+<div class="outline-text-2" id="text-3">
+<ul class="org-ul">
+<li>Threads: a lightweight process; has own stack, CPU registers, status; managed by OS scheduler, e.g., swap on and off the core.
+<ul class="org-ul">
+<li>States: block, ready, running</li>
+</ul></li>
+<li>Block syscalls: every thread runs for a time slice before switched by OS, or give up the slice early if it is blocked by e.g., <code>read</code>, <code>waitpid</code>, <code>cv.wait</code>, <code>lock</code>, <code>sleep</code>.</li>
+<li>Switching threads are expensive:
+<ul class="org-ul">
+<li>Context switching cost: switch virtual address space, restore register and cache, etc.</li>
+<li>Memory overhead: each thread consumes stack memory.</li>
+</ul></li>
+<li>The thread could have done other work when it is blocked on one request.</li>
+<li><b><b>Non-blocking I/O</b></b>: One thread handles concurrent I/O with <a href="https://en.wikipedia.org/wiki/Epoll">Epoll</a>, which repeatedly notifies what file descriptors are ready for I/O.
+<ul class="org-ul">
+<li>Key problem: state management.</li>
+</ul></li>
+</ul>
+</div>
+<div id="outline-container-org88935d1" class="outline-3">
+<h3 id="org88935d1"><span class="section-number-3">3.1.</span> Rust future</h3>
+<div class="outline-text-3" id="text-3-1">
+<ul class="org-ul">
+<li>Keep track of in-progress operations along with associated state; each future handles one operation.</li>
+</ul>
+
+<div class="org-src-container">
+<pre class="src src-rust"><span style="color: #83898d;">/// A simplified version of Future definition</span>
+<span style="color: #51afef;">trait</span> <span style="color: #ECBE7B;">Future</span> {
+    <span style="color: #51afef;">type</span> <span style="color: #ECBE7B;">Output</span>;
+    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">the executor thread calls poll() to start running until it cannot progress</span>
+    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">cx includes a wake() function so that the future wakes up the executor when it can progress again</span>
+    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">when wake() is called, the executor uses cx to identify the future that can make new progress</span>
+    <span style="color: #51afef;">fn</span> <span style="color: #c678dd;">poll</span>(<span style="color: #bbc2cf; background-color: #282c34;">&amp;</span><span style="color: #51afef;">mut</span> <span style="color: #51afef;">self</span>, <span style="color: #dcaeea;">cx</span>: <span style="color: #bbc2cf; background-color: #282c34;">&amp;</span><span style="color: #51afef;">mut</span> <span style="color: #ECBE7B;">Context</span>) -&gt; <span style="color: #ECBE7B;">Poll</span>&lt;<span style="color: #ECBE7B;">Self</span>::<span style="color: #ECBE7B;">Output</span>&gt;;
+}
+
+<span style="color: #51afef;">enum</span> <span style="color: #ECBE7B;">Poll</span>&lt;<span style="color: #ECBE7B;">T</span>&gt; {
+    <span style="color: #ECBE7B;">Ready</span>(<span style="color: #ECBE7B;">T</span>),
+    <span style="color: #83898d;">/// Allow the single thread to work on other future</span>
+    <span style="color: #ECBE7B;">Pending</span>,
+}
+</pre>
+</div>
+
+<ul class="org-ul">
+<li>In practice, futures are composed with various combinators.</li>
+</ul>
+
+<div class="org-src-container">
+<pre class="src src-rust">  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">This is just an example, real futures are not composed like this</span>
+  <span style="color: #51afef;">let</span> <span style="color: #dcaeea;">future</span> = <span style="color: #ECBE7B;">PlaceOnStoveFuture</span>::new(meat)
+    .then(|meat| <span style="color: #ECBE7B;">CookOnSideFuture</span>::new(meat))
+    .then(|meat| <span style="color: #ECBE7B;">FlipFuture</span>::new(meat))
+    .then(|meat| <span style="color: #ECBE7B;">CookOnSideFuture</span>::new(meat));
+</pre>
+</div>
+
+<ul class="org-ul">
+<li>Can write futures that depend on multiple concurrently-executing futures.</li>
+</ul>
+<div class="org-src-container">
+<pre class="src src-rust"><span style="color: #51afef;">let</span> <span style="color: #dcaeea;">cook_meal_future</span> = <span style="color: #a9a1e1;">futures</span>::<span style="color: #a9a1e1;">future</span>::join(
+    <span style="color: #51afef; font-weight: bold;">vec!</span>[
+        <span style="color: #ECBE7B;">CookMeatFuture</span>::new(),
+        <span style="color: #ECBE7B;">CookMeatFuture</span>::new(),
+        <span style="color: #5B6268;">// </span><span style="color: #5B6268;">future may return Pending after complete 2 futures,</span>
+        <span style="color: #5B6268;">// </span><span style="color: #5B6268;">the next time when the executor calls poll(), the state is restored</span>
+        <span style="color: #ECBE7B;">CookSoupFuture</span>::new(),
+        <span style="color: #ECBE7B;">BakeBreadFuture</span>::new()
+    ]
+);
+</pre>
+</div>
+</div>
+<div id="outline-container-org5151745" class="outline-4">
+<h4 id="org5151745"><span class="section-number-4">3.1.1.</span> Executor</h4>
+<div class="outline-text-4" id="text-3-1-1">
+<ul class="org-ul">
+<li>An executor loops over futures that can currently make progress and call <code>poll</code> on them; or go to sleep until some future calls <code>wake</code>.</li>
+<li>A popular executor is Tokio; it allows multiple executors to execute futures in parallel.
+<ul class="org-ul">
+<li>Need to protect shared data with synchronization primitives acorss futures.</li>
+</ul></li>
+<li>Futures cannot block, e.g., call <code>lock</code>, otherwise the executor cannot continue other futures.
+<ul class="org-ul">
+<li>Tokio provides a non-blocking versions for synchronization primitives.</li>
+</ul></li>
+</ul>
+</div>
 </div>
 </div>
 </div>

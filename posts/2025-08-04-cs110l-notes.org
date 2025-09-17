@@ -154,3 +154,67 @@ fn main() {
    - Elasticsearch: distributed, open source search and analytics engine for all types of data; involved in multiple [[https://www.troyhunt.com/the-unattributable-db8151dd-data-breach/][data breach]] incidents.
      - Why: bad default settings, e.g., default username and password; accept all connections by default.
    -  Design principles: needs to be harder to do things wrong than to do thing right.
+
+
+* Event-driven programming
+ 
+   - Threads: a lightweight process; has own stack, CPU registers, status; managed by OS scheduler, e.g., swap on and off the core.
+     - States: block, ready, running
+   - Block syscalls: every thread runs for a time slice before switched by OS, or give up the slice early if it is blocked by e.g., ~read~, ~waitpid~, ~cv.wait~, ~lock~, ~sleep~.
+   - Switching threads are expensive:
+     - Context switching cost: switch virtual address space, restore register and cache, etc.
+     - Memory overhead: each thread consumes stack memory.
+   - The thread could have done other work when it is blocked on one request.
+   - **Non-blocking I/O**: One thread handles concurrent I/O with [[https://en.wikipedia.org/wiki/Epoll][Epoll]], which repeatedly notifies what file descriptors are ready for I/O.
+     - Key problem: state management.
+
+** Rust future
+   - Keep track of in-progress operations along with associated state; each future handles one operation.  
+
+   #+BEGIN_SRC rust
+/// A simplified version of Future definition
+trait Future {
+    type Output;
+    // the executor thread calls poll() to start running until it cannot progress
+    // cx includes a wake() function so that the future wakes up the executor when it can progress again
+    // when wake() is called, the executor uses cx to identify the future that can make new progress
+    fn poll(&mut self, cx: &mut Context) -> Poll<Self::Output>;
+}
+
+enum Poll<T> {
+    Ready(T),
+    /// Allow the single thread to work on other future
+    Pending,
+}
+   #+END_SRC
+
+   - In practice, futures are composed with various combinators.
+
+  #+BEGIN_SRC rust
+  // This is just an example, real futures are not composed like this
+  let future = PlaceOnStoveFuture::new(meat)
+    .then(|meat| CookOnSideFuture::new(meat))
+    .then(|meat| FlipFuture::new(meat))
+    .then(|meat| CookOnSideFuture::new(meat));
+  #+END_SRC
+
+  - Can write futures that depend on multiple concurrently-executing futures.
+  #+BEGIN_SRC rust
+let cook_meal_future = futures::future::join(
+    vec![
+        CookMeatFuture::new(), 
+        CookMeatFuture::new(), 
+        // future may return Pending after complete 2 futures,
+        // the next time when the executor calls poll(), the state is restored
+        CookSoupFuture::new(), 
+        BakeBreadFuture::new()
+    ]
+);
+  #+END_SRC
+
+*** Executor
+- An executor loops over futures that can currently make progress and call ~poll~ on them; or go to sleep until some future calls ~wake~.
+- A popular executor is Tokio; it allows multiple executors to execute futures in parallel.
+  - Need to protect shared data with synchronization primitives acorss futures.
+- Futures cannot block, e.g., call ~lock~, otherwise the executor cannot continue other futures.
+  - Tokio provides a non-blocking versions for synchronization primitives.
