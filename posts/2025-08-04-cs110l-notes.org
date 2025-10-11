@@ -155,7 +155,6 @@ fn main() {
      - Why: bad default settings, e.g., default username and password; accept all connections by default.
    -  Design principles: needs to be harder to do things wrong than to do thing right.
 
-
 * Event-driven programming
  
    - Threads: a lightweight process; has own stack, CPU registers, status; managed by OS scheduler, e.g., swap on and off the core.
@@ -169,33 +168,39 @@ fn main() {
      - Key problem: state management.
 
 ** Rust future
-   - Keep track of in-progress operations along with associated state; each future handles one operation.  
+   - Fututres are single eventual values produced by asynchronous computations.
+   - Keep track of in-progress operations along with associated state; each future handles one operation.
 
    #+BEGIN_SRC rust
 /// A simplified version of Future definition
 trait Future {
-    type Output;
-    // the executor thread calls poll() to start running until it cannot progress
-    // cx includes a wake() function so that the future wakes up the executor when it can progress again
-    // when wake() is called, the executor uses cx to identify the future that can make new progress
-    fn poll(&mut self, cx: &mut Context) -> Poll<Self::Output>;
+type Output;
+// the executor thread calls poll() to start running until it cannot progress
+// cx includes a wake() function so that the future wakes up the executor when it can progress again
+// when wake() is called, the executor uses cx to identify the future that can make new progress
+fn poll(&mut self, cx: &mut Context) -> Poll<Self::Output>;
 }
 
 enum Poll<T> {
-    Ready(T),
-    /// Allow the single thread to work on other future
-    Pending,
+Ready(T),
+/// Allow the single thread to work on other future
+Pending,
 }
    #+END_SRC
 
    - In practice, futures are composed with various combinators.
 
   #+BEGIN_SRC rust
-  // This is just an example, real futures are not composed like this
-  let future = PlaceOnStoveFuture::new(meat)
-    .then(|meat| CookOnSideFuture::new(meat))
-    .then(|meat| FlipFuture::new(meat))
-    .then(|meat| CookOnSideFuture::new(meat));
+// This is just an example to show combinator,
+// it is not real code, as this is hard to maintain when complexity increases
+// and shared data must be propogated through the chain even if they are not always used
+fn addToInbox(email_id: u64, recipient_id: u64) -> impl Future<Output = Result<(), Error>> {  // return type is tedious
+    loadMessage(email_id)
+        // message is needed in get_recipient, but later future needs
+        .and_then(|message| get_recipient(message, recipient_id)) 
+        .map(|(message, recipient)| recipient.verifyHasSpace(&message))
+        .and_then(|(message, recipient)| recipient.addToInbox(message))
+}
   #+END_SRC
 
   - Can write futures that depend on multiple concurrently-executing futures.
@@ -212,9 +217,117 @@ let cook_meal_future = futures::future::join(
 );
   #+END_SRC
 
+   - Syntax suger: ~async~ and ~await~.
+  #+BEGIN_SRC rust
+// An async function is a function that returns future
+// the compiler transform the code into Future with poll()
+async fn addToInbox(email_id: u64, recipient_id: u64) -> Result<(), Error> {
+    // .await waits for a future and gets its value
+    let message = loadMessage(email_id).await?; 
+    let recipient = get_recipient(recipient_id).await?;
+    recipient.verifyHasSpace(&message)?;  // this is a normal function
+    recipient.addToInbox(message).await
+}
+  #+END_SRC
+
+  - An async function does not do anything when running it, its purpose is to produce a future that does the stuff written in the function.
+
 *** Executor
 - An executor loops over futures that can currently make progress and call ~poll~ on them; or go to sleep until some future calls ~wake~.
 - A popular executor is Tokio; it allows multiple executors to execute futures in parallel.
   - Need to protect shared data with synchronization primitives acorss futures.
 - Futures cannot block, e.g., call ~lock~, otherwise the executor cannot continue other futures.
   - Tokio provides a non-blocking versions for synchronization primitives.
+
+*** Tokio
+- Convert blocking functions into async versions.
+#+BEGIN_SRC rust
+use tokio::io::{AsyncReadExt, AsyncWriteExt};
+use tokio::net::TcpListener;  // should not block in async code
+
+// futures do not do anything until an executor executes them
+// the macro generates a sync main which creates a runtime executor 
+// and submits the returned future to the executor
+#[tokio::main]
+async fn main() {
+let listener = TcpListener::bind("127.0.0.1:8080").await.unwrap();
+loop {
+    let (mut socket, _) = listener.accept().await.unwrap();
+    tokio::spawn(async move {  // an async block
+        let mut buf = [0; 1024];
+        let n = socket.read(&mut buf).await.unwrap();
+        socket.write_all(&buf[0..n]).await.unwrap();
+    });
+}
+}
+#+END_SRC
+
+*** Compilation
+- Normal (synchronous) code stores variables on the stack.
+  - When calling another function, the inner function gets a new stack frame and CPU remembers the return address.
+  - When the function returns, the stack frame is popped and CPU jumps back to the return address.
+- Async functions may return multiple times at each ~.await~, everytime it returns, the stack frame is popped, so the async function needs to maintain its state in its returned future object.
+- The compiler transforms the async function into a state enum that implements ~Future~ and an implementation of ~poll()~.
+#+BEGIN_SRC rust
+enum AddToInboxState {
+    NotYetStarted {
+        email_id: u64,
+        recipient_id: u64,
+    },
+    WaitingLoadMessage {
+        recipient_id: u64, // the data is to be used in the next state
+        state: LoadMessageFuture,
+    },
+    WaitingGetRecipient {
+        message: Message,
+        state: GetRecipientFuture,
+    },
+    WaitingAddToInbox {
+        state: AddToInboxFuture,
+    },
+    Completed {
+        result: Result<(), Error>,
+    },
+}
+
+// this is only concept code, not real implementation
+fn poll() {
+    match self.state {
+        NotYetStarted(email_id, recipient_id) => {
+            let next_future = load_message(email_id);
+            self.state = AddToInboxState::WaitingLoadMessage {
+                recipient_id: *recipient_id,
+                state: next_future,
+            };
+        }
+        WaitingLoadMessage(recipient_id, state) => {
+            match state.poll() {
+                Ready(message) => {
+                    let next_future = get_recipient(recipient_id);
+                    // switch to WaitingGetRecipient state
+                }
+                Pending => return Pending,
+            }
+        }
+        WaitingGetRecipient(message, state) => {
+            match state.poll() {
+                Ready(recipient) => {
+                    recipient.verifyHasSpace(&message)?;
+                    let next_future = recipient.addToInbox(message);
+                    // switch to WaitingAddToInbox state
+                }
+                Pending => return Pending,
+            }
+        }
+    }
+}
+#+END_SRC
+
+- All compiled futures are registered in the executor, the executor works as a scheduler and polls each future when it wakes up.
+- The executor does not care each future's internal state, this is maintained in the future context.
+- The executor polls ~main~ future first and run until it reaches ~.await~.
+- When an async function polls another async function, if the inner future returns ~Pending~, the outer future also returns ~Pending~; when the inner future is ready, it wakes the whole task in the executor, and the executor polls outer future again.
+- Sync functions consume stack, async functions consume heap as each future is live on heap.
+- Usage: I/O bound and highly concurrent, e.g., thousand network connections, DB queries.
+
+

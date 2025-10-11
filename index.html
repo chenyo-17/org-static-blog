@@ -42,34 +42,36 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org81a7d84">1. Channel</a>
+<li><a href="#orgd334dd4">1. Channel</a>
 <ul>
-<li><a href="#org8997157">1.1. Mutex-based channel implementation</a></li>
-<li><a href="#org6d3ef54">1.2. Rust crossbeam channel implementation</a></li>
+<li><a href="#org41de397">1.1. Mutex-based channel implementation</a></li>
+<li><a href="#org1b3e13f">1.2. Rust crossbeam channel implementation</a></li>
 </ul>
 </li>
-<li><a href="#org9914dfa">2. Networking systems</a>
+<li><a href="#orga78e457">2. Networking systems</a>
 <ul>
-<li><a href="#orgb08d582">2.1. System</a>
+<li><a href="#org07da297">2.1. System</a>
 <ul>
-<li><a href="#org2201978">2.1.1. File system</a></li>
-<li><a href="#orgf97f3a1">2.1.2. Start a server</a></li>
-<li><a href="#org005ec17">2.1.3. Connect to a server (ignore networking details)</a></li>
+<li><a href="#org6827dc5">2.1.1. File system</a></li>
+<li><a href="#org4d30174">2.1.2. Start a server</a></li>
+<li><a href="#org09d4a4b">2.1.3. Connect to a server (ignore networking details)</a></li>
 </ul>
 </li>
-<li><a href="#orga4c0329">2.2. Scalability and avilability</a>
+<li><a href="#orge4156d8">2.2. Scalability and avilability</a>
 <ul>
-<li><a href="#orgb2ff3b1">2.2.1. Load balancers</a></li>
+<li><a href="#orga346693">2.2.1. Load balancers</a></li>
 </ul>
 </li>
-<li><a href="#orgb28e1e4">2.3. Security</a></li>
+<li><a href="#org423b813">2.3. Security</a></li>
 </ul>
 </li>
-<li><a href="#orgbd033cd">3. Event-driven programming</a>
+<li><a href="#org3081613">3. Event-driven programming</a>
 <ul>
-<li><a href="#org88935d1">3.1. Rust future</a>
+<li><a href="#orgb6048c3">3.1. Rust future</a>
 <ul>
-<li><a href="#org5151745">3.1.1. Executor</a></li>
+<li><a href="#org9fb7399">3.1.1. Executor</a></li>
+<li><a href="#org7fe885f">3.1.2. Tokio</a></li>
+<li><a href="#org6c2af8e">3.1.3. Compilation</a></li>
 </ul>
 </li>
 </ul>
@@ -85,8 +87,8 @@ Mostly follow <a href="https://reberhardt.com/cs110l/spring-2020/">Spring 2020</
 <p>
 Not complete, only started taking notes since Lec 10 (2020).
 </p>
-<div id="outline-container-org81a7d84" class="outline-2">
-<h2 id="org81a7d84"><span class="section-number-2">1.</span> Channel</h2>
+<div id="outline-container-orgd334dd4" class="outline-2">
+<h2 id="orgd334dd4"><span class="section-number-2">1.</span> Channel</h2>
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
 <li>Golang: Do not communicate by sharing memory; instead, share memory by communicating.</li>
@@ -99,8 +101,8 @@ Not complete, only started taking notes since Lec 10 (2020).
 <li>An ideal channel: MPMC (multi-producer, multi-consumer).</li>
 </ul>
 </div>
-<div id="outline-container-org8997157" class="outline-3">
-<h3 id="org8997157"><span class="section-number-3">1.1.</span> Mutex-based channel implementation</h3>
+<div id="outline-container-org41de397" class="outline-3">
+<h3 id="org41de397"><span class="section-number-3">1.1.</span> Mutex-based channel implementation</h3>
 <div class="outline-text-3" id="text-1-1">
 <div class="org-src-container">
 <pre class="src src-rust"><span style="color: #51afef;">pub</span> <span style="color: #51afef;">struct</span> <span style="color: #ECBE7B;">SemaPlusPlus</span>&lt;<span style="color: #ECBE7B;">T</span>&gt; {
@@ -166,8 +168,8 @@ Not complete, only started taking notes since Lec 10 (2020).
 </ul>
 </div>
 </div>
-<div id="outline-container-org6d3ef54" class="outline-3">
-<h3 id="org6d3ef54"><span class="section-number-3">1.2.</span> Rust <a href="https://docs.rs/crossbeam/latest/crossbeam/channel/index.html">crossbeam</a> channel implementation</h3>
+<div id="outline-container-org1b3e13f" class="outline-3">
+<h3 id="org1b3e13f"><span class="section-number-3">1.2.</span> Rust <a href="https://docs.rs/crossbeam/latest/crossbeam/channel/index.html">crossbeam</a> channel implementation</h3>
 <div class="outline-text-3" id="text-1-2">
 <ul class="org-ul">
 <li>Minimal lock usage.</li>
@@ -208,16 +210,16 @@ Not complete, only started taking notes since Lec 10 (2020).
 </div>
 </div>
 </div>
-<div id="outline-container-org9914dfa" class="outline-2">
-<h2 id="org9914dfa"><span class="section-number-2">2.</span> Networking systems</h2>
+<div id="outline-container-orga78e457" class="outline-2">
+<h2 id="orga78e457"><span class="section-number-2">2.</span> Networking systems</h2>
 <div class="outline-text-2" id="text-2">
 </div>
-<div id="outline-container-orgb08d582" class="outline-3">
-<h3 id="orgb08d582"><span class="section-number-3">2.1.</span> System</h3>
+<div id="outline-container-org07da297" class="outline-3">
+<h3 id="org07da297"><span class="section-number-3">2.1.</span> System</h3>
 <div class="outline-text-3" id="text-2-1">
 </div>
-<div id="outline-container-org2201978" class="outline-4">
-<h4 id="org2201978"><span class="section-number-4">2.1.1.</span> File system</h4>
+<div id="outline-container-org6827dc5" class="outline-4">
+<h4 id="org6827dc5"><span class="section-number-4">2.1.1.</span> File system</h4>
 <div class="outline-text-4" id="text-2-1-1">
 <ul class="org-ul">
 <li>Open file (OF) table: system-wide table, stores file position, access mode (read/write) and reference count.</li>
@@ -226,8 +228,8 @@ Not complete, only started taking notes since Lec 10 (2020).
 </ul>
 </div>
 </div>
-<div id="outline-container-orgf97f3a1" class="outline-4">
-<h4 id="orgf97f3a1"><span class="section-number-4">2.1.2.</span> Start a server</h4>
+<div id="outline-container-org4d30174" class="outline-4">
+<h4 id="org4d30174"><span class="section-number-4">2.1.2.</span> Start a server</h4>
 <div class="outline-text-4" id="text-2-1-2">
 <ul class="org-ul">
 <li>A process creates a socket file descriptor with a queue for connection requests.</li>
@@ -236,8 +238,8 @@ Not complete, only started taking notes since Lec 10 (2020).
 </ul>
 </div>
 </div>
-<div id="outline-container-org005ec17" class="outline-4">
-<h4 id="org005ec17"><span class="section-number-4">2.1.3.</span> Connect to a server (ignore networking details)</h4>
+<div id="outline-container-org09d4a4b" class="outline-4">
+<h4 id="org09d4a4b"><span class="section-number-4">2.1.3.</span> Connect to a server (ignore networking details)</h4>
 <div class="outline-text-4" id="text-2-1-3">
 <ul class="org-ul">
 <li>The client creates a socket and send the socket address in the SYN packet.</li>
@@ -246,8 +248,8 @@ Not complete, only started taking notes since Lec 10 (2020).
 </div>
 </div>
 </div>
-<div id="outline-container-orga4c0329" class="outline-3">
-<h3 id="orga4c0329"><span class="section-number-3">2.2.</span> Scalability and avilability</h3>
+<div id="outline-container-orge4156d8" class="outline-3">
+<h3 id="orge4156d8"><span class="section-number-3">2.2.</span> Scalability and avilability</h3>
 <div class="outline-text-3" id="text-2-2">
 <ul class="org-ul">
 <li>Internet traffic has grown faster than hardware has increased in power.</li>
@@ -257,8 +259,8 @@ Not complete, only started taking notes since Lec 10 (2020).
 <li><a href="https://blog.codinghorror.com/working-with-the-chaos-monkey/">Chaos engineering</a>: intentionally introduce failures on production, e.g., randomly terminates an entire datacenter or even a region.</li>
 </ul>
 </div>
-<div id="outline-container-orgb2ff3b1" class="outline-4">
-<h4 id="orgb2ff3b1"><span class="section-number-4">2.2.1.</span> Load balancers</h4>
+<div id="outline-container-orga346693" class="outline-4">
+<h4 id="orga346693"><span class="section-number-4">2.2.1.</span> Load balancers</h4>
 <div class="outline-text-4" id="text-2-2-1">
 <ul class="org-ul">
 <li>Relay client requests to one compute node; health check each compute node.</li>
@@ -279,8 +281,8 @@ Not complete, only started taking notes since Lec 10 (2020).
 </div>
 </div>
 </div>
-<div id="outline-container-orgb28e1e4" class="outline-3">
-<h3 id="orgb28e1e4"><span class="section-number-3">2.3.</span> Security</h3>
+<div id="outline-container-org423b813" class="outline-3">
+<h3 id="org423b813"><span class="section-number-3">2.3.</span> Security</h3>
 <div class="outline-text-3" id="text-2-3">
 <ul class="org-ul">
 <li>Authentication: who are you? Authorization: are you allowed?</li>
@@ -294,8 +296,8 @@ Not complete, only started taking notes since Lec 10 (2020).
 </div>
 </div>
 </div>
-<div id="outline-container-orgbd033cd" class="outline-2">
-<h2 id="orgbd033cd"><span class="section-number-2">3.</span> Event-driven programming</h2>
+<div id="outline-container-org3081613" class="outline-2">
+<h2 id="org3081613"><span class="section-number-2">3.</span> Event-driven programming</h2>
 <div class="outline-text-2" id="text-3">
 <ul class="org-ul">
 <li>Threads: a lightweight process; has own stack, CPU registers, status; managed by OS scheduler, e.g., swap on and off the core.
@@ -315,27 +317,28 @@ Not complete, only started taking notes since Lec 10 (2020).
 </ul></li>
 </ul>
 </div>
-<div id="outline-container-org88935d1" class="outline-3">
-<h3 id="org88935d1"><span class="section-number-3">3.1.</span> Rust future</h3>
+<div id="outline-container-orgb6048c3" class="outline-3">
+<h3 id="orgb6048c3"><span class="section-number-3">3.1.</span> Rust future</h3>
 <div class="outline-text-3" id="text-3-1">
 <ul class="org-ul">
+<li>Fututres are single eventual values produced by asynchronous computations.</li>
 <li>Keep track of in-progress operations along with associated state; each future handles one operation.</li>
 </ul>
 
 <div class="org-src-container">
 <pre class="src src-rust"><span style="color: #83898d;">/// A simplified version of Future definition</span>
 <span style="color: #51afef;">trait</span> <span style="color: #ECBE7B;">Future</span> {
-    <span style="color: #51afef;">type</span> <span style="color: #ECBE7B;">Output</span>;
-    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">the executor thread calls poll() to start running until it cannot progress</span>
-    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">cx includes a wake() function so that the future wakes up the executor when it can progress again</span>
-    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">when wake() is called, the executor uses cx to identify the future that can make new progress</span>
-    <span style="color: #51afef;">fn</span> <span style="color: #c678dd;">poll</span>(<span style="color: #bbc2cf; background-color: #282c34;">&amp;</span><span style="color: #51afef;">mut</span> <span style="color: #51afef;">self</span>, <span style="color: #dcaeea;">cx</span>: <span style="color: #bbc2cf; background-color: #282c34;">&amp;</span><span style="color: #51afef;">mut</span> <span style="color: #ECBE7B;">Context</span>) -&gt; <span style="color: #ECBE7B;">Poll</span>&lt;<span style="color: #ECBE7B;">Self</span>::<span style="color: #ECBE7B;">Output</span>&gt;;
+<span style="color: #51afef;">type</span> <span style="color: #ECBE7B;">Output</span>;
+<span style="color: #5B6268;">// </span><span style="color: #5B6268;">the executor thread calls poll() to start running until it cannot progress</span>
+<span style="color: #5B6268;">// </span><span style="color: #5B6268;">cx includes a wake() function so that the future wakes up the executor when it can progress again</span>
+<span style="color: #5B6268;">// </span><span style="color: #5B6268;">when wake() is called, the executor uses cx to identify the future that can make new progress</span>
+<span style="color: #51afef;">fn</span> <span style="color: #c678dd;">poll</span>(<span style="color: #bbc2cf; background-color: #282c34;">&amp;</span><span style="color: #51afef;">mut</span> <span style="color: #51afef;">self</span>, <span style="color: #dcaeea;">cx</span>: <span style="color: #bbc2cf; background-color: #282c34;">&amp;</span><span style="color: #51afef;">mut</span> <span style="color: #ECBE7B;">Context</span>) -&gt; <span style="color: #ECBE7B;">Poll</span>&lt;<span style="color: #ECBE7B;">Self</span>::<span style="color: #ECBE7B;">Output</span>&gt;;
 }
 
 <span style="color: #51afef;">enum</span> <span style="color: #ECBE7B;">Poll</span>&lt;<span style="color: #ECBE7B;">T</span>&gt; {
-    <span style="color: #ECBE7B;">Ready</span>(<span style="color: #ECBE7B;">T</span>),
-    <span style="color: #83898d;">/// Allow the single thread to work on other future</span>
-    <span style="color: #ECBE7B;">Pending</span>,
+<span style="color: #ECBE7B;">Ready</span>(<span style="color: #ECBE7B;">T</span>),
+<span style="color: #83898d;">/// Allow the single thread to work on other future</span>
+<span style="color: #ECBE7B;">Pending</span>,
 }
 </pre>
 </div>
@@ -345,11 +348,16 @@ Not complete, only started taking notes since Lec 10 (2020).
 </ul>
 
 <div class="org-src-container">
-<pre class="src src-rust">  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">This is just an example, real futures are not composed like this</span>
-  <span style="color: #51afef;">let</span> <span style="color: #dcaeea;">future</span> = <span style="color: #ECBE7B;">PlaceOnStoveFuture</span>::new(meat)
-    .then(|meat| <span style="color: #ECBE7B;">CookOnSideFuture</span>::new(meat))
-    .then(|meat| <span style="color: #ECBE7B;">FlipFuture</span>::new(meat))
-    .then(|meat| <span style="color: #ECBE7B;">CookOnSideFuture</span>::new(meat));
+<pre class="src src-rust"><span style="color: #5B6268;">// </span><span style="color: #5B6268;">This is just an example to show combinator,</span>
+<span style="color: #5B6268;">// </span><span style="color: #5B6268;">it is not real code, as this is hard to maintain when complexity increases</span>
+<span style="color: #5B6268;">// </span><span style="color: #5B6268;">and shared data must be propogated through the chain even if they are not always used</span>
+<span style="color: #51afef;">fn</span> <span style="color: #c678dd;">addToInbox</span>(<span style="color: #dcaeea;">email_id</span>: <span style="color: #ECBE7B;">u64</span>, <span style="color: #dcaeea;">recipient_id</span>: <span style="color: #ECBE7B;">u64</span>) -&gt; <span style="color: #51afef;">impl</span> <span style="color: #ECBE7B;">Future</span>&lt;<span style="color: #ECBE7B;">Output</span> = <span style="color: #ECBE7B;">Result</span>&lt;(), <span style="color: #ECBE7B;">Error</span>&gt;&gt; {  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">return type is tedious</span>
+    loadMessage(email_id)
+        <span style="color: #5B6268;">// </span><span style="color: #5B6268;">message is needed in get_recipient, but later future needs</span>
+        .and_then(|message| get_recipient(message, recipient_id))
+        .map(|(message, recipient)| recipient.verifyHasSpace(<span style="color: #bbc2cf; background-color: #282c34;">&amp;</span>message))
+        .and_then(|(message, recipient)| recipient.addToInbox(message))
+}
 </pre>
 </div>
 
@@ -369,9 +377,29 @@ Not complete, only started taking notes since Lec 10 (2020).
 );
 </pre>
 </div>
+
+<ul class="org-ul">
+<li>Syntax suger: <code>async</code> and <code>await</code>.</li>
+</ul>
+<div class="org-src-container">
+<pre class="src src-rust"><span style="color: #5B6268;">// </span><span style="color: #5B6268;">An async function is a function that returns future</span>
+<span style="color: #5B6268;">// </span><span style="color: #5B6268;">the compiler transform the code into Future with poll()</span>
+<span style="color: #51afef;">async</span> <span style="color: #51afef;">fn</span> <span style="color: #c678dd;">addToInbox</span>(<span style="color: #dcaeea;">email_id</span>: <span style="color: #ECBE7B;">u64</span>, <span style="color: #dcaeea;">recipient_id</span>: <span style="color: #ECBE7B;">u64</span>) -&gt; <span style="color: #ECBE7B;">Result</span>&lt;(), <span style="color: #ECBE7B;">Error</span>&gt; {
+    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">.await waits for a future and gets its value</span>
+    <span style="color: #51afef;">let</span> <span style="color: #dcaeea;">message</span> = loadMessage(email_id).<span style="color: #51afef;">await</span><span style="color: #c678dd; font-weight: bold;">?</span>;
+    <span style="color: #51afef;">let</span> <span style="color: #dcaeea;">recipient</span> = get_recipient(recipient_id).<span style="color: #51afef;">await</span><span style="color: #c678dd; font-weight: bold;">?</span>;
+    recipient.verifyHasSpace(<span style="color: #bbc2cf; background-color: #282c34;">&amp;</span>message)<span style="color: #c678dd; font-weight: bold;">?</span>;  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">this is a normal function</span>
+    recipient.addToInbox(message).<span style="color: #51afef;">await</span>
+}
+</pre>
 </div>
-<div id="outline-container-org5151745" class="outline-4">
-<h4 id="org5151745"><span class="section-number-4">3.1.1.</span> Executor</h4>
+
+<ul class="org-ul">
+<li>An async function does not do anything when running it, its purpose is to produce a future that does the stuff written in the function.</li>
+</ul>
+</div>
+<div id="outline-container-org9fb7399" class="outline-4">
+<h4 id="org9fb7399"><span class="section-number-4">3.1.1.</span> Executor</h4>
 <div class="outline-text-4" id="text-3-1-1">
 <ul class="org-ul">
 <li>An executor loops over futures that can currently make progress and call <code>poll</code> on them; or go to sleep until some future calls <code>wake</code>.</li>
@@ -383,6 +411,113 @@ Not complete, only started taking notes since Lec 10 (2020).
 <ul class="org-ul">
 <li>Tokio provides a non-blocking versions for synchronization primitives.</li>
 </ul></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org7fe885f" class="outline-4">
+<h4 id="org7fe885f"><span class="section-number-4">3.1.2.</span> Tokio</h4>
+<div class="outline-text-4" id="text-3-1-2">
+<ul class="org-ul">
+<li>Convert blocking functions into async versions.</li>
+</ul>
+<div class="org-src-container">
+<pre class="src src-rust"><span style="color: #51afef;">use</span> <span style="color: #a9a1e1;">tokio</span>::<span style="color: #a9a1e1;">io</span>::{<span style="color: #ECBE7B;">AsyncReadExt</span>, <span style="color: #ECBE7B;">AsyncWriteExt</span>};
+<span style="color: #51afef;">use</span> <span style="color: #a9a1e1;">tokio</span>::<span style="color: #a9a1e1;">net</span>::<span style="color: #ECBE7B;">TcpListener</span>;  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">should not block in async code</span>
+
+<span style="color: #5B6268;">// </span><span style="color: #5B6268;">futures do not do anything until an executor executes them</span>
+<span style="color: #5B6268;">// </span><span style="color: #5B6268;">the macro generates a sync main which creates a runtime executor </span>
+<span style="color: #5B6268;">// </span><span style="color: #5B6268;">and submits the returned future to the executor</span>
+<span style="color: #51afef; font-weight: bold;">#[tokio::main]</span>
+<span style="color: #51afef;">async</span> <span style="color: #51afef;">fn</span> <span style="color: #c678dd;">main</span>() {
+<span style="color: #51afef;">let</span> <span style="color: #dcaeea;">listener</span> = <span style="color: #ECBE7B;">TcpListener</span>::bind(<span style="color: #98be65;">"127.0.0.1:8080"</span>).<span style="color: #51afef;">await</span>.unwrap();
+<span style="color: #51afef;">loop</span> {
+    <span style="color: #51afef;">let</span> (<span style="color: #51afef;">mut</span> socket, _) = listener.accept().<span style="color: #51afef;">await</span>.unwrap();
+    <span style="color: #a9a1e1;">tokio</span>::spawn(<span style="color: #51afef;">async</span> <span style="color: #51afef;">move</span> {  <span style="color: #5B6268;">// </span><span style="color: #5B6268;">an async block</span>
+        <span style="color: #51afef;">let</span> <span style="color: #51afef;">mut</span> <span style="color: #dcaeea;">buf</span> = [0; 1024];
+        <span style="color: #51afef;">let</span> <span style="color: #dcaeea;">n</span> = socket.read(<span style="color: #bbc2cf; background-color: #282c34;">&amp;</span><span style="color: #51afef;">mut</span> buf).<span style="color: #51afef;">await</span>.unwrap();
+        socket.write_all(<span style="color: #bbc2cf; background-color: #282c34;">&amp;</span>buf[0..n]).<span style="color: #51afef;">await</span>.unwrap();
+    });
+}
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org6c2af8e" class="outline-4">
+<h4 id="org6c2af8e"><span class="section-number-4">3.1.3.</span> Compilation</h4>
+<div class="outline-text-4" id="text-3-1-3">
+<ul class="org-ul">
+<li>Normal (synchronous) code stores variables on the stack.
+<ul class="org-ul">
+<li>When calling another function, the inner function gets a new stack frame and CPU remembers the return address.</li>
+<li>When the function returns, the stack frame is popped and CPU jumps back to the return address.</li>
+</ul></li>
+<li>Async functions may return multiple times at each <code>.await</code>, everytime it returns, the stack frame is popped, so the async function needs to maintain its state in its returned future object.</li>
+<li>The compiler transforms the async function into a state enum that implements <code>Future</code> and an implementation of <code>poll()</code>.</li>
+</ul>
+<div class="org-src-container">
+<pre class="src src-rust"><span style="color: #51afef;">enum</span> <span style="color: #ECBE7B;">AddToInboxState</span> {
+    <span style="color: #ECBE7B;">NotYetStarted</span> {
+        <span style="color: #dcaeea;">email_id</span>: <span style="color: #ECBE7B;">u64</span>,
+        <span style="color: #dcaeea;">recipient_id</span>: <span style="color: #ECBE7B;">u64</span>,
+    },
+    <span style="color: #ECBE7B;">WaitingLoadMessage</span> {
+        <span style="color: #dcaeea;">recipient_id</span>: <span style="color: #ECBE7B;">u64</span>, <span style="color: #5B6268;">// </span><span style="color: #5B6268;">the data is to be used in the next state</span>
+        <span style="color: #dcaeea;">state</span>: <span style="color: #ECBE7B;">LoadMessageFuture</span>,
+    },
+    <span style="color: #ECBE7B;">WaitingGetRecipient</span> {
+        <span style="color: #dcaeea;">message</span>: <span style="color: #ECBE7B;">Message</span>,
+        <span style="color: #dcaeea;">state</span>: <span style="color: #ECBE7B;">GetRecipientFuture</span>,
+    },
+    <span style="color: #ECBE7B;">WaitingAddToInbox</span> {
+        <span style="color: #dcaeea;">state</span>: <span style="color: #ECBE7B;">AddToInboxFuture</span>,
+    },
+    <span style="color: #ECBE7B;">Completed</span> {
+        <span style="color: #dcaeea;">result</span>: <span style="color: #ECBE7B;">Result</span>&lt;(), <span style="color: #ECBE7B;">Error</span>&gt;,
+    },
+}
+
+<span style="color: #5B6268;">// </span><span style="color: #5B6268;">this is only concept code, not real implementation</span>
+<span style="color: #51afef;">fn</span> <span style="color: #c678dd;">poll</span>() {
+    <span style="color: #51afef;">match</span> <span style="color: #51afef;">self</span>.state {
+        <span style="color: #ECBE7B;">NotYetStarted</span>(email_id, recipient_id) =&gt; {
+            <span style="color: #51afef;">let</span> <span style="color: #dcaeea;">next_future</span> = load_message(email_id);
+            <span style="color: #51afef;">self</span>.state = <span style="color: #ECBE7B;">AddToInboxState</span>::<span style="color: #ECBE7B;">WaitingLoadMessage</span> {
+                <span style="color: #dcaeea;">recipient_id</span>: *recipient_id,
+                <span style="color: #dcaeea;">state</span>: next_future,
+            };
+        }
+        <span style="color: #ECBE7B;">WaitingLoadMessage</span>(recipient_id, state) =&gt; {
+            <span style="color: #51afef;">match</span> state.poll() {
+                <span style="color: #ECBE7B;">Ready</span>(message) =&gt; {
+                    <span style="color: #51afef;">let</span> <span style="color: #dcaeea;">next_future</span> = get_recipient(recipient_id);
+                    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">switch to WaitingGetRecipient state</span>
+                }
+                <span style="color: #ECBE7B;">Pending</span> =&gt; <span style="color: #51afef;">return</span> <span style="color: #ECBE7B;">Pending</span>,
+            }
+        }
+        <span style="color: #ECBE7B;">WaitingGetRecipient</span>(message, state) =&gt; {
+            <span style="color: #51afef;">match</span> state.poll() {
+                <span style="color: #ECBE7B;">Ready</span>(recipient) =&gt; {
+                    recipient.verifyHasSpace(<span style="color: #bbc2cf; background-color: #282c34;">&amp;</span>message)<span style="color: #c678dd; font-weight: bold;">?</span>;
+                    <span style="color: #51afef;">let</span> <span style="color: #dcaeea;">next_future</span> = recipient.addToInbox(message);
+                    <span style="color: #5B6268;">// </span><span style="color: #5B6268;">switch to WaitingAddToInbox state</span>
+                }
+                <span style="color: #ECBE7B;">Pending</span> =&gt; <span style="color: #51afef;">return</span> <span style="color: #ECBE7B;">Pending</span>,
+            }
+        }
+    }
+}
+</pre>
+</div>
+
+<ul class="org-ul">
+<li>All compiled futures are registered in the executor, the executor works as a scheduler and polls each future when it wakes up.</li>
+<li>The executor does not care each future&rsquo;s internal state, this is maintained in the future context.</li>
+<li>The executor polls <code>main</code> future first and run until it reaches <code>.await</code>.</li>
+<li>When an async function polls another async function, if the inner future returns <code>Pending</code>, the outer future also returns <code>Pending</code>; when the inner future is ready, it wakes the whole task in the executor, and the executor polls outer future again.</li>
+<li>Sync functions consume stack, async functions consume heap as each future is live on heap.</li>
+<li>Usage: I/O bound and highly concurrent, e.g., thousand network connections, DB queries.</li>
 </ul>
 </div>
 </div>
