@@ -1,0 +1,98 @@
+#+title: KAIST CS431 Notes
+#+date: <2026-03-08 14:11>
+#+description: Notes for KAIST CS431 course: Concurrent Programming
+#+filetags: study rust kaist
+
+Notes for KAIST CS431: [[https://github.com/kaist-cp/cs431/tree/main][Concurrent Programming]].
+
+Lecture videos are [[https://youtube.com/playlist?list=PL5aMzERQ_OZ9j40DJNlsem2qAGoFbfwb4&si=qrniFJlhcjj1cWHS][here]].
+
+Some topics may be out of the course scope, but come up along this note-taking process.
+
+*** ~thread::scope~
+    #+BEGIN_SRC rust
+fn increment_both_half(data: &mut [i32]) {
+    let (left, right) = data.split_at_mut(data.len() / 2);
+
+    thread::scope(|scope| {
+        scope.spawn(|_| {
+            for x in left {
+                *x += 1;
+            }
+        });
+
+        scope.spawn(|_| {
+            for x in right {
+                *x += 1;
+            }
+        });
+    });
+
+    println!(date);
+}
+    #+END_SRC
+
+    - Use ~thread::scope~ when the threads must borrow data owned by the current stack frame. 
+      Otherwise`thread::spawn` would fail as it requires ~'static~ or clone.
+    - The ~Scope~ is only returned when all threads are joined (and consequently blocks), ensuring threads cannot outlive the borrowed data 
+
+*** ~unsafe fn~
+    #+BEGIN_SRC rust
+pub struct NonZeroUsize(usize);
+
+pub fn make_nonzero(x: usize) -> Option<NonZeroUsize> {
+    if x == 0 {
+        None
+    } else {
+        Some(NonZeroUsize(x))
+    }
+}
+
+pub unsafe fn consume_nonzero(x: u32) -> NonZeroUsize {
+    NonZeroUsize(x)
+}
+    #+END_SRC
+
+    - Mark a function as ~unsafe~ when calling it requires the caller to upload some invariants which the compiler cannot guarantee.
+    - Whether a function is ~unsafe~ has nothing to do with its implementation, e.g., the API can be safe with unsafe code block.
+    - Calling an ~unsafe fn~ must be wrapped with ~unsafe {}~ block.
+
+*** object safety
+    - Object safety is a set of rules whether a trait can be used for dynamic dispatch, i.e., ~dyn trait~.
+    - These rules are already listed in [[file:2024-12-28-interesting-rust-snippets.org]].
+    - These rules ensure 
+      - A sized ~vtable~ can be built for each concrete implementation of the trait (rule 1), and 
+      - The caller can know the type size returned from any trait method call (rule 2).
+
+*** ~async_trait~
+    #+BEGIN_SRC rust
+trait Data {
+    fn fetch(&self) -> Pin<Box<dyn Future<Output = String> + Send>>;
+}
+
+// is equivalent to
+
+#[async_trait]
+trait Data {
+    async fn fetch(&self) -> String;
+}
+    #+END_SRC
+
+    - ~async_trait~ is only necessary for dynamic dispatch. 
+      For static dispatch, one can just write ~async fn fetch() -> String~.
+    - Why ~Box<dyn Future>~ not ~impl Future~: to know type size during compiler time.
+    - Why ~Pin~: to prevent the future being moved and self-reference is broken when the future changes state, e.g.,
+
+      #+BEGIN_SRC rust
+async fn fetch(&self) {
+    let data = String::from("hello");
+    let reference = &data; // reference to local variable is stored as absolute address
+    some_async().await; // suspend here
+    println!("{}", reference); // resume here, reference still needed
+}
+      #+END_SRC
+
+
+
+
+

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="description" content="Notes for KAIST CS431 course: Concurrent Programming">
+<link rel="alternate"
+      type="application/rss+xml"
+      href="https://chenyo.me/rss.xml"
+      title="RSS feed for https://chenyo.me">
+<title>KAIST CS431 Notes</title>
+<script type="text/javascript"
+             src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+       </script>
+       <script type="text/x-mathjax-config">
+             MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'],['\\(','\\)']]}});
+       </script>
+       <meta name="author" content="chenyo">
+      <meta name="referrer" content="no-referrer">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="stylesheet" href="assets/style.css" type="text/css"/>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+      <link rel="favicon" type="image/x-icon" href="favicon.ico">
+      <script src="assets/search.js"></script></head>
+<body>
+<div id="preamble" class="status">
+      <header>
+      <h1><a href="https://chenyo.me">Chenyo's org-static-blog</a></h1>
+      <nav>
+      <a href="https://chenyo.me">Home</a>
+      <a href="archive.html">Archive</a>
+      <a href="tags.html">Tags</a>
+      <div id="search-container">
+        <input type="text" id="search-input" placeholder="Search anywhere...">
+        <i class="fas fa-search search-icon"></i>
+      </div>
+      </nav>
+      </header></div>
+<div id="content">
+<div class="post-date">08 Mar 2026</div><h1 class="post-title"><a href="https://chenyo.me/2026-03-08-cs431-notes.html">KAIST CS431 Notes</a></h1>
+<nav id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#orga095f6e">1. <code>thread::scope</code></a></li>
+<li><a href="#orgef06288">2. <code>unsafe fn</code></a></li>
+<li><a href="#org2ad4858">3. object safety</a></li>
+<li><a href="#org75e25ad">4. <code>async_trait</code></a></li>
+</ul>
+</div>
+</nav>
+<p>
+Notes for KAIST CS431: <a href="https://github.com/kaist-cp/cs431/tree/main">Concurrent Programming</a>.
+</p>
+
+<p>
+Lecture videos are <a href="https://youtube.com/playlist?list=PL5aMzERQ_OZ9j40DJNlsem2qAGoFbfwb4&amp;si=qrniFJlhcjj1cWHS">here</a>.
+</p>
+
+<p>
+Some topics may be out of the course scope, but come up along this note-taking process.
+</p>
+<div id="outline-container-orga095f6e" class="outline-2">
+<h2 id="orga095f6e"><span class="section-number-2">1.</span> <code>thread::scope</code></h2>
+<div class="outline-text-2" id="text-1">
+<div class="org-src-container">
+<pre class="src src-rust"><span style="color: #51afef;">fn</span> <span style="color: #c678dd;">increment_both_half</span>(<span style="color: #dcaeea;">data</span>: <span style="color: #bbc2cf; background-color: #282c34;">&amp;</span><span style="color: #51afef;">mut</span> [<span style="color: #ECBE7B;">i32</span>]) {
+    <span style="color: #51afef;">let</span> (left, right) = data.split_at_mut(data.len() / 2);
+
+    <span style="color: #a9a1e1;">thread</span>::scope(|scope| {
+        scope.spawn(|_| {
+            <span style="color: #51afef;">for</span> <span style="color: #dcaeea;">x</span> <span style="color: #51afef;">in</span> left {
+                *x += 1;
+            }
+        });
+
+        scope.spawn(|_| {
+            <span style="color: #51afef;">for</span> <span style="color: #dcaeea;">x</span> <span style="color: #51afef;">in</span> right {
+                *x += 1;
+            }
+        });
+    });
+
+    <span style="color: #c678dd;">println!</span>(date);
+}
+</pre>
+</div>
+
+<ul class="org-ul">
+<li>Use <code>thread::scope</code> when the threads must borrow data owned by the current stack frame.
+Otherwise`thread::spawn` would fail as it requires <code>'static</code> or clone.</li>
+<li>The <code>Scope</code> is only returned when all threads are joined (and consequently blocks), ensuring threads cannot outlive the borrowed data</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgef06288" class="outline-2">
+<h2 id="orgef06288"><span class="section-number-2">2.</span> <code>unsafe fn</code></h2>
+<div class="outline-text-2" id="text-2">
+<div class="org-src-container">
+<pre class="src src-rust"><span style="color: #51afef;">pub</span> <span style="color: #51afef;">struct</span> <span style="color: #ECBE7B;">NonZeroUsize</span>(<span style="color: #ECBE7B;">usize</span>);
+
+<span style="color: #51afef;">pub</span> <span style="color: #51afef;">fn</span> <span style="color: #c678dd;">make_nonzero</span>(<span style="color: #dcaeea;">x</span>: <span style="color: #ECBE7B;">usize</span>) -&gt; <span style="color: #ECBE7B;">Option</span>&lt;<span style="color: #ECBE7B;">NonZeroUsize</span>&gt; {
+    <span style="color: #51afef;">if</span> x == 0 {
+        <span style="color: #ECBE7B;">None</span>
+    } <span style="color: #51afef;">else</span> {
+        <span style="color: #ECBE7B;">Some</span>(<span style="color: #ECBE7B;">NonZeroUsize</span>(x))
+    }
+}
+
+<span style="color: #51afef;">pub</span> <span style="color: #ECBE7B;">unsafe</span> <span style="color: #51afef;">fn</span> <span style="color: #c678dd;">consume_nonzero</span>(<span style="color: #dcaeea;">x</span>: <span style="color: #ECBE7B;">u32</span>) -&gt; <span style="color: #ECBE7B;">NonZeroUsize</span> {
+    <span style="color: #ECBE7B;">NonZeroUsize</span>(x)
+}
+</pre>
+</div>
+
+<ul class="org-ul">
+<li>Mark a function as <code>unsafe</code> when calling it requires the caller to upload some invariants which the compiler cannot guarantee.</li>
+<li>Whether a function is <code>unsafe</code> has nothing to do with its implementation, e.g., the API can be safe with unsafe code block.</li>
+<li>Calling an <code>unsafe fn</code> must be wrapped with <code>unsafe {}</code> block.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org2ad4858" class="outline-2">
+<h2 id="org2ad4858"><span class="section-number-2">3.</span> object safety</h2>
+<div class="outline-text-2" id="text-3">
+<ul class="org-ul">
+<li>Object safety is a set of rules whether a trait can be used for dynamic dispatch, i.e., <code>dyn trait</code>.</li>
+<li>These rules are already listed in <a href="2024-12-28-interesting-rust-snippets.html">2024-12-28-interesting-rust-snippets.html</a>.</li>
+<li>These rules ensure
+<ul class="org-ul">
+<li>A sized <code>vtable</code> can be built for each concrete implementation of the trait (rule 1), and</li>
+<li>The caller can know the type size returned from any trait method call (rule 2).</li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org75e25ad" class="outline-2">
+<h2 id="org75e25ad"><span class="section-number-2">4.</span> <code>async_trait</code></h2>
+<div class="outline-text-2" id="text-4">
+<div class="org-src-container">
+<pre class="src src-rust"><span style="color: #51afef;">trait</span> <span style="color: #ECBE7B;">Data</span> {
+    <span style="color: #51afef;">fn</span> <span style="color: #c678dd;">fetch</span>(<span style="color: #bbc2cf; background-color: #282c34;">&amp;</span><span style="color: #51afef;">self</span>) -&gt; <span style="color: #ECBE7B;">Pin</span>&lt;<span style="color: #ECBE7B;">Box</span>&lt;<span style="color: #51afef;">dyn</span> <span style="color: #ECBE7B;">Future</span>&lt;<span style="color: #ECBE7B;">Output</span> = <span style="color: #ECBE7B;">String</span>&gt; + <span style="color: #ECBE7B;">Send</span>&gt;&gt;;
+}
+
+<span style="color: #5B6268;">// </span><span style="color: #5B6268;">is equivalent to</span>
+
+<span style="color: #51afef; font-weight: bold;">#[async_trait]</span>
+<span style="color: #51afef;">trait</span> <span style="color: #ECBE7B;">Data</span> {
+    <span style="color: #51afef;">async</span> <span style="color: #51afef;">fn</span> <span style="color: #c678dd;">fetch</span>(<span style="color: #bbc2cf; background-color: #282c34;">&amp;</span><span style="color: #51afef;">self</span>) -&gt; <span style="color: #ECBE7B;">String</span>;
+}
+</pre>
+</div>
+
+<ul class="org-ul">
+<li><code>async_trait</code> is only necessary for dynamic dispatch.
+For static dispatch, one can just write <code>async fn fetch() -&gt; String</code>.</li>
+<li>Why <code>Box&lt;dyn Future&gt;</code> not <code>impl Future</code>: to know type size during compiler time.</li>
+<li><p>
+Why <code>Pin</code>: to prevent the future being moved and self-reference is broken when the future changes state, e.g.,
+</p>
+
+<div class="org-src-container">
+<pre class="src src-rust"><span style="color: #51afef;">async</span> <span style="color: #51afef;">fn</span> <span style="color: #c678dd;">fetch</span>(<span style="color: #bbc2cf; background-color: #282c34;">&amp;</span><span style="color: #51afef;">self</span>) {
+    <span style="color: #51afef;">let</span> <span style="color: #dcaeea;">data</span> = <span style="color: #ECBE7B;">String</span>::from(<span style="color: #98be65;">"hello"</span>);
+    <span style="color: #51afef;">let</span> <span style="color: #dcaeea;">reference</span> = <span style="color: #bbc2cf; background-color: #282c34;">&amp;</span>data; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">reference to local variable is stored as absolute address</span>
+    some_async().<span style="color: #51afef;">await</span>; <span style="color: #5B6268;">// </span><span style="color: #5B6268;">suspend here</span>
+    <span style="color: #c678dd;">println!</span>(<span style="color: #98be65;">"</span><span style="color: #98be65; font-style: italic;">{}</span><span style="color: #98be65;">"</span>, reference); <span style="color: #5B6268;">// </span><span style="color: #5B6268;">resume here, reference still needed</span>
+}
+</pre>
+</div></li>
+</ul>
+</div>
+</div>
+<div class="taglist"><a href="https://chenyo.me/tags.html">Tags</a>: <a href="https://chenyo.me/tag-study.html">study</a> <a href="https://chenyo.me/tag-rust.html">rust</a> <a href="https://chenyo.me/tag-kaist.html">kaist</a> </div></div>
+<div id="postamble" class="status"><div id="search-results"></div>
+      <footer>
+        <div class="footer-content">
+        <div class="footer-left">
+        <p>© 2025 chenyo. Some rights reserved.</p>
+        <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">
+        <img alt="Creative Commons License" style="border-width: 0"
+        src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png"/>
+        </a>
+      </a>
+      </div>
+      <script src="assets/toggle.js"></script>
+      </footer></div>
+</body>
+</html>
